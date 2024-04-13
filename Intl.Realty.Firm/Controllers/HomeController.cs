@@ -1,4 +1,5 @@
 using Intl.Realty.Firm.Models;
+using Intl.Realty.Firm.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -12,9 +13,18 @@ namespace Intl.Realty.Firm.Controllers
         {
             _logger = logger;
         }
-
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
+            List<BreadcrumbViewModel> breadcrumbs = new List<BreadcrumbViewModel>();
+            breadcrumbs.Add(new BreadcrumbViewModel { DisplayName = "Dashboard", Url = Url.Action("Dashboard", "Home") ?? "#" });
+
+            ViewBag.Breadcrumbs = breadcrumbs!;
+
+            if (ViewBag != null)
+            {
+                ViewBag.Breadcrumbs = breadcrumbs;
+            }
+
             return View();
         }
 

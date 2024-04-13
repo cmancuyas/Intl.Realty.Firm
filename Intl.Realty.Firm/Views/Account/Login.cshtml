@@ -1,0 +1,92 @@
+﻿@using DENR_FAPIS.Models;
+
+@model AccountViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<container>
+    <div class="row m-0 p-0">
+        <div class="col-md-6 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part">
+            <span class="text-white ms-3 position-relative top-neg-10">Republic of the Philippines</span>
+            <img src="~/files/img/IRF logo.jpg" alt="DENR Logo" class="img-fluid" width="300" height="300" />
+            <span class="text-white position-relative top-10">© 2024 International Realty Firm</span>
+        </div>
+        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center right-part">
+            <div class="text-center mb-md-4">
+                <img src="" alt="IRF Logo" class="img-fluid" />
+            </div>
+            <h3 class="fw-bolder text-center mb-md-5">
+                International Realty Firm
+            </h3>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="text-danger">@ViewBag.Error</div>
+            }
+            <div class="w-50 mb-md-2">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    <div class="form-group mb-4">
+                        <label class="fw-bolder">@Html.DisplayNameFor(model => model.Username)</label>
+                        @Html.TextBoxFor(m => m.Username, new
+                            {
+                                @class = "form-control", 
+                                @id = "username",
+                                @name = "username",
+                                @placeholder = "Please enter username",
+                            })
+                    </div>
+                    <div class="form-group mb-1">
+                        <label class="fw-bolder" for="password">Password</label>
+                        <div class="input-group">
+                            @Html.PasswordFor(m => m.Password, new
+                                { 
+                                    @class = "form-control", 
+                                    @id = "password", 
+                                    @name = "password", 
+                                    @placeholder = "Please enter password",
+                                    @Value = Model.SetPassword
+                                })
+                            <button class="btn" type="button" id="password-toggle">
+                                <i data-feather="eye" type="button"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-md-5">
+                        <a href="#" class="text-decoration-none">Forgot Password?</a>
+                    </div>
+                    <input type="submit" value="Sign in" class="btn btn-primary w-100" />
+                }
+                
+            </div>
+            <div class="d-flex gap-1">
+                <span class="text-secondary">Don't have an account?</span><a href="@Url.Action("SignUp", "Account")" class="text-decoration-none">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</container>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        feather.replace();
+
+        $(document).ready(function () {
+            $("#username").attr("value", "admin");
+        });
+
+        $("#password-toggle").click(function () {
+            var passwordInput = $("#password");
+            var passwordToggle = $(this).find("i");
+
+            if (passwordInput.attr("type") === "password") {
+                passwordInput.attr("type", "text");
+
+            } else {
+                passwordInput.attr("type", "password");
+            }
+        });
+    });
+</script>

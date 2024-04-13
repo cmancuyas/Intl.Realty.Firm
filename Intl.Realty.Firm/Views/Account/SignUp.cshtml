@@ -1,0 +1,501 @@
+﻿@using DENR_FAPIS.Models;
+
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<container>
+    <div class="row m-0 p-0">
+        <div class="col-md-4 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part">
+            <div class="d-flex flex-column">
+                <div class="step my-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white text-blue border rounded-circle p-2">
+                            <i data-feather="user"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Create Profile</h5>
+                            <span class="small">Tell us a little bit more about yourself</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step my-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white text-blue border rounded-circle p-2">
+                            <i data-feather="briefcase"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Define Role</h5>
+                            <span class="small">Tell us about your role in the company</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step my-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white text-blue border rounded-circle p-2">
+                            <i data-feather="settings"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Set Up Account</h5>
+                            <span class="small">Set up your account in FASPIS</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step my-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white text-blue border rounded-circle p-2">
+                            <i data-feather="check-square"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Check Details</h5>
+                            <span class="small">Double check your information</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex align-items-center justify-content-center right-part">
+            <div class="d-flex flex-column w-75 px-5">
+                <div class="w-10 mb-2">
+                    <img src="~/files/img/logo-faspis.png" alt="FASP IS Logo" class="img-fluid" />
+                </div>
+                @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "signUpForm" }))
+                {
+                <div class="w-100">
+                    <div class="tab">
+                        <div class="mb-4">
+                            <span class="small text-blue fw-bolder">STEP 1 of 3</span>
+                            <h5 class="fw-bolder mb-0">About You</h5>
+                        </div>
+                        <label class="fw-bolder">Full Name</label>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @id = "firstName", @name = "firstname", @placeholder = "First Name" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", @id = "middleName", @name = "middlename", @placeholder = "Middle Name (Optional)" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @id = "lastName", @name = "lastname", @placeholder = "Last Name" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Suffix, new { @class = "form-control", @id = "suffix", @name = "suffix", @placeholder = "Suffix (Optional)" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Birth Date</label>
+                                @Html.EditorFor(m => m.BirthDate, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @id = "birthDate", @type = "Date" } })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Contact Number</label>
+                                @Html.TextBoxFor(m => m.ContactNumber, new { @class = "form-control", @id = "contactNumber", @name = "contactnumber", @placeholder = "(+63) 999 999 9999" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab">
+                        <div class="mb-4">
+                            <span class="small text-blue fw-bolder">STEP 2 of 3</span>
+                            <h5 class="fw-bolder mb-0">Employment Details</h5>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">Office Name</label>
+                                @Html.DropDownListFor(m => m.OfficeName, new SelectList(Model.OfficeNameList, "Value", "Text"), "Select Office...", new { @class = "form-select", @id = "officeName" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">Division Name</label>
+                                @Html.DropDownListFor(m => m.DivisionName, new SelectList(Model.DivisionNameList, "Value", "Text"), "Select Division...", new { @class = "form-select", @id = "divisionName" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Position</label>
+                                @Html.DropDownListFor(m => m.Position, new SelectList(Model.PositionList, "Value", "Text"), "Select Position...", new { @class = "form-select", @id = "position" })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Designation</label>
+                                @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @id = "designation", @name = "designation", @placeholder = "Enter Designation..."})
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Date of Employment</label>
+                                @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @id = "employmentDate", @type = "Date" } })
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bolder">Employment Status</label>
+                                @Html.DropDownListFor(m => m.EmploymentStatus, new SelectList(Model.EmploymentStatusList, "Value", "Text"), "Select Employment Status...", new { @class = "form-select", @id = "employmentStatus" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">System Role</label>
+                                @Html.DropDownListFor(m => m.SystemRole, new SelectList(Model.SystemRoleList, "Value", "Text"), "Select System Role...", new { @class = "form-select", @id = "systemRole"})
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <div class="mb-4">
+                            <span class="small text-blue fw-bolder">STEP 3 of 3</span>
+                            <h5 class="fw-bolder mb-0">User Account Info</h5>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <img src="~/files/img/avatar-blank.png" class="w-10 rounded-circle mt-1" id="avatar" />
+                            <div class="d-flex flex-column gap-1">
+                                <span class="fw-bolder">Profile Picture</span>
+                                <span class="small text-secondary">Size: 170x170 px. Your face must occupy 80% of the circle.</span>
+                                <button class="btn btn-secondary w-50 d-flex align-items-center justify-content-around" id="btnUploadAvatar">Upload Photo <i data-feather="upload" class="w-10"></i></button>
+                                <input type="file" id="uploadAvatar" class="d-none" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">Email Address</label>
+                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @id = "emailAddress", @name = "emailaddress", @placeholder = "example@domain.com", @type = "email" })
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">Create Password</label>
+                                @Html.TextBoxFor(m => m.CreatePassword, new { @class = "form-control", @id = "createPassword", @name = "createpassword", @type = "password" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="fw-bolder">Confirm Password</label>
+                                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @id = "confirmPassword", @name = "confirmpassword", @type = "password" })
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="togglePassword">
+                            <label class="form-check-label">
+                                Show Password
+                            </label>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <div class="mb-4">
+                            <h5 class="fw-bolder mb-0">Summary</h5>
+                            <span class="small fst-italic">Kindly double check your information before signing up</span>
+                        </div>
+                        
+                        <div class="row overflow-auto" style="max-height:55vh;">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <span class="text-blue fw-bolder">Personal Information</span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            First Name
+                                        </label>
+                                            <span class="fw-bolder" id="summaryFirstName"></span>
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Middle Name
+                                        </label>
+                                        <span class="fw-bolder" id="summaryMiddleName"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Last Name
+                                        </label>
+                                        <span class="fw-bolder" id="summaryLastName"></span>
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Suffix
+                                        </label>
+                                        <span class="fw-bolder" id="summarySuffix"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Date of Birth
+                                        </label>
+                                            <span class="fw-bolder" id="summaryBirthDate"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Email Address
+                                        </label>
+                                        <span class="fw-bolder" id="summaryEmailAddress"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Contact Number
+                                        </label>
+                                        <span class="fw-bolder" id="summaryContactNumber"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <span class="text-blue fw-bolder">Role Information</span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Office Name
+                                        </label>
+                                        <span class="fw-bolder" id="summaryOfficeName"></span>
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Division Name
+                                        </label>
+                                        <span class="fw-bolder" id="summaryDivisionName"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Position
+                                        </label>
+                                        <span class="fw-bolder" id="summaryPosition"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Start Date
+                                        </label>
+                                        <span class="fw-bolder" id="summaryEmploymentDate"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            Status of Employment
+                                        </label>
+                                        <span class="fw-bolder" id="summaryEmploymentStatus"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12 d-flex flex-column">
+                                        <label class="text-secondary small">
+                                            PCM Role
+                                        </label>
+                                        <span class="fw-bolder" id="summarySystemRole"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <span class="small text-secondary">
+                                    By creating an account, you agree to our <a href="#" class="link-secondary">User Agreement</a> and have read and acknowledged the <a href="#" class="link-secondary">Data Privacy Statement</a>.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-md-12 d-flex justify-content-between">
+                            <button type="button" id="cancelBtn" class="btn btn-secondary w-25 btnCancel">Cancel</button>
+                            <button type="button" id="prevBtn" class="btn btn-secondary w-25" onclick="nextPrev(-1)">Back</button>
+                            <button type="button" id="nextBtn" class="btn btn-primary w-25 btnContinue" onclick="nextPrev(1)">Continue</button>
+                            <button type="submit" id="submitBtn" class="btn btn-primary w-25 btnSubmit">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body d-flex flex-column align-items-center py-5">
+                    <div class="text-white bg-blue p-4 rounded-circle border-icon">
+                        <i data-feather="mail" width="100" height="100"></i>
+                    </div>
+                    <h1 class="text-blue fw-bolder pt-3">Check your email</h1>
+                    <span class="fw-bolder">An email confirmation has been sent to your inbox</span>
+                </div>
+                <div class="d-flex justify-content-center mb-5">
+                    <button type="button" class="btn btn-primary w-25" id="btnRedirectLogin">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</container>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        feather.replace();
+
+        $('#togglePassword').click(function () {
+            var type = $(this).is(':checked') ? 'text' : 'password';
+
+            $('#createPassword, #confirmPassword').attr('type', type);
+        });
+
+        $('#btnUploadAvatar').click(function (e) {
+            e.preventDefault();
+            $('#uploadAvatar').click();
+        });
+
+        $('#uploadAvatar').change(function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+
+                $.ajax({
+                    url: '/Account/UploadAvatar',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $('#avatar').attr('src', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Upload failed. Status: ' + xhr.status);
+                    }
+                });
+            }
+        });
+
+        function updateSummary() {
+            $("#summaryFirstName").text($("#firstName").val() || "N/A");
+            $("#summaryMiddleName").text($("#middleName").val() || "N/A");
+            $("#summaryLastName").text($("#lastName").val() || "N/A");
+            $("#summarySuffix").text($("#suffix").val() || "N/A");
+            $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
+            $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
+            $("#summaryDesignation").text($("#designation").val() || "N/A");
+
+            function formatAndUpdateSummary(dateElementId, summaryElementId) {
+                var dateValue = $(dateElementId).val();
+
+                if (dateValue && dateValue.trim() !== "") {
+                    var date = new Date(dateValue);
+
+                    var formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                    $(summaryElementId).text(formattedDate);
+                } else {
+                    $(summaryElementId).text("N/A");
+                }
+            }
+
+            formatAndUpdateSummary("#birthDate", "#summaryBirthDate");
+            formatAndUpdateSummary("#employmentDate", "#summaryEmploymentDate");
+
+            function updateDropdownSummary(dropdownSelector, summarySelector) {
+                var dropdownValue = $(dropdownSelector).val();
+                var dropdownText = $(dropdownSelector + " option:selected").text();
+                $(summarySelector).text(dropdownValue && dropdownValue.trim() !== "" ? dropdownText : "N/A");
+            }
+
+            updateDropdownSummary("#systemRole", "#summarySystemRole");
+            updateDropdownSummary("#officeName", "#summaryOfficeName");
+            updateDropdownSummary("#divisionName", "#summaryDivisionName");
+            updateDropdownSummary("#position", "#summaryPosition");
+            updateDropdownSummary("#employmentStatus", "#summaryEmploymentStatus");
+        }
+
+        updateSummary();
+
+        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber, #officeName, #divisionName, #position, #designation, #employmentDate, #employmentStatus, #systemRole").change(function () {
+            updateSummary();
+        });
+
+        $('#signUpForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("SignUp", "Account")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#successModal').modal('show');
+                },
+                error: function () {
+                    alert('An error occurred while processing your request.');
+                }
+            });
+        });
+
+        $('#btnRedirectLogin, #cancelBtn').click(function () {
+            window.location.href = '@Url.Action("Login", "Account")';
+        });
+
+        $('#successModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        // $('#successModal').on('hidden.bs.modal', function () {
+        //     window.location.href = '@Url.Action("Login", "Account")';
+        // });
+    });
+
+    var currentTab = 0;
+    showTab(currentTab);
+
+    function showTab(n) {
+        $(".tab").hide();
+        $(".tab").eq(n).show();
+
+        $(".step").removeClass("active");
+
+        switch (n) {
+            case 0:
+                $(".step").eq(0).addClass("active");
+                $(".btnSubmit").hide();
+                $(".btnCancel").show();
+                break;
+            case 1:
+                $(".step").eq(1).addClass("active");
+                $(".btnCancel").hide();
+                break;
+            case 2:
+                $(".step").eq(2).addClass("active");
+                $(".btnSubmit").hide();
+                $(".btnContinue").show();
+                break;
+            case 3:
+                $(".step").eq(3).addClass("active");
+                $(".btnSubmit").show();
+                $(".btnContinue").hide();
+                break;
+        }
+
+        $("#prevBtn").toggle(n !== 0);
+    }
+
+    function nextPrev(n) {
+        var x = $(".tab");
+
+        x.eq(currentTab).hide();
+        currentTab += n;
+
+        if (currentTab >= x.length) {
+            $(".step").removeClass("active");
+            $(".step").eq(3).addClass("active");
+            return false;
+        }
+
+        showTab(currentTab);
+    }
+</script>

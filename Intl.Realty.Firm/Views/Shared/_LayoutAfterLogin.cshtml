@@ -1,0 +1,164 @@
+﻿@using Intl.Realty.Firm.ViewModel
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Intl.Realty.Firm</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DENR_FAPIS.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @* <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DENR FAPIS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </li>
+    </ul>
+    </div>
+    </div>
+    </nav>
+    </header> *@
+    <aside>
+        <div class="h-auto d-flex align-items-center justify-content-center me-2 mt-3">
+            <img src="~/files/img/logo-faspis.png" alt="FASP IS Logo" class="img-fluid w-50" />
+        </div>
+        <div class="nav-bar-container">
+            <ul id="navItems" class="navbar-nav mt-5">
+                <li id="dashboardNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Home" asp-action="Dashboard">
+                        <i data-feather="grid" data-toggle="tooltip" data-placement="bottom" title="Dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li id="transactionNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Transaction" asp-action="Transaction">
+                        <i data-feather="folder" data-toggle="tooltip" data-placement="bottom" title="Transactions"></i>
+                        <span>Transaction</span>
+                    </a>
+                </li>
+                <li id="mediaNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Media" asp-action="Media">
+                        <i data-feather="film" data-toggle="tooltip" data-placement="bottom" title="Media"></i>
+                        <span>Media</span>
+                    </a>
+                </li>
+
+                <li id="accountManagementNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="AccountManagement" asp-action="AccountManagement">
+                        <i data-feather="bar-chart-2" data-toggle="tooltip" data-placement="bottom" title="Account Management"></i>
+                        <span>Account Management</span>
+                    </a>
+                </li>
+                <li id="profileNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Profile" asp-action="Profile">
+                        <i data-feather="user" data-toggle="tooltip" data-placement="bottom" title="Profile"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li id="settingsNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Settings" asp-action="Settings">
+                        <i data-feather="settings" data-toggle="tooltip" data-placement="bottom" title="Settings"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li id="logoutNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Account" asp-action="Logout">
+                        <i data-feather="log-out" data-toggle="tooltip" data-placement="bottom" title="Logout"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        @* <div class="aside-footer">
+        <span class="small text-white">POWERED BY</span>
+        </div> *@
+    </aside>
+    <div class="top-bar">
+        <div class="top-bar-container shadow-sm d-flex">
+            <div class="d-flex align-items-center justify-content-between mx-4 w-100">
+                <div class="d-flex flex-row align-items-center gap-2">
+                    <i data-feather="home" class="w-15px h-auto text-blue"></i>
+                    <ul class="breadcrumb mb-0">
+                        @{
+                            var breadcrumbs = ViewBag.Breadcrumbs as List<BreadcrumbViewModel>;
+                            var totalItems = breadcrumbs?.Count ?? 0;
+                        }
+
+                        @if (breadcrumbs != null)
+                        {
+                            @foreach (var item in breadcrumbs)
+                            {
+                                <li class="breadcrumb-item d-flex align-items-center gap-2">
+                                    <i data-feather="chevron-right" class="w-15px h-auto text-blue pt-1"></i>
+                                    <a href="@item.Url" class="text-decoration-none @(item.Equals(breadcrumbs[totalItems - 1]) ? "text-secondary" : "text-blue")">@item.DisplayName</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                @* <div>
+                search
+                notif
+                user
+                avatar
+                </div> *@
+            </div>
+        </div>
+    </div>
+    <main role="main" class="main pb-5">
+        <div class="main-container px-4 pt-4 mb-5">
+            @RenderBody()
+        </div>
+    </main>
+    <footer class="footer text-muted pt-3 ms-4 w-75 d-flex justify-content-center">
+        <div class="container text-center">
+            © 2024 International Realty Firm
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/feather.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            feather.replace();
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            function setActiveMenuItem() {
+                var url = window.location.href;
+                $('.nav-item').removeClass('selected');
+                $('.nav-item a').each(function () {
+                    var itemUrl = $(this).attr('href');
+                    if (url.includes(itemUrl)) {
+                        $(this).closest('.nav-item').addClass('selected');
+                    }
+                });
+            }
+
+            setActiveMenuItem();
+
+            $('.nav-item a').on('click', function () {
+                $('.nav-item').removeClass('selected');
+                $(this).closest('.nav-item').addClass('selected');
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,14 +1,29 @@
 ﻿[
   {
+    "outputFile": "wwwroot/css/site.css",
+    "inputFile": "wwwroot/css/site.less",
+    "minify": {
+      "enabled": true
+    },
+    "includeInProject": true,
+    "options": {
+      "sourceMap": true
+    }
+  },
+  {
     "outputFile": "wwwroot/css/main.css",
-    "inputFile": "wwwroot/css/main.scss"
+    "inputFile": "wwwroot/css/main.less",
+    "minify": {
+      "enabled": true
+    },
+    "includeInProject": true
   },
   {
     "outputFile": "wwwroot/css/variables.css",
-    "inputFile": "wwwroot/css/variables.scss"
-  },
-  {
-    "outputFile": "wwwroot/css/core.css",
-    "inputFile": "wwwroot/css/core.scss"
+    "inputFile": "wwwroot/css/variables.less",
+    "minify": {
+      "enabled": true
+    },
+    "includeInProject": true
   }
 ]

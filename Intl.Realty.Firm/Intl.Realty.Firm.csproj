@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\core.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
   </ItemGroup>
 
   <ItemGroup>

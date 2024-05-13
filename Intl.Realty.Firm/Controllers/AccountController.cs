@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using DENR_FAPIS.Models;
+﻿
+
+using Intl.Realty.Firm.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Intl.Realty.Firm.Controllers

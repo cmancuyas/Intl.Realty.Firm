@@ -1,4 +1,4 @@
-﻿namespace Intl.Realty.Firm.ViewModel
+﻿namespace Intl.Realty.Firm.Models.ViewModel
 {
     public class BreadcrumbViewModel
     {

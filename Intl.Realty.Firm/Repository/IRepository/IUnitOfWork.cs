@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork
     {
+        ITransactionRepository Transaction { get; set; }
         void Save();
     }
 }

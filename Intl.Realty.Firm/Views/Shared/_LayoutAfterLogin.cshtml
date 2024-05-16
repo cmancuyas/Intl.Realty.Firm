@@ -31,15 +31,15 @@
     </div>
     </nav>
     </header> *@
-    <aside>
+    <aside class="sidebar">
         <div class="h-auto d-flex align-items-center justify-content-center me-2 mt-3">
-            <img src="~/files/img/logo-faspis.png" alt="FASP IS Logo" class="img-fluid w-50" />
+            <img src="~/files/img/logo-irf-white.png" alt="FASP IS Logo" class="img-fluid" />
         </div>
         <div class="nav-bar-container">
             <ul id="navItems" class="navbar-nav mt-5">
                 <li id="dashboardNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Home" asp-action="Dashboard">
-                        <i data-feather="grid" data-toggle="tooltip" data-placement="bottom" title="Dashboard"></i>
+                        <i data-feather="bar-chart-2" data-toggle="tooltip" data-placement="bottom" title="Dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -51,7 +51,7 @@
                 </li>
                 <li id="mediaNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Media" asp-action="Media">
-                        <i data-feather="film" data-toggle="tooltip" data-placement="bottom" title="Media"></i>
+                        <i data-feather="upload" data-toggle="tooltip" data-placement="bottom" title="Media"></i>
                         <span>Media</span>
                     </a>
                 </li>
@@ -109,7 +109,7 @@
                 </li>
                 <li id="accountManagementNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="AccountManagement" asp-action="AccountManagement">
-                        <i data-feather="bar-chart-2" data-toggle="tooltip" data-placement="bottom" title="Account Management"></i>
+                        <i data-feather="activity" data-toggle="tooltip" data-placement="bottom" title="Account Management"></i>
                         <span>Account Management</span>
                     </a>
                 </li>
@@ -121,7 +121,7 @@
                 </li>
                 <li id="logoutNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Account" asp-action="Logout">
-                        <i data-feather="log-out" data-toggle="tooltip" data-placement="bottom" title="Logout"></i>
+                        <i data-feather="power" data-toggle="tooltip" data-placement="bottom" title="Logout"></i>
                         <span>Logout</span>
                     </a>
                 </li>

@@ -3,9 +3,16 @@
     margin: 0;
     font-size: 14px;
 }
+body {
+    background: #EEE;
+}
 
 a {
     color: #273c55 !important;
+}
+
+input, input:focus, input:focus-visible {
+    outline: none !important;
 }
 
 .d-none {
@@ -18,12 +25,28 @@ a {
 }
 
 /* Splash Page */
-.splash-page .form-control {
-    height: 60px;
-    border-radius: 8px;
+.login-page .logo-login {
+    padding: 30px;
+    background: white;
+    border-radius: 10%;
 }
-.splash-page label {
+
+.login-page h3 {
+    color: #31698a;
+}
+
+.login-page .form-control {
+    height: 60px;
+    border-radius: 0;
+    border: 0;
+}
+
+.login-page label {
     margin-bottom: 6px;
+}
+
+.login-page .input-group {
+    border: 1px solid #CCC;
 }
 
 @media (min-width: 768px) {
@@ -33,7 +56,9 @@ a {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    /*box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;*/
+    box-shadow: none;
+    border-color: inherit;
 }
 
 html {
@@ -42,13 +67,9 @@ html {
 }
 
 /*body {
-  margin-bottom: 60px;
-}*/
-/*custom styling*/
-body {
     background: url("../files/img/bg-wavy.png") no-repeat;
     background-size: cover;
-}
+}*/
 
 .left-part {
     /*background: url("../files/img/bg-faspis.png") no-repeat;*/
@@ -57,15 +78,20 @@ body {
 }
 
 .right-part {
-    background: url("../files/img/bg-wavy.png") no-repeat;
-    background-size: cover;
+    background: #EEE;
 }
 
 button#password-toggle {
-    border: 1px solid #ced4da;
+    border: 0;
     background: white;
     border-left: 0;
 }
+
+    button#password-toggle:hover {
+        box-shadow: none;
+        transition: none;
+        transform: unset;
+    }
 
     button#password-toggle:focus {
         box-shadow: none;
@@ -81,9 +107,10 @@ button#password-toggle {
     background-color: #01162f !important;
     border-color: #01162f !important;
 }
+
 .btn-primary {
-    background-color: #273c55 !important;
-    border-color: #273c55 !important;
+    background-color: #31698a !important;
+    border-color: #31698a !important;
 }
 
 .btn-secondary {
@@ -133,7 +160,7 @@ button#password-toggle {
 }
 
 aside {
-    background: rgb(0, 64, 161);
+    background: #273c55;
     position: absolute;
     top: 0;
     width: 300px;
@@ -147,7 +174,7 @@ aside {
 }
 
 .navbar-nav .nav-item .nav-link {
-    color: #fff;
+    color: #fff !important;
 }
 
 .navbar-nav .nav-item {
@@ -159,15 +186,26 @@ aside {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
 
+    .navbar-nav .nav-item.selected:hover {
+        background-color: white !important;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    .navbar-nav .nav-item.selected:hover a.nav-link {
+        color: #273c55 !important;
+    }
+
     .navbar-nav .nav-item:hover {
-        background-color: #C3C4C6;
+        background-color: #31698a;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         transform: translateY(-5px);
     }
+        .navbar-nav .nav-item:hover a.nav-link {
+            color: #FFF !important;
+        }
 
         .navbar-nav .nav-item.selected .nav-link,
         .navbar-nav .nav-item:hover .nav-link {
-            color: #0040a1 !important;
+            color: #31698a !important;
         }
 
 .aside-footer {
@@ -216,7 +254,7 @@ aside {
 }
 
 .text-blue {
-    color: #004AAB;
+    color: #273c55;
 }
 
 .bg-blue {

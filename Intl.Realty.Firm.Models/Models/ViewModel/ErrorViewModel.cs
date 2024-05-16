@@ -1,4 +1,4 @@
-namespace Intl.Realty.Firm.Models
+namespace Intl.Realty.Firm.Models.ViewModel
 {
     public class ErrorViewModel
     {

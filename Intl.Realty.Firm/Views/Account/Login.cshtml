@@ -1,4 +1,4 @@
-﻿@using DENR_FAPIS.Models;
+﻿@using Intl.Realty.Firm.Models.ViewModel
 
 @model AccountViewModel
 
@@ -6,18 +6,14 @@
     ViewData["Title"] = "Login";
 }
 
-<container>
+<container class="splash-page">
     <div class="row m-0 p-0">
-        <div class="col-md-6 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part">
-            <span class="text-white ms-3 position-relative top-neg-10">Republic of the Philippines</span>
-            <img src="~/files/img/IRF logo.jpg" alt="DENR Logo" class="img-fluid" width="300" height="300" />
+        <div class="col-md-6 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part bg-splash">
+            <img src="~/files/img/IRF logo.jpg" alt="" class="img-fluid" width="300" height="300" />
             <span class="text-white position-relative top-10">© 2024 International Realty Firm</span>
         </div>
         <div class="col-md-6 d-flex flex-column align-items-center justify-content-center right-part">
-            <div class="text-center mb-md-4">
-                <img src="" alt="IRF Logo" class="img-fluid" />
-            </div>
-            <h3 class="fw-bolder text-center mb-md-5">
+            <h3 class="fw-bolder text-center mb-md-5 font">
                 International Realty Firm
             </h3>
             @if (!string.IsNullOrEmpty(ViewBag.Error))

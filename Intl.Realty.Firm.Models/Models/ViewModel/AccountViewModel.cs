@@ -1,4 +1,4 @@
-﻿namespace DENR_FAPIS.Models
+﻿namespace Intl.Realty.Firm.Models.ViewModel
 {
     public class AccountViewModel
     {

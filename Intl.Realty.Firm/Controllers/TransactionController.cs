@@ -5,6 +5,10 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class TransactionController : Controller
     {
+        public TransactionController()
+        {
+            
+        }
         public IActionResult Transaction()
         {
             List<BreadcrumbViewModel> breadcrumbs = new List<BreadcrumbViewModel>();

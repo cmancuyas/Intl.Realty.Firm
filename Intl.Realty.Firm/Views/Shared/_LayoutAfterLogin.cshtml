@@ -55,7 +55,58 @@
                         <span>Media</span>
                     </a>
                 </li>
-
+                <li id="administratorNavItem" class="nav-item mx-4 my-2 rounded">
+                    <a href="#" id="administratorNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder">
+                        <i data-feather="key" data-toggle="tooltip" data-bs-placement="right" title="Administrator"></i>
+                        <span class="flex-grow-1">Administrator</span>
+                        <i data-feather="chevron-right" class="caret"></i>
+                    </a>
+                </li>
+                <li class="administratorSubNavItem sub-nav-item">
+                    <ul class="list-unstyled">
+                        <li class="my-2">
+                            <a class="sub-nav-link" asp-controller="Administrator" asp-action="Users">
+                                <span data-toggle="tooltip" data-bs-placement="right" title="Users">Users</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="administratorSubNavItem sub-nav-item">
+                    <ul class="list-unstyled">
+                        <li class="my-2">
+                            <a class="sub-nav-link" asp-controller="Administrator" asp-action="UserTypes">
+                                <span data-toggle="tooltip" data-bs-placement="right" title="UserTypes">UserTypes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="administratorSubNavItem sub-nav-item">
+                    <ul class="list-unstyled">
+                        <li class="my-2">
+                            <a class="sub-nav-link" asp-controller="Administrator" asp-action="Departments">
+                                <span data-toggle="tooltip" data-bs-placement="right" title="Departments">Departments</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="administratorSubNavItem sub-nav-item">
+                    <ul class="list-unstyled">
+                        <li class="my-2">
+                            <a class="sub-nav-link" asp-controller="Administrator" asp-action="State">
+                                <span data-toggle="tooltip" data-bs-placement="right" title="State">State</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="administratorSubNavItem sub-nav-item">
+                    <ul class="list-unstyled">
+                        <li class="my-2">
+                            <a class="sub-nav-link" asp-controller="Region" asp-action="Index">
+                                <span data-toggle="tooltip" data-bs-placement="right" title="Region">Region</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li id="accountManagementNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="AccountManagement" asp-action="AccountManagement">
                         <i data-feather="bar-chart-2" data-toggle="tooltip" data-placement="bottom" title="Account Management"></i>

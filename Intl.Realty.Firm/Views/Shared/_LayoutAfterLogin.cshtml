@@ -43,12 +43,162 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li id="transactionNavItem" class="nav-item mx-4 mb-2 rounded">
+@*                 <li id="transactionNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Transaction" asp-action="Transaction">
                         <i data-feather="activity" data-placement="bottom" title="Transactions"></i>
-                        <span>Transactions</span>
+                        <span>Upload New Transactions</span>
+                    </a>
+                </li> *@
+
+                <li id="transactionNavItem" class="nav-item mx-4 my-2 rounded">
+                    <a href="#" id="transactionNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 me-3 fw-bolder" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                       aria-expanded="false" aria-label="Toggle navigation">
+                        <i data-feather="globe" data-bs-placement="right" title="Transactions"></i>
+                        <span class="flex-grow-1">Upload New Transactions</span>
+                        <i data-feather="chevron-down" class="caret"></i>
+                    </a>
+
+                    <div class="navbar-collapse collapse justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="transactionSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="Transaction" asp-action="SaleListing">
+                                            <span data-bs-placement="right" title="SaleListing">Sale Listing</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="transactionSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="Transaction" asp-action="SaleCoop">
+                                            <span data-bs-placement="right" title="SaleCoop">Sale Co-op</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="transactionSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="Transaction" asp-action="LeaseListing">
+                                            <span data-bs-placement="right" title="LeaseListing">Lease Listing</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="transactionSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="Transaction" asp-action="LeaseCoop">
+                                            <span data-bs-placement="right" title="LeaseCoop">Lease Co-op</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="informationPackageNavItem" class="nav-item mx-4 my-2 rounded">
+                    <a href="#" id="informationPackageNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 me-3 fw-bolder" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                       aria-expanded="false" aria-label="Toggle navigation">
+                        <i data-feather="globe" data-bs-placement="right" title="InformationPackages"></i>
+                        <span class="flex-grow-1">Information Packages</span>
+                        <i data-feather="chevron-down" class="caret"></i>
+                    </a>
+
+                    <div class="navbar-collapse collapse justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="informationPackageSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="InformationPackage" asp-action="BusinessCards">
+                                            <span data-bs-placement="right" title="BusinessCards">Business Cards & Signs</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="informationPackageSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="InformationPackage" asp-action="CommissionAdvance">
+                                            <span data-bs-placement="right" title="CommissionAdvance">Apply for Commission Advance</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li id="trainingNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="Training" asp-action="Training">
+                        <i data-feather="upload" data-placement="bottom" title="Training"></i>
+                        <span>Training</span>
                     </a>
                 </li>
+
+                <li id="irfProgramsNavItem" class="nav-item mx-4 my-2 rounded">
+                    <a href="#" id="irfProgramsNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 me-3 fw-bolder" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                       aria-expanded="false" aria-label="Toggle navigation">
+                        <i data-feather="globe" data-bs-placement="right" title="IrfProgramss"></i>
+                        <span class="flex-grow-1">Information Packages</span>
+                        <i data-feather="chevron-down" class="caret"></i>
+                    </a>
+
+                    <div class="navbar-collapse collapse justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="irfProgramsSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="IrfPrograms" asp-action="Mortgage">
+                                            <span data-bs-placement="right" title="Mortgage">IRF Mortgage Program</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="irfProgramsSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="IrfPrograms" asp-action="Leads">
+                                            <span data-bs-placement="right" title="Leads">IRF Leads Program</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li id="irfBrandedWebsiteNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="IrfBrandedWebsite" asp-action="IrfBrandedWebsite">
+                        <i data-feather="upload" data-placement="bottom" title="IrfBrandedWebsite"></i>
+                        <span>IRF Branded Website</span>
+                    </a>
+                </li>
+
+
+                <li id="purchaseIRFStocksNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="PurchaseIRFStocks" asp-action="PurchaseIRFStocks">
+                        <i data-feather="upload" data-placement="bottom" title="PurchaseIRFStocks"></i>
+                        <span>Purchase IRF Stocks</span>
+                    </a>
+                </li>
+
+                <li id="referAnAgentNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="ReferAnAgent" asp-action="ReferAnAgent">
+                        <i data-feather="upload" data-placement="bottom" title="ReferAnAgent"></i>
+                        <span>Refer An Agent</span>
+                    </a>
+                </li>
+
+                <li id="preconstructionNavItem" class="nav-item mx-4 mb-2 rounded">
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="Preconstruction" asp-action="Preconstruction">
+                        <i data-feather="upload" data-placement="bottom" title="Preconstruction"></i>
+                        <span>Pre-construction</span>
+                    </a>
+                </li>
+
                 <li id="mediaNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="Media" asp-action="Media">
                         <i data-feather="upload" data-placement="bottom" title="Media"></i>
@@ -95,17 +245,8 @@
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="State">
-                                            <span data-bs-placement="right" title="State">State</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="administratorSubNavItem sub-nav-item">
-                                <ul class="list-unstyled">
-                                    <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Region" asp-action="Index">
-                                            <span data-bs-placement="right" title="Region">Region</span>
+                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="Provinces">
+                                            <span data-bs-placement="right" title="Provinces">Provinces</span>
                                         </a>
                                     </li>
                                 </ul>

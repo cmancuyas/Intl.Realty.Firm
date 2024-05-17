@@ -208,6 +208,11 @@ aside {
             color: #31698a !important;
         }
 
+.navbar-nav .sub-nav-item ul li a.sub-nav-link {
+    font-weight: 600;
+    text-decoration: none;
+}
+
 .aside-footer {
     position: absolute;
     bottom: 0;

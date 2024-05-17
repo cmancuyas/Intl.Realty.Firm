@@ -39,73 +39,73 @@
             <ul id="navItems" class="navbar-nav mt-5">
                 <li id="dashboardNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Home" asp-action="Dashboard">
-                        <i data-feather="bar-chart-2" data-toggle="tooltip" data-placement="bottom" title="Dashboard"></i>
+                        <i data-feather="bar-chart-2" data-placement="bottom" title="Dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li id="transactionNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Transaction" asp-action="Transaction">
-                        <i data-feather="folder" data-toggle="tooltip" data-placement="bottom" title="Transactions"></i>
-                        <span>Transaction</span>
+                        <i data-feather="activity" data-placement="bottom" title="Transactions"></i>
+                        <span>Transactions</span>
                     </a>
                 </li>
                 <li id="mediaNavItem" class="nav-item mx-4 mb-2 rounded">
-                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Media" asp-action="Media">
-                        <i data-feather="upload" data-toggle="tooltip" data-placement="bottom" title="Media"></i>
+                    <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 ms- fw-bolder" asp-controller="Media" asp-action="Media">
+                        <i data-feather="upload" data-placement="bottom" title="Media"></i>
                         <span>Media</span>
                     </a>
                 </li>
                 <li id="administratorNavItem" class="nav-item mx-4 my-2 rounded">
-                    <a href="#" id="administratorNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    <a href="#" id="administratorNavLink" class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 me-3 fw-bolder" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i data-feather="globe" data-toggle="tooltip" data-bs-placement="right" title="Administrator"></i>
+                        <i data-feather="globe" data-bs-placement="right" title="Administrator"></i>
                         <span class="flex-grow-1">Administrator</span>
-                        <i data-feather="chevron-right" class="caret"></i>
+                        <i data-feather="chevron-down" class="caret"></i>
                     </a>
 
                     <div class="navbar-collapse collapse justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
-                                    <li class="my-2">
+                                    <li class="my-2 ms-4">
                                         <a class="sub-nav-link" asp-controller="Administrator" asp-action="Users">
-                                            <span data-toggle="tooltip" data-bs-placement="right" title="Users">Users</span>
+                                            <span data-bs-placement="right" title="Users">Users</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
-                                    <li class="my-2">
+                                    <li class="my-2 ms-4">
                                         <a class="sub-nav-link" asp-controller="Administrator" asp-action="UserTypes">
-                                            <span data-toggle="tooltip" data-bs-placement="right" title="UserTypes">UserTypes</span>
+                                            <span data-bs-placement="right" title="UserTypes">UserTypes</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
-                                    <li class="my-2">
+                                    <li class="my-2 ms-4">
                                         <a class="sub-nav-link" asp-controller="Administrator" asp-action="Departments">
-                                            <span data-toggle="tooltip" data-bs-placement="right" title="Departments">Departments</span>
+                                            <span data-bs-placement="right" title="Departments">Departments</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
-                                    <li class="my-2">
+                                    <li class="my-2 ms-4">
                                         <a class="sub-nav-link" asp-controller="Administrator" asp-action="State">
-                                            <span data-toggle="tooltip" data-bs-placement="right" title="State">State</span>
+                                            <span data-bs-placement="right" title="State">State</span>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
-                                    <li class="my-2">
+                                    <li class="my-2 ms-4">
                                         <a class="sub-nav-link" asp-controller="Region" asp-action="Index">
-                                            <span data-toggle="tooltip" data-bs-placement="right" title="Region">Region</span>
+                                            <span data-bs-placement="right" title="Region">Region</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -116,19 +116,19 @@
                 
                 <li id="accountManagementNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="AccountManagement" asp-action="AccountManagement">
-                        <i data-feather="activity" data-toggle="tooltip" data-placement="bottom" title="Account Management"></i>
-                        <span>Account Management</span>
+                        <i data-feather="code" data-placement="bottom" title="Account Management"></i>
+                        <span>Account Settings</span>
                     </a>
                 </li>
                 <li id="profileNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Profile" asp-action="Profile">
-                        <i data-feather="user" data-toggle="tooltip" data-placement="bottom" title="Profile"></i>
+                        <i data-feather="user" data-placement="bottom" title="Profile"></i>
                         <span>Profile</span>
                     </a>
                 </li>
                 <li id="logoutNavItem" class="nav-item mx-4 mb-2 rounded">
                     <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-3 fw-bolder" asp-controller="Account" asp-action="Logout">
-                        <i data-feather="power" data-toggle="tooltip" data-placement="bottom" title="Logout"></i>
+                        <i data-feather="power" data-placement="bottom" title="Logout"></i>
                         <span>Logout</span>
                     </a>
                 </li>

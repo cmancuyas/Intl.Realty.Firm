@@ -2,7 +2,9 @@
 {
     public interface IUnitOfWork
     {
-        ITransactionRepository Transaction { get; set; }
+        IIRFDealRepository IRFDeal { get;}
+        ITransactionTypeRepository TransactionType { get; }
+        IDocumentTypeRepository DocumentType { get; }
         void Save();
     }
 }

@@ -63,7 +63,7 @@
                             <li class="transactionSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Transaction" asp-action="SaleListing">
+                                        <a class="sub-nav-link" asp-controller="SaleListing" asp-action="SaleListing">
                                             <span data-bs-placement="right" title="SaleListing">Sale Listing</span>
                                         </a>
                                     </li>
@@ -218,7 +218,7 @@
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="Users">
+                                        <a class="sub-nav-link" asp-controller="Users" asp-action="Index">
                                             <span data-bs-placement="right" title="Users">Users</span>
                                         </a>
                                     </li>
@@ -227,8 +227,8 @@
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="UserTypes">
-                                            <span data-bs-placement="right" title="UserTypes">UserTypes</span>
+                                        <a class="sub-nav-link" asp-controller="UserType" asp-action="Index">
+                                            <span data-bs-placement="right" title="UserType">User Types</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -236,7 +236,7 @@
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="Departments">
+                                        <a class="sub-nav-link" asp-controller="Department" asp-action="Index">
                                             <span data-bs-placement="right" title="Departments">Departments</span>
                                         </a>
                                     </li>
@@ -245,8 +245,26 @@
                             <li class="administratorSubNavItem sub-nav-item">
                                 <ul class="list-unstyled">
                                     <li class="my-2 ms-4">
-                                        <a class="sub-nav-link" asp-controller="Administrator" asp-action="Provinces">
+                                        <a class="sub-nav-link" asp-controller="Provinces" asp-action="Index">
                                             <span data-bs-placement="right" title="Provinces">Provinces</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="administratorSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="TransactionType" asp-action="Index">
+                                            <span data-bs-placement="right" title="Transaction Types">Transaction Types</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="administratorSubNavItem sub-nav-item">
+                                <ul class="list-unstyled">
+                                    <li class="my-2 ms-4">
+                                        <a class="sub-nav-link" asp-controller="DocumentType" asp-action="Index">
+                                            <span data-bs-placement="right" title="Document Types">Document Types</span>
                                         </a>
                                     </li>
                                 </ul>

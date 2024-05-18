@@ -15,25 +15,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\files\img\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Intl.Realty.Firm.DataAccess\Intl.Realty.Firm.DataAccess.csproj" />
     <ProjectReference Include="..\Intl.Realty.Firm.Models\Intl.Realty.Firm.Models.csproj" />
     <ProjectReference Include="..\Intl.Realty.Firm.Utility\Intl.Realty.Firm.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

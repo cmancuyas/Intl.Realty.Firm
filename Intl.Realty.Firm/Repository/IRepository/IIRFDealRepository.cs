@@ -2,7 +2,8 @@
 
 namespace Intl.Realty.Firm.Repository.IRepository
 {
-    public interface ITransactionRepository : IRepository<IRFDeal>
+    public interface IIRFDealRepository : IRepository<IRFDeal>
     {
+        void Update(IRFDeal obj);
     }
 }

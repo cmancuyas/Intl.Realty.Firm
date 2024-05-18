@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Intl.Realty.Firm.Models\Intl.Realty.Firm.Models.csproj" />
+  </ItemGroup>
+
 </Project>

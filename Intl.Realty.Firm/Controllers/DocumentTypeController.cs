@@ -60,8 +60,8 @@ namespace Intl.Realty.Firm.Controllers
 
             var documentTypeViewModel = documentTypeFromDb.ToDocumentTypeViewModel();
 
-            //DocumentType? documentTypeFromDb1 = _db.Categories.FirstOrDefault(u=>u.Id==id);
-            //DocumentType? documentTypeFromDb2 = _db.Categories.Where(u=>u.Id==id).FirstOrDefault();
+            documentTypeViewModel.UpdatedBy = 1;
+            documentTypeViewModel.UpdatedAt = DateTime.UtcNow;
 
             if (documentTypeViewModel == null)
             {
@@ -70,11 +70,18 @@ namespace Intl.Realty.Firm.Controllers
             return View(documentTypeViewModel);
         }
         [HttpPost]
-        public IActionResult Edit(DocumentType obj)
+        public IActionResult Edit(DocumentType model)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.DocumentType.Update(obj);
+
+                DocumentType? documentTypeFromDb = _unitOfWork.DocumentType.Get(u => u.Id == model.Id);
+                model.CreatedBy = documentTypeFromDb.CreatedBy;
+                model.CreatedAt = documentTypeFromDb.CreatedAt;
+                model.UpdatedBy = 1;
+                model.UpdatedAt = DateTime.UtcNow;
+
+                _unitOfWork.DocumentType.Update(model);
                 _unitOfWork.Save();
                 TempData["success"] = "DocumentType updated successfully";
                 return RedirectToAction("Index");

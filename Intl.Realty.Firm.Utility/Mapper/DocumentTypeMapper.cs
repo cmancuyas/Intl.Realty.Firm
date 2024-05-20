@@ -10,29 +10,29 @@ namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class DocumentTypeMapper
     {
-        public static DocumentTypeViewModel ToDocumentTypeViewModel(this DocumentType documentTypeModel)
+        public static DocumentTypeViewModel ToDocumentTypeViewModel(this DocumentType model)
         {
             return new DocumentTypeViewModel
             {
-                Id = documentTypeModel.Id,
-                Name = documentTypeModel.Name,
-                IsActive = documentTypeModel.IsActive,
-                CreatedBy = documentTypeModel.CreatedBy,
-                CreatedAt = documentTypeModel.CreatedAt,
-                UpdatedBy = documentTypeModel.UpdatedBy,
-                UpdatedAt = documentTypeModel.UpdatedAt
+                Id = model.Id,
+                Name = model.Name,
+                IsActive = model.IsActive,
+                CreatedBy = model.CreatedBy,
+                CreatedAt = model.CreatedAt,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
             };
         }
-        public static CreateDocumentTypeViewModel ToCreateDocumentTypeViewModel(this DocumentType documentTypeModel)
+        public static CreateDocumentTypeViewModel ToCreateDocumentTypeViewModel(this DocumentType model)
         {
             return new CreateDocumentTypeViewModel
             {
-                Name = documentTypeModel.Name,
-                IsActive = documentTypeModel.IsActive,
-                CreatedBy = documentTypeModel.CreatedBy,
-                CreatedAt = documentTypeModel.CreatedAt,
-                UpdatedBy = documentTypeModel.UpdatedBy,
-                UpdatedAt = documentTypeModel.UpdatedAt
+                Name = model.Name,
+                IsActive = model.IsActive,
+                CreatedBy = model.CreatedBy,
+                CreatedAt = model.CreatedAt,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
             };
         }
     }

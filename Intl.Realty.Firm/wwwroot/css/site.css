@@ -217,8 +217,16 @@ aside {
                 }
 
             .nav-bar-container .accordion .accordion-item .accordion-collapse {
-                background: white;
+                background: #16273c;
             }
+
+                .nav-bar-container .accordion .accordion-item .accordion-collapse .accordion-body .sub-nav-link {
+                    color: #DDD !important;
+                    font-weight: bold;
+                }
+                .nav-bar-container .accordion .accordion-item .accordion-collapse .accordion-body .sub-nav-link:hover {
+                    color: #FFF !important;
+                }
 
 
 

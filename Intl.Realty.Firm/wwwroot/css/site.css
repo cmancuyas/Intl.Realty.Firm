@@ -169,9 +169,63 @@ aside {
 }
 
 .nav-bar-container {
+    background: #273c55;
     position: relative;
     z-index: 99;
+    margin-top: 2em;
 }
+    .nav-bar-container .accordion {
+        background: #273c55;
+    }
+
+        .nav-bar-container .accordion .accordion-item {
+            background: transparent;
+            border: 0;
+            margin: 0 0 3px;
+        }
+            .nav-bar-container .accordion .accordion-item .accordion-header {
+                background: #273c55;
+                transition: all 0.3s ease, box-shadow 0.3s ease;
+            }
+                .nav-bar-container .accordion .accordion-item .accordion-header:focus, .nav-bar-container .accordion .accordion-item .accordion-header:focus-visible {
+                    outline: none;
+                    border: none;
+                }
+                .nav-bar-container .accordion .accordion-item .accordion-header:hover {
+                    background-color: #31698a;
+                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                    transform: translateY(-5px);
+                }
+
+
+                .nav-bar-container .accordion .accordion-item .accordion-header .accordion-button {
+                    background: transparent;
+                    border: none;
+                    color: white;
+                    font-weight: bold;
+                }
+                    .nav-bar-container .accordion .accordion-item .accordion-header .accordion-button::after {
+                        color: #FFF;
+                    }
+                .nav-bar-container .accordion .accordion-item .accordion-header .no-arrow::after {
+                    content: '';
+                    background: none;
+                }
+
+                .nav-bar-container .accordion .accordion-item .accordion-header .accordion-button svg:first-child {
+                    margin-right: 0.5rem;
+                }
+
+            .nav-bar-container .accordion .accordion-item .accordion-collapse {
+                background: white;
+            }
+
+
+
+
+
+
+
 
 .navbar-nav .nav-item .nav-link {
     color: #fff !important;

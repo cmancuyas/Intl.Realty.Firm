@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentType;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignment;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;

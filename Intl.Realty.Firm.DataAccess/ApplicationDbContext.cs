@@ -20,5 +20,6 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<IRFDeal> IRFDeals { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
+        public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
     }
 }

@@ -5,6 +5,7 @@
         IIRFDealRepository IRFDeal { get;}
         ITransactionTypeRepository TransactionType { get; }
         IDocumentTypeRepository DocumentType { get; }
+        IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; }
         void Save();
     }
 }

@@ -1,15 +1,15 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignment;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Intl.Realty.Firm.Controllers
 {
-    public class DocumentTypeAssignmentAssignmentController : Controller
+    public class DocumentTypeAssignmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DocumentTypeAssignmentAssignmentController(IUnitOfWork unitOfWork)
+        public DocumentTypeAssignmentController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -43,7 +43,7 @@ namespace Intl.Realty.Firm.Controllers
             {
                 _unitOfWork.DocumentTypeAssignment.Add(obj);
                 _unitOfWork.Save();
-                TempData["success"] = "DocumentTypeAssignment created successfully";
+                TempData["success"] = "Document Type Assignment created successfully";
                 return RedirectToAction("Index");
             }
             return View();

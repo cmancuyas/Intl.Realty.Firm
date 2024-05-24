@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentType
+namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
 {
     public class DocumentTypeViewModel : BaseModel
     {

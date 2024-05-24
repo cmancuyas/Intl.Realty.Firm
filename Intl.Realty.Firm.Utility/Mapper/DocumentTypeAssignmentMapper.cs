@@ -1,11 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentType;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {

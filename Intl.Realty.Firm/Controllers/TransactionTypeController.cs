@@ -1,4 +1,4 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.TransactionType;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;

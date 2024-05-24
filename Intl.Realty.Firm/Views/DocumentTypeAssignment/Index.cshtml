@@ -1,4 +1,4 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignment
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
 @model List<DocumentTypeAssignmentViewModel>
 @using System.ComponentModel.DataAnnotations
 @{
@@ -9,7 +9,7 @@
 <div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">Document Types</h1>
+            <h1 class="text-blue mb-0">Document Types Assignment</h1>
             <div class="d-flex gap-4">
                 <button id="btnDeleteDocumentTypeAssignment" class="btn btn-danger d-none align-items-center" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i data-feather="x" class="w-15px h-auto me-1"></i>Delete</button>
 
@@ -22,14 +22,14 @@
         </div>
     </div>
     <form method="post" asp-action="DeleteMultiple">
-        <table id="documentTypeTable" class="data-table table table-hover w-100">
+        <table id="documentTypeAssignmentTable" class="data-table table table-hover w-100">
             <thead>
                 <tr>
                     <th class="text-center w-5">
                         <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                     </th>
                     <th>
-                        Description
+                        
                     </th>
                     <th></th>
                 </tr>
@@ -92,7 +92,7 @@
             order: [[1, 'asc']]
         });
 
-        $('#documentTypeTable').on('click', 'tbody tr', function (event) {
+        $('#documentTypeAssignmentTable').on('click', 'tbody tr', function (event) {
             // Check if the clicked element is not the checkbox
             if (!$(event.target).is(':checkbox')) {
                 var documentTypeId = $(this).data('documentType-id');

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionType
+namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
 {
-    public class CreateTransactionTypeViewModel : BaseModel
+    public class TransactionTypeViewModel : BaseModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.TransactionType;
+using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;

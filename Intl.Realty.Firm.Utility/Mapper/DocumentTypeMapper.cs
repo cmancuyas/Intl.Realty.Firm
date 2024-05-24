@@ -1,5 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentType;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;

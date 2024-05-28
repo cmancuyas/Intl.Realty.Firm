@@ -4,6 +4,6 @@ namespace Intl.Realty.Firm.Repository.IRepository
 {
     public interface IIRFDealRepository : IRepository<IRFDeal>
     {
-        void Update(IRFDeal obj);
+        Task UpdateAsync(IRFDeal obj);
     }
 }

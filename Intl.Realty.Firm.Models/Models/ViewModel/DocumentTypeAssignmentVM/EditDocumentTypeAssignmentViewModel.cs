@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
 {
-    public class CreateDocumentTypeAssignmentViewModel : BaseModel
+    public class EditDocumentTypeAssignmentViewModel : BaseModel
     {
+        public int Id { get; set; }
         public int DocumentTypeId { get; set; }
         public int TransactionTypeId { get; set; }
         public List<DocumentType>? DocumentTypeList { get; set; }

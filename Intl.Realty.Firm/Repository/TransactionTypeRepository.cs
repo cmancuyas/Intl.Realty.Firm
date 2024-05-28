@@ -12,9 +12,11 @@ namespace Intl.Realty.Firm.Repository
             _db = db;
         }
 
-        public void Update(TransactionType obj)
+        public Task UpdateAsync(TransactionType obj)
         {
             _db.TransactionTypes.Update(obj);
+            return _db.SaveChangesAsync();
         }
+
     }
 }

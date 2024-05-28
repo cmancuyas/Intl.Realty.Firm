@@ -4,6 +4,6 @@ namespace Intl.Realty.Firm.Repository.IRepository
 {
     public interface ITransactionTypeRepository : IRepository<TransactionType>
     {
-        void Update(TransactionType obj);
+        Task UpdateAsync(TransactionType obj);
     }
 }

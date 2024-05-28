@@ -1,6 +1,8 @@
 ﻿using Intl.Realty.Firm.DataAccess;
 using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Intl.Realty.Firm.Repository
 {
@@ -12,10 +14,12 @@ namespace Intl.Realty.Firm.Repository
             _db = db;
         }
 
-        public void Update(DocumentTypeAssignment obj)
+        public Task UpdateAsync(DocumentTypeAssignment obj)
         {
             _db.DocumentTypeAssignments.Update(obj);
+            return _db.SaveChangesAsync();
         }
+
     }
 }
 

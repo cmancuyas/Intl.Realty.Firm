@@ -13,9 +13,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public IActionResult Index()
-        {
-            List<DocumentType> documentTypeList = _unitOfWork.DocumentType.GetAll().ToList();
+        public async Task<IActionResult> Index()
+        {   
+            List<DocumentType> documentTypeList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
 
             List<DocumentTypeViewModel> documentTypeViewModel = documentTypeList.Select(x => x.ToDocumentTypeViewModel()).ToList();
 
@@ -27,9 +27,9 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(DocumentType obj)
+        public async Task<IActionResult> Create(DocumentType obj)
         {
-            var checkIfExists = _unitOfWork.DocumentType.Get(x=>x.Name == obj.Name);
+            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x=>x.Name == obj.Name);
             if (checkIfExists != null)
             {
                 ModelState.AddModelError("name", "Document Type already exists");
@@ -41,7 +41,7 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.DocumentType.Add(obj);
+                await _unitOfWork.DocumentType.AddAsync(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "DocumentType created successfully";
                 return RedirectToAction("Index");
@@ -50,13 +50,13 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            DocumentType? documentTypeFromDb = _unitOfWork.DocumentType.Get(u => u.Id == id);
+            DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
             var documentTypeViewModel = documentTypeFromDb.ToDocumentTypeViewModel();
 
@@ -70,18 +70,17 @@ namespace Intl.Realty.Firm.Controllers
             return View(documentTypeViewModel);
         }
         [HttpPost]
-        public IActionResult Edit(DocumentType model)
+        public async Task<IActionResult> Edit(DocumentType model)
         {
             if (ModelState.IsValid)
             {
-
-                DocumentType? documentTypeFromDb = _unitOfWork.DocumentType.Get(u => u.Id == model.Id);
+                DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == model.Id);
                 model.CreatedBy = documentTypeFromDb.CreatedBy;
                 model.CreatedAt = documentTypeFromDb.CreatedAt;
                 model.UpdatedBy = 1;
                 model.UpdatedAt = DateTime.UtcNow;
 
-                _unitOfWork.DocumentType.Update(model);
+                await _unitOfWork.DocumentType.UpdateAsync(model);
                 _unitOfWork.Save();
                 TempData["success"] = "DocumentType updated successfully";
                 return RedirectToAction("Index");
@@ -90,13 +89,13 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> DeleteModal(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            DocumentType? documentTypeFromDb = _unitOfWork.DocumentType.Get(u => u.Id == id);
+            DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
             var documentTypeViewModel = documentTypeFromDb.ToDocumentTypeViewModel();
 
@@ -106,18 +105,19 @@ namespace Intl.Realty.Firm.Controllers
             }
             return View(documentTypeViewModel);
         }
+
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            DocumentType? obj = _unitOfWork.DocumentType.Get(u => u.Id == id);
+            DocumentType? obj = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
             if (obj == null)
             {
                 return NotFound();
             }
-            _unitOfWork.DocumentType.Remove(obj);
+            await _unitOfWork.DocumentType.RemoveAsync(obj);
             _unitOfWork.Save();
-            TempData["success"] = "DocumentType deleted successfully";
+            TempData["success"] = "Document Type deleted successfully";
             return RedirectToAction("Index");
         }
     }

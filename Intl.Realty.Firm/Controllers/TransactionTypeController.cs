@@ -13,9 +13,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<TransactionType> transactionTypeList = _unitOfWork.TransactionType.GetAll().ToList();
+            List<TransactionType> transactionTypeList = await _unitOfWork.TransactionType.GetAllAsync() as List<TransactionType> ?? throw new ArgumentException();
 
             List<TransactionTypeViewModel> transactionTypeViewModel = transactionTypeList.Select(x => x.ToTransactionTypeViewModel()).ToList();
 
@@ -27,9 +27,9 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(TransactionType obj)
+        public async Task<IActionResult> Create(TransactionType obj)
         {
-            var checkIfExists = _unitOfWork.TransactionType.Get(x => x.Name == obj.Name);
+            var checkIfExists = await _unitOfWork.TransactionType.GetAsync(x => x.Name == obj.Name);
             if (checkIfExists != null)
             {
                 ModelState.AddModelError("name", "Transaction Type already exists");
@@ -41,7 +41,7 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.TransactionType.Add(obj);
+                await _unitOfWork.TransactionType.AddAsync(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "TransactionType created successfully";
                 return RedirectToAction("Index");
@@ -50,13 +50,13 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            TransactionType? transactionTypeFromDb = _unitOfWork.TransactionType.Get(u => u.Id == id);
+            TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
             transactionTypeFromDb.UpdatedBy = 1;
             transactionTypeFromDb.UpdatedAt = DateTime.UtcNow;
@@ -69,17 +69,17 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TransactionType model)
+        public async Task<IActionResult> Edit(TransactionType model)
         {
             if (ModelState.IsValid)
             {
-                TransactionType? transactionTypeFromDb = _unitOfWork.TransactionType.Get(u => u.Id == model.Id);
+                TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == model.Id);
                 model.CreatedBy = transactionTypeFromDb.CreatedBy;
                 model.CreatedAt = transactionTypeFromDb.CreatedAt;
                 model.UpdatedBy = 1;
                 model.UpdatedAt = DateTime.UtcNow;
 
-                _unitOfWork.TransactionType.Update(model);
+                await _unitOfWork.TransactionType.UpdateAsync(model);
                 _unitOfWork.Save();
                 TempData["success"] = "TransactionType updated successfully";
                 return RedirectToAction("Index");
@@ -88,13 +88,13 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            TransactionType? transactionTypeFromDb = _unitOfWork.TransactionType.Get(u => u.Id == id);
+            TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
             var transactionTypeViewModel = transactionTypeFromDb.ToTransactionTypeViewModel();
 
@@ -105,15 +105,15 @@ namespace Intl.Realty.Firm.Controllers
             return View(transactionTypeViewModel);
         }
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public async Task<IActionResult> DeletePOST(int? id)
         {
-            TransactionType? obj = _unitOfWork.TransactionType.Get(u => u.Id == id);
+            TransactionType? obj = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
             if (obj == null)
             {
                 return NotFound();
             }
-            _unitOfWork.TransactionType.Remove(obj);
+            await _unitOfWork.TransactionType.RemoveAsync(obj);
             _unitOfWork.Save();
             TempData["success"] = "TransactionType deleted successfully";
             return RedirectToAction("Index");

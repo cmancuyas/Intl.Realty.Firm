@@ -10,6 +10,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
     {
         public int Id { get; set; }
         public int DocumentTypeId { get; set; }
+        public DocumentType? DocumentType { get; set; }
         public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
     }
 }

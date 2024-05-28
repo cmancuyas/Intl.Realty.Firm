@@ -8,29 +8,28 @@ namespace Intl.Realty.Firm.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext _context;
         internal DbSet<T> dbSet;
-        public Repository(ApplicationDbContext db)
+        public Repository(ApplicationDbContext context)
         {
-            _db = db;
-            this.dbSet = _db.Set<T>();
+
+            this.dbSet = context.Set<T>();
             //_db.Categories == dbSet
-            /*_db.Products.Include(u => u.Category).Include(u => u.CategoryId)*/;
-
+            //_context.DocumentTypeAssignments.Include(u => u.DocumentType).Include(u => u.TransactionType);
+            _context = context;
         }
-
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            dbSet.Add(entity);
+            _context.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
             if (tracked)
             {
                 query = dbSet;
-
             }
             else
             {
@@ -46,11 +45,11 @@ namespace Intl.Realty.Firm.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
 
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
@@ -65,17 +64,20 @@ namespace Intl.Realty.Firm.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
-        public void Remove(T entity)
+        public async Task RemoveAsync(T entity)
         {
-            dbSet.Remove(entity);
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public void RemoveRange(IEnumerable<T> entity)
+        public async Task RemoveRangeAsync(IEnumerable<T> entity)
         {
-            dbSet.RemoveRange(entity);
+            _context.RemoveRange(entity);
+            await _context.SaveChangesAsync();
         }
+
     }
 }

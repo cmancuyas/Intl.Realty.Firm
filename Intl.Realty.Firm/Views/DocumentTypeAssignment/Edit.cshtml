@@ -1,5 +1,5 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
-@model DocumentTypeAssignmentViewModel
+@model EditDocumentTypeAssignmentViewModel
 
 @using System.ComponentModel.DataAnnotations
 @{
@@ -9,30 +9,65 @@
 
 <h1>Edit</h1>
 
-<h4>Office</h4>
+<h4>Document Type Assignment</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3 mt-3 row form-check">
-                <div class="col-2">
-                    <input type="checkbox" class="form-check-input" asp-for="IsActive" />
-                    <label class="form-check-label" asp-for="IsActive"></label>
-                </div>
-                <div class="col-5">
-                </div>
-            </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label class="fw-bolder p-2" for="classifications">
+                    <span>Document Type</span>
+                </label>
+
+                <select id="DocumentTypeDDL" name="DocumentTypeDDL" class="form-control">
+                    @{
+                        @if (Model.DocumentTypeList != null)
+                        {
+                            @foreach (var documentType in Model.DocumentTypeList)
+                            {
+                                if (documentType.Id == Model.DocumentTypeId)
+                                {
+                                    <option value="@documentType.Id" selected>@documentType.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@documentType.Id">@documentType.Name</option>
+                                }
+                            }
+                        }
+                    }
+
+                </select>
+
+                @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
+            </div>
+            <div class="form-group">
+                <label class="fw-bolder p-2" for="classifications">
+                    <span>Transaction Type</span>
+                </label>
+                <select id="TransactionTypeDDL" name="TransactionTypeDDL" class="form-control">
+                    @{
+                        @if (Model.TransactionTypeList != null)
+                        {
+                            @foreach (var transactionType in Model.TransactionTypeList)
+                            {
+                                if (transactionType.Id == Model.TransactionTypeId)
+                                {
+                                    <option value="@transactionType.Id" selected>@transactionType.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@transactionType.Id">@transactionType.Name</option>
+                                }
+                            }
+                        }
+                    }
+                @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Assign" class="btn btn-primary" />
             </div>
         </form>
     </div>

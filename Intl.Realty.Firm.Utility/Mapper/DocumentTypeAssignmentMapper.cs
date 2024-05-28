@@ -11,16 +11,26 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 DocumentTypeId = model.DocumentTypeId,
-                TransactionTypeId = model.TransactionTypeId
+                DocumentType = model.DocumentType,
+                TransactionTypeId = model.TransactionTypeId,
+                TransactionType = model.TransactionType,
             };
         }
         public static CreateDocumentTypeAssignmentViewModel ToCreateDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
         {
             return new CreateDocumentTypeAssignmentViewModel
             {
-                Id = model.Id,
                 DocumentTypeId = model.DocumentTypeId,
                 TransactionTypeId = model.TransactionTypeId
+            };
+        }
+        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
+        {
+            return new EditDocumentTypeAssignmentViewModel
+            {
+                Id = model.Id,
+                DocumentTypeId = model.DocumentTypeId,
+                TransactionTypeId = model.TransactionTypeId,
             };
         }
     }

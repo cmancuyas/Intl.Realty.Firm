@@ -21,5 +21,6 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
     }
 }

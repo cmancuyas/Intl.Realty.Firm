@@ -6,6 +6,7 @@
         ITransactionTypeRepository TransactionType { get; }
         IDocumentTypeRepository DocumentType { get; }
         IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; }
+        IUserTypeRepository UserType { get; }
         void Save();
     }
 }

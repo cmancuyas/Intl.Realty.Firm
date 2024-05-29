@@ -12,9 +12,9 @@ namespace Intl.Realty.Firm.Repository
             _db = db;
         }
 
-        public Task UpdateAsync(IRFDeal obj)
+        public Task UpdateAsync(IRFDeal model)
         {
-            _db.IRFDeals.Update(obj);
+            _db.IRFDeals.Update(model);
             return _db.SaveChangesAsync();
         }
     }

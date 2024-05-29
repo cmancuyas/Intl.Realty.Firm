@@ -1,5 +1,5 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
+using Intl.Realty.Firm.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
-    public static class TransactionTypeMapper
+    public static class UserTypeMapper
     {
-        public static TransactionTypeViewModel ToTransactionTypeViewModel(this TransactionType model)
+        public static UserTypeViewModel ToUserTypeViewModel(this UserType model)
         {
-            return new TransactionTypeViewModel
+            return new UserTypeViewModel
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -23,9 +23,9 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
-        public static CreateTransactionTypeViewModel ToCreateTransactionTypeViewModel(this TransactionType model)
+        public static CreateUserTypeViewModel ToCreateUserTypeViewModel(this UserType model)
         {
-            return new CreateTransactionTypeViewModel
+            return new CreateUserTypeViewModel
             {
                 Name = model.Name,
                 IsActive = model.IsActive,
@@ -36,9 +36,9 @@ namespace Intl.Realty.Firm.Utility.Mapper
             };
         }
 
-        public static TransactionType ToTransactionTypeModel(this TransactionTypeViewModel viewModel)
+        public static UserType ToUserTypeModel(this UserTypeViewModel viewModel)
         {
-            return new TransactionType
+            return new UserType
             {
                 Name = viewModel.Name,
                 IsActive = viewModel.IsActive,
@@ -49,5 +49,4 @@ namespace Intl.Realty.Firm.Utility.Mapper
             };
         }
     }
-
 }

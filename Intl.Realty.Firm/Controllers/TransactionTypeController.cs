@@ -15,11 +15,11 @@ namespace Intl.Realty.Firm.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<TransactionType> transactionTypeList = await _unitOfWork.TransactionType.GetAllAsync() as List<TransactionType> ?? throw new ArgumentException();
+            List<TransactionType> modelList = await _unitOfWork.TransactionType.GetAllAsync() as List<TransactionType> ?? throw new ArgumentException();
 
-            List<TransactionTypeViewModel> transactionTypeViewModel = transactionTypeList.Select(x => x.ToTransactionTypeViewModel()).ToList();
+            List<TransactionTypeViewModel> viewModelList = modelList.Select(x => x.ToTransactionTypeViewModel()).ToList();
 
-            return View(transactionTypeViewModel);
+            return View(viewModelList);
         }
 
         public IActionResult Create()

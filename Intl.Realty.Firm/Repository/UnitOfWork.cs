@@ -10,6 +10,7 @@ namespace Intl.Realty.Firm.Repository
         public ITransactionTypeRepository TransactionType { get; private set; }
         public IDocumentTypeRepository DocumentType { get; private set; }
         public IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; private set; }
+        public IUserTypeRepository UserType { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -17,6 +18,7 @@ namespace Intl.Realty.Firm.Repository
             TransactionType = new TransactionTypeRepository(_db);
             DocumentType = new DocumentTypeRepository(_db);
             DocumentTypeAssignment = new DocumentTypeAssignmentRepository(_db);
+            UserType = new UserTypeRepository(_db);
         }
 
         public void Save()

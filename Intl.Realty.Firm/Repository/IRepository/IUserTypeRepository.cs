@@ -2,8 +2,8 @@
 
 namespace Intl.Realty.Firm.Repository.IRepository
 {
-    public interface IIRFDealRepository : IRepository<IRFDeal>
+    public interface IUserTypeRepository : IRepository<UserType>
     {
-        Task UpdateAsync(IRFDeal model);
+        Task UpdateAsync(UserType model);
     }
 }

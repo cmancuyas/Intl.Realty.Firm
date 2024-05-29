@@ -13,9 +13,9 @@ namespace Intl.Realty.Firm.Repository
             _db = db;
         }
 
-        public Task UpdateAsync(DocumentType obj)
+        public Task UpdateAsync(DocumentType model)
         {
-            _db.DocumentTypes.Update(obj);
+            _db.DocumentTypes.Update(model);
             return _db.SaveChangesAsync();
         }
 

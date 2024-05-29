@@ -4,19 +4,18 @@ using Intl.Realty.Firm.Repository.IRepository;
 
 namespace Intl.Realty.Firm.Repository
 {
-    public class TransactionTypeRepository : Repository<TransactionType>, ITransactionTypeRepository
+    public class UserTypeRepository : Repository<UserType>, IUserTypeRepository
     {
         private ApplicationDbContext _db;
-        public TransactionTypeRepository(ApplicationDbContext db) : base(db)
+        public UserTypeRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public Task UpdateAsync(TransactionType model)
+        public Task UpdateAsync(UserType model)
         {
-            _db.TransactionTypes.Update(model);
+            _db.UserTypes.Update(model);
             return _db.SaveChangesAsync();
         }
-
     }
 }

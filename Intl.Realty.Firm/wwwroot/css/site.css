@@ -109,8 +109,12 @@ button#password-toggle {
 }
 
 .btn-primary {
-    background-color: #31698a !important;
-    border-color: #31698a !important;
+    background-color: #273c55 !important;
+    border-color: #273c55 !important;
+    color: #FFF !important;
+    font-weight: 500 !important;
+    padding: 10px 25px;
+    border-radius: 5px;
 }
 
 .btn-secondary {
@@ -206,7 +210,9 @@ aside {
                 }
                     .nav-bar-container .accordion .accordion-item .accordion-header .accordion-button::after {
                         color: #FFF;
+                        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236a829d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
                     }
+
                 .nav-bar-container .accordion .accordion-item .accordion-header .no-arrow::after {
                     content: '';
                     background: none;
@@ -281,6 +287,7 @@ aside {
 }
 
 .main {
+    overflow: hidden;
     position: fixed;
     margin-top: 80px;
     padding-left: 300px;
@@ -289,10 +296,14 @@ aside {
     overflow-y: auto;
     width: 100%;
     float: left;
-    overflow-y: scroll;
+}
+
+.main-container h1 {
+    font-size: 2em;
 }
 
 .footer {
+    display: none !important;
     position: absolute;
     bottom: 0;
     left: 18%;
@@ -377,3 +388,23 @@ aside {
     }
 
 /* multi-step sign up form end */
+/* Icons */
+.icon-red {
+    color: #dc3545 !important;
+}
+
+.icon-green {
+    color: #198754 !important;
+}
+
+/* Tables */
+.modal-backdrop {
+    display: none !important;
+}
+.table-control-btn {
+    color: #273c55;
+    font-weight: 500;
+}
+.table-control-btn svg {
+    width: 16px;
+}

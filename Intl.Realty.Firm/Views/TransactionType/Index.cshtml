@@ -12,29 +12,29 @@
             <h1 class="text-blue mb-0">Transaction Types</h1>
             <div class="d-flex gap-4">
                 <button id="btnDeleteTransactionType" class="btn btn-danger d-none align-items-center" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i data-feather="x" class="w-15px h-auto me-1"></i>Delete</button>
-
-
-                <a asp-action="Create"
-                   class="btn btn-primary d-flex align-items-center">
+                @* <a asp-action="Create" class="btn btn-primary d-flex align-items-center">
+                    <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
+                </a> *@
+                <a data-bs-toggle="modal" data-bs-target="#createEntry" class="btn btn-primary d-flex align-items-center">
                     <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
                 </a>
             </div>
         </div>
     </div>
-    <form method="post" asp-action="DeleteMultiple">
+    <form method="post" asp-action="DeleteMultiple" class="pt-2">
         <table id="transactionTypeTable" class="data-table table table-striped table-hover w-100 mt-3">
             <thead>
                 <tr>
-                    <th class="text-center w-5">
+                    <th class="text-center align-middle w-5">
                         <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                     </th>
-                    <th>
+                    <th class="align-middle">
                         Description
                     </th>
-                    <th class="text-center">
+                    <th class="text-center align-middle">
                         Is Active?
                     </th>
-                    <th></th>
+                    <th class="align-middle">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,17 +50,17 @@
                             @Html.DisplayFor(modelItem => item.IsActive)
                         </td>
                         <td class="align-middle">
-                            <a data-bs-toggle="modal" data-bs-target="#exampleModal" asp-route-id="@item.Id" style="text-decoration: none;">
+                            <a data-bs-toggle="modal" data-bs-target="#editEntry" asp-route-id="@item.Id" style="text-decoration: none;">
                                 <span class="table-control-btn pe-3" title="edit" data-position-id="@item.Id">
                                     <i data-feather="edit" class="data-feather-20"></i>
-                                    Update
+                                    Edit
                                 </span>
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
                                 <span class="table-control-btn icon-red" title="delete" data-position-id="@item.Id">
-                                <i data-feather="trash-2" class="data-feather-20"></i>
-                                Delete
-                            </span>
+                                    <i data-feather="trash-2" class="data-feather-20"></i>
+                                    Delete
+                                </span>
                             </a>
                         </td>
                     </tr>
@@ -69,6 +69,7 @@
 
             </tbody>
         </table>
+
         <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog" role="transaction">
                 <div class="modal-content">
@@ -88,24 +89,63 @@
         </div>
     </form>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Create -->
+    <div class="modal fade" id="createEntry" tabindex="-1" aria-labelledby="createEntryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="createEntryLabel">Create Transaction Type</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @Html.Partial("Edit.cshtml")
+                    @* @Html.Partial("Create.cshtml") *@
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Edit -->
+    <div class="modal fade" id="editEntry" tabindex="-1" aria-labelledby="editEntryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEntryLabel">Update Transaction Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @* @Html.Partial("Edit.cshtml") *@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete -->
+    <div class="modal fade" id="deleteEntry" tabindex="-1" aria-labelledby="deleteEntryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createEntryLabel">Delete Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @* @Html.Partial("Create.cshtml") *@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>

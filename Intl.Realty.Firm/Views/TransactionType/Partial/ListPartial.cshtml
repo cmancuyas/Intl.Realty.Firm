@@ -1,23 +1,39 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
-@model List<DocumentTypeAssignmentViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
+@model List<UserTypeViewModel>
 
 <div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">Document Types Assignment</h1>
+            <h1 class="text-blue mb-0">User Types Management</h1>
             <div class="d-flex gap-4">
-                <button id="btnDeleteDocumentTypeAssignment" class="btn btn-danger d-none align-items-center" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i data-feather="x" class="w-15px h-auto me-1"></i>Delete</button>
-
-
-                <a asp-action="Create"
+                <button id="btnDeleteUserType" 
+                    class="btn btn-danger d-none align-items-center" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteConfirmModal">
+                    <i data-feather="x" class="w-15px h-auto me-1"></i>
+                    Delete
+                </button>
+@*                 <a asp-action="Create"
                    class="btn btn-primary d-flex align-items-center">
                     <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
+                </a> *@
+
+                <a href="#"
+                   class="btn btn-primary d-flex align-items-center"
+                   type="button"
+                   data-bs-toggle="modal"
+                   onclick="OpenCreateModal()"
+                   style="text-decoration: none;">
+                    <span class="text-danger px-1 pb-1" title="create">
+                        <i data-feather="plus" class="w-15px h-auto me-1"></i>
+                        Create New
+                    </span>
                 </a>
             </div>
         </div>
     </div>
-    <form method="post" asp-action="DeleteMultiple" class="pt-4">
-        <table id="documentTypeAssignmentTable" class="data-table table table-hover w-100">
+    <form method="post" asp-action="DeleteMultiple">
+        <table id="userTypeTable" class="data-table table table-hover w-100">
             <thead>
                 <tr>
                     <th class="text-center w-5">
@@ -27,10 +43,10 @@
                         PositionId
                     </th>
                     <th>
-                        Transaction Type
+                        Name
                     </th>
                     <th>
-                        Document Type
+                        Is Active?
                     </th>
 
                     <th>
@@ -47,22 +63,25 @@
                 {
                     count++;
                     <tr data-documentType-id="@item.Id">
-                        <td class="text-center align-middle"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
-                        <td class="align-middle">
+                        <td class="text-center"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
+                        <td>
                             @{
-                                @count.ToString()
+                                    @count.ToString()
                             }
                         </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.TransactionType.Name)
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.Name)
                         </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.DocumentType.Name)
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.IsActive)
                         </td>
-
-                        <td class="align-middle">
-                            <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
-                                <span class="table-control-btn pe-3" title="edit" data-position-id="@item.Id">
+                        <td>
+                            <a href="#"
+                               type="button"
+                               data-bs-toggle="modal"
+                               onclick="OpenEditModal(@item.Id)"
+                               style="text-decoration: none;">
+                                <span class="text-danger px-1 pb-1" title="Edit" data-position-id="@item.Id">
                                     <i data-feather="edit" class="data-feather-20"></i>
                                     Edit
                                 </span>
@@ -73,7 +92,7 @@
                             @* data-bs-target="#deletePositionModal" *@
                                onclick="OpenDeleteModal(@item.Id)"
                                style="text-decoration: none;">
-                                <span class="table-control-btn icon-red" title="delete" data-position-id="@item.Id">
+                                <span class="text-danger px-1 pb-1" title="delete" data-position-id="@item.Id">
                                     <i data-feather="trash-2" class="data-feather-20"></i>
                                     Delete
                                 </span>
@@ -98,11 +117,11 @@
             order: [[1, 'asc']]
         });
 
-        $('#documentTypeAssignmentTable').on('click', 'tbody tr', function (event) {
+        $('#userTypeTable').on('click', 'tbody tr', function (event) {
             // Check if the clicked element is not the checkbox
             if (!$(event.target).is(':checkbox')) {
                 var documentTypeId = $(this).data('documentType-id');
-                window.location.href = '@Url.Action("Edit", "DocumentTypeAssignment")' + '?id=' + documentTypeId;
+                window.location.href = '@Url.Action("Edit", "UserType")' + '?id=' + documentTypeId;
             }
         });
 
@@ -111,13 +130,13 @@
             $('.row-checkbox').prop('checked', isChecked);
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.column-checkbox', function () {
+        $('#userTypeTable').on('change', '.column-checkbox', function () {
             var isChecked = $(this).prop('checked');
             $('.row-checkbox').prop('checked', isChecked);
 
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.row-checkbox', function () {
+        $('#userTypeTable').on('change', '.row-checkbox', function () {
             var isChecked = $(this).prop('checked');
 
             var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
@@ -125,10 +144,10 @@
 
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.row-checkbox, .column-checkbox', function () {
+        $('#userTypeTable').on('change', '.row-checkbox, .column-checkbox', function () {
             var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
-            $('#btnDeleteDocumentTypeAssignment').toggleClass('d-none', !atLeastOneChecked);
-            $('#btnDeleteDocumentTypeAssignment').toggleClass('d-flex', atLeastOneChecked);
+            $('#btnDeleteUserType').toggleClass('d-none', !atLeastOneChecked);
+            $('#btnDeleteUserType').toggleClass('d-flex', atLeastOneChecked);
 
             if ($(this).hasClass('column-checkbox')) {
                 var isChecked = $(this).prop('checked');
@@ -168,7 +187,7 @@
         var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
         $('.column-checkbox').prop('checked', allChecked);
 
-        $('#documentTypeAssignmentDeleteMultipleModalContainer').load('/DocumentTypeAssignment/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
+        $('#userTypeDeleteMultipleModalContainer').load('/UserType/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
             $("#deleteConfirmModal").modal("show");
         });
     }
@@ -180,12 +199,28 @@
         return ids;
     }
 
+    // function OpenDeleteModal(id) {
+    //     $('#userTypeListPartialContainer').load('/UserType/DeleteModal/' + id, function () {
+    //         $("#deleteConfirmModal").modal("show");
+    //     });
+    // }
+
+    function OpenCreateModal() {
+        $('#userTypeCreateModalContainer').load('/UserType/CreateModal/', function () {
+            $("#createModal").modal("show");
+        });
+    }
+    function OpenEditModal(id) {
+        $('#userTypeEditModalContainer').load('/UserType/EditModal/' +id, function () {
+            $("#editModal").modal("show");
+        });
+    }
+
     function OpenDeleteModal(id) {
 
-        $('#documentTypeAssignmentDeleteModalContainer').load('/DocumentTypeAssignment/DeleteModal/' + id, function () {
+        $('#userTypeDeleteModalContainer').load('/UserType/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });
     }
-
 </script>

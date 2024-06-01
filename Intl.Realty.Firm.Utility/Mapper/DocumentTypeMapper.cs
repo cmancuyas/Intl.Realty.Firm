@@ -31,8 +31,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
             };
         }
     }

@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
+namespace Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
 {
-    public class CreateDocumentTypeViewModel
+    public class EditUserTypeViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        [Required]
         public bool IsActive { get; set; }
         [Required]
-        public int CreatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

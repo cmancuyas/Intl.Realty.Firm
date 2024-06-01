@@ -108,19 +108,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             var documentTypeList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(includeProperties: "DocumentType,TransactionType");
 
-            var viewModel = documentTypeList.Select(o => new DocumentTypeAssignmentViewModel
-            {
-                Id = o.Id,
-                DocumentTypeId = o.DocumentTypeId,
-                DocumentType = o.DocumentType,
-                TransactionTypeId = o.TransactionTypeId,
-                TransactionType = o.TransactionType,
-                IsActive = o.IsActive,
-                CreatedBy = o.CreatedBy,
-                CreatedAt = o.CreatedAt,
-                UpdatedBy = o.UpdatedBy,
-                UpdatedAt = o.UpdatedAt
-            }).ToList();
+            var viewModel = documentTypeList.ToDocumentTypeAssignmentListViewModel();
 
             return PartialView("~/Views/DocumentTypeAssignment/Partial/DocumentTypeAssignmentListPartial.cshtml", viewModel);
         }

@@ -1,0 +1,82 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
+@model EditUserTypeViewModel
+<div class="modal modal-sheet fade  bg-body-secondary p-4 py-md-5" id="editModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2">Edit User Type</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form class="" id="EditForm" role="form" method="post">
+                    <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" id="name" placeholder="" asp-for="Name"/>
+                        <label for="name">Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="checkbox" class="form-check-input" id="isActive" name="isActive" placeholder="" asp-for="IsActive" />
+                        <label class="form-check-label">Is Active?</label>
+                    </div>
+
+                    <button id="btnEdit" class="w-100 mb-2 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#cancelBtn").click(function () {
+        closeModal();
+    });
+
+    $("#btnEdit").click(function () {
+        UpdateUserType();
+    });
+
+    function UpdateUserType() {
+        var id = document.getElementById("id").value;
+        var checkedValue = document.getElementById("isActive").checked;
+
+        if (!checkedValue) {
+            checkedValue = false;
+        }
+        var viewModel = {
+            Id: id,
+            Name: document.getElementById("name").value,
+            IsActive: checkedValue
+        };
+        var parameters = { viewModel: viewModel };
+
+        $.ajax({
+            url: '/UserType/Edit/' + id,
+            type: 'PUT',
+            data: parameters,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function (data) {
+                // NOTE: TO DO better way of calling callback function from parent
+                closeModal();
+                // Swal.fire({
+                //     title: "Success!",
+                //     icon: "success",
+                //     confirmButtonText: "Ok",
+                //     confirmButtonColor: '#14984a'
+                // });
+                window.location.reload()
+                // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
+
+            }, error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+
+    function closeModal() {
+        $("#editModal").modal("hide");
+        let elem = document.querySelector('#editModal');
+        elem.parentNode.removeChild(elem);
+    }
+</script>

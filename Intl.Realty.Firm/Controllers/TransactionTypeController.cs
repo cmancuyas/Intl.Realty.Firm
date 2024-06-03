@@ -88,35 +88,83 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteModal(int id)
         {
-            if (id == null || id == 0)
+            var model = await _unitOfWork.TransactionType.GetAsync(x=>x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
-            var transactionTypeViewModel = transactionTypeFromDb.ToTransactionTypeViewModel();
+            var editTransactionTypeViewModel = model.ToEditTransactionTypeViewModel();
 
-            if (transactionTypeViewModel == null)
-            {
-                return NotFound();
-            }
-            return View(transactionTypeViewModel);
+            return PartialView("~/Views/TransactionType/Modal/DeleteModal.cshtml", editTransactionTypeViewModel);
         }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeletePOST(int? id)
-        {
-            TransactionType? obj = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
-            if (obj == null)
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<TransactionType> modelList = new List<TransactionType>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.TransactionType.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "TransactionType deleted successfully";
-            return RedirectToAction("Index");
+
+            var transactionTypeViewModelList = modelList.ToTransactionTypeListViewModel();
+
+            IEnumerable<TransactionTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+
+            ViewBag.ViewModelIENumList = modelIEnum;
+
+            return PartialView("~/Views/TransactionType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            await _unitOfWork.TransactionType.RemoveAsync(model);
+
+            return View("Index");
+
+        }
+
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<TransactionTypeViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return PartialView("~/Views/TransactionType/Partial/TransactionTypeListPartial.cshtml", viewModelList);
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var position = await _unitOfWork.TransactionType.GetAllAsync();
+            var modelList = position.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.TransactionType.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
 }

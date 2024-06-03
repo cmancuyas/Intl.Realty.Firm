@@ -22,13 +22,13 @@ namespace Intl.Realty.Firm.Controllers
             return View(viewModelList);
         }
         [HttpGet]
-        public async Task<IActionResult> UserTypeListPartialView()
+        public async Task<IActionResult> ListPartialView()
         {
             var modelList = await _unitOfWork.UserType.GetAllAsync();
 
             var viewModel = modelList.ToUserTypeListViewModel();
 
-            return PartialView("~/Views/UserType/Partial/UserTypeListPartial.cshtml", viewModel);
+            return PartialView("~/Views/UserType/Partial/ListPartial.cshtml", viewModel);
         }
         public IActionResult CreateModal()
         {

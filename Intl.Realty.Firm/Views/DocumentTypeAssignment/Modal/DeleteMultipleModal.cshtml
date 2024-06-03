@@ -1,5 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
-@model IEnumerable<DocumentTypeAssignmentViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
+@model IEnumerable<UserTypeViewModel>
 
 <partial name="~/Views/Shared/_DeleteModal.cshtml">
 
@@ -29,6 +29,10 @@
                 window.location.reload()
                 // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
 
+            }, 
+            
+            error: function (e) {
+                console.log(e);
             }
         });
 

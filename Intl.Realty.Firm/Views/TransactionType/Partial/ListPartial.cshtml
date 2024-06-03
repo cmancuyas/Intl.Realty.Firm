@@ -1,12 +1,12 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model List<UserTypeViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
+@model List<TransactionTypeViewModel>
 
 <div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">User Types Management</h1>
+            <h1 class="text-blue mb-0">Transaction Types Management</h1>
             <div class="d-flex gap-4">
-                <button id="btnDeleteUserType" 
+                <button id="btnMultipleDelete" 
                     class="btn btn-danger d-none align-items-center" 
                     data-bs-toggle="modal" 
                     data-bs-target="#deleteConfirmModal">
@@ -33,14 +33,14 @@
         </div>
     </div>
     <form method="post" asp-action="DeleteMultiple">
-        <table id="userTypeTable" class="data-table table table-hover w-100">
+        <table id="modelTable" class="data-table table table-hover w-100">
             <thead>
                 <tr>
                     <th class="text-center w-5">
                         <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                     </th>
                     <th>
-                        PositionId
+                        Id
                     </th>
                     <th>
                         Name
@@ -117,7 +117,7 @@
             order: [[1, 'asc']]
         });
 
-        $('#userTypeTable').on('click', 'tbody tr', function (event) {
+        $('#modelTable').on('click', 'tbody tr', function (event) {
             // Check if the clicked element is not the checkbox
             if (!$(event.target).is(':checkbox')) {
                 var documentTypeId = $(this).data('documentType-id');
@@ -130,13 +130,13 @@
             $('.row-checkbox').prop('checked', isChecked);
         });
 
-        $('#userTypeTable').on('change', '.column-checkbox', function () {
+        $('#modelTable').on('change', '.column-checkbox', function () {
             var isChecked = $(this).prop('checked');
             $('.row-checkbox').prop('checked', isChecked);
 
         });
 
-        $('#userTypeTable').on('change', '.row-checkbox', function () {
+        $('#modelTable').on('change', '.row-checkbox', function () {
             var isChecked = $(this).prop('checked');
 
             var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
@@ -144,10 +144,10 @@
 
         });
 
-        $('#userTypeTable').on('change', '.row-checkbox, .column-checkbox', function () {
+        $('#modelTable').on('change', '.row-checkbox, .column-checkbox', function () {
             var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
-            $('#btnDeleteUserType').toggleClass('d-none', !atLeastOneChecked);
-            $('#btnDeleteUserType').toggleClass('d-flex', atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-none', !atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-flex', atLeastOneChecked);
 
             if ($(this).hasClass('column-checkbox')) {
                 var isChecked = $(this).prop('checked');
@@ -187,7 +187,7 @@
         var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
         $('.column-checkbox').prop('checked', allChecked);
 
-        $('#userTypeDeleteMultipleModalContainer').load('/UserType/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
+        $('#DeleteMultipleModalContainer').load('/TransactionType/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
             $("#deleteConfirmModal").modal("show");
         });
     }
@@ -206,19 +206,19 @@
     // }
 
     function OpenCreateModal() {
-        $('#userTypeCreateModalContainer').load('/UserType/CreateModal/', function () {
+        $('#CreateModalContainer').load('/TransactionType/CreateModal/', function () {
             $("#createModal").modal("show");
         });
     }
     function OpenEditModal(id) {
-        $('#userTypeEditModalContainer').load('/UserType/EditModal/' +id, function () {
+        $('#EditModalContainer').load('/TransactionType/EditModal/' + id, function () {
             $("#editModal").modal("show");
         });
     }
 
     function OpenDeleteModal(id) {
 
-        $('#userTypeDeleteModalContainer').load('/UserType/DeleteModal/' + id, function () {
+        $('#DeleteModalContainer').load('/TransactionType/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });

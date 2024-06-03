@@ -9,6 +9,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
 {
     public class EditUserTypeViewModel
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         [Required]

@@ -30,23 +30,38 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Name = model.Name,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt,
+                CreatedAt = model.CreatedAt
+            };
+        }
+
+        public static EditTransactionTypeViewModel ToEditTransactionTypeViewModel(this TransactionType model)
+        {
+            return new EditTransactionTypeViewModel
+            {
+                Id = model.Id,
+                Name = model.Name,
+                IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
             };
         }
-
-        public static TransactionType ToTransactionTypeModel(this TransactionTypeViewModel viewModel)
+        public static List<TransactionTypeViewModel> ToTransactionTypeListViewModel(this List<TransactionType> modelList)
         {
-            return new TransactionType
+            var viewModelList = new List<TransactionTypeViewModel>();
+            if (modelList != null)
             {
-                Name = viewModel.Name,
-                IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
-                CreatedAt = viewModel.CreatedAt,
-                UpdatedBy = viewModel.UpdatedBy,
-                UpdatedAt = viewModel.UpdatedAt
-            };
+                viewModelList = modelList.Select(x => new TransactionTypeViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    IsActive = x.IsActive,
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedBy = x.UpdatedBy,
+                    UpdatedAt = x.UpdatedAt,
+                }).ToList();
+            }
+            return viewModelList;
         }
     }
 

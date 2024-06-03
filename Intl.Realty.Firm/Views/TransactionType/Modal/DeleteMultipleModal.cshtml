@@ -1,5 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model IEnumerable<UserTypeViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
+@model IEnumerable<TransactionTypeViewModel>
 
 <partial name="~/Views/Shared/_DeleteModal.cshtml">
 
@@ -13,7 +13,7 @@
         viewModelList = JSON.parse(viewModelList);
         let parameters = { viewModelList: viewModelList };
         $.ajax({
-            url: '/UserType/DeleteMultiple/',
+            url: '/TransactionType/DeleteMultiple/',
             type: 'POST',
             data: parameters,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

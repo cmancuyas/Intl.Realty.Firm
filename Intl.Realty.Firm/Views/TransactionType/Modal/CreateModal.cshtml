@@ -1,5 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model CreateUserTypeViewModel
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
+@model CreateTransactionTypeViewModel
 
 <div class="modal modal-sheet fade  bg-body-secondary p-4 py-md-5" id="createModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -40,7 +40,7 @@
         };
         var parameters = { viewModel: viewModel };
         $.ajax({
-            url: '/UserType/Create/',
+            url: '/TransactionType/Create/',
             type: 'POST',
             data: parameters,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

@@ -1,5 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model UserTypeViewModel
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
+@model TransactionTypeViewModel
 
 <partial name="~/Views/Shared/_DeleteModal.cshtml" for="Id">
 
@@ -12,7 +12,7 @@
         let parameters = {
             id: @Model.Id };
         $.ajax({
-            url: '/UserType/Delete/' + @Model.Id,
+            url: '/TransactionType/Delete/' + @Model.Id,
             type: 'post',
             data: parameters,
             success: function (data) {

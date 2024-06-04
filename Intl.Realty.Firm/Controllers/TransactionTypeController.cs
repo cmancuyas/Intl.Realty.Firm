@@ -33,7 +33,6 @@ namespace Intl.Realty.Firm.Controllers
         public IActionResult CreateModal()
         {
             CreateTransactionTypeViewModel viewModel = new CreateTransactionTypeViewModel();
-            ViewBag.ViewModel = viewModel;
             return PartialView("~/Views/TransactionType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]

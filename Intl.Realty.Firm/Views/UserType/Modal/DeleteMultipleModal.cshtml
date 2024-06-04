@@ -9,7 +9,7 @@
     });
 
     $("#btnConfirmDelete").click(function () {
-        var viewModelList = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ViewModelIENumList))';
+        var viewModelList = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
         viewModelList = JSON.parse(viewModelList);
         let parameters = { viewModelList: viewModelList };
         $.ajax({

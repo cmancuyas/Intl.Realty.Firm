@@ -23,7 +23,7 @@
                         <label class="fw-bolder p-2" for="DocumentTypeId">
                             <span>Document Type</span>
                         </label>
-                        @Html.DropDownList("DocumentTypeDDL", ViewBag.DocumentTypeSelectListItem,
+                        @Html.DropDownList("DocumentTypeDDL", Model.DocumentTypeIEnum,
                                  "Select Document Type", new
                                  {
                                      @id = "DocumentTypeDDL",
@@ -36,7 +36,7 @@
                         <label class="fw-bolder p-2" for="TransactionTypeId">
                             <span>Transaction Type</span>
                         </label>
-                        @Html.DropDownList("TransactionTypeDDL", ViewBag.TransactionTypeSelectListItem,
+                        @Html.DropDownList("TransactionTypeDDL", Model.TransactionTypeIEnum,
                                  "Select Transaction Type", new
                                  {
                                      @id = "TransactionTypeDDL",

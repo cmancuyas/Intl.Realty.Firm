@@ -1,6 +1,9 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -36,8 +39,24 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = model.Id,
                 DocumentTypeId = model.DocumentTypeId,
                 DocumentType = model.DocumentType,
+                IsActive = model.IsActive,
                 TransactionTypeId = model.TransactionTypeId,
                 TransactionType = model.TransactionType,
+                CreatedBy = model.CreatedBy,
+                CreatedAt = model.CreatedAt,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
+    };
+        }
+        public static DocumentTypeAssignment ToDocumentTypeAssignmentModel(this CreateDocumentTypeAssignmentViewModel viewModel)
+        {
+            return new DocumentTypeAssignment
+            {
+                DocumentTypeId = viewModel.DocumentTypeId,
+                TransactionTypeId = viewModel.TransactionTypeId,
+                IsActive = viewModel.IsActive,
+                CreatedBy = viewModel.CreatedBy,
+                CreatedAt = viewModel.CreatedAt
             };
         }
         public static CreateDocumentTypeAssignmentViewModel ToCreateDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
@@ -48,13 +67,17 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 TransactionTypeId = model.TransactionTypeId
             };
         }
-        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
+        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentModel(this DocumentTypeAssignment model)
         {
             return new EditDocumentTypeAssignmentViewModel
             {
                 Id = model.Id,
                 DocumentTypeId = model.DocumentTypeId,
                 TransactionTypeId = model.TransactionTypeId,
+                IsActive = model.IsActive,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
+
             };
         }
     }

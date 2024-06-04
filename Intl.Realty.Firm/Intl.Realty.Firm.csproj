@@ -12,6 +12,11 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\DocumentTypeAssignment\Modal\CreateModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\DocumentType\Modal\CreateModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\DocumentType\Modal\DeleteModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\DocumentType\Modal\DeleteMultipleModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\DocumentType\Modal\EditModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\DocumentType\Partial\ListPartial.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
   </ItemGroup>
 
@@ -53,6 +58,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="Views\DocumentType\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Views\TransactionType\Modal\CreateModal.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -77,6 +86,26 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\DocumentTypeAssignment\Modal\CreateModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DocumentType\Modal\CreateModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DocumentType\Modal\DeleteModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DocumentType\Modal\DeleteMultipleModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DocumentType\Modal\EditModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DocumentType\Partial\ListPartial.cshtml" />
   </ItemGroup>
 
 </Project>

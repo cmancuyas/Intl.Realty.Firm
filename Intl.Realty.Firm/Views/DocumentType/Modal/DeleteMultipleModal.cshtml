@@ -1,7 +1,7 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
-@model DocumentTypeAssignmentViewModel
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
+@model IEnumerable<DocumentTypeViewModel>
 
-<partial name="~/Views/Shared/_DeleteModal.cshtml" for="Id">
+<partial name="~/Views/Shared/_DeleteModal.cshtml">
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
@@ -9,12 +9,14 @@
     });
 
     $("#btnConfirmDelete").click(function () {
-        let parameters = {
-            id: @Model.Id };
+        var viewModelList = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ViewModelIENumList))';
+        viewModelList = JSON.parse(viewModelList);
+        let parameters = { viewModelList: viewModelList };
         $.ajax({
-            url: '/DocumentTypeAssignment/Delete/' + @Model.Id,
-            type: 'post',
+            url: '/DocumentType/DeleteMultiple/',
+            type: 'POST',
             data: parameters,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
                 closeModal();
@@ -25,14 +27,15 @@
                 //     confirmButtonColor: '#14984a'
                 // });
                 window.location.reload()
-
                 // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
 
             }, 
+            
             error: function (e) {
                 console.log(e);
             }
         });
+
     });
 
     function closeModal() {
@@ -40,4 +43,5 @@
         let elem = document.querySelector('#deleteConfirmModal');
         elem.parentNode.removeChild(elem);
     }
+
 </script>

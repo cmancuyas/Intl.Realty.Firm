@@ -4,18 +4,36 @@
 <div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">Document Types Assignment</h1>
+            <h1 class="text-blue mb-0">Document Type Assignment Management</h1>
             <div class="d-flex gap-4">
-                <button id="btnDeleteDocumentTypeAssignment" class="btn btn-danger d-none align-items-center" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i data-feather="x" class="w-15px h-auto me-1"></i>Delete</button>
-                <a asp-action="Create"
-                   class="btn btn-primary d-flex align-items-center">
-                    <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
+                <button id="btnMultipleDelete"
+                        class="btn btn-danger d-none align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteConfirmModal">
+                    <i data-feather="x" class="w-15px h-auto me-1"></i>
+                    Delete
+                </button>
+                @*                 <a asp-action="Create"
+                class="btn btn-primary d-flex align-items-center">
+                <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
+                </a> *@
+
+                <a href="#"
+                   class="btn btn-primary d-flex align-items-center"
+                   type="button"
+                   data-bs-toggle="modal"
+                   onclick="OpenCreateModal()"
+                   style="text-decoration: none;">
+                    <span class="text-danger px-1 pb-1" title="create">
+                        <i data-feather="plus" class="w-15px h-auto me-1"></i>
+                        Create New
+                    </span>
                 </a>
             </div>
         </div>
     </div>
-    <form method="post" asp-action="DeleteMultiple" class="pt-4">
-        <table id="documentTypeAssignmentTable" class="data-table table table-hover w-100">
+    <form method="post" asp-action="DeleteMultiple">
+        <table id="modelTable" class="data-table table table-hover w-100">
             <thead>
                 <tr>
                     <th class="text-center w-5">
@@ -25,10 +43,13 @@
                         Id
                     </th>
                     <th>
+                        Document Type
+                    </th>
+                    <th>
                         Transaction Type
                     </th>
                     <th>
-                        Document Type
+                        Is Active?
                     </th>
 
                     <th>
@@ -45,22 +66,28 @@
                 {
                     count++;
                     <tr data-documentType-id="@item.Id">
-                        <td class="text-center align-middle"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
-                        <td class="align-middle">
+                        <td class="text-center"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
+                        <td>
                             @{
                                 @count.ToString()
                             }
                         </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.TransactionType.Name)
-                        </td>
-                        <td class="align-middle">
+                        <td>
                             @Html.DisplayFor(modelItem => @item.DocumentType.Name)
                         </td>
-
-                        <td class="align-middle">
-                            <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
-                                <span class="table-control-btn pe-3" title="edit" data-position-id="@item.Id">
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.TransactionType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => @item.IsActive)
+                        </td>
+                        <td>
+                            <a href="#"
+                               type="button"
+                               data-bs-toggle="modal"
+                               onclick="OpenEditModal(@item.Id)"
+                               style="text-decoration: none;">
+                                <span class="text-danger px-1 pb-1" title="Edit" data-position-id="@item.Id">
                                     <i data-feather="edit" class="data-feather-20"></i>
                                     Edit
                                 </span>
@@ -71,7 +98,7 @@
                             @* data-bs-target="#deletePositionModal" *@
                                onclick="OpenDeleteModal(@item.Id)"
                                style="text-decoration: none;">
-                                <span class="table-control-btn icon-red" title="delete" data-position-id="@item.Id">
+                                <span class="text-danger px-1 pb-1" title="delete" data-position-id="@item.Id">
                                     <i data-feather="trash-2" class="data-feather-20"></i>
                                     Delete
                                 </span>
@@ -96,7 +123,7 @@
             order: [[1, 'asc']]
         });
 
-        $('#documentTypeAssignmentTable').on('click', 'tbody tr', function (event) {
+        $('#modelTable').on('click', 'tbody tr', function (event) {
             // Check if the clicked element is not the checkbox
             if (!$(event.target).is(':checkbox')) {
                 var documentTypeId = $(this).data('documentType-id');
@@ -109,13 +136,13 @@
             $('.row-checkbox').prop('checked', isChecked);
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.column-checkbox', function () {
+        $('#modelTable').on('change', '.column-checkbox', function () {
             var isChecked = $(this).prop('checked');
             $('.row-checkbox').prop('checked', isChecked);
 
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.row-checkbox', function () {
+        $('#modelTable').on('change', '.row-checkbox', function () {
             var isChecked = $(this).prop('checked');
 
             var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
@@ -123,10 +150,10 @@
 
         });
 
-        $('#documentTypeAssignmentTable').on('change', '.row-checkbox, .column-checkbox', function () {
+        $('#modelTable').on('change', '.row-checkbox, .column-checkbox', function () {
             var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
-            $('#btnDeleteDocumentTypeAssignment').toggleClass('d-none', !atLeastOneChecked);
-            $('#btnDeleteDocumentTypeAssignment').toggleClass('d-flex', atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-none', !atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-flex', atLeastOneChecked);
 
             if ($(this).hasClass('column-checkbox')) {
                 var isChecked = $(this).prop('checked');
@@ -166,7 +193,7 @@
         var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
         $('.column-checkbox').prop('checked', allChecked);
 
-        $('#documentTypeAssignmentDeleteMultipleModalContainer').load('/DocumentTypeAssignment/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
+        $('#DeleteMultipleModalContainer').load('/DocumentTypeAssignment/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
             $("#deleteConfirmModal").modal("show");
         });
     }
@@ -178,12 +205,22 @@
         return ids;
     }
 
+    function OpenCreateModal() {
+        $('#CreateModalContainer').load('/DocumentTypeAssignment/CreateModal/', function () {
+            $("#createModal").modal("show");
+        });
+    }
+    function OpenEditModal(id) {
+        $('#EditModalContainer').load('/DocumentTypeAssignment/EditModal/' + id, function () {
+            $("#editModal").modal("show");
+        });
+    }
+
     function OpenDeleteModal(id) {
 
-        $('#documentTypeAssignmentDeleteModalContainer').load('/DocumentTypeAssignment/DeleteModal/' + id, function () {
+        $('#DeleteModalContainer').load('/DocumentTypeAssignment/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });
     }
-
 </script>

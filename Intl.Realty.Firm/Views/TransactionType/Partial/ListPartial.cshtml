@@ -120,8 +120,8 @@
         $('#modelTable').on('click', 'tbody tr', function (event) {
             // Check if the clicked element is not the checkbox
             if (!$(event.target).is(':checkbox')) {
-                var documentTypeId = $(this).data('documentType-id');
-                window.location.href = '@Url.Action("Edit", "UserType")' + '?id=' + documentTypeId;
+                var transactionTypeId = $(this).data('documentType-id');
+                window.location.href = '@Url.Action("Edit", "TransactionType")' + '?id=' + transactionTypeId;
             }
         });
 

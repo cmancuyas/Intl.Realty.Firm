@@ -1,5 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
-@model DocumentTypeAssignmentViewModel
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
+@model DocumentTypeViewModel
 
 <partial name="~/Views/Shared/_DeleteModal.cshtml" for="Id">
 
@@ -9,10 +9,11 @@
     });
 
     $("#btnConfirmDelete").click(function () {
+        debugger;
         let parameters = {
             id: @Model.Id };
         $.ajax({
-            url: '/DocumentTypeAssignment/Delete/' + @Model.Id,
+            url: '/DocumentType/Delete/' + @Model.Id,
             type: 'post',
             data: parameters,
             success: function (data) {

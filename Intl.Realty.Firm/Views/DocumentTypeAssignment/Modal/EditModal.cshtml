@@ -4,17 +4,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Edit User Type</h1>
+                <h1 class="fw-bold mb-0 fs-2">Edit Document Type Assignment</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-5 pt-0">
-                <form asp-action="Edit">
+                <form class="" id="EditForm" role="form" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                    <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
                     <div class="form-group">
                         <label class="fw-bolder p-2" for="classifications">
-                            <span>Document Type</span>
+                            <span>Document Type Assignment</span>
                         </label>
 
                         <select id="DocumentTypeDDL" name="DocumentTypeDDL" class="form-control">
@@ -63,8 +63,14 @@
                         </select>
                         @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
                     </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="checkbox" class="form-check-input" id="isActive" name="isActive" placeholder="" asp-for="@Model.IsActive" />
+                        <label class="form-check-label">Is Active?</label>
+                    </div>
+
                     <div class="form-group">
-                        <input type="submit" value="Assign" class="btn btn-primary" />
+                        <button id="btnEdit" class="w-100 mb-2 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Update</button>
                     </div>
                 </form>
             </div>
@@ -78,10 +84,11 @@
     });
 
     $("#btnEdit").click(function () {
-        UpdateUserType();
+        debugger;
+        UpdateDocumentAssignment();
     });
 
-    function UpdateUserType() {
+    function UpdateDocumentAssignment() {
         var id = document.getElementById("id").value;
         var checkedValue = document.getElementById("isActive").checked;
 
@@ -90,13 +97,14 @@
         }
         var viewModel = {
             Id: id,
-            Name: document.getElementById("name").value,
+            DocumentTypeId: document.getElementById("DocumentTypeDDL").value,
+            TransactionTypeId: document.getElementById("TransactionTypeDDL").value,
             IsActive: checkedValue
         };
         var parameters = { viewModel: viewModel };
 
         $.ajax({
-            url: '/UserType/Edit/' + id,
+            url: '/DocumentTypeAssignment/Edit/' + id,
             type: 'PUT',
             data: parameters,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

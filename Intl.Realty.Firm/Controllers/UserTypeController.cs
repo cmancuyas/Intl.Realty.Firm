@@ -56,9 +56,9 @@ namespace Intl.Realty.Firm.Controllers
                 await _unitOfWork.UserType.AddAsync(model);
                 _unitOfWork.Save();
                 TempData["success"] = "UserType created successfully";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            return View();
+            return RedirectToAction(nameof(Index), new { addSuccess = false });
 
         }
 

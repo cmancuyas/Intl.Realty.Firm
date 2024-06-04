@@ -1,21 +1,21 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model List<UserTypeViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
+@model List<DocumentTypeViewModel>
 
 <div>
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
             <h1 class="text-blue mb-0">User Types Management</h1>
             <div class="d-flex gap-4">
-                <button id="btnMultipleDelete" 
-                    class="btn btn-danger d-none align-items-center" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteConfirmModal">
+                <button id="btnMultipleDelete"
+                        class="btn btn-danger d-none align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteConfirmModal">
                     <i data-feather="x" class="w-15px h-auto me-1"></i>
                     Delete
                 </button>
-@*                 <a asp-action="Create"
-                   class="btn btn-primary d-flex align-items-center">
-                    <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
+                @*                 <a asp-action="Create"
+                class="btn btn-primary d-flex align-items-center">
+                <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
                 </a> *@
 
                 <a href="#"
@@ -66,7 +66,7 @@
                         <td class="text-center"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
                         <td>
                             @{
-                                    @count.ToString()
+                                @count.ToString()
                             }
                         </td>
                         <td>
@@ -187,7 +187,7 @@
         var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
         $('.column-checkbox').prop('checked', allChecked);
 
-        $('#DeleteMultipleModalContainer').load('/UserType/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
+        $('#DeleteMultipleModalContainer').load('/DocumentType/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
             $("#deleteConfirmModal").modal("show");
         });
     }
@@ -200,19 +200,19 @@
     }
 
     function OpenCreateModal() {
-        $('#CreateModalContainer').load('/UserType/CreateModal/', function () {
+        $('#CreateModalContainer').load('/DocumentType/CreateModal/', function () {
             $("#createModal").modal("show");
         });
     }
     function OpenEditModal(id) {
-        $('#EditModalContainer').load('/UserType/EditModal/' +id, function () {
+        $('#EditModalContainer').load('/DocumentType/EditModal/' + id, function () {
             $("#editModal").modal("show");
         });
     }
 
     function OpenDeleteModal(id) {
 
-        $('#DeleteModalContainer').load('/UserType/DeleteModal/' + id, function () {
+        $('#DeleteModalContainer').load('/DocumentType/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });

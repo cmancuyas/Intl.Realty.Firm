@@ -3,6 +3,9 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
+using System.Linq;
+using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -14,108 +17,120 @@ namespace Intl.Realty.Firm.Controllers
             _unitOfWork = unitOfWork;
         }
         public async Task<IActionResult> Index()
-        {   
-            List<DocumentType> documentTypeList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
-
-            List<DocumentTypeViewModel> documentTypeViewModel = documentTypeList.Select(x => x.ToDocumentTypeViewModel()).ToList();
-
-            return View(documentTypeViewModel);
-        }
-
-        public IActionResult Create()
         {
-            return View();
+            List<DocumentType> modelList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
+
+            List<DocumentTypeViewModel> viewModelList = modelList.Select(x => x.ToDocumentTypeViewModel()).ToList();
+
+            return View(viewModelList);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ListPartialView()
+        {
+            var modelList = await _unitOfWork.DocumentType.GetAllAsync();
+
+            var viewModel = modelList.ToDocumentTypeListViewModel();
+
+            return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
+        }
+        public IActionResult CreateModal()
+        {
+            CreateDocumentTypeViewModel viewModel = new CreateDocumentTypeViewModel();
+            ViewBag.ViewModel = viewModel;
+            return PartialView("~/Views/DocumentType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(DocumentType obj)
+        public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
-            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x=>x.Name == obj.Name);
+            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
             if (checkIfExists != null)
             {
-                ModelState.AddModelError("name", "Document Type already exists");
+                ModelState.AddModelError("name", "User Type already exists");
             }
 
-            obj.CreatedBy = 1;
-            obj.IsActive = true;
-            obj.CreatedAt = DateTime.UtcNow;
+            viewModel.CreatedBy = 1;
+            viewModel.IsActive = true;
+            viewModel.CreatedAt = DateTime.UtcNow;
+
+            var model = viewModel.ToDocumentTypeModel();
 
             if (ModelState.IsValid)
             {
-                await _unitOfWork.DocumentType.AddAsync(obj);
+                await _unitOfWork.DocumentType.AddAsync(model);
                 _unitOfWork.Save();
-                TempData["success"] = "DocumentType created successfully";
-                return RedirectToAction("Index");
+                TempData["success"] = "Document Type created successfully";
+                return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            return View();
+            return RedirectToAction(nameof(Index), new { addSuccess = false });
 
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditModal(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
+            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            var documentTypeViewModel = documentTypeFromDb.ToDocumentTypeViewModel();
+            model.UpdatedBy = 1;
+            model.UpdatedAt = DateTime.UtcNow;
 
-            documentTypeViewModel.UpdatedBy = 1;
-            documentTypeViewModel.UpdatedAt = DateTime.UtcNow;
-
-            if (documentTypeViewModel == null)
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(documentTypeViewModel);
+
+            EditDocumentTypeViewModel viewModel = model.ToEditDocumentTypeViewModel();
+
+            return PartialView("~/Views/DocumentType/Modal/EditModal.cshtml", viewModel);
         }
-        [HttpPost]
-        public async Task<IActionResult> Edit(DocumentType model)
+
+        [HttpPut("DocumentType/Edit/{id:int}")]
+
+        public async Task<IActionResult> Edit(EditDocumentTypeViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == model.Id);
-                model.CreatedBy = documentTypeFromDb.CreatedBy;
-                model.CreatedAt = documentTypeFromDb.CreatedAt;
-                model.UpdatedBy = 1;
-                model.UpdatedAt = DateTime.UtcNow;
 
-                await _unitOfWork.DocumentType.UpdateAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "DocumentType updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == viewModel.Id);
 
+            model.IsActive = viewModel.IsActive;
+            model.Name = viewModel.Name;
+            model.UpdatedBy = 1;
+            model.UpdatedAt = DateTime.UtcNow;
+
+            await _unitOfWork.DocumentType.UpdateAsync(model);
+            _unitOfWork.Save();
+            TempData["success"] = "Document Type updated successfully";
+            return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> DeleteModal(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            DocumentType? documentTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
+            DocumentType? modelFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            var documentTypeViewModel = documentTypeFromDb.ToDocumentTypeViewModel();
+            var viewModel = modelFromDb.ToDocumentTypeViewModel();
 
-            if (documentTypeViewModel == null)
+            if (viewModel == null)
             {
                 return NotFound();
             }
-            return View(documentTypeViewModel);
+            return PartialView("~/Views/DocumentType/Modal/DeleteModal.cshtml", viewModel);
         }
-
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
-            DocumentType? obj = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
+            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            if (obj == null)
+            if (model == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.DocumentType.RemoveAsync(obj);
+            await _unitOfWork.DocumentType.RemoveAsync(model);
             _unitOfWork.Save();
             TempData["success"] = "Document Type deleted successfully";
             return RedirectToAction("Index");

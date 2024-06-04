@@ -21,27 +21,39 @@ namespace Intl.Realty.Firm.Controllers
 
             return View(viewModelList);
         }
-
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> ListPartialView()
         {
-            return View();
+            var modelList = await _unitOfWork.TransactionType.GetAllAsync();
+
+            var viewModel = modelList.ToTransactionTypeListViewModel();
+
+            return PartialView("~/Views/TransactionType/Partial/ListPartial.cshtml", viewModel);
+        }
+        public IActionResult CreateModal()
+        {
+            CreateTransactionTypeViewModel viewModel = new CreateTransactionTypeViewModel();
+            ViewBag.ViewModel = viewModel;
+            return PartialView("~/Views/TransactionType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(TransactionType obj)
+        public async Task<IActionResult> Create(CreateTransactionTypeViewModel viewModel)
         {
-            var checkIfExists = await _unitOfWork.TransactionType.GetAsync(x => x.Name == obj.Name);
+            var checkIfExists = await _unitOfWork.TransactionType.GetAsync(x => x.Name == viewModel.Name);
             if (checkIfExists != null)
             {
-                ModelState.AddModelError("name", "Transaction Type already exists");
+                ModelState.AddModelError("name", "User Type already exists");
             }
 
-            obj.CreatedBy = 1;
-            obj.IsActive = true;
-            obj.CreatedAt = DateTime.UtcNow;
+            viewModel.CreatedBy = 1;
+            viewModel.IsActive = true;
+            viewModel.CreatedAt = DateTime.UtcNow;
+
+            var model = viewModel.ToTransactionTypeModel();
 
             if (ModelState.IsValid)
             {
-                await _unitOfWork.TransactionType.AddAsync(obj);
+                await _unitOfWork.TransactionType.AddAsync(model);
                 _unitOfWork.Save();
                 TempData["success"] = "TransactionType created successfully";
                 return RedirectToAction("Index");
@@ -50,121 +62,75 @@ namespace Intl.Realty.Firm.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditModal(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
+            TransactionType? model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
-            transactionTypeFromDb.UpdatedBy = 1;
-            transactionTypeFromDb.UpdatedAt = DateTime.UtcNow;
+            model.UpdatedBy = 1;
+            model.UpdatedAt = DateTime.UtcNow;
 
-            if (transactionTypeFromDb == null)
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(transactionTypeFromDb);
+
+            EditTransactionTypeViewModel viewModel = model.ToEditTransactionTypeModel();
+
+            return PartialView("~/Views/TransactionType/Modal/EditModal.cshtml", viewModel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(TransactionType model)
+
+        [HttpPut("TransactionType/Edit/{id:int}")]
+
+        public async Task<IActionResult> Edit(EditTransactionTypeViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                TransactionType? transactionTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == model.Id);
-                model.CreatedBy = transactionTypeFromDb.CreatedBy;
-                model.CreatedAt = transactionTypeFromDb.CreatedAt;
-                model.UpdatedBy = 1;
-                model.UpdatedAt = DateTime.UtcNow;
 
-                await _unitOfWork.TransactionType.UpdateAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "TransactionType updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+            TransactionType? model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == viewModel.Id);
 
+            model.IsActive = viewModel.IsActive;
+            model.Name = viewModel.Name;
+            model.UpdatedBy = 1;
+            model.UpdatedAt = DateTime.UtcNow;
+
+            await _unitOfWork.TransactionType.UpdateAsync(model);
+            _unitOfWork.Save();
+            TempData["success"] = "TransactionType updated successfully";
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteModal(int id)
+        public async Task<IActionResult> DeleteModal(int? id)
         {
-            var model = await _unitOfWork.TransactionType.GetAsync(x=>x.Id == id);
-            if (model == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
+            TransactionType? userTypeFromDb = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
-            var editTransactionTypeViewModel = model.ToEditTransactionTypeViewModel();
+            var viewModel = userTypeFromDb.ToTransactionTypeViewModel();
 
-            return PartialView("~/Views/TransactionType/Modal/DeleteModal.cshtml", editTransactionTypeViewModel);
-        }
-
-        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
-        {
-            List<TransactionType> modelList = new List<TransactionType>();
-            foreach (var id in ids)
-            {
-                var model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
-                modelList.Add(model);
-            }
-
-            if (modelList == null)
+            if (viewModel == null)
             {
                 return NotFound();
             }
-
-            var transactionTypeViewModelList = modelList.ToTransactionTypeListViewModel();
-
-            IEnumerable<TransactionTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
-
-            ViewBag.ViewModelIENumList = modelIEnum;
-
-            return PartialView("~/Views/TransactionType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+            return PartialView("~/Views/TransactionType/Modal/DeleteModal.cshtml", viewModel);
         }
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> Delete(int? id)
         {
+            TransactionType? obj = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
 
-            var model = await _unitOfWork.TransactionType.GetAsync(u => u.Id == id);
-            if (model == null)
+            if (obj == null)
             {
                 return NotFound();
             }
-
-            await _unitOfWork.TransactionType.RemoveAsync(model);
-
-            return View("Index");
-
-        }
-
-        public async Task<IActionResult> DeleteMultiple(IEnumerable<TransactionTypeViewModel> viewModelList)
-        {
-            if (viewModelList == null || !viewModelList.Any())
-            {
-                return PartialView("~/Views/TransactionType/Partial/TransactionTypeListPartial.cshtml", viewModelList);
-            }
-
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var position = await _unitOfWork.TransactionType.GetAllAsync();
-            var modelList = position.Where(o => ids.Contains(o.Id)).ToList();
-
-            if (modelList != null)
-            {
-                try
-                {
-                    await _unitOfWork.TransactionType.RemoveRangeAsync(modelList);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-
-            }
-
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            await _unitOfWork.TransactionType.RemoveAsync(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "TransactionType deleted successfully";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -24,7 +24,7 @@
                    data-bs-toggle="modal"
                    onclick="OpenCreateModal()"
                    style="text-decoration: none;">
-                    <span class="text-danger px-1 pb-1" title="create">
+                    <span class="px-1 pb-1" title="create">
                         <i data-feather="plus" class="w-15px h-auto me-1"></i>
                         Create New
                     </span>
@@ -33,23 +33,23 @@
         </div>
     </div>
     <form method="post" asp-action="DeleteMultiple">
-        <table id="modelTable" class="data-table table table-hover w-100">
+        <table id="modelTable" class="data-table table-striped table table-hover mt-4 w-100">
             <thead>
                 <tr>
-                    <th class="text-center w-5">
+                    <th class="text-center align-middle w-5">
                         <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                     </th>
-                    <th>
-                        Id
+                    <th class="align-middle">
+                        ID
                     </th>
-                    <th>
+                    <th class="align-middle">
                         Name
                     </th>
-                    <th>
+                    <th class="align-middle">
                         Is Active?
                     </th>
 
-                    <th>
+                    <th class="align-middle">
                         Action
                     </th>
                 </tr>
@@ -63,25 +63,25 @@
                 {
                     count++;
                     <tr data-documentType-id="@item.Id">
-                        <td class="text-center"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
+                        <td class="text-center align-middle"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
                         <td>
                             @{
                                 @count.ToString()
                             }
                         </td>
-                        <td>
+                        <td class="align-middle">
                             @Html.DisplayFor(modelItem => @item.Name)
                         </td>
-                        <td>
+                        <td class="align-middle">
                             @Html.DisplayFor(modelItem => @item.IsActive)
                         </td>
-                        <td>
+                        <td class="align-middle">
                             <a href="#"
                                type="button"
                                data-bs-toggle="modal"
                                onclick="OpenEditModal(@item.Id)"
                                style="text-decoration: none;">
-                                <span class="text-danger px-1 pb-1" title="Edit" data-position-id="@item.Id">
+                                <span class="px-1 pb-1 icon-green" title="Edit" data-position-id="@item.Id">
                                     <i data-feather="edit" class="data-feather-20"></i>
                                     Edit
                                 </span>
@@ -92,7 +92,7 @@
                             @* data-bs-target="#deletePositionModal" *@
                                onclick="OpenDeleteModal(@item.Id)"
                                style="text-decoration: none;">
-                                <span class="text-danger px-1 pb-1" title="delete" data-position-id="@item.Id">
+                                <span class="px-1 pb-1 icon-red" title="delete" data-position-id="@item.Id">
                                     <i data-feather="trash-2" class="data-feather-20"></i>
                                     Delete
                                 </span>

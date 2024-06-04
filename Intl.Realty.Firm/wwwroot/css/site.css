@@ -80,6 +80,17 @@ html {
 .right-part {
     background: #EEE;
 }
+select {
+    min-height: 58px !important;
+}
+button {
+    opacity: 0.75 !important;
+}
+button:focus,
+button:focus-visible,
+button:focus-within {
+    box-shadow: none !important;
+}
 
 button#password-toggle {
     border: 0;
@@ -424,14 +435,23 @@ aside {
 .icon-green:hover {
     color: green !important;
 }
-
+.form-control {
+    border-color: #273c55 !important;
+}
 /* Tables */
-
 .table-control-btn {
     color: #273c55;
     font-weight: 500;
 }
-    .table-control-btn svg {
-        width: 16px;
-        margin-top: -5px;
-    }
+.table-control-btn svg {
+    width: 16px;
+    margin-top: -5px;
+}
+.data-table td {
+    height: 50px !important;
+}
+
+/* Transaction Type */
+#ListPartialContainer .data-table tr:last-child {
+    border-color: #EEE;
+}

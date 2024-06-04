@@ -36,7 +36,6 @@ namespace Intl.Realty.Firm.Controllers
         public IActionResult CreateModal()
         {
             CreateDocumentTypeViewModel viewModel = new CreateDocumentTypeViewModel();
-            ViewBag.ViewModel = viewModel;
             return PartialView("~/Views/DocumentType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]

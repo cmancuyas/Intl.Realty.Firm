@@ -38,9 +38,9 @@ namespace Intl.Realty.Firm.Controllers
             var transactionTypeList = transactionTypeIEnum.FromIEnumToTransactionTypeList();
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
             var documentTypeList = documentTypeIEnum.FromIEnumToDocumentTypeList();
-            ViewBag.TransactionTypeSelectListItem = SelectListConverter.CreateSelectList(transactionTypeList, x => x.Id, x => x.Name);
-            ViewBag.DocumentTypeSelectListItem = SelectListConverter.CreateSelectList(documentTypeList, x => x.Id, x => x.Name);
-            ViewBag.ViewModel = viewModel;
+            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeList, x => x.Id, x => x.Name);
+            viewModel.DocumentTypeIEnum = SelectListConverter.CreateSelectList(documentTypeList, x => x.Id, x => x.Name);
+
             return PartialView("~/Views/DocumentTypeAssignment/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]

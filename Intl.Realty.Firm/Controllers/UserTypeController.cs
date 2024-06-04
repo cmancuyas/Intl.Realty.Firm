@@ -33,7 +33,6 @@ namespace Intl.Realty.Firm.Controllers
         public IActionResult CreateModal()
         {
             CreateUserTypeViewModel viewModel= new CreateUserTypeViewModel();
-            ViewBag.ViewModel = viewModel;
             return PartialView("~/Views/UserType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
@@ -58,7 +57,9 @@ namespace Intl.Realty.Firm.Controllers
                 TempData["success"] = "UserType created successfully";
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            return RedirectToAction(nameof(Index), new { addSuccess = false });
+            //return RedirectToAction(nameof(Index), new { addSuccess = false });
+
+            return View("Index");
 
         }
 

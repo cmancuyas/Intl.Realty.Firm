@@ -18,20 +18,29 @@ namespace Intl.Realty.Firm.Controllers
         }
         public async Task<IActionResult> Index()
         {
+
             List<DocumentType> modelList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
 
             List<DocumentTypeViewModel> viewModelList = modelList.Select(x => x.ToDocumentTypeViewModel()).ToList();
 
             return View(viewModelList);
+
         }
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.DocumentType.GetAllAsync();
+            if (ModelState.IsValid)
+            {
+                var modelList = await _unitOfWork.DocumentType.GetAllAsync();
 
-            var viewModel = modelList.ToDocumentTypeListViewModel();
+                var viewModel = modelList.ToDocumentTypeListViewModel();
 
-            return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
+                return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         public IActionResult CreateModal()
         {
@@ -41,27 +50,27 @@ namespace Intl.Realty.Firm.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
-            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
-            if (checkIfExists != null)
-            {
-                ModelState.AddModelError("name", "User Type already exists");
-            }
-
-            viewModel.CreatedBy = 1;
-            viewModel.IsActive = true;
-            viewModel.CreatedAt = DateTime.UtcNow;
-
-            var model = viewModel.ToDocumentTypeModel();
-
             if (ModelState.IsValid)
             {
+                var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
+                if (checkIfExists != null)
+                {
+                    ModelState.AddModelError("name", "User Type already exists");
+                }
+
+                viewModel.CreatedBy = 1;
+                viewModel.IsActive = true;
+                viewModel.CreatedAt = DateTime.UtcNow;
+
+                var model = viewModel.ToDocumentTypeModel();
+
+
                 await _unitOfWork.DocumentType.AddAsync(model);
                 _unitOfWork.Save();
                 TempData["success"] = "Document Type created successfully";
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
             return RedirectToAction(nameof(Index), new { addSuccess = false });
-
         }
 
         public async Task<IActionResult> EditModal(int? id)

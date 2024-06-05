@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models.ViewModel
+namespace Intl.Realty.Firm.Models.Models
 {
-    public class TransactionTypeViewModel : BaseModel
+    public class Province : BaseModel
     {
         public int Id { get; set; }
-        public string Description { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }

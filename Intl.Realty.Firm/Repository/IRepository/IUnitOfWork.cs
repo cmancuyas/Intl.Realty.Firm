@@ -7,6 +7,8 @@
         IDocumentTypeRepository DocumentType { get; }
         IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; }
         IUserTypeRepository UserType { get; }
+        IDepartmentRepository Department { get; }
+        IProvinceRepository Province { get; }
         void Save();
     }
 }

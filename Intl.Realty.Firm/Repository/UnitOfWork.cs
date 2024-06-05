@@ -11,6 +11,8 @@ namespace Intl.Realty.Firm.Repository
         public IDocumentTypeRepository DocumentType { get; private set; }
         public IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; private set; }
         public IUserTypeRepository UserType { get; private set; }
+        public IDepartmentRepository Department { get; private set; }
+        public IProvinceRepository Province { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -19,6 +21,8 @@ namespace Intl.Realty.Firm.Repository
             DocumentType = new DocumentTypeRepository(_db);
             DocumentTypeAssignment = new DocumentTypeAssignmentRepository(_db);
             UserType = new UserTypeRepository(_db);
+            Department = new DepartmentRepository(_db);
+            Province = new ProvinceRepository(_db);
         }
 
         public void Save()

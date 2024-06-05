@@ -7,7 +7,7 @@
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
                 <h1 class="fw-bold mb-0 fs-2">Create New Document Type Assignment</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button id="cancelBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-5 pt-0 mt-4">
@@ -59,7 +59,7 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-        CloseModal();
+        location.reload();
     });
 
     $("#btnCreate").click(function () {

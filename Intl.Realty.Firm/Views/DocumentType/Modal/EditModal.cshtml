@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-        closeModal();
+        location.reload();
     });
 
     $("#btnEdit").click(function () {
@@ -43,7 +43,7 @@
 
     function UpdateTransactionType() {
         var id = document.getElementById("id").value;
-        var checkedValue = document.getElementById("isActive").checked;
+        var checkedValue = document.getElementById("flexCheckChecked").checked;
 
         if (!checkedValue) {
             checkedValue = false;

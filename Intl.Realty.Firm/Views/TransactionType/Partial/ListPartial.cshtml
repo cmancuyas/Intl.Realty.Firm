@@ -51,7 +51,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @{
                     var count = 0;
                 }
@@ -62,7 +61,7 @@
                         <td class="text-center align-middle"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
                         <td class="align-middle">
                             @{
-                                    @count.ToString()
+                                @count.ToString()
                             }
                         </td>
                         <td class="align-middle">
@@ -85,7 +84,6 @@
                             <a href="#"
                                type="button"
                                data-bs-toggle="modal"
-                            @* data-bs-target="#deletePositionModal" *@
                                onclick="OpenDeleteModal(@item.Id)"
                                style="text-decoration: none;">
                                 <span class="px-1 pb-1 icon-red" title="delete" data-position-id="@item.Id">
@@ -96,16 +94,88 @@
                         </td>
                     </tr>
                 }
-
-
             </tbody>
         </table>
 
+        <nav class="table-pagination mt-5">
+            <ul class="pagination justify-content-center" id="pagination">
+                <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
+            </ul>
+        </nav>
     </form>
 </div>
 
 <script>
     $(document).ready(function () {
+        // PAGINATION
+        const rowsPerPage = 3; // Number of rows per page
+        const $table = $('#modelTable');
+        const $tbody = $table.find('tbody');
+        const $rows = $tbody.find('tr');
+        const totalRows = $rows.length;
+        let currentPage = 1;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        function displayRows() {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            $rows.each(function (index) {
+                $(this).toggle(index >= start && index < end);
+            });
+        }
+
+        function updatePaginationButtons() {
+            $('#prevPage').parent().toggleClass('disabled', currentPage === 1 || totalPages === 0);
+            $('#nextPage').parent().toggleClass('disabled', currentPage === totalPages || totalPages === 0);
+
+            $('#pagination li.page-number').remove();
+            for (let i = 1; i <= totalPages; i++) {
+                const $li = $('<li class="page-item page-number"><a class="page-link" href="#">' + i + '</a></li>');
+                $li.insertBefore($('#nextPage').parent());
+            }
+
+            $('#pagination li.page-number').removeClass('active').eq(currentPage - 1).addClass('active');
+        }
+
+        $(document).on('click', '#pagination li.page-number', function (event) {
+            event.preventDefault();
+            currentPage = parseInt($(this).text());
+            displayRows();
+            updatePaginationButtons();
+        });
+
+        $('#prevPage').click(function (event) {
+            event.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                displayRows();
+                updatePaginationButtons();
+            }
+        });
+
+        $('#nextPage').click(function (event) {
+            event.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayRows();
+                updatePaginationButtons();
+            }
+        });
+
+        // Initial display
+        displayRows();
+        updatePaginationButtons();
+
+        // Disable buttons if no page is created
+        if (totalPages === 0) {
+            $('#prevPage').parent().addClass('disabled');
+            $('#nextPage').parent().addClass('disabled');
+        }
+        // END PAGINATION
+
+
+
         $('.data-table').DataTable({
             columnDefs: [
                 { targets: [0], orderable: false }

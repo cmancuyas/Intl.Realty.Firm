@@ -108,7 +108,7 @@
             </tbody>
         </table>
 
-        <nav class="table-pagination mt-5">
+        <nav class="table-pagination mt-5" id="paginationNav" style="display: none;">
             <ul class="pagination justify-content-center" id="pagination">
                 <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
                 <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
@@ -120,7 +120,7 @@
 <script>
     $(document).ready(function () {
         // PAGINATION
-        const rowsPerPage = 1; // Number of rows per page
+        const rowsPerPage = 2; // Number of rows per page
         const $table = $('#modelTable');
         const $tbody = $table.find('tbody');
         const $rows = $tbody.find('tr');
@@ -178,10 +178,15 @@
         displayRows();
         updatePaginationButtons();
 
-        // Disable buttons if no page is created
-        if (totalPages === 0) {
-            $('#prevPage').parent().addClass('disabled');
-            $('#nextPage').parent().addClass('disabled');
+        // Show pagination if needed
+        if (totalPages > 1) {
+            $('#paginationNav').show();
+            $('#prevPageItem').show();
+            $('#nextPageItem').show();
+        } else {
+            $('#paginationNav').hide();
+            $('#prevPageItem').hide();
+            $('#nextPageItem').hide();
         }
         // END PAGINATION
 

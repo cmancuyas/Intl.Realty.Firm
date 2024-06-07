@@ -9,6 +9,10 @@
         IUserTypeRepository UserType { get; }
         IDepartmentRepository Department { get; }
         IProvinceRepository Province { get; }
+        ISaleListingRepository SaleListing { get; }
+        ISaleCoopRepository SaleCoop { get; }
+        ILeaseListingRepository LeaseListing { get; }
+        ILeaseCoopRepository LeaseCoop { get; }
         void Save();
     }
 }

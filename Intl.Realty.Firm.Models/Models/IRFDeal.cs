@@ -10,5 +10,7 @@ namespace Intl.Realty.Firm.Models.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int MediaId { get; set; }
+        public int TransactionTypeId { get; set; }
     }
 }

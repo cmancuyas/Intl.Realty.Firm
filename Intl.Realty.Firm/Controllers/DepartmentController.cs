@@ -60,9 +60,7 @@ namespace Intl.Realty.Firm.Controllers
             //return RedirectToAction(nameof(Index), new { addSuccess = false });
 
             return View("Index");
-
         }
-
         public async Task<IActionResult> EditModal(int? id)
         {
             if (id == null || id == 0)

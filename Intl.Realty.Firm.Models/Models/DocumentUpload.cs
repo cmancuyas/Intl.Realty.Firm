@@ -13,5 +13,7 @@ namespace Intl.Realty.Firm.Models.Models
         public DocumentType? DocumentType { get; set; }
         public int TransactionTypeId { get; set; }
         public TransactionType? TransactionType { get; set; }
+        public int DocumentTypeAssignmentId { get; set; }
+        public DocumentTypeAssignment? DocumentTypeAssignment { get; set; }
     }
 }

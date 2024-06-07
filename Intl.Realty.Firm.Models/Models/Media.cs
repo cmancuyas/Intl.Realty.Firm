@@ -11,6 +11,8 @@ namespace Intl.Realty.Firm.Models.Models
     {
         [Key]
         public int Id { get; set; }
+        public int TransactionTypeId { get; set; }
+        public int DocumentTypeId { get; set; }
         public List<DocumentTypeAssignment> DocumentTypeAssignments { get; set; } = new List<DocumentTypeAssignment>();
         public int IRFDealId { get; set; }
         public string FileName { get; set; } = string.Empty;

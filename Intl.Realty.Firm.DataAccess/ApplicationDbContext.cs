@@ -23,5 +23,9 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
         public DbSet<IRFDeal> IRFDeals { get; set; }
+        public DbSet<SaleListing> SaleListings { get; set; }
+        public DbSet<SaleCoop> SaleCoops { get; set; }
+        public DbSet<LeaseListing> LeaseListings { get; set; }
+        public DbSet<LeaseCoop> LeaseCoops { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models
 {
-    public class SaleListing : BaseModel
+    public class LeaseCoop : BaseModel
     {
         public int Id { get; set; }
         public int TransactionTypeId { get; set; }

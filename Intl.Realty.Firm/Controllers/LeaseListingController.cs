@@ -1,10 +1,8 @@
-﻿
-using Intl.Realty.Firm.Models.ViewModel;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Intl.Realty.Firm.Controllers
 {
-    public class MediaController : Controller
+    public class LeaseListingController : Controller
     {
         public IActionResult Index()
         {

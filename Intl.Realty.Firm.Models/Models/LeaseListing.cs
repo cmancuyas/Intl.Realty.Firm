@@ -29,7 +29,7 @@ namespace Intl.Realty.Firm.Models.Models
         public string SellersLawyerAddress { get; set; } = string.Empty;
         public string SellersPhoneNumber { get; set; } = string.Empty;
         public string BuyersLawyer { get; set; } = string.Empty;
-        public string BuyerssLawyerAddress { get; set; } = string.Empty;
+        public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
     }
 }

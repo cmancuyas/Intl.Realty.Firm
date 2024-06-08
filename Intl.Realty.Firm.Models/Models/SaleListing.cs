@@ -10,6 +10,9 @@ namespace Intl.Realty.Firm.Models.Models
     {
         public int Id { get; set; }
         public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
+        public int DocumentTypeAssignmentId { get; set; }
+        public int DocumentTypeAssignment { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
         public decimal FinalSalePrice { get; set; }
         public DateTime FinalClosingDate { get; set; }
@@ -29,7 +32,7 @@ namespace Intl.Realty.Firm.Models.Models
         public string SellersLawyerAddress { get; set; } = string.Empty;
         public string SellersPhoneNumber { get; set; } = string.Empty;
         public string BuyersLawyer { get; set; } = string.Empty;
-        public string BuyerssLawyerAddress { get; set; } = string.Empty;
+        public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
     }
 }

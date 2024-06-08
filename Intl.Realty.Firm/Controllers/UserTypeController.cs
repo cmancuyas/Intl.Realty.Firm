@@ -17,7 +17,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             List<UserType> modelList = await _unitOfWork.UserType.GetAllAsync() as List<UserType> ?? throw new ArgumentException();
 
-            List<UserTypeViewModel> viewModelList = modelList.Select(x => x.ToUserTypeViewModel()).ToList();
+            List<SaleListingViewModel> viewModelList = modelList.Select(x => x.ToUserTypeViewModel()).ToList();
 
             return View(viewModelList);
         }
@@ -32,11 +32,11 @@ namespace Intl.Realty.Firm.Controllers
         }
         public IActionResult CreateModal()
         {
-            CreateUserTypeViewModel viewModel= new CreateUserTypeViewModel();
+            CreateSaleListingViewModel viewModel= new CreateSaleListingViewModel();
             return PartialView("~/Views/UserType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserTypeViewModel viewModel)
+        public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
         {
             var checkIfExists = await _unitOfWork.UserType.GetAsync(x => x.Name == viewModel.Name);
             if (checkIfExists != null)

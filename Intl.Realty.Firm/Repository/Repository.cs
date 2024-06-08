@@ -23,7 +23,6 @@ namespace Intl.Realty.Firm.Repository
             _context.Add(entity);
             await _context.SaveChangesAsync();
         }
-
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;

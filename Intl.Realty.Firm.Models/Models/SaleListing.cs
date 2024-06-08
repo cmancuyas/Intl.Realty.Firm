@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,13 +15,17 @@ namespace Intl.Realty.Firm.Models.Models
         public int DocumentTypeAssignmentId { get; set; }
         public int DocumentTypeAssignment { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
-        public decimal FinalSalePrice { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public Decimal FinalSalePrice { get; set; }
         public DateTime FinalClosingDate { get; set; }
-        public decimal DepositAmount { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public Decimal DepositAmount { get; set; }
         public DateTime DepositDate { get; set;}
         public string BuyerName { get; set; } = string.Empty;
         public string LandLordName { get; set; } = string.Empty;
+        [Column(TypeName = "decimal(18,4)")]
         public Decimal ListingCommissionPercentage { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public Decimal BuyingCommissionPercentage { get; set; }
         public string ListingAgentName { get; set; } = string.Empty;
         public string ListingBrokerage { get; set; } = string.Empty;

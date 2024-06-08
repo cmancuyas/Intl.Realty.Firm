@@ -10,13 +10,13 @@ namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class UserTypeMapper
     {
-        public static List<UserTypeViewModel> ToUserTypeListViewModel(this IEnumerable<UserType> modelList)
+        public static List<SaleListingViewModel> ToUserTypeListViewModel(this IEnumerable<UserType> modelList)
         {
-            List<UserTypeViewModel> viewModelList = new List<UserTypeViewModel>();
+            List<SaleListingViewModel> viewModelList = new List<SaleListingViewModel>();
 
             if(modelList != null)
             {
-                viewModelList = modelList.Select(o => new UserTypeViewModel
+                viewModelList = modelList.Select(o => new SaleListingViewModel
                 {
                     Id = o.Id,
                     Name = o.Name,
@@ -30,9 +30,9 @@ namespace Intl.Realty.Firm.Utility.Mapper
 
             return viewModelList;
         }
-        public static UserTypeViewModel ToUserTypeViewModel(this UserType model)
+        public static SaleListingViewModel ToUserTypeViewModel(this UserType model)
         {
-            return new UserTypeViewModel
+            return new SaleListingViewModel
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -43,7 +43,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
-        public static UserType ToUserTypeModel(this CreateUserTypeViewModel viewModel)
+        public static UserType ToUserTypeModel(this CreateSaleListingViewModel viewModel)
         {
             return new UserType
             {
@@ -54,7 +54,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             };
         }
 
-        public static UserType ToUserTypeModel(this UserTypeViewModel viewModel)
+        public static UserType ToUserTypeModel(this SaleListingViewModel viewModel)
         {
             return new UserType
             {

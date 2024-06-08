@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models
-{
-    public class LeaseCoop : BaseModel
+namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM 
+{ 
+    public class CreateSaleListingViewModel
     {
+        [Key]
         public int Id { get; set; }
         public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
+        public int DocumentTypeAssignmentId { get; set; }
+        public int DocumentTypeAssignment { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
         public decimal FinalSalePrice { get; set; }
         public DateTime FinalClosingDate { get; set; }
         public decimal DepositAmount { get; set; }
-        public DateTime DepositDate { get; set;}
+        public DateTime DepositDate { get; set; }
         public string BuyerName { get; set; } = string.Empty;
         public string LandLordName { get; set; } = string.Empty;
         public Decimal ListingCommissionPercentage { get; set; }
@@ -31,5 +36,11 @@ namespace Intl.Realty.Firm.Models.Models
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
+        [Required]
+        public bool IsActive { get; set; }
+        [Required]
+        public int CreatedBy { get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; }
     }
 }

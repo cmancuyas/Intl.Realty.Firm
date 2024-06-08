@@ -1,7 +1,7 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model IEnumerable<SaleListingViewModel>
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
+@model SaleListingViewModel
 
-<partial name="~/Views/Shared/_DeleteModal.cshtml">
+<partial name="~/Views/Shared/_DeleteModal.cshtml" for="Id">
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
@@ -9,14 +9,12 @@
     });
 
     $("#btnConfirmDelete").click(function () {
-        var viewModelList = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
-        viewModelList = JSON.parse(viewModelList);
-        let parameters = { viewModelList: viewModelList };
+        let parameters = {
+            id: @Model.Id };
         $.ajax({
-            url: '/UserType/DeleteMultiple/',
-            type: 'POST',
+            url: '/SaleListing/Delete/' + @Model.Id,
+            type: 'post',
             data: parameters,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
                 closeModal();
@@ -27,15 +25,14 @@
                 //     confirmButtonColor: '#14984a'
                 // });
                 window.location.reload()
-                // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
+
+                    // $('#ListPartialContainer').load('/SaleListing/ListPartialView');
 
             }, 
-            
             error: function (e) {
                 console.log(e);
             }
         });
-
     });
 
     function closeModal() {
@@ -43,5 +40,4 @@
         let elem = document.querySelector('#deleteConfirmModal');
         elem.parentNode.removeChild(elem);
     }
-
 </script>

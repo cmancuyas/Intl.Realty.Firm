@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+
 
 namespace Intl.Realty.Firm.Models.Models
 {
@@ -11,6 +10,10 @@ namespace Intl.Realty.Firm.Models.Models
     {
         public int Id { get; set; }
         public int TransactionTypeId { get; set; }
+        [JsonIgnore]
+        public TransactionType? TransactionType { get; set; }
+        [JsonIgnore]
+        public List<DocumentTypeAssignment>? DocumentTypeAssignmentList { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
         public Decimal FinalSalePrice { get; set; }

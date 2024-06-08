@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,8 +15,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int Id { get; set; }
         public int TransactionTypeId { get; set; }
         public TransactionType? TransactionType { get; set; }
-        public int DocumentTypeAssignmentId { get; set; }
-        public int DocumentTypeAssignment { get; set; }
+        public List<DocumentTypeAssignment>? DocumentTypeAssignmentList { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
         public Decimal FinalSalePrice { get; set; }
@@ -47,5 +47,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int CreatedBy { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
+        public IEnumerable<SelectListItem>? DocumentTypeIEnum { get; set; }
     }
 }

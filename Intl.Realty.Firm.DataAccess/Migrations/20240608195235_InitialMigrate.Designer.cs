@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intl.Realty.Firm.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240608094356_addSaleListing")]
-    partial class addSaleListing
+    [Migration("20240608195235_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -109,6 +109,18 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LeaseCoopId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LeaseListingId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SaleCoopId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SaleListingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
 
@@ -121,6 +133,14 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("LeaseCoopId");
+
+                    b.HasIndex("LeaseListingId");
+
+                    b.HasIndex("SaleCoopId");
+
+                    b.HasIndex("SaleListingId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -271,6 +291,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TransactionTypeId");
+
                     b.ToTable("LeaseCoops");
                 });
 
@@ -379,6 +401,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TransactionTypeId");
 
                     b.ToTable("LeaseListings");
                 });
@@ -521,6 +545,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TransactionTypeId");
+
                     b.ToTable("SaleCoops");
                 });
 
@@ -574,12 +600,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Property<DateTime>("DepositDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("DocumentTypeAssignment")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DocumentTypeAssignmentId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("FinalClosingDate")
                         .HasColumnType("datetime2");
@@ -911,6 +931,22 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseCoop", null)
+                        .WithMany("DocumentTypeAssignmentList")
+                        .HasForeignKey("LeaseCoopId");
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseListing", null)
+                        .WithMany("DocumentTypeAssignmentList")
+                        .HasForeignKey("LeaseListingId");
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleCoop", null)
+                        .WithMany("DocumentTypeAssignmentList")
+                        .HasForeignKey("SaleCoopId");
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", null)
+                        .WithMany("DocumentTypeAssignmentList")
+                        .HasForeignKey("SaleListingId");
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
@@ -918,6 +954,39 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+
+                    b.Navigation("TransactionType");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
+                {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransactionType");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
+                {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransactionType");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
+                {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TransactionType");
                 });
@@ -982,6 +1051,26 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
+                {
+                    b.Navigation("DocumentTypeAssignmentList");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
+                {
+                    b.Navigation("DocumentTypeAssignmentList");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
+                {
+                    b.Navigation("DocumentTypeAssignmentList");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>
+                {
+                    b.Navigation("DocumentTypeAssignmentList");
                 });
 #pragma warning restore 612, 618
         }

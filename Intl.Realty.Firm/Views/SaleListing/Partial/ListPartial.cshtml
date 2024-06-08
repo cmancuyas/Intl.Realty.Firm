@@ -13,16 +13,9 @@
                     <i data-feather="x" class="w-15px h-auto me-1"></i>
                     Delete
                 </button>
-                <a href="#"
-                   class="btn btn-primary d-flex align-items-center"
-                   type="button"
-                   data-bs-toggle="modal"
-                   onclick="OpenCreateModal()"
-                   style="text-decoration: none;">
-                    <span class="px-1 pb-1" title="create">
-                        <i data-feather="plus" class="w-15px h-auto me-1"></i>
-                        Create New
-                    </span>
+                <a asp-action="Create"
+                   class="btn btn-primary d-flex align-items-center">
+                    <i data-feather="plus" class="w-15px h-auto me-1"></i>Add New
                 </a>
             </div>
         </div>
@@ -35,15 +28,17 @@
                         <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                     </th>
                     <th class="align-middle">
-                        ID
+                        Deal ID
                     </th>
                     <th class="align-middle">
                         Property Address
                     </th>
                     <th class="align-middle">
-                        Is Active?
+                        Created At
                     </th>
-
+                    <th class="align-middle">
+                        Created By
+                    </th>
                     <th class="align-middle">
                         Action
                     </th>
@@ -67,13 +62,16 @@
                             @Html.DisplayFor(modelItem => @item.PropertyAddress)
                         </td>
                         <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.IsActive)
+                            @Html.DisplayFor(modelItem => @item.CreatedAt)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => @item.CreatedBy)
                         </td>
                         <td class="align-middle">
                             <a href="#"
                                type="button"
-                               data-bs-toggle="modal"
-                               onclick="OpenEditModal(@item.Id)"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id"
                                style="text-decoration: none;">
                                 <span class="px-1 pb-1 icon-green" title="Edit" data-position-id="@item.Id">
                                     <i data-feather="edit" class="data-feather-20"></i>
@@ -269,16 +267,16 @@
         return ids;
     }
 
-    function OpenCreateModal() {
-        $('#CreateModalContainer').load('/SaleListing/CreateModal/', function () {
-            $("#createModal").modal("show");
-        });
-    }
-    function OpenEditModal(id) {
-        $('#EditModalContainer').load('/SaleListing/EditModal/' + id, function () {
-            $("#editModal").modal("show");
-        });
-    }
+    // function OpenCreateModal() {
+    //     $('#CreateModalContainer').load('/SaleListing/Create/', function () {
+    //         $("#createModal").modal("show");
+    //     });
+    // }
+    // function OpenEditModal(id) {
+    //     $('#EditModalContainer').load('/SaleListing/Edit/' + id, function () {
+    //         $("#editModal").modal("show");
+    //     });
+    // }
 
     function OpenDeleteModal(id) {
 

@@ -1,0 +1,92 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
+@using System.ComponentModel.DataAnnotations
+
+@model CreateSaleListingViewModel
+@{
+    ViewData["Title"] = "Add New SaleListing";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+
+<div>
+    <a href="@Url.Action("Index","SaleListing")" class="text-decoration-none text-blue d-flex mb-4">
+        <i data-feather="chevron-left"></i><span>Back</span>
+    </a>
+
+    <div class="row justify-content-center">
+
+        <div class="row d-flex justify-content-center m-0 mt-4">
+            <h5 class="text-secondary">Please match your uploaded file based on the checklist of requirements.<span class="s-required">*</span></h5>
+            <table class="table dataTable" id="tblApplicantFiles">
+                <thead>
+                    <tr>
+                        <th>
+                            Required Document
+                        </th>
+                        <th>
+                            Uploaded Document
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var item in Model.DocumentTypeAssignmentList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DocumentType.Name)<span class="s-required">*</span>
+                                @* <a href="#" data-fileID="@item.tbl_files_id" data-fileName="@item.filename" onclick="DocHistory(this)">@item.filename</a> *@
+                            </td>
+                            <input type="hidden" asp-for="@item.DocumentType.Id" value="@item.DocumentType.Id" />
+                            <td>
+                                <select class="form-select fileListDropDown" id="fileListDropDown_@i" data-prevVal="" data-curVal="" onchange="fileSelected(this)" asp-for="@item.DocumentType.Id" multiple required>
+                                </select>
+                            </td>
+                            @{
+                                i++;
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="col-md-8 card p-4">
+            <h1 class="text-blue mb-0">New Sale Listing</h1>
+            <hr class="my-4" />
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="PropertyAddress" class="control-label fw-bolder"></label>
+                            <input asp-for="PropertyAddress" class="form-control" />
+                            <span asp-validation-for="PropertyAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="FinalSalePrice" class="control-label fw-bolder"></label>
+                            <input asp-for="FinalSalePrice" class="form-control" />
+                            <span asp-validation-for="FinalSalePrice" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-5" />
+                <div class="form-group d-flex justify-content-center gap-4">
+                    <input type="button" value="Cancel" class="btn btn-secondary w-15" onclick="window.location.href='@Url.Action("Index", "SaleListing")'" />
+                    <input type="submit" value="Submit" class="btn btn-primary w-15" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -15,8 +16,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = o.Id,
                     TransactionTypeId = o.TransactionTypeId,
-                    DocumentTypeAssignmentId = o.DocumentTypeAssignmentId,
-                    DocumentTypeAssignment = o.DocumentTypeAssignment,
+                    DocumentTypeAssignmentList = o.DocumentTypeAssignmentList,
                     PropertyAddress = o.PropertyAddress,
                     FinalSalePrice = o.FinalSalePrice,
                     FinalClosingDate = o.FinalClosingDate,
@@ -48,8 +48,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
-                DocumentTypeAssignmentId = model.DocumentTypeAssignmentId,
-                DocumentTypeAssignment = model.DocumentTypeAssignment,
+                DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,
                 FinalClosingDate = model.FinalClosingDate,
@@ -82,8 +81,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListing
             {
                 TransactionTypeId = viewModel.TransactionTypeId,
-                DocumentTypeAssignmentId = viewModel.DocumentTypeAssignmentId,
-                DocumentTypeAssignment = viewModel.DocumentTypeAssignment,
+                DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
                 FinalClosingDate = viewModel.FinalClosingDate,
@@ -115,8 +113,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListing
             {
                 TransactionTypeId = viewModel.TransactionTypeId,
-                DocumentTypeAssignmentId = viewModel.DocumentTypeAssignmentId,
-                DocumentTypeAssignment = viewModel.DocumentTypeAssignment,
+                DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
                 FinalClosingDate = viewModel.FinalClosingDate,
@@ -150,8 +147,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
-                DocumentTypeAssignmentId = model.DocumentTypeAssignmentId,
-                DocumentTypeAssignment = model.DocumentTypeAssignment,
+                DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,
                 FinalClosingDate = model.FinalClosingDate,

@@ -13,6 +13,10 @@ namespace Intl.Realty.Firm.Repository
         public IUserTypeRepository UserType { get; private set; }
         public IDepartmentRepository Department { get; private set; }
         public IProvinceRepository Province { get; private set; }
+        public ISaleListingRepository SaleListing { get; private set; }
+        public ISaleCoopRepository SaleCoop { get; private set; }
+        public ILeaseListingRepository LeaseListing { get; private set; }
+        public ILeaseCoopRepository LeaseCoop{ get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -23,6 +27,10 @@ namespace Intl.Realty.Firm.Repository
             UserType = new UserTypeRepository(_db);
             Department = new DepartmentRepository(_db);
             Province = new ProvinceRepository(_db);
+            SaleListing = new SaleListingRepository(_db);
+            SaleCoop = new SaleCoopRepository(_db);
+            LeaseListing = new LeaseListingRepository(_db);
+            LeaseCoop = new LeaseCoopRepository(_db);
         }
 
         public void Save()

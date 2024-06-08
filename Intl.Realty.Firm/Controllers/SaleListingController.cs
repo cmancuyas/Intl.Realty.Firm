@@ -1,8 +1,8 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Repository.IRepository;
+using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -17,7 +17,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             List<SaleListing> modelList = await _unitOfWork.SaleListing.GetAllAsync() as List<SaleListing> ?? throw new ArgumentException();
 
-            List<ProvinceViewModel> viewModelList = modelList.Select(x => x.ToSaleListingViewModel()).ToList();
+            List<SaleListingViewModel> viewModelList = modelList.ToSaleListingListViewModel();
 
             return View(viewModelList);
         }

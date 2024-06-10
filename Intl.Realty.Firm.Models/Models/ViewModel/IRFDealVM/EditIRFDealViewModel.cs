@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models
+namespace Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM
 {
-    public class IRFDeal : BaseModel
+    public class EditIRFDealViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -43,5 +44,9 @@ namespace Intl.Realty.Firm.Models.Models
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
+        [Required]
+        public bool IsActive { get; set; }
+        public int? UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

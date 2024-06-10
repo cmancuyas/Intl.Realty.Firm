@@ -37,13 +37,13 @@ namespace Intl.Realty.Firm.Controllers
         public async Task<IActionResult> Create()
         {
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
-            List<DocumentTypeAssignment> documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync() as List<DocumentTypeAssignment> ?? throw new ArgumentException();
-            var documentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
             var transactionTypeList = await _unitOfWork.TransactionType.GetAllAsync();
-            
+            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync();
+            var documentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
+            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeList.ToList(), x => x.Id, x => x.Name);
             viewModel.DocumentTypeAssignmentList = documentTypeAssignmentList.ToList();
-            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(documentTypeList.ToList(), x => x.Id, x => x.Name);
-            viewModel.DocumentTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeList.ToList(), x => x.Id, x => x.Name);
+            viewModel.DocumentTypeList = documentTypeList.ToList();
+
             return View(viewModel);
         }
         [HttpPost]
@@ -52,9 +52,11 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = new SaleListing
+                string selectedTransactionTypeId = Request.Form["TransactionTypeDDL"].ToString();
+                var model = new IRFDeal
                 {
                     PropertyAddress = viewModel.PropertyAddress ?? "",
+                    TransactionTypeId = Convert.ToInt32(selectedTransactionTypeId),
                     IsActive = true,
                     CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
                     CreatedBy = 1
@@ -62,7 +64,7 @@ namespace Intl.Realty.Firm.Controllers
                     // Set other properties as needed
                 };
 
-                await _unitOfWork.SaleListing.AddAsync(model);
+                await _unitOfWork.IRFDeal.AddAsync(model);
 
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }

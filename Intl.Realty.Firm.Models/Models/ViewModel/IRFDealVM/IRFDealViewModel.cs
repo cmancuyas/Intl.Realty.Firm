@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Intl.Realty.Firm.Models.Models
+namespace Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM
 {
-    public class IRFDeal : BaseModel
+    public class IRFDealViewModel : BaseModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

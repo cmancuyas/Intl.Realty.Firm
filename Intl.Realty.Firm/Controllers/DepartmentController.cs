@@ -1,136 +1,180 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private int _userId = 1;
         public DepartmentController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<Department> modelList = await _unitOfWork.Department.GetAllAsync() as List<Department> ?? throw new ArgumentException();
-
-            List<DepartmentViewModel> viewModelList = modelList.Select(x => x.ToDepartmentViewModel()).ToList();
-
-            return View(viewModelList);
-        }
-        [HttpGet]
-        public async Task<IActionResult> ListPartialView()
-        {
-            var modelList = await _unitOfWork.Department.GetAllAsync();
-
-            var viewModel = modelList.ToDepartmentListViewModel();
-
-            return PartialView("~/Views/Department/Partial/ListPartial.cshtml", viewModel);
+            return View();
         }
         public IActionResult CreateModal()
         {
-            CreateDepartmentViewModel viewModel= new CreateDepartmentViewModel();
+            CreateDepartmentViewModel viewModel = new CreateDepartmentViewModel();
             return PartialView("~/Views/Department/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDepartmentViewModel viewModel)
         {
-            var checkIfExists = await _unitOfWork.Department.GetAsync(x => x.Name == viewModel.Name);
-            if (checkIfExists != null)
-            {
-                ModelState.AddModelError("name", "Department already exists");
-            }
-
-            viewModel.CreatedBy = 1;
-            viewModel.IsActive = true;
-            viewModel.CreatedAt = DateTime.UtcNow;
-
-            var model = viewModel.ToDepartmentModel();
-
             if (ModelState.IsValid)
             {
+                var model = new Department
+                {
+                    Name = viewModel.Name,
+                    IsActive = true,
+                    CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
+                    CreatedBy = _userId,
+
+                    // Set other properties as needed
+                };
+
                 await _unitOfWork.Department.AddAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "Department created successfully";
+
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            //return RedirectToAction(nameof(Index), new { addSuccess = false });
 
-            return View("Index");
+            return View(viewModel);
         }
+
         public async Task<IActionResult> EditModal(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Department? model = await _unitOfWork.Department.GetAsync(u => u.Id == id);
-
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
+            var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            EditDepartmentViewModel viewModel = model.ToEditDepartmentModel();
+            EditDepartmentViewModel viewModel = model.ToEditDepartmentViewModel();
+
+            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedAt = DateTime.Now;
 
             return PartialView("~/Views/Department/Modal/EditModal.cshtml", viewModel);
         }
-
-        [HttpPut("Department/Edit/{id:int}")]
-        
-        public async Task<IActionResult> Edit(EditDepartmentViewModel viewModel)
+        [HttpPut]
+        public async Task<IActionResult> Edit(int id, DepartmentViewModel viewModel)
         {
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
 
-            Department? model = await _unitOfWork.Department.GetAsync(u => u.Id == viewModel.Id);
+            if (ModelState.IsValid)
+            {
+                var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model.Name = viewModel.Name;
+                model.IsActive = viewModel.IsActive;
+                model.UpdatedBy = _userId;
+                model.UpdatedAt = DateTime.Now;
 
-            model.IsActive = viewModel.IsActive;
-            model.Name = viewModel.Name;
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
+                // Update other properties as needed
 
-            await _unitOfWork.Department.UpdateAsync(model);
-            _unitOfWork.Save();
-            TempData["success"] = "Department updated successfully";
-            return RedirectToAction("Index");
+                await _unitOfWork.Department.UpdateAsync(model);
+
+                return RedirectToAction(nameof(Index), new { editSuccess = true });
+            }
+
+            return View(viewModel);
         }
-
         [HttpGet]
-        public async Task<IActionResult> DeleteModal(int? id)
+        public async Task<IActionResult> ListPartialView()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Department? model = await _unitOfWork.Department.GetAsync(u => u.Id == id);
+            var transactionTypeList = await _unitOfWork.Department.GetAllAsync();
 
-            var viewModel = model.ToDepartmentViewModel();
+            var viewModel = transactionTypeList.ToDepartmentListViewModel();
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
-            return PartialView("~/Views/Department/Modal/DeleteModal.cshtml", viewModel);
+            return PartialView("~/Views/Department/Partial/ListPartial.cshtml", viewModel);
         }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteModal(int id)
         {
-            Department? obj = await _unitOfWork.Department.GetAsync(u => u.Id == id);
-
-            if (obj == null)
+            var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.Department.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Department deleted successfully";
-            return RedirectToAction("Index");
+
+            var editDepartmentViewModel = model.ToEditDepartmentViewModel();
+
+            return PartialView("~/Views/Department/Modal/DeleteModal.cshtml", editDepartmentViewModel);
+        }
+
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<Department> modelList = new List<Department>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
+            {
+                return NotFound();
+            }
+
+            var transactionTypeViewModelList = modelList.ToDepartmentListViewModel();
+
+            IEnumerable<DepartmentViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+
+            return PartialView("~/Views/Department/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.Department.RemoveAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DepartmentViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var tramsactonTypeList = await _unitOfWork.Department.GetAllAsync();
+            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.Department.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
-}
 
+}

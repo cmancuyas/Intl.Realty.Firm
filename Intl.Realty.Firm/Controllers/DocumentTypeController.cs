@@ -6,6 +6,7 @@ using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
 using System.Linq;
 using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -18,29 +19,20 @@ namespace Intl.Realty.Firm.Controllers
         }
         public async Task<IActionResult> Index()
         {
-
             List<DocumentType> modelList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
 
             List<DocumentTypeViewModel> viewModelList = modelList.Select(x => x.ToDocumentTypeViewModel()).ToList();
 
             return View(viewModelList);
-
         }
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            if (ModelState.IsValid)
-            {
-                var modelList = await _unitOfWork.DocumentType.GetAllAsync();
+            var modelList = await _unitOfWork.DocumentType.GetAllAsync();
 
-                var viewModel = modelList.ToDocumentTypeListViewModel();
+            var viewModel = modelList.ToDocumentTypeListViewModel();
 
-                return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
-            }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
         }
         public IActionResult CreateModal()
         {
@@ -50,27 +42,30 @@ namespace Intl.Realty.Firm.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
+
+            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
+            if (checkIfExists != null)
+            {
+                ModelState.AddModelError("name", "User Type already exists");
+            }
+
+            viewModel.CreatedBy = 1;
+            viewModel.IsActive = true;
+            viewModel.CreatedAt = DateTime.UtcNow;
+
+            var model = viewModel.ToDocumentTypeModel();
+
             if (ModelState.IsValid)
             {
-                var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
-                if (checkIfExists != null)
-                {
-                    ModelState.AddModelError("name", "User Type already exists");
-                }
-
-                viewModel.CreatedBy = 1;
-                viewModel.IsActive = true;
-                viewModel.CreatedAt = DateTime.UtcNow;
-
-                var model = viewModel.ToDocumentTypeModel();
-
-
                 await _unitOfWork.DocumentType.AddAsync(model);
                 _unitOfWork.Save();
-                TempData["success"] = "Document Type created successfully";
+                TempData["success"] = "DocumentType created successfully";
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            return RedirectToAction(nameof(Index), new { addSuccess = false });
+            //return RedirectToAction(nameof(Index), new { addSuccess = false });
+
+            return View("Index");
+
         }
 
         public async Task<IActionResult> EditModal(int? id)
@@ -89,7 +84,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            EditDocumentTypeViewModel viewModel = model.ToEditDocumentTypeViewModel();
+            EditDocumentTypeViewModel viewModel = model.ToEditDocumentTypeModel();
 
             return PartialView("~/Views/DocumentType/Modal/EditModal.cshtml", viewModel);
         }
@@ -108,7 +103,7 @@ namespace Intl.Realty.Firm.Controllers
 
             await _unitOfWork.DocumentType.UpdateAsync(model);
             _unitOfWork.Save();
-            TempData["success"] = "Document Type updated successfully";
+            TempData["success"] = "DocumentType updated successfully";
             return RedirectToAction("Index");
         }
 
@@ -119,9 +114,9 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-            DocumentType? modelFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
+            DocumentType? userTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            var viewModel = modelFromDb.ToDocumentTypeViewModel();
+            var viewModel = userTypeFromDb.ToDocumentTypeViewModel();
 
             if (viewModel == null)
             {
@@ -132,15 +127,15 @@ namespace Intl.Realty.Firm.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
-            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
+            DocumentType? obj = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            if (model == null)
+            if (obj == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.DocumentType.RemoveAsync(model);
+            await _unitOfWork.DocumentType.RemoveAsync(obj);
             _unitOfWork.Save();
-            TempData["success"] = "Document Type deleted successfully";
+            TempData["success"] = "DocumentType deleted successfully";
             return RedirectToAction("Index");
         }
     }

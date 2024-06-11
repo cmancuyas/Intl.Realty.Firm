@@ -449,8 +449,31 @@ aside {
 }
 
 /* Transaction Type */
+#ListPartialContainer .dt-search input {
+    padding: 1em;
+    min-width: 300px;
+}
 #ListPartialContainer .data-table tr:last-child {
     border-color: #EEE;
+}
+#ListPartialContainer .cta-edit svg {
+    width: 1.2em !important;
+    margin-top: -1px;
+}
+#btnMultipleDelete {
+    color: white !important;
+    font-weight: 500;
+}
+#btnMultipleDelete svg {
+    width: 1.2em !important;
+    margin-top: -1px;
+    margin-right: 5px;
+}
+#ListPartialContainer .dt-length select {
+    min-height: 40px !important;
+}
+#ListPartialContainer .dt-orderable-asc:hover, .dt-orderable-desc:hover, .dt-ordering-asc:hover {
+    outline: 0 !important;
 }
 /* Pagination */
 .table-pagination .page-item .page-link {

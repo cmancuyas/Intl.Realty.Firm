@@ -8,15 +8,15 @@
         <div class="row">
             <div class="col-md-12 d-flex justify-content-md-between align-items-center">
                 <h1 class="text-blue mb-0">Transaction Types</h1>
-                <div class="d-flex gap-4">
-                    <button type="button" id="btnMultipleDelete"
-                            class="btn btn-danger d-none align-items-center"
+                <div class="d-flex gap-2">
+                    <a id="btnMultipleDelete"
+                            class="btn btn-danger d-none align-items-center px-4"
                             data-toggle="tooltip"
                             data-bs-placement="left"
                             title="Delete"
                             onclick="OpenMultipleDeleteModal()">
-                        <i data-feather="trash-2"></i>
-                    </button>
+                        <i data-feather="trash-2"></i> Delete
+                    </a>
 
                     <a href="#"
                        class="btn btn-primary d-flex align-items-center"
@@ -33,20 +33,17 @@
             </div>
         </div>
 
-
-        <hr class="my-4" />
-
-        <div class="table-responsive">
-            <table id="modelTable" class="data-table table w-100">
+        <div class="table-responsive mt-4">
+            <table id="modelTable" class="data-table table-striped table table-hover w-100">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-center align-middle w-5" width="5%">
                             <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                         </th>
-                        <th>
+                        <th class="align-middle">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th>
+                        <th class="align-middle">
                             Action
                         </th>
                     </tr>
@@ -56,31 +53,26 @@
                     {
                         <tr>
                             <input type="hidden" name="id" id="@item.Id" />
-                            <td>
+                            <td class="text-center align-middle" width="5%">
                                 <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
                             </td>
-                            <td id="name">
+                            <td id="name" class="align-middle">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td>
- @*                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
-                                    Edit
-                                </a> *@
-
+                            <td class="align-middle">
                                 <a href="#"
-                                   class="btn btn-success d-flex align-items-center"
-                                   type="button"
+                                   class="cta-edit btn p-0 m-0"
                                    data-bs-toggle="modal"
                                    onclick="OpenEditModal(@item.Id)"
                                    style="text-decoration: none;">
-                                    <span class="px-1 pb-1" title="edit">
+                                    <i data-feather="edit" class="h-auto me-1"></i>Update
+                                    @* <span class="px-1 pb-1" title="edit">
                                         <i data-feather="edit" class="h-auto me-1"></i>
-                                    </span>
+                                    </span> *@
                                 </a>
                             </td>
                         </tr>
                     }
-
                 </tbody>
             </table>
         </div>

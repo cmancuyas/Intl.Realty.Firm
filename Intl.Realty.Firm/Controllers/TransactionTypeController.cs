@@ -175,5 +175,4 @@ namespace Intl.Realty.Firm.Controllers
             return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
-
 }

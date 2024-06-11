@@ -1,56 +1,52 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
 @model CreateDocumentTypeAssignmentViewModel
 
 <div class="modal modal-sheet fade  bg-body-secondary p-4 py-md-5" id="createModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Create New Document Type Assignment</h1>
+                <h1 class="fw-bold mb-0 fs-2">Create New DocumentTypeAssignment</h1>
                 <button id="cancelBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-5 pt-0 mt-4">
                 <form class="" id="CreateForm" role="form" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label fw-bolder">Type of Document</label>
 
-                    @*             <div class="form-group">
-                    <label asp-for="Description" class="control-label fw-bolder"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                    </div> *@
-                    <div class="form-group">
-                        <label class="fw-bolder p-0" for="DocumentTypeId">
-                            <span>Document Type</span>
-                        </label>
-                        @Html.DropDownList("DocumentTypeDDL", Model.DocumentTypeIEnum,
-                                 "Select Document Type", new
-                                 {
-                                     @id = "DocumentTypeDDL",
-                                     @class = "form-control",
-                                     @required = "required"
-                                 })
-                        @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
+                            @Html.DropDownList("DocumentTypeDDL", Model.DocumentTypeIEnum, "Select Document Type...",
+                                     new
+                                     {
+                                         @class = "form-select",
+                                         @required = "required"
+                                     })
 
-                        <p class="mb-3"><em>Please input name to create new transaction type.</em></p>
+                            @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DocumentTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                            {
+                                @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
+                            }
+                        </div>
                     </div>
-                    <div class="form-group mt-3">
-                        <label class="fw-bolder p-0" for="TransactionTypeId">
-                            <span>Transaction Type</span>
-                        </label>
-                        @Html.DropDownList("TransactionTypeDDL", Model.TransactionTypeIEnum,
-                                 "Select Transaction Type", new
-                                 {
-                                     @id = "TransactionTypeDDL",
-                                     @class = "form-control",
-                                     @required = "required"
-                                 })
-                        @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
-                        <p class="mb-5"><em>Please input name to create new transaction type.</em></p>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label fw-bolder">Type of Transaction</label>
+
+                            @Html.DropDownList("TransactionTypeDDL", Model.TransactionTypeIEnum, "Select Transaction Type...",
+                                     new
+                                     {
+                                         @class = "form-select",
+                                         @required = "required"
+                                     })
+
+                            @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.TransactionTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                            {
+                                @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
+                            }
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <button id="btnCreate" class="w-100 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Create</button>
-                    </div>
+                    <p class="mb-5"><em>Please input name to create new transaction type.</em></p>
+                    <button id="btnCreate" class="w-100 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Create</button>
                 </form>
             </div>
         </div>
@@ -68,9 +64,9 @@
     });
 
     function OpenCreateModal() {
+        var name = $('#CreateForm').find('input[name="name"]').val();
         var viewModel = {
-            DocumentTypeId : document.getElementById("DocumentTypeDDL").value,
-            TransactionTypeId: document.getElementById("TransactionTypeDDL").value,
+            Name: name,
             IsActive: true
         };
         var parameters = { viewModel: viewModel };

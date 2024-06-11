@@ -1,129 +1,98 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM
-@model List<ProvinceViewModel>
+@model IEnumerable<ProvinceViewModel>
+
 
 <div>
-    <div class="row">
-        <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">Provinces Management</h1>
-            <div class="d-flex gap-4">
-                <button id="btnMultipleDelete" 
-                    class="btn btn-danger d-none align-items-center" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteConfirmModal">
-                    <i data-feather="x" class="w-15px h-auto me-1"></i>
-                    Delete
-                </button>
-@*                 <a asp-action="Create"
-                   class="btn btn-primary d-flex align-items-center">
-                    <i data-feather="plus" class="w-15px h-auto me-1"></i>Create New
-                </a> *@
+    <form id="ListFormId" method="post">
 
-                <a href="#"
-                   class="btn btn-primary d-flex align-items-center"
-                   type="button"
-                   data-bs-toggle="modal"
-                   onclick="OpenCreateModal()"
-                   style="text-decoration: none;">
-                    <span class="text-danger px-1 pb-1" title="create">
-                        <i data-feather="plus" class="w-15px h-auto me-1"></i>
-                        Create New
-                    </span>
-                </a>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-md-between align-items-center">
+                <h1 class="text-blue mb-0">Provinces</h1>
+                <div class="d-flex gap-2">
+                    <a id="btnMultipleDelete"
+                            class="btn btn-danger d-none align-items-center px-4"
+                            data-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Delete"
+                            onclick="OpenMultipleDeleteModal()">
+                        <i data-feather="trash-2"></i> Delete
+                    </a>
+
+                    <a href="#"
+                       class="btn btn-primary d-flex align-items-center"
+                       type="button"
+                       data-bs-toggle="modal"
+                       onclick="OpenCreateModal()"
+                       style="text-decoration: none;">
+                        <span class="px-1 pb-1" title="create">
+                            <i data-feather="plus" class="w-15px h-auto me-1"></i>
+                            Add New
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <form method="post" asp-action="DeleteMultiple">
-        <table id="modelTable" class="data-table table table-hover w-100">
-            <thead>
-                <tr>
-                    <th class="text-center w-5">
-                        <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
-                    </th>
-                    <th>
-                        Id
-                    </th>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Is Active?
-                    </th>
 
-                    <th>
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @{
-                    var count = 0;
-                }
-                @foreach (var item in Model)
-                {
-                    count++;
-                    <tr data-documentType-id="@item.Id">
-                        <td class="text-center"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
-                        <td>
-                            @{
-                                    @count.ToString()
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => @item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => @item.IsActive)
-                        </td>
-                        <td>
-                            <a href="#"
-                               type="button"
-                               data-bs-toggle="modal"
-                               onclick="OpenEditModal(@item.Id)"
-                               style="text-decoration: none;">
-                                <span class="text-danger px-1 pb-1" title="Edit" data-position-id="@item.Id">
-                                    <i data-feather="edit" class="data-feather-20"></i>
-                                    Edit
-                                </span>
-                            </a>
-                            <a href="#"
-                               type="button"
-                               data-bs-toggle="modal"
-                            @* data-bs-target="#deletePositionModal" *@
-                               onclick="OpenDeleteModal(@item.Id)"
-                               style="text-decoration: none;">
-                                <span class="text-danger px-1 pb-1" title="delete" data-position-id="@item.Id">
-                                    <i data-feather="trash-2" class="data-feather-20"></i>
-                                    Delete
-                                </span>
-                            </a>
-                        </td>
+        <div class="table-responsive mt-4">
+            <table id="modelTable" class="data-table table-striped table table-hover w-100">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle w-5" width="5%">
+                            <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
+                        </th>
+                        <th class="align-middle">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="align-middle">
+                            Action
+                        </th>
                     </tr>
-                }
-
-
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <input type="hidden" name="id" id="@item.Id" />
+                            <td class="text-center align-middle" width="5%">
+                                <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
+                            </td>
+                            <td id="name" class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="align-middle">
+                                <a href="#"
+                                   class="cta-edit btn p-0 m-0"
+                                   data-bs-toggle="modal"
+                                   onclick="OpenEditModal(@item.Id)"
+                                   style="text-decoration: none;">
+                                    <i data-feather="edit" class="h-auto me-1"></i>Update
+                                    @* <span class="px-1 pb-1" title="edit">
+                                        <i data-feather="edit" class="h-auto me-1"></i>
+                                    </span> *@
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </form>
 </div>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
         $('.data-table').DataTable({
             columnDefs: [
-                { targets: [0], orderable: false }
+                { targets: [0, 2], orderable: false }
             ],
             order: [[1, 'asc']]
         });
 
-        $('#modelTable').on('click', 'tbody tr', function (event) {
-            // Check if the clicked element is not the checkbox
-            if (!$(event.target).is(':checkbox')) {
-                var documentTypeId = $(this).data('documentType-id');
-                window.location.href = '@Url.Action("Edit", "Province")' + '?id=' + documentTypeId;
-            }
-        });
+        $('[id^=dt-search]').attr('placeholder', 'Search...').addClass('fst-italic');
+
 
         $('.column-checkbox').change(function () {
             var isChecked = $(this).prop('checked');
@@ -160,25 +129,25 @@
             $('.column-checkbox').prop('checked', allChecked);
         });
 
-        if (getUrlParameter('deleteSuccess') === 'true') {
-            toastr.success('Selection deleted successfully!', '', {
-                timeOut: 10000,
-                closeButton: true,
-                onHidden: function () {
-                    updateUrlParameter('deleteSuccess', '');
-                }
-            });
-        }
-
         $('#btnConfirmDelete').click(function () {
             $('#deleteConfirmModal').modal('hide');
             window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
         });
+
+        $("#cancelBtn").click(function () {
+            closeModal();
+        });
+
+        handleToastrNotification('addSuccess', 'New transaction type added successfully!');
+        handleToastrNotification('editSuccess', 'Transaction type updated successfully!');
+        handleToastrNotification('deleteSuccess', 'Transaction type deleted successfully!');
     });
 
-    $("#cancelBtn").click(function () {
-        location.reload();
-    });
+    function closeModal() {
+        $("#deleteConfirmModal").modal("hide");
+        let elem = document.querySelector('#deleteConfirmModal');
+        elem.parentNode.removeChild(elem);
+    }
 
     function OpenMultipleDeleteModal() {
         var selectedRows = getSelectedRows();
@@ -198,23 +167,31 @@
             ids.push(selectedRows[i].value);
         return ids;
     }
-
     function OpenCreateModal() {
         $('#CreateModalContainer').load('/Province/CreateModal/', function () {
             $("#createModal").modal("show");
         });
     }
     function OpenEditModal(id) {
-        $('#EditModalContainer').load('/Province/EditModal/' +id, function () {
+        $('#EditModalContainer').load('/Province/EditModal/' + id, function () {
             $("#editModal").modal("show");
         });
     }
-
     function OpenDeleteModal(id) {
 
         $('#DeleteModalContainer').load('/Province/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });
+    }
+    function ClearSearch() {
+        $("#dt-search-0").val("").keyup();
+    }
+
+    function getSelectedRows() {
+        var table = $('#modelTable').dataTable();
+        selectedRows = table.find('input[name="selectedRows"]:checked').serializeArray();
+
+        return selectedRows;
     }
 </script>

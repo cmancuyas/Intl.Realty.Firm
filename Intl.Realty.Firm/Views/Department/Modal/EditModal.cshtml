@@ -1,27 +1,31 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM
 @model EditDepartmentViewModel
 <div class="modal modal-sheet fade  bg-body-secondary p-4 py-md-5" id="editModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Edit Department</h1>
+                <h1 class="fw-bold mb-0 fs-2">Update Department</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-5 pt-0">
-                <form class="" id="EditForm" role="form" method="post">
+            <div class="modal-body p-5 pt-0 mt-2">
+                <form class="m-0" id="EditForm" role="form" method="post">
                     <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="name" placeholder="" asp-for="Name"/>
+                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" asp-for="Name"/>
                         <label for="name">Name</label>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="checkbox" class="form-check-input" id="isActive" name="isActive" placeholder="" asp-for="IsActive" />
-                        <label class="form-check-label">Is Active?</label>
+                    <div class="form-check mb-5">
+                        <input class="form-check-input" type="checkbox" value="" id="isActive" name="isActive" placeholder="" asp-for="IsActive">
+                        <label class="form-check-label" for="isActive">
+                            Is Active?
+                        </label>
                     </div>
 
-                    <button id="btnEdit" class="w-100 mb-2 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Update</button>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button id="btnEdit" class="w-100 mb-2 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Update</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -38,15 +42,16 @@
     });
 
     function UpdateDepartment() {
+        debugger;
         var id = document.getElementById("id").value;
         var checkedValue = document.getElementById("isActive").checked;
-
+        var name = $('#EditForm').find('input[name="name"]').val();
         if (!checkedValue) {
             checkedValue = false;
         }
         var viewModel = {
             Id: id,
-            Name: document.getElementById("name").value,
+            Name: name,
             IsActive: checkedValue
         };
         var parameters = { viewModel: viewModel };

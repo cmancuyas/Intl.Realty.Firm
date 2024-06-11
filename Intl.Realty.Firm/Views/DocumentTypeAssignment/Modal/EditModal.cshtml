@@ -4,69 +4,21 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Edit Document Type Assignment</h1>
+                <h1 class="fw-bold mb-0 fs-2">Update DocumentTypeAssignment</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-5 pt-0">
-                <form class="" id="EditForm" role="form" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-body p-5 pt-0 mt-2">
+                <form class="m-0" id="EditForm" role="form" method="post">
                     <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
-                    <div class="form-group">
-                        <label class="fw-bolder pb-1" for="classifications">
-                            <span>Document Type Assignment</span>
-                        </label>
-
-                        <select id="DocumentTypeDDL" name="DocumentTypeDDL" class="form-control">
-                            @{
-                                @if (Model.DocumentTypeList != null)
-                                {
-                                    @foreach (var documentType in Model.DocumentTypeList)
-                                    {
-                                        if (documentType.Id == Model.DocumentTypeId)
-                                        {
-                                            <option value="@documentType.Id" selected>@documentType.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@documentType.Id">@documentType.Name</option>
-                                        }
-                                    }
-                                }
-                            }
-
-                        </select>
-
-                        @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
-                    </div>
-                    <div class="form-group">
-                        <label class="fw-bolder pt-2 pb-1" for="classifications">
-                            <span>Transaction Type</span>
-                        </label>
-                        <select id="TransactionTypeDDL" name="TransactionTypeDDL" class="form-control">
-                            @{
-                                @if (Model.TransactionTypeList != null)
-                                {
-                                    @foreach (var transactionType in Model.TransactionTypeList)
-                                    {
-                                        if (transactionType.Id == Model.TransactionTypeId)
-                                        {
-                                            <option value="@transactionType.Id" selected>@transactionType.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@transactionType.Id">@transactionType.Name</option>
-                                        }
-                                    }
-                                }
-                            }
-                        </select>
-                        @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" asp-for="DocumentTypeId"/>
+                        <label for="name">DocumentType</label>
                     </div>
 
                     <div class="form-check mb-5">
-                        <input class="form-check-input" type="checkbox" value="" id="isActive" name="isActive" placeholder="" asp-for="@Model.IsActive">
-                        <label class="form-check-label" for="flexCheckChecked">
+                        <input class="form-check-input" type="checkbox" value="" id="isActive" name="isActive" placeholder="" asp-for="IsActive">
+                        <label class="form-check-label" for="isActive">
                             Is Active?
                         </label>
                     </div>
@@ -86,21 +38,20 @@
     });
 
     $("#btnEdit").click(function () {
-        debugger;
-        UpdateDocumentAssignment();
+        UpdateDocumentTypeAssignment();
     });
 
-    function UpdateDocumentAssignment() {
+    function UpdateDocumentTypeAssignment() {
+        debugger;
         var id = document.getElementById("id").value;
         var checkedValue = document.getElementById("isActive").checked;
-
+        var name = $('#EditForm').find('input[name="name"]').val();
         if (!checkedValue) {
             checkedValue = false;
         }
         var viewModel = {
             Id: id,
-            DocumentTypeId: document.getElementById("DocumentTypeDDL").value,
-            TransactionTypeId: document.getElementById("TransactionTypeDDL").value,
+            Name: name,
             IsActive: checkedValue
         };
         var parameters = { viewModel: viewModel };

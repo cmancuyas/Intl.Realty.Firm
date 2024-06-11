@@ -1,11 +1,10 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM
-@model List<DepartmentViewModel>
+@model IEnumerable<DepartmentViewModel>
 @using System.ComponentModel.DataAnnotations
 @{
     ViewData["Title"] = "Department";
     Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
 }
-
 <div>
     <div class="c-content" id="ListPartialContainer">
         <div class="d-flex justify-content-center">
@@ -19,7 +18,7 @@
     <div id="DeleteModalContainer"></div>
     <div id="DeleteMultipleModalContainer"></div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 @section Scripts {
     <script>
         $(document).ready(function () {

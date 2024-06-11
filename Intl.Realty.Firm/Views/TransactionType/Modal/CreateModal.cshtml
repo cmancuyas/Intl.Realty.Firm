@@ -12,7 +12,7 @@
             <div class="modal-body p-5 pt-0 mt-4">
                 <form class="" id="CreateForm" role="form" method="post">
                     <div class="form-floating">
-                        <input type="text" class="form-control rounded-3" id="name" placeholder="" />
+                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" />
                         <label for="name">Name</label>
                     </div>
                     <p class="mb-5"><em>Please input name to create new transaction type.</em></p>
@@ -29,14 +29,14 @@
     });
 
     $("#btnCreate").click(function () {
-        // debugger;
         OpenCreateModal();
 
     });
 
     function OpenCreateModal() {
+        var name = $('#CreateForm').find('input[name="name"]').val();
         var viewModel = {
-            Name: document.getElementById("name").value,
+            Name: name,
             IsActive: true
         };
         var parameters = { viewModel: viewModel };

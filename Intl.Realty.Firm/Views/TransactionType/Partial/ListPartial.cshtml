@@ -1,200 +1,106 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
-@model List<TransactionTypeViewModel>
+@model IEnumerable<TransactionTypeViewModel>
+
 
 <div>
-    <div class="row">
-        <div class="col-md-12 d-flex justify-content-md-between align-items-center">
-            <h1 class="text-blue mb-0">Transaction Types Management</h1>
-            <div class="d-flex gap-4">
-                <button id="btnMultipleDelete" 
-                    class="btn btn-danger d-none align-items-center" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteConfirmModal">
-                    <i data-feather="x" class="w-15px h-auto me-1"></i>
-                    Delete
-                </button>
+    <form id="ListFormId" method="post">
 
-                <a href="#"
-                   class="btn btn-primary d-flex align-items-center"
-                   type="button"
-                   data-bs-toggle="modal"
-                   onclick="OpenCreateModal()"
-                   style="text-decoration: none;">
-                    <span class="px-1 pb-1" title="create">
-                        <i data-feather="plus" class="w-15px h-auto me-1"></i>
-                        Create New
-                    </span>
-                </a>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-md-between align-items-center">
+                <h1 class="text-blue mb-0">Transaction Types</h1>
+                <div class="d-flex gap-4">
+                    <button type="button" id="btnMultipleDelete"
+                            class="btn btn-danger d-none align-items-center"
+                            data-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Delete"
+                            onclick="OpenMultipleDeleteModal()">
+                        <i data-feather="trash-2"></i>
+                    </button>
+
+                    <a href="#"
+                       class="btn btn-primary d-flex align-items-center"
+                       type="button"
+                       data-bs-toggle="modal"
+                       onclick="OpenCreateModal()"
+                       style="text-decoration: none;">
+                        <span class="px-1 pb-1" title="create">
+                            <i data-feather="plus" class="w-15px h-auto me-1"></i>
+                            Add New
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <form method="post" asp-action="DeleteMultiple">
-        <table id="modelTable" class="data-table table-striped table table-hover mt-4 w-100">
-            <thead>
-                <tr>
-                    <th class="text-center align-middle w-5">
-                        <input type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
-                    </th>
-                    <th class="align-middle">
-                        ID
-                    </th>
-                    <th class="align-middle">
-                        Name
-                    </th>
-                    <th class="align-middle">
-                        Is Active?
-                    </th>
 
-                    <th class="align-middle">
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var count = 0;
-                }
-                @foreach (var item in Model)
-                {
-                    count++;
-                    <tr data-documentType-id="@item.Id">
-                        <td class="text-center align-middle"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
-                        <td class="align-middle">
-                            @{
-                                @count.ToString()
-                            }
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.Name)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => @item.IsActive)
-                        </td>
-                        <td class="align-middle">
-                            <a href="#"
-                               type="button"
-                               data-bs-toggle="modal"
-                               onclick="OpenEditModal(@item.Id)"
-                               style="text-decoration: none;">
-                                <span class="px-1 pb-1 icon-green" title="Edit" data-position-id="@item.Id">
-                                    <i data-feather="edit" class="data-feather-20"></i>
-                                    Edit
-                                </span>
-                            </a>
-                            <a href="#"
-                               type="button"
-                               data-bs-toggle="modal"
-                               onclick="OpenDeleteModal(@item.Id)"
-                               style="text-decoration: none;">
-                                <span class="px-1 pb-1 icon-red" title="delete" data-position-id="@item.Id">
-                                    <i data-feather="trash-2" class="data-feather-20"></i>
-                                    Delete
-                                </span>
-                            </a>
-                        </td>
+
+        <hr class="my-4" />
+
+        <div class="table-responsive">
+            <table id="modelTable" class="data-table table w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            Action
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <input type="hidden" name="id" id="@item.Id" />
+                            <td>
+                                <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
+                            </td>
+                            <td id="name">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+ @*                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
+                                    Edit
+                                </a> *@
 
-        <nav class="table-pagination mt-5" id="paginationNav" style="display: none;">
-            <ul class="pagination justify-content-center" id="pagination">
-                <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
-                <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
-            </ul>
-        </nav>
+                                <a href="#"
+                                   class="btn btn-success d-flex align-items-center"
+                                   type="button"
+                                   data-bs-toggle="modal"
+                                   onclick="OpenEditModal(@item.Id)"
+                                   style="text-decoration: none;">
+                                    <span class="px-1 pb-1" title="edit">
+                                        <i data-feather="edit" class="h-auto me-1"></i>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
     </form>
 </div>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
-        // PAGINATION
-        const rowsPerPage = 3; // Number of rows per page
-        const $table = $('#modelTable');
-        const $tbody = $table.find('tbody');
-        const $rows = $tbody.find('tr');
-        const totalRows = $rows.length;
-        let currentPage = 1;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-        function displayRows() {
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            $rows.each(function (index) {
-                $(this).toggle(index >= start && index < end);
-            });
-        }
-
-        function updatePaginationButtons() {
-            $('#prevPage').parent().toggleClass('disabled', currentPage === 1 || totalPages === 0);
-            $('#nextPage').parent().toggleClass('disabled', currentPage === totalPages || totalPages === 0);
-
-            $('#pagination li.page-number').remove();
-            for (let i = 1; i <= totalPages; i++) {
-                const $li = $('<li class="page-item page-number"><a class="page-link" href="#">' + i + '</a></li>');
-                $li.insertBefore($('#nextPage').parent());
-            }
-
-            $('#pagination li.page-number').removeClass('active').eq(currentPage - 1).addClass('active');
-        }
-
-        $(document).on('click', '#pagination li.page-number', function (event) {
-            event.preventDefault();
-            currentPage = parseInt($(this).text());
-            displayRows();
-            updatePaginationButtons();
-        });
-
-        $('#prevPage').click(function (event) {
-            event.preventDefault();
-            if (currentPage > 1) {
-                currentPage--;
-                displayRows();
-                updatePaginationButtons();
-            }
-        });
-
-        $('#nextPage').click(function (event) {
-            event.preventDefault();
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayRows();
-                updatePaginationButtons();
-            }
-        });
-
-        // Initial display
-        displayRows();
-        updatePaginationButtons();
-
-        // Show pagination if needed
-        if (totalPages > 1) {
-            $('#paginationNav').show();
-            $('#prevPageItem').show();
-            $('#nextPageItem').show();
-        } else {
-            $('#paginationNav').hide();
-            $('#prevPageItem').hide();
-            $('#nextPageItem').hide();
-        }
-        // END PAGINATION
-
-
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.data-table').DataTable({
             columnDefs: [
-                { targets: [0], orderable: false }
+                { targets: [0, 2], orderable: false }
             ],
             order: [[1, 'asc']]
         });
 
-        $('#modelTable').on('click', 'tbody tr', function (event) {
-            // Check if the clicked element is not the checkbox
-            if (!$(event.target).is(':checkbox')) {
-                var transactionTypeId = $(this).data('documentType-id');
-                window.location.href = '@Url.Action("Edit", "TransactionType")' + '?id=' + transactionTypeId;
-            }
-        });
+        $('[id^=dt-search]').attr('placeholder', 'Search...').addClass('fst-italic');
+
 
         $('.column-checkbox').change(function () {
             var isChecked = $(this).prop('checked');
@@ -231,25 +137,25 @@
             $('.column-checkbox').prop('checked', allChecked);
         });
 
-        if (getUrlParameter('deleteSuccess') === 'true') {
-            toastr.success('Selection deleted successfully!', '', {
-                timeOut: 10000,
-                closeButton: true,
-                onHidden: function () {
-                    updateUrlParameter('deleteSuccess', '');
-                }
-            });
-        }
-
         $('#btnConfirmDelete').click(function () {
             $('#deleteConfirmModal').modal('hide');
             window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
         });
+
+        $("#cancelBtn").click(function () {
+            closeModal();
+        });
+
+        handleToastrNotification('addSuccess', 'New transaction type added successfully!');
+        handleToastrNotification('editSuccess', 'Transaction type updated successfully!');
+        handleToastrNotification('deleteSuccess', 'Transaction type deleted successfully!');
     });
 
-    $("#cancelBtn").click(function () {
-        location.reload();
-    });
+    function closeModal() {
+        $("#deleteConfirmModal").modal("hide");
+        let elem = document.querySelector('#deleteConfirmModal');
+        elem.parentNode.removeChild(elem);
+    }
 
     function OpenMultipleDeleteModal() {
         var selectedRows = getSelectedRows();
@@ -269,13 +175,6 @@
             ids.push(selectedRows[i].value);
         return ids;
     }
-
-    // function OpenDeleteModal(id) {
-    //     $('#userTypeListPartialContainer').load('/UserType/DeleteModal/' + id, function () {
-    //         $("#deleteConfirmModal").modal("show");
-    //     });
-    // }
-
     function OpenCreateModal() {
         $('#CreateModalContainer').load('/TransactionType/CreateModal/', function () {
             $("#createModal").modal("show");
@@ -286,12 +185,21 @@
             $("#editModal").modal("show");
         });
     }
-
     function OpenDeleteModal(id) {
 
         $('#DeleteModalContainer').load('/TransactionType/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });
+    }
+    function ClearSearch() {
+        $("#dt-search-0").val("").keyup();
+    }
+
+    function getSelectedRows() {
+        var table = $('#modelTable').dataTable();
+        selectedRows = table.find('input[name="selectedRows"]:checked').serializeArray();
+
+        return selectedRows;
     }
 </script>

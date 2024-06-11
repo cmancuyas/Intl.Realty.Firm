@@ -12,13 +12,13 @@
                 <form class="m-0" id="EditForm" role="form" method="post">
                     <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="name" placeholder="" asp-for="Name"/>
+                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" asp-for="Name"/>
                         <label for="name">Name</label>
                     </div>
 
                     <div class="form-check mb-5">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" name="isActive" placeholder="" asp-for="IsActive">
-                        <label class="form-check-label" for="flexCheckChecked">
+                        <input class="form-check-input" type="checkbox" value="" id="isActive" name="isActive" placeholder="" asp-for="IsActive">
+                        <label class="form-check-label" for="isActive">
                             Is Active?
                         </label>
                     </div>
@@ -42,15 +42,16 @@
     });
 
     function UpdateTransactionType() {
+        debugger;
         var id = document.getElementById("id").value;
         var checkedValue = document.getElementById("isActive").checked;
-
+        var name = $('#EditForm').find('input[name="name"]').val();
         if (!checkedValue) {
             checkedValue = false;
         }
         var viewModel = {
             Id: id,
-            Name: document.getElementById("name").value,
+            Name: name,
             IsActive: checkedValue
         };
         var parameters = { viewModel: viewModel };

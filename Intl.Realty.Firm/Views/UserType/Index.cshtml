@@ -1,11 +1,10 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model List<SaleListingViewModel>
+@model IEnumerable<UserTypeViewModel>
 @using System.ComponentModel.DataAnnotations
 @{
     ViewData["Title"] = "UserType";
     Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
 }
-
 <div>
     <div class="c-content" id="ListPartialContainer">
         <div class="d-flex justify-content-center">
@@ -19,7 +18,7 @@
     <div id="DeleteModalContainer"></div>
     <div id="DeleteMultipleModalContainer"></div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -32,8 +31,5 @@
         function HideDetails(id) {
             $('#item-' + id).removeClass('c-show-hidden');
         }
-    </script>
-    <script type="text/javascript">
-        feather.replace();
     </script>
 }

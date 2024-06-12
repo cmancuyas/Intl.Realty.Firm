@@ -1,11 +1,9 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Utility.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -25,11 +23,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             CreateDocumentTypeAssignmentViewModel viewModel = new CreateDocumentTypeAssignmentViewModel();
             var transactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
-            var transactionTypeList = transactionTypeIEnum.FromIEnumToTransactionTypeList();
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
-            var documentTypeList = documentTypeIEnum.FromIEnumToDocumentTypeList();
-            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeList, x => x.Id, x => x.Name);
-            viewModel.DocumentTypeIEnum = SelectListConverter.CreateSelectList(documentTypeList, x => x.Id, x => x.Name);
+            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeIEnum.ToList(), x => x.Id, x => x.Name);
+            viewModel.DocumentTypeIEnum = SelectListConverter.CreateSelectList(documentTypeIEnum.ToList(), x => x.Id, x => x.Name);
 
             return PartialView("~/Views/DocumentTypeAssignment/Modal/CreateModal.cshtml", viewModel);
         }
@@ -37,31 +33,33 @@ namespace Intl.Realty.Firm.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDocumentTypeAssignmentViewModel viewModel)
         {
+            var modelList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == viewModel.TransactionTypeId, includeProperties: "DocumentType,TransactionType");
+            if (modelList.Any())
             {
-                var modelList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == viewModel.TransactionTypeId, includeProperties: "DocumentType,TransactionType");
-                if (modelList.Any())
+                var modelCheckIfExists = modelList.Where(x => x.DocumentTypeId == viewModel.DocumentTypeId);
+                if (modelCheckIfExists.Any())
                 {
-                    var modelCheckIfExists = modelList.Where(x => x.DocumentTypeId == viewModel.DocumentTypeId);
-                    if (modelCheckIfExists.Any())
-                    {
-                        ModelState.AddModelError("name", "Document Type assignment already exists");
-                    }
+                    ModelState.AddModelError("name", "Document Type assignment already exists");
                 }
-                viewModel.CreatedBy = 1;
-                viewModel.IsActive = true;
-                viewModel.CreatedAt = DateTime.UtcNow;
-
-                var model = viewModel.ToDocumentTypeAssignmentModel();
-
-                if (ModelState.IsValid)
-                {
-                    await _unitOfWork.DocumentTypeAssignment.AddAsync(model);
-                    _unitOfWork.Save();
-                    TempData["success"] = "DocumentType Assignment created successfully";
-                    return RedirectToAction(nameof(Index), new { addSuccess = true });
-                }
-                return RedirectToAction(nameof(Index), new { addSuccess = false });
             }
+
+            viewModel.TransactionTypeId = viewModel.TransactionTypeId;
+            viewModel.DocumentTypeId = viewModel.DocumentTypeId;
+            viewModel.CreatedBy = 1;
+            viewModel.IsActive = true;
+            viewModel.CreatedAt = DateTime.UtcNow;
+
+            var model = viewModel.ToDocumentTypeAssignmentModel();
+
+            if (ModelState.IsValid)
+            {
+                await _unitOfWork.DocumentTypeAssignment.AddAsync(model);
+                _unitOfWork.Save();
+                TempData["success"] = "DocumentType Assignment created successfully";
+                return RedirectToAction(nameof(Index), new { addSuccess = true });
+            }
+            return RedirectToAction(nameof(Index), new { addSuccess = false });
+
         }
         public async Task<IActionResult> EditModal(int? id)
         {
@@ -83,8 +81,8 @@ namespace Intl.Realty.Firm.Controllers
             var transactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
 
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
-            viewModel.TransactionTypeList = transactionTypeIEnum.FromIEnumToTransactionTypeList();
-            viewModel.DocumentTypeList = documentTypeIEnum.FromIEnumToDocumentTypeList();
+            viewModel.TransactionTypeList = transactionTypeIEnum.ToList();
+            viewModel.DocumentTypeList = documentTypeIEnum.ToList();
             return PartialView("~/Views/DocumentTypeAssignment/Modal/EditModal.cshtml", viewModel);
         }
         [HttpPut]

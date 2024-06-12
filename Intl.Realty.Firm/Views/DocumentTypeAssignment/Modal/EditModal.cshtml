@@ -12,8 +12,59 @@
                 <form class="m-0" id="EditForm" role="form" method="post">
                     <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" asp-for="DocumentTypeId"/>
-                        <label for="name">DocumentType</label>
+                        <div class="form-group">
+                            <label class="control-label fw-bolder">Status</label>
+                            <select id="TransactionTypeDDL" name="TransactionTypeDDL" class="form-select">
+                                @{
+                                    @if (Model.TransactionTypeList != null)
+                                    {
+                                        @foreach (var transactionType in Model.TransactionTypeList)
+                                        {
+                                            if (transactionType.Id == Model.TransactionTypeId)
+                                            {
+                                                <option value="@transactionType.Id" selected>@transactionType.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@transactionType.Id">@transactionType.Name</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                            @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.TransactionTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                            {
+                                @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            <label class="control-label fw-bolder">Status</label>
+                            <select id="DocumentTypeDDL" name="DocumentTypeDDL" class="form-select">
+                                @{
+                                    @if (Model.DocumentTypeList != null)
+                                    {
+                                        @foreach (var documentType in Model.DocumentTypeList)
+                                        {
+                                            if (documentType.Id == Model.DocumentTypeId)
+                                            {
+                                                <option value="@documentType.Id" selected>@documentType.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@documentType.Id">@documentType.Name</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                            @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DocumentTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                            {
+                                @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
+                            }
+                        </div>
                     </div>
 
                     <div class="form-check mb-5">
@@ -43,16 +94,14 @@
 
     function UpdateDocumentTypeAssignment() {
         debugger;
-        var id = document.getElementById("id").value;
-        var checkedValue = document.getElementById("isActive").checked;
-        var name = $('#EditForm').find('input[name="name"]').val();
-        if (!checkedValue) {
-            checkedValue = false;
-        }
+        var id = $('#id').val();
+        var documentTypeId = $('#DocumentTypeDDL :selected').val();
+        var transactionTypeId = $('#TransactionTypeDDL :selected').val()
         var viewModel = {
             Id: id,
-            Name: name,
-            IsActive: checkedValue
+            DocumentTypeId: documentTypeId,
+            TransactionTypeId: transactionTypeId,
+            IsActive: true
         };
         var parameters = { viewModel: viewModel };
 

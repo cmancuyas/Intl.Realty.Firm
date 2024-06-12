@@ -1,10 +1,8 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {

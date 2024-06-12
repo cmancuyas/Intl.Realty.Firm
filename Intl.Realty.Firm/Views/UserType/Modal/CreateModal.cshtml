@@ -1,21 +1,22 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
-@model CreateSaleListingViewModel
+@model CreateUserTypeViewModel
 
 <div class="modal modal-sheet fade  bg-body-secondary p-4 py-md-5" id="createModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Create New User Type</h1>
+                <h1 class="fw-bold mb-0 fs-2">Create New UserType</h1>
                 <button id="cancelBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-5 pt-0">
+            <div class="modal-body p-5 pt-0 mt-4">
                 <form class="" id="CreateForm" role="form" method="post">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="name" placeholder="" />
+                    <div class="form-floating">
+                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" />
                         <label for="name">Name</label>
                     </div>
-                    <button id="btnCreate" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">Create</button>
+                    <p class="mb-5"><em>Please input name to create new transaction type.</em></p>
+                    <button id="btnCreate" class="w-100 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Create</button>
                 </form>
             </div>
         </div>
@@ -28,14 +29,14 @@
     });
 
     $("#btnCreate").click(function () {
-        // debugger;
         OpenCreateModal();
 
     });
 
     function OpenCreateModal() {
+        var name = $('#CreateForm').find('input[name="name"]').val();
         var viewModel = {
-            Name: document.getElementById("name").value,
+            Name: name,
             IsActive: true
         };
         var parameters = { viewModel: viewModel };
@@ -46,7 +47,7 @@
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
-                // CloseModal();
+                CloseModal();
                 // Swal.fire({
                 //     title: "Success!",
                 //     icon: "success",

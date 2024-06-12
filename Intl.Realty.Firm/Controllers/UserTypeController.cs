@@ -3,136 +3,177 @@ using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class UserTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private int _userId = 1;
         public UserTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<UserType> modelList = await _unitOfWork.UserType.GetAllAsync() as List<UserType> ?? throw new ArgumentException();
-
-            List<SaleListingViewModel> viewModelList = modelList.Select(x => x.ToUserTypeViewModel()).ToList();
-
-            return View(viewModelList);
-        }
-        [HttpGet]
-        public async Task<IActionResult> ListPartialView()
-        {
-            var modelList = await _unitOfWork.UserType.GetAllAsync();
-
-            var viewModel = modelList.ToUserTypeListViewModel();
-
-            return PartialView("~/Views/UserType/Partial/ListPartial.cshtml", viewModel);
+            return View();
         }
         public IActionResult CreateModal()
         {
-            CreateSaleListingViewModel viewModel= new CreateSaleListingViewModel();
+            CreateUserTypeViewModel viewModel = new CreateUserTypeViewModel();
             return PartialView("~/Views/UserType/Modal/CreateModal.cshtml", viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateUserTypeViewModel viewModel)
         {
-            var checkIfExists = await _unitOfWork.UserType.GetAsync(x => x.Name == viewModel.Name);
-            if (checkIfExists != null)
-            {
-                ModelState.AddModelError("name", "User Type already exists");
-            }
-
-            viewModel.CreatedBy = 1;
-            viewModel.IsActive = true;
-            viewModel.CreatedAt = DateTime.UtcNow;
-
-            var model = viewModel.ToUserTypeModel();
-
             if (ModelState.IsValid)
             {
+                var model = new UserType
+                {
+                    Name = viewModel.Name,
+                    IsActive = true,
+                    CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
+                    CreatedBy = _userId,
+
+                    // Set other properties as needed
+                };
+
                 await _unitOfWork.UserType.AddAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "UserType created successfully";
+
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            //return RedirectToAction(nameof(Index), new { addSuccess = false });
 
-            return View("Index");
-
+            return View(viewModel);
         }
 
         public async Task<IActionResult> EditModal(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            UserType? model = await _unitOfWork.UserType.GetAsync(u => u.Id == id);
-
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
+            var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            EditUserTypeViewModel viewModel = model.ToEditUserTypeModel();
+            EditUserTypeViewModel viewModel = model.ToEditUserTypeViewModel();
+
+            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedAt = DateTime.Now;
 
             return PartialView("~/Views/UserType/Modal/EditModal.cshtml", viewModel);
         }
-
-        [HttpPut("UserType/Edit/{id:int}")]
-        
-        public async Task<IActionResult> Edit(EditUserTypeViewModel viewModel)
+        [HttpPut]
+        public async Task<IActionResult> Edit(int id, UserTypeViewModel viewModel)
         {
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
 
-            UserType? model = await _unitOfWork.UserType.GetAsync(u => u.Id == viewModel.Id);
+            if (ModelState.IsValid)
+            {
+                var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model.Name = viewModel.Name;
+                model.IsActive = viewModel.IsActive;
+                model.UpdatedBy = _userId;
+                model.UpdatedAt = DateTime.Now;
 
-            model.IsActive = viewModel.IsActive;
-            model.Name = viewModel.Name;
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
+                // Update other properties as needed
 
-            await _unitOfWork.UserType.UpdateAsync(model);
-            _unitOfWork.Save();
-            TempData["success"] = "UserType updated successfully";
-            return RedirectToAction("Index");
+                await _unitOfWork.UserType.UpdateAsync(model);
+
+                return RedirectToAction(nameof(Index), new { editSuccess = true });
+            }
+
+            return View(viewModel);
         }
-
         [HttpGet]
-        public async Task<IActionResult> DeleteModal(int? id)
+        public async Task<IActionResult> ListPartialView()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            UserType? userTypeFromDb = await _unitOfWork.UserType.GetAsync(u => u.Id == id);
+            var transactionTypeList = await _unitOfWork.UserType.GetAllAsync();
 
-            var viewModel = userTypeFromDb.ToUserTypeViewModel();
+            var viewModel = transactionTypeList.ToUserTypeListViewModel();
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
-            return PartialView("~/Views/UserType/Modal/DeleteModal.cshtml", viewModel);
+            return PartialView("~/Views/UserType/Partial/ListPartial.cshtml", viewModel);
         }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteModal(int id)
         {
-            UserType? obj = await _unitOfWork.UserType.GetAsync(u => u.Id == id);
-
-            if (obj == null)
+            var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.UserType.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "UserType deleted successfully";
-            return RedirectToAction("Index");
+
+            var editUserTypeViewModel = model.ToEditUserTypeViewModel();
+
+            return PartialView("~/Views/UserType/Modal/DeleteModal.cshtml", editUserTypeViewModel);
+        }
+
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<UserType> modelList = new List<UserType>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
+            {
+                return NotFound();
+            }
+
+            var transactionTypeViewModelList = modelList.ToUserTypeListViewModel();
+
+            IEnumerable<UserTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+
+            return PartialView("~/Views/UserType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.UserType.RemoveAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<UserTypeViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var tramsactonTypeList = await _unitOfWork.UserType.GetAllAsync();
+            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.UserType.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
-}
 
+}

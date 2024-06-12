@@ -64,9 +64,11 @@
     });
 
     function OpenCreateModal() {
-        var name = $('#CreateForm').find('input[name="name"]').val();
+        var documentTypeId = $('#DocumentTypeDDL :selected').val();
+        var transactionTypeId = $('#TransactionTypeDDL :selected').val()
         var viewModel = {
-            Name: name,
+            DocumentTypeId: documentTypeId,
+            TransactionTypeId: transactionTypeId,
             IsActive: true
         };
         var parameters = { viewModel: viewModel };

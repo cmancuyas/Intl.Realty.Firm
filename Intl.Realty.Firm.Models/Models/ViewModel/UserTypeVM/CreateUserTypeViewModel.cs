@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
 {
-    public class CreateSaleListingViewModel
+    public class CreateUserTypeViewModel
     {
         public string Name { get; set; } = string.Empty;
         [Required]

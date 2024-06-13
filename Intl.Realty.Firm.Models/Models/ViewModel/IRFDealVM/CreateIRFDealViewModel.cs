@@ -11,7 +11,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM
 {
     public class CreateIRFDealViewModel
     {
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int FileUploadId { get; set; }
         public int TransactionTypeId { get; set; }

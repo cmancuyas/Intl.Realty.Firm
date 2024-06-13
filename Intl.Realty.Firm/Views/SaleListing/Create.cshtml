@@ -36,13 +36,11 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DocumentType.Name)<span class="s-required">*</span>
-                                @* <a href="#" data-fileID="@item.tbl_files_id" data-fileName="@item.filename" onclick="DocHistory(this)">@item.filename</a> *@
+                                @Html.DisplayFor(modelItem => item.DocumentType.Name)
                             </td>
                             <input type="hidden" asp-for="@item.DocumentType.Id" value="@item.DocumentType.Id" />
                             <td>
-                                <select class="form-select fileListDropDown" id="fileListDropDown_@i" data-prevVal="" data-curVal="" onchange="fileSelected(this)" asp-for="@item.DocumentType.Id" multiple required>
-                                </select>
+                                <input type="file" id="formFileMultiple" multiple>
                             </td>
                             @{
                                 i++;

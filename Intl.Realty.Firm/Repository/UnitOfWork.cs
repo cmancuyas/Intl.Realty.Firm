@@ -16,7 +16,9 @@ namespace Intl.Realty.Firm.Repository
         public ISaleListingRepository SaleListing { get; private set; }
         public ISaleCoopRepository SaleCoop { get; private set; }
         public ILeaseListingRepository LeaseListing { get; private set; }
-        public ILeaseCoopRepository LeaseCoop{ get; private set; }
+        public ILeaseCoopRepository LeaseCoop { get; private set; }
+        public IFileUploadRepository FileUpload { get; private set; }
+        public IProfilePictureRepository ProfilePicture { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -31,6 +33,8 @@ namespace Intl.Realty.Firm.Repository
             SaleCoop = new SaleCoopRepository(_db);
             LeaseListing = new LeaseListingRepository(_db);
             LeaseCoop = new LeaseCoopRepository(_db);
+            FileUpload = new FileUploadRepository(_db);
+            ProfilePicture = new ProfilePictureRepository(_db);
         }
 
         public void Save()

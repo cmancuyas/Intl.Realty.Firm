@@ -13,6 +13,8 @@
         ISaleCoopRepository SaleCoop { get; }
         ILeaseListingRepository LeaseListing { get; }
         ILeaseCoopRepository LeaseCoop { get; }
+        IFileUploadRepository FileUpload { get; }
+        IProfilePictureRepository ProfilePicture { get; }
         void Save();
     }
 }

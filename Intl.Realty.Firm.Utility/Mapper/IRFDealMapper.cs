@@ -1,19 +1,11 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using Intl.Realty.Firm.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class IRFDealMapper
     {
-        public static List<IRFDealViewModel> ToSaleListingListViewModel(this IEnumerable<IRFDeal> modelList)
+        public static List<IRFDealViewModel> ToIRFDealListViewModel(this IEnumerable<IRFDeal> modelList)
         {
             List<IRFDealViewModel> viewModelList = new List<IRFDealViewModel>();
 
@@ -54,7 +46,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
 
             return viewModelList;
         }
-        public static IRFDealViewModel ToSaleListingViewModel(this IRFDeal model)
+        public static IRFDealViewModel ToIRFDealViewModel(this IRFDeal model)
         {
             return new IRFDealViewModel
             {
@@ -88,7 +80,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
-        public static IRFDeal ToSaleListingModel(this CreateIRFDealViewModel viewModel)
+        public static IRFDeal ToIRFDealModel(this CreateIRFDealViewModel viewModel)
         {
             return new IRFDeal
             {
@@ -120,7 +112,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             };
         }
 
-        public static IRFDeal ToSaleListingModel(this IRFDealViewModel viewModel)
+        public static IRFDeal ToIRFDealModel(this IRFDealViewModel viewModel)
         {
             return new IRFDeal
             {
@@ -153,7 +145,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = viewModel.UpdatedAt
             };
         }
-        public static EditIRFDealViewModel ToEditSaleListingModel(this IRFDeal model)
+        public static EditIRFDealViewModel ToEditIRFDealModel(this IRFDeal model)
         {
             return new EditIRFDealViewModel
             {

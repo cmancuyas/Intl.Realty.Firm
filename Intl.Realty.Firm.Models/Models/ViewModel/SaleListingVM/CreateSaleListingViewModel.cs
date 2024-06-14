@@ -14,6 +14,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public string PropertyAddress { get; set; } = string.Empty;
         public int TransactionTypeId { get; set; }
         public int IRFDealId { get; set; }
+        public IRFDeal? IRFDeal { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]
@@ -23,5 +24,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
         public List<DocumentTypeAssignment>? DocumentTypeAssignmentList { get; set; }
         public List<DocumentType>? DocumentTypeList { get; set; }
+        public DocumentType? DocumentType { get; set; }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.ViewModel;
+using Intl.Realty.Firm.Repository;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Utility.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata;
 
 namespace Intl.Realty.Firm.Controllers
@@ -37,13 +41,8 @@ namespace Intl.Realty.Firm.Controllers
         public async Task<IActionResult> Create()
         {
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
-            var transactionTypeList = await _unitOfWork.TransactionType.GetAllAsync();
-            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync();
-            var documentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
-            viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeList.ToList(), x => x.Id, x => x.Name);
-            viewModel.DocumentTypeAssignmentList = documentTypeAssignmentList.ToList();
-            viewModel.DocumentTypeList = documentTypeList.ToList();
-
+            var transactionTypeId = 28; // 1 = SaleListing
+            viewModel.DocumentTypeList = await GetDocumentTypeFromDocumentTypeAssignment(transactionTypeId);
             return View(viewModel);
         }
         [HttpPost]
@@ -70,6 +69,30 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             return View(viewModel);
+        }
+
+        public async Task<List<DocumentType>> GetDocumentTypeFromDocumentTypeAssignment(int transactionTypeId)
+        {
+            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionTypeId, includeProperties:"DocumentType,TransactionType") as List<DocumentTypeAssignment>;
+
+            var documentTypeIds = documentTypeAssignmentList?
+                                    .GroupBy(x => x.DocumentType)
+                                    .Select(grp => new DocumentType
+                                    {
+                                        Id = grp.Key.Id,
+                                        Name = grp.Key.Name,
+                                        IsActive = grp.Key.IsActive,
+                                        CreatedAt = grp.Key.CreatedAt,
+                                        CreatedBy = grp.Key.CreatedBy,
+                                        UpdatedAt = grp.Key.UpdatedAt,
+                                        UpdatedBy = grp.Key.UpdatedBy
+                                    }).ToList();
+            if (documentTypeIds != null)
+            {
+                var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync(x => documentTypeIds.Contains(x));
+                return documentTypeIEnum.ToList();
+            }
+            return null;
         }
     }
 }

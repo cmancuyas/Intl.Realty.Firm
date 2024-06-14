@@ -1,4 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
+﻿@using Intl.Realty.Firm.Models.Models
+@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
 @using System.ComponentModel.DataAnnotations
 
 @model CreateSaleListingViewModel
@@ -15,7 +16,6 @@
     <div class="row justify-content-center">
 
         <div class="row d-flex justify-content-center m-0 mt-4">
-            <h5 class="text-secondary">Please match your uploaded file based on the checklist of requirements.<span class="s-required">*</span></h5>
             <table class="table dataTable" id="tblApplicantFiles">
                 <thead>
                     <tr>
@@ -32,14 +32,14 @@
                     @{
                         int i = 0;
                     }
-                    @foreach (var item in Model.DocumentTypeAssignmentList)
+                    @foreach (DocumentType item in @Model.DocumentTypeList)
                     {
                         <tr>
+                            <input type="hidden" asp-for="@item.Id" value="@item.Id" />
                             <td>
-                                @Html.DisplayFor(modelItem => item.DocumentType.Name)
-                            </td>
-                            <input type="hidden" asp-for="@item.DocumentType.Id" value="@item.DocumentType.Id" />
+                                @Html.DisplayFor(modelItem => item.Name)
                             <td>
+                                
                                 <input type="file" id="formFileMultiple" multiple>
                             </td>
                             @{
@@ -70,6 +70,166 @@
                             <label asp-for="CreatedBy" class="control-label fw-bolder"></label>
                             <input asp-for="CreatedBy" class="form-control" />
                             <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.FinalSalePrice" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.FinalSalePrice" class="form-control" />
+                            <span asp-validation-for="IRFDeal.FinalSalePrice" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.FinalClosingDate" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.FinalClosingDate" class="form-control" />
+                            <span asp-validation-for="IRFDeal.FinalClosingDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.DepositAmount" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.DepositAmount" class="form-control" />
+                            <span asp-validation-for="IRFDeal.DepositAmount" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.DepositDate" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.DepositDate" class="form-control" />
+                            <span asp-validation-for="IRFDeal.DepositDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyerName" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyerName" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyerName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.LandLordName" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.LandLordName" class="form-control" />
+                            <span asp-validation-for="IRFDeal.LandLordName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.ListingCommissionPercentage" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.ListingCommissionPercentage" class="form-control" />
+                            <span asp-validation-for="IRFDeal.ListingCommissionPercentage" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyingCommissionPercentage" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyingCommissionPercentage" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyingCommissionPercentage" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.ListingAgentName" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.ListingAgentName" class="form-control" />
+                            <span asp-validation-for="IRFDeal.ListingAgentName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.ListingBrokerage" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.ListingBrokerage" class="form-control" />
+                            <span asp-validation-for="IRFDeal.ListingBrokerage" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.ListingBrokerageFax" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.ListingBrokerageFax" class="form-control" />
+                            <span asp-validation-for="IRFDeal.ListingBrokerageFax" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyerAgentName" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyerAgentName" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyerAgentName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyerBrokerage" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyerBrokerage" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyerBrokerage" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyerBrokerageFax" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyerBrokerageFax" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyerBrokerageFax" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.SellersLawyer" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.SellersLawyer" class="form-control" />
+                            <span asp-validation-for="IRFDeal.SellersLawyer" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.SellersLawyerAddress" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.SellersLawyerAddress" class="form-control" />
+                            <span asp-validation-for="IRFDeal.SellersLawyerAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.SellersPhoneNumber" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.SellersPhoneNumber" class="form-control" />
+                            <span asp-validation-for="IRFDeal.SellersPhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyersLawyer" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyersLawyer" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyersLawyer" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyersLawyerAddress" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyersLawyerAddress" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyersLawyerAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IRFDeal.BuyersPhoneNumber" class="control-label fw-bolder"></label>
+                            <input asp-for="IRFDeal.BuyersPhoneNumber" class="form-control" />
+                            <span asp-validation-for="IRFDeal.BuyersPhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

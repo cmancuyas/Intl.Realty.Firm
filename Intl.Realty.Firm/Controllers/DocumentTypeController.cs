@@ -3,10 +3,8 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
-using System.Linq;
-using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
+using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -43,7 +41,7 @@ namespace Intl.Realty.Firm.Controllers
         public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
 
-            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Name == viewModel.Name);
+            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Description == viewModel.Description);
             if (checkIfExists != null)
             {
                 ModelState.AddModelError("name", "User Type already exists");
@@ -90,14 +88,14 @@ namespace Intl.Realty.Firm.Controllers
         }
 
         [HttpPut("DocumentType/Edit/{id:int}")]
-
         public async Task<IActionResult> Edit(EditDocumentTypeViewModel viewModel)
         {
 
             DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == viewModel.Id);
 
             model.IsActive = viewModel.IsActive;
-            model.Name = viewModel.Name;
+            model.Code = viewModel.Code;
+            model.Description = viewModel.Description;
             model.UpdatedBy = 1;
             model.UpdatedAt = DateTime.UtcNow;
 
@@ -108,35 +106,77 @@ namespace Intl.Realty.Firm.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteModal(int? id)
+        public async Task<IActionResult> DeleteModal(int id)
         {
-            if (id == null || id == 0)
+            var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            DocumentType? userTypeFromDb = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            var viewModel = userTypeFromDb.ToDocumentTypeViewModel();
+            var editDocumentTypeViewModel = model.ToEditDocumentTypeViewModel();
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
-            return PartialView("~/Views/DocumentType/Modal/DeleteModal.cshtml", viewModel);
+            return PartialView("~/Views/DocumentType/Modal/DeleteModal.cshtml", editDocumentTypeViewModel);
         }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            DocumentType? obj = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
 
-            if (obj == null)
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<DocumentType> modelList = new List<DocumentType>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.DocumentType.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "DocumentType deleted successfully";
-            return RedirectToAction("Index");
+
+            var transactionTypeViewModelList = modelList.ToDocumentTypeListViewModel();
+
+            IEnumerable<DocumentTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+
+            return PartialView("~/Views/DocumentType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.DocumentType.RemoveAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DocumentTypeViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var documentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
+            var modelList = documentTypeList.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.DocumentType.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
 }

@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-            location.reload();
+            CloseModal();
     });
 
     $("#btnConfirmDelete").click(function () {
@@ -17,7 +17,7 @@
             data: parameters,
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
-                closeModal();
+                CloseModal();
                 // Swal.fire({
                 //     title: "Success!",
                 //     icon: "success",
@@ -35,7 +35,7 @@
         });
     });
 
-    function closeModal() {
+    function CloseModal() {
         $("#deleteConfirmModal").modal("hide");
         let elem = document.querySelector('#deleteConfirmModal');
         elem.parentNode.removeChild(elem);

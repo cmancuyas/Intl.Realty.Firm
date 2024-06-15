@@ -12,8 +12,12 @@
                 <form class="m-0" id="EditForm" role="form" method="post">
                     <input type="hidden" class="form-control rounded-3" id="id" asp-for="Id">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" asp-for="Name"/>
-                        <label for="name">Name</label>
+                        <input type="text" class="form-control rounded-3" name="code" id="code" placeholder="" asp-for="Code"/>
+                        <label for="code">Code</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" name="description" id="description" placeholder="" asp-for="Description" />
+                        <label for="description">Description</label>
                     </div>
 
                     <div class="form-check mb-5">
@@ -45,13 +49,15 @@
         debugger;
         var id = document.getElementById("id").value;
         var checkedValue = document.getElementById("isActive").checked;
-        var name = $('#EditForm').find('input[name="name"]').val();
+        var code = $('#EditForm').find('input[name="code"]').val();
+        var description = $('#EditForm').find('input[name="description"]').val();
         if (!checkedValue) {
             checkedValue = false;
         }
         var viewModel = {
             Id: id,
-            Name: name,
+            Code: code,
+            description: description,
             IsActive: checkedValue
         };
         var parameters = { viewModel: viewModel };

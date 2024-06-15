@@ -37,7 +37,7 @@
                         <tr>
                             <input type="hidden" asp-for="@item.Id" value="@item.Id" />
                             <td>
-                                @Html.DisplayFor(modelItem => item.Name)
+                                @Html.DisplayFor(modelItem => @item.Description)
                             <td>
                                 
                                 <input type="file" id="formFileMultiple" multiple>

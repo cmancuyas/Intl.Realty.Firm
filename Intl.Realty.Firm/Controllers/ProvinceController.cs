@@ -39,7 +39,7 @@ namespace Intl.Realty.Firm.Controllers
         public async Task<IActionResult> Create(CreateProvinceViewModel viewModel)
         {
 
-            var checkIfExists = await _unitOfWork.Province.GetAsync(x => x.Name == viewModel.Name);
+            var checkIfExists = await _unitOfWork.Province.GetAsync(x => x.Description == viewModel.Description);
             if (checkIfExists != null)
             {
                 ModelState.AddModelError("name", "User Type already exists");
@@ -93,7 +93,8 @@ namespace Intl.Realty.Firm.Controllers
             Province? model = await _unitOfWork.Province.GetAsync(u => u.Id == viewModel.Id);
 
             model.IsActive = viewModel.IsActive;
-            model.Name = viewModel.Name;
+            model.Code = viewModel.Code;
+            model.Description = viewModel.Description;
             model.UpdatedBy = 1;
             model.UpdatedAt = DateTime.UtcNow;
 

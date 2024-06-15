@@ -11,6 +11,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

@@ -245,9 +245,13 @@
     });
 
     $("#cancelBtn").click(function () {
-        location.reload();
+        CloseModal();
     });
-
+    function CloseModal() {
+        $("#deleteConfirmModal").modal("hide");
+        let elem = document.querySelector('#deleteConfirmModal');
+        elem.parentNode.removeChild(elem);
+    }
     function OpenMultipleDeleteModal() {
         var selectedRows = getSelectedRows();
         var selectedIdsArray = getIdsFromSelectedRows(selectedRows);

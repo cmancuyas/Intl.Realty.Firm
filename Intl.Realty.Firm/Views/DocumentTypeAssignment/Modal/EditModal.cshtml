@@ -22,11 +22,11 @@
                                         {
                                             if (transactionType.Id == Model.TransactionTypeId)
                                             {
-                                                <option value="@transactionType.Id" selected>@transactionType.Name</option>
+                                                <option value="@transactionType.Id" selected>@transactionType.Description</option>
                                             }
                                             else
                                             {
-                                                <option value="@transactionType.Id">@transactionType.Name</option>
+                                                <option value="@transactionType.Id">@transactionType.Description</option>
                                             }
                                         }
                                     }
@@ -50,11 +50,11 @@
                                         {
                                             if (documentType.Id == Model.DocumentTypeId)
                                             {
-                                                <option value="@documentType.Id" selected>@documentType.Name</option>
+                                                <option value="@documentType.Id" selected>@documentType.Description</option>
                                             }
                                             else
                                             {
-                                                <option value="@documentType.Id">@documentType.Name</option>
+                                                <option value="@documentType.Id">@documentType.Description</option>
                                             }
                                         }
                                     }
@@ -85,7 +85,7 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-        location.reload();
+        CloseModal();
     });
 
     $("#btnEdit").click(function () {
@@ -93,7 +93,7 @@
     });
 
     function UpdateDocumentTypeAssignment() {
-        debugger;
+        // debugger;
         var id = $('#id').val();
         var documentTypeId = $('#DocumentTypeDDL :selected').val();
         var transactionTypeId = $('#TransactionTypeDDL :selected').val()
@@ -112,7 +112,7 @@
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
-                closeModal();
+                CloseModal();
                 // Swal.fire({
                 //     title: "Success!",
                 //     icon: "success",
@@ -128,7 +128,7 @@
         });
     }
 
-    function closeModal() {
+    function CloseModal() {
         $("#editModal").modal("hide");
         let elem = document.querySelector('#editModal');
         elem.parentNode.removeChild(elem);

@@ -12,7 +12,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM
     public class EditIRFDealViewModel
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public int FileUploadId { get; set; }
         public int TransactionTypeId { get; set; }
         [JsonIgnore]

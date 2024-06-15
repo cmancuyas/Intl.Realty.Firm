@@ -34,7 +34,8 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-        location.reload();
+        CloseModal();
+        window.location.reload();
     });
 
     $("#btnEdit").click(function () {
@@ -62,7 +63,7 @@
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
                 // NOTE: TO DO better way of calling callback function from parent
-                closeModal();
+                CloseModal();
                 // Swal.fire({
                 //     title: "Success!",
                 //     icon: "success",
@@ -78,7 +79,7 @@
         });
     }
 
-    function closeModal() {
+    function CloseModal() {
         $("#editModal").modal("hide");
         let elem = document.querySelector('#editModal');
         elem.parentNode.removeChild(elem);

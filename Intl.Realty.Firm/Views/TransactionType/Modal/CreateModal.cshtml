@@ -11,9 +11,13 @@
 
             <div class="modal-body p-5 pt-0 mt-4">
                 <form class="" id="CreateForm" role="form" method="post">
-                    <div class="form-floating">
-                        <input type="text" class="form-control rounded-3" name="name" id="name" placeholder="" />
-                        <label for="name">Name</label>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" name="code" id="code" placeholder="" />
+                        <label for="code">Code</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" name="description" id="description" placeholder="" />
+                        <label for="description">Description</label>
                     </div>
                     <p class="mb-5"><em>Please input name to create new transaction type.</em></p>
                     <button id="btnCreate" class="w-100 mt-2 btn btn-lg rounded-3 btn-primary" type="button">Create</button>
@@ -25,7 +29,7 @@
 
 <script type="text/javascript">
     $("#cancelBtn").click(function () {
-        location.reload();
+        CloseModal();
     });
 
     $("#btnCreate").click(function () {
@@ -34,9 +38,11 @@
     });
 
     function OpenCreateModal() {
-        var name = $('#CreateForm').find('input[name="name"]').val();
+        var code = $('#CreateForm').find('input[name="code"]').val();
+        var description = $('#CreateForm').find('input[name="description"]').val();
         var viewModel = {
-            Name: name,
+            Code: code,
+            Description: description,
             IsActive: true
         };
         var parameters = { viewModel: viewModel };

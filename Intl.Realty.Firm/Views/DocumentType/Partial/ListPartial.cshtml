@@ -37,13 +37,16 @@
             <table id="modelTable" class="data-table table-striped table table-hover w-100">
                 <thead>
                     <tr>
-                        <th class="text-center align-middle w-5" width="5%">
+                        <td class="text-lg-start align-middle" width="5%">
                             <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                         </th>
-                        <th class="align-middle">
-                            @Html.DisplayNameFor(model => model.Name)
+                        <th class="text-lg-start align-middle">
+                            @Html.DisplayNameFor(model => model.Code)
                         </th>
-                        <th class="align-middle">
+                        <th class="text-lg-start align-middle">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th class="text-lg-start align-middle">
                             Action
                         </th>
                     </tr>
@@ -53,13 +56,16 @@
                     {
                         <tr>
                             <input type="hidden" name="id" id="@item.Id" />
-                            <td class="text-center align-middle" width="5%">
+                            <td class="text-lg-start align-middle" width="5%">
                                 <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
                             </td>
-                            <td id="name" class="align-middle">
-                                @Html.DisplayFor(modelItem => item.Name)
+                            <td id="code" class="text-lg-start align-middle">
+                                @Html.DisplayFor(modelItem => item.Code)
                             </td>
-                            <td class="align-middle">
+                            <td id="description" class="text-lg-start align-middle">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td class="text-lg-start align-middle">
                                 <a href="#"
                                    class="cta-edit btn p-0 m-0"
                                    data-bs-toggle="modal"
@@ -86,7 +92,8 @@
 
         $('.data-table').DataTable({
             columnDefs: [
-                { targets: [0, 2], orderable: false }
+                { targets: [0], orderable: false },
+                { targets: [1, 2], orderable: true },
             ],
             order: [[1, 'asc']]
         });
@@ -135,7 +142,7 @@
         });
 
         $("#cancelBtn").click(function () {
-            closeModal();
+            CloseModal();
         });
 
         handleToastrNotification('addSuccess', 'New transaction type added successfully!');
@@ -143,7 +150,7 @@
         handleToastrNotification('deleteSuccess', 'Transaction type deleted successfully!');
     });
 
-    function closeModal() {
+    function CloseModal() {
         $("#deleteConfirmModal").modal("hide");
         let elem = document.querySelector('#deleteConfirmModal');
         elem.parentNode.removeChild(elem);

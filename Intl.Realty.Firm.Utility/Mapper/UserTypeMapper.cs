@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
 using Intl.Realty.Firm.Models.Models;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -10,7 +11,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new UserTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -22,7 +24,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new UserType
             {
-                Name = viewModel.Name,
+                Code = viewModel.Code,
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -32,7 +35,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new CreateUserTypeViewModel
             {
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -43,7 +47,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditUserTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -54,7 +59,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditUserTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -68,7 +74,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new UserTypeViewModel()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -86,7 +93,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new UserTypeViewModel()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -104,7 +112,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 modelList = modelIEnum.Select(x => new UserType()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

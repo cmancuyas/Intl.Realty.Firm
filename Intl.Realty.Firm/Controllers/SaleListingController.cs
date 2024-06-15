@@ -41,8 +41,8 @@ namespace Intl.Realty.Firm.Controllers
         public async Task<IActionResult> Create()
         {
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
-            var transactionTypeId = 28; // 1 = SaleListing
-            viewModel.DocumentTypeList = await GetDocumentTypeFromDocumentTypeAssignment(transactionTypeId);
+            string transactionTypeName = "Sale Listing"; // 1 = Sale Listing
+            viewModel.DocumentTypeList = await GetDocumentTypeFromDocumentTypeAssignment(transactionTypeName);
             return View(viewModel);
         }
         [HttpPost]
@@ -71,16 +71,21 @@ namespace Intl.Realty.Firm.Controllers
             return View(viewModel);
         }
 
-        public async Task<List<DocumentType>> GetDocumentTypeFromDocumentTypeAssignment(int transactionTypeId)
+        public async Task<List<DocumentType>> GetDocumentTypeFromDocumentTypeAssignment(string transactionTypeName)
         {
-            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionTypeId, includeProperties:"DocumentType,TransactionType") as List<DocumentTypeAssignment>;
+            List<DocumentType> documentTypeList = new List<DocumentType>();
+
+            var transactionType = await _unitOfWork.TransactionType.GetAsync(x=>x.Description == transactionTypeName);
+
+            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties:"DocumentType,TransactionType") as List<DocumentTypeAssignment>;
 
             var documentTypeIds = documentTypeAssignmentList?
                                     .GroupBy(x => x.DocumentType)
                                     .Select(grp => new DocumentType
                                     {
                                         Id = grp.Key.Id,
-                                        Name = grp.Key.Name,
+                                        Code = grp.Key.Code,
+                                        Description = grp.Key.Description,
                                         IsActive = grp.Key.IsActive,
                                         CreatedAt = grp.Key.CreatedAt,
                                         CreatedBy = grp.Key.CreatedBy,
@@ -90,9 +95,9 @@ namespace Intl.Realty.Firm.Controllers
             if (documentTypeIds != null)
             {
                 var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync(x => documentTypeIds.Contains(x));
-                return documentTypeIEnum.ToList();
+                documentTypeList = documentTypeIEnum.ToList();
             }
-            return null;
+            return documentTypeList;
         }
     }
 }

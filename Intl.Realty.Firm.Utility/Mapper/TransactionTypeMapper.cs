@@ -4,6 +4,7 @@ using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new TransactionTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -28,7 +30,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new TransactionType
             {
-                Name = viewModel.Name,
+                Code = viewModel.Code,
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -38,7 +41,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new CreateTransactionTypeViewModel
             {
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -49,7 +53,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditTransactionTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -60,7 +65,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditTransactionTypeViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -74,7 +80,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new TransactionTypeViewModel()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -92,7 +99,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new TransactionTypeViewModel()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -110,7 +118,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 modelList = modelIEnum.Select(x => new TransactionType()
                 {
                     Id = x.Id,
-                    Name = x.Name,
+                    Code = x.Code,
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

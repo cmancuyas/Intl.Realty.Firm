@@ -31,7 +31,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 var model = new Department
                 {
-                    Name = viewModel.Name,
+                    Code = viewModel.Code,
+                    Description = viewModel.Description,
                     IsActive = true,
                     CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
                     CreatedBy = _userId,
@@ -77,7 +78,8 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model.Name = viewModel.Name;
+                model.Code = viewModel.Code;
+                model.Description = viewModel.Description;
                 model.IsActive = viewModel.IsActive;
                 model.UpdatedBy = _userId;
                 model.UpdatedAt = DateTime.Now;
@@ -155,8 +157,8 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             var ids = viewModelList.Select(o => o.Id).ToList();
-            var tramsactonTypeList = await _unitOfWork.Department.GetAllAsync();
-            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var departmentTypeList = await _unitOfWork.Department.GetAllAsync();
+            var modelList = departmentTypeList.Where(o => ids.Contains(o.Id)).ToList();
 
             if (modelList != null)
             {

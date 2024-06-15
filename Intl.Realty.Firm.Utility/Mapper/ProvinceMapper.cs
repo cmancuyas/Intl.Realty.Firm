@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -19,7 +20,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(o => new ProvinceViewModel
                 {
                     Id = o.Id,
-                    Name = o.Name,
+                    Code = o.Code,
+                    Description = o.Description,
                     IsActive = o.IsActive,
                     CreatedBy = o.CreatedBy,
                     CreatedAt = o.CreatedAt,
@@ -35,7 +37,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new ProvinceViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -47,7 +50,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new Province
             {
-                Name = viewModel.Name,
+                Code = viewModel.Code,
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -58,7 +62,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new Province
             {
-                Name = viewModel.Name,
+                Code = viewModel.Code,
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -71,7 +76,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditProvinceViewModel
             {
                 Id = model.Id,
-                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt

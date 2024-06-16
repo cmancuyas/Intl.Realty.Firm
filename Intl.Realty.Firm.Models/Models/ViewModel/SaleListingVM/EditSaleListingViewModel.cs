@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int TransactionTypeId { get; set; }
         public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
+        public EditIRFDealViewModel? EditIRFDealViewModel { get; set; }
 
         [Required]
         public bool IsActive { get; set; }

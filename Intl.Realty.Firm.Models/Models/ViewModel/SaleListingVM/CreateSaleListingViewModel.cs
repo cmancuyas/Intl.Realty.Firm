@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM 
 { 
@@ -14,7 +9,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public string PropertyAddress { get; set; } = string.Empty;
         public int TransactionTypeId { get; set; }
         public int IRFDealId { get; set; }
-        public IRFDeal? IRFDeal { get; set; }
+        public CreateIRFDealViewModel CreateIRFDealViewModel { get; set; } = new CreateIRFDealViewModel();
         [Required]
         public bool IsActive { get; set; }
         [Required]
@@ -23,7 +18,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public DateTime CreatedAt { get; set; }
         public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
         public List<DocumentTypeAssignment>? DocumentTypeAssignmentList { get; set; }
-        public List<DocumentType>? DocumentTypeList { get; set; }
+        public List<DocumentType>? DocumentTypeList { get; set; } = new List<DocumentType>();
         public DocumentType? DocumentType { get; set; }
     }
 }

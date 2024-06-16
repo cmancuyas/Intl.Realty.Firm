@@ -8,6 +8,7 @@ using Intl.Realty.Firm.Utility.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection.Metadata;
 
@@ -52,18 +53,25 @@ namespace Intl.Realty.Firm.Controllers
             if (ModelState.IsValid)
             {
                 string selectedTransactionTypeId = Request.Form["TransactionTypeDDL"].ToString();
-                var model = new IRFDeal
-                {
-                    PropertyAddress = viewModel.PropertyAddress ?? "",
-                    TransactionTypeId = Convert.ToInt32(selectedTransactionTypeId),
-                    IsActive = true,
-                    CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
-                    CreatedBy = 1
 
-                    // Set other properties as needed
-                };
+                var IRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
 
-                await _unitOfWork.IRFDeal.AddAsync(model);
+                IRFDealModel.CreatedAt = DateTime.Now;
+                IRFDealModel.CreatedBy = 1;
+
+                await _unitOfWork.IRFDeal.AddAsync(IRFDealModel);
+
+                var IRFDealId = _unitOfWork.IRFDeal.GetAsync(x=>x.Id == IRFDealModel.Id);
+
+                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.IsActive = true;
+                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.CreatedBy = 1;
+                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.CreatedAt = DateTime.Now;
+                var fileUploadViewModel = viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.ToFileUploadModel();
+
+                await _unitOfWork.FileUpload.AddAsync(fileUploadViewModel);
+
+                var model = viewModel.ToSaleListingModel();
+                await _unitOfWork.SaleListing.AddAsync(model);
 
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }

@@ -10,6 +10,8 @@
         public string FileSize {  get; set; } = string.Empty;
         public string FileType { get; set; } = string.Empty;
         public string WebDirectoryPath { get; set; } = string.Empty;
+        public IRFDeal? IRFDeal { get; set; }
+        public TransactionType? TransactionType { get; set; }
 
     }
 }

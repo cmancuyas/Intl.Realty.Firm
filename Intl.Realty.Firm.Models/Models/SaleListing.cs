@@ -15,6 +15,7 @@ namespace Intl.Realty.Firm.Models.Models
         public int TransactionTypeId { get; set; }
         [JsonIgnore]
         public TransactionType? TransactionType { get; set; }
-        public int IRFDealId { get; set; }  
+        public int IRFDealId { get; set; }
+        public IRFDeal? IRFDeal { get; set; }
     }
 }

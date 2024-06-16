@@ -51,6 +51,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new IRFDealViewModel
             {
                 Id = model.Id,
+                //Code = model.Code,
+                //Description = model.Description,
                 TransactionTypeId = model.TransactionTypeId,
                 DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
@@ -80,10 +82,13 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
+
         public static IRFDeal ToIRFDealModel(this CreateIRFDealViewModel viewModel)
         {
             return new IRFDeal
             {
+                //Code = viewModel.Code,
+                //Description = viewModel.Description,
                 TransactionTypeId = viewModel.TransactionTypeId,
                 DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,

@@ -1,6 +1,7 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
 using System.Reflection;
+using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -84,5 +85,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
+
+
     }
 }

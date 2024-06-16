@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,20 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
+        public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<IRFDeal> IRFDeals { get; set; }
         public DbSet<SaleListing> SaleListings { get; set; }
         public DbSet<SaleCoop> SaleCoops { get; set; }
         public DbSet<LeaseListing> LeaseListings { get; set; }
         public DbSet<LeaseCoop> LeaseCoops { get; set; }
-        public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<IRFDeal>()
+        //        .HasOne(x=>x.FileUpload)
+        //        .WithOne(x=>x.TransactionTypeId)
+
+        //}
     }
 }

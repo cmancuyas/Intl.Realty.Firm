@@ -13,9 +13,11 @@ namespace Intl.Realty.Firm.Models.Models
     {
         public int Id { get; set; }
         [Required]
-        public string Code { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        //public string Code { get; set; } = string.Empty;
+        //public string Description { get; set; } = string.Empty;
         public int FileUploadId { get; set; }
+        [JsonIgnore]
+        public FileUpload? FileUpload { get; set; }
         public int TransactionTypeId { get; set; }
         [JsonIgnore]
         public TransactionType? TransactionType { get; set; }

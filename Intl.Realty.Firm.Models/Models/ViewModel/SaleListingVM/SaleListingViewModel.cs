@@ -15,5 +15,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public string PropertyAddress { get; set; } = string.Empty;
         public int TransactionTypeId { get; set; }
         public int IRFDealId { get; set; }
+        public IRFDeal? IRFDeal { get; set; }
     }
 }

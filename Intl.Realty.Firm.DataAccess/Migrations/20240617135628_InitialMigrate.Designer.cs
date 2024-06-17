@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intl.Realty.Firm.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240617085047_InitialMigrate")]
+    [Migration("20240617135628_InitialMigrate")]
     partial class InitialMigrate
     {
         /// <inheritdoc />
@@ -158,10 +158,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -214,7 +211,10 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.IRFDeal", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BuyerAgentName")
                         .IsRequired()
@@ -313,6 +313,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TransactionTypeId")
+                        .IsUnique();
 
                     b.ToTable("IRFDeals");
                 });
@@ -769,6 +772,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IRFDealId")
+                        .IsUnique();
+
                     b.ToTable("SaleListings");
                 });
 
@@ -804,8 +810,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FileUploadId");
 
                     b.ToTable("TransactionTypes");
                 });
@@ -1087,18 +1091,26 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                        .WithOne("FileUpload")
+                        .HasForeignKey("Intl.Realty.Firm.Models.Models.FileUpload", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("IRFDeal");
+
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.IRFDeal", b =>
                 {
-                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", "SaleListing")
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithOne("IRFDeal")
-                        .HasForeignKey("Intl.Realty.Firm.Models.Models.IRFDeal", "Id")
+                        .HasForeignKey("Intl.Realty.Firm.Models.Models.IRFDeal", "TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SaleListing");
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
@@ -1134,29 +1146,24 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Navigation("TransactionType");
                 });
 
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>
+                {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
+                        .WithOne("SaleListing")
+                        .HasForeignKey("Intl.Realty.Firm.Models.Models.SaleListing", "IRFDealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IRFDeal");
+                });
+
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.TransactionType", b =>
                 {
-                    b.HasOne("Intl.Realty.Firm.Models.Models.FileUpload", "FileUpload")
-                        .WithMany("TransactionTypes")
-                        .HasForeignKey("FileUploadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
-                        .WithOne("TransactionType")
-                        .HasForeignKey("Intl.Realty.Firm.Models.Models.TransactionType", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", "SaleListing")
                         .WithOne("TransactionType")
                         .HasForeignKey("Intl.Realty.Firm.Models.Models.TransactionType", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FileUpload");
-
-                    b.Navigation("IRFDeal");
 
                     b.Navigation("SaleListing");
                 });
@@ -1212,18 +1219,13 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>
-                {
-                    b.Navigation("TransactionTypes");
-                });
-
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.IRFDeal", b =>
                 {
                     b.Navigation("DocumentTypeAssignmentList");
 
                     b.Navigation("FileUploads");
 
-                    b.Navigation("TransactionType");
+                    b.Navigation("SaleListing");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
@@ -1243,9 +1245,14 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>
                 {
-                    b.Navigation("IRFDeal");
-
                     b.Navigation("TransactionType");
+                });
+
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.TransactionType", b =>
+                {
+                    b.Navigation("FileUpload");
+
+                    b.Navigation("IRFDeal");
                 });
 #pragma warning restore 612, 618
         }

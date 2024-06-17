@@ -7,7 +7,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
     public class CreateSaleListingViewModel
     {
         public string PropertyAddress { get; set; } = string.Empty;
-        public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
         public CreateIRFDealViewModel CreateIRFDealViewModel { get; set; } = new CreateIRFDealViewModel();
         [Required]

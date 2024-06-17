@@ -13,5 +13,9 @@ namespace Intl.Realty.Firm.Models.Models
         [Required]
         public string Code { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public int FileUploadId { get; set; }   
+        public FileUpload? FileUpload { get; set; }
+        public SaleListing? SaleListing { get; set; }
+        public IRFDeal? IRFDeal { get; set; }
     }
 }

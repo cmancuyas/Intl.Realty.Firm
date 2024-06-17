@@ -15,9 +15,10 @@ namespace Intl.Realty.Firm.Models.Models
         [Required]
         //public string Code { get; set; } = string.Empty;
         //public string Description { get; set; } = string.Empty;
-        public int FileUploadId { get; set; }
-        [JsonIgnore]
-        public FileUpload? FileUpload { get; set; }
+        //public int FileUploadId { get; set; }
+        //[JsonIgnore]
+        //public FileUpload? FileUpload { get; set; }
+        public ICollection<FileUpload>? FileUploads { get; set; }
         public int TransactionTypeId { get; set; }
         [JsonIgnore]
         public TransactionType? TransactionType { get; set; }
@@ -48,5 +49,6 @@ namespace Intl.Realty.Firm.Models.Models
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
+        public SaleListing? SaleListing { get; set; }
     }
 }

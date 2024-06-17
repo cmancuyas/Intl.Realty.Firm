@@ -13,7 +13,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         [Key]
         public int Id { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
-        public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; }
     }

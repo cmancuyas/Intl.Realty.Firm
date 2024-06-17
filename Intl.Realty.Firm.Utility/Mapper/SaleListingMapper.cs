@@ -1,7 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
-using System.Reflection;
-using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -17,7 +15,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = o.Id,
                     PropertyAddress = o.PropertyAddress,
-                    TransactionTypeId = o.TransactionTypeId,
+                    TransactionType = o.TransactionType,
                     IRFDealId = o.IRFDealId,
                     IsActive = o.IsActive,
                     CreatedBy = o.CreatedBy,
@@ -36,7 +34,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 PropertyAddress = model.PropertyAddress,
-                TransactionTypeId = model.TransactionTypeId,
+                TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
@@ -50,7 +48,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListing
             {
                 PropertyAddress = viewModel.PropertyAddress,
-                TransactionTypeId = viewModel.TransactionTypeId,
+                TransactionType = viewModel.TransactionType,
                 IRFDealId = viewModel.IRFDealId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
@@ -64,7 +62,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = viewModel.Id,
                 PropertyAddress = viewModel.PropertyAddress,
-                TransactionTypeId = viewModel.TransactionTypeId,
+                TransactionType = viewModel.TransactionType,
                 IRFDealId = viewModel.IRFDealId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
@@ -78,7 +76,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 PropertyAddress = model.PropertyAddress,
-                TransactionTypeId = model.TransactionTypeId,
+                TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,

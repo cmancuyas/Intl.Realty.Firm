@@ -31,12 +31,43 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<LeaseCoop> LeaseCoops { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<IRFDeal>()
-        //        .HasOne(x=>x.FileUpload)
-        //        .WithOne(x=>x.TransactionTypeId)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IRFDeal>()
+                .HasMany(h => h.FileUploads)
+                .WithOne(w => w.IRFDeal)
+                .HasForeignKey(w => w.IRFDealId);
 
-        //}
+            modelBuilder.Entity<FileUpload>()
+                .HasOne(t => t.TransactionType)
+                .WithOne(f => f.FileUpload)
+                .HasForeignKey<FileUpload>(f=>f.Id);
+            modelBuilder.Entity<SaleListing>()
+                .HasOne(t => t.TransactionType)
+                .WithOne(t => t.SaleListing)
+                .HasForeignKey<TransactionType>(x => x.Id);
+            modelBuilder.Entity<SaleListing>()
+                .HasOne(t => t.IRFDeal)
+                .WithOne(t=>t.SaleListing)
+                .HasForeignKey<IRFDeal>(c=>c.Id);
+            modelBuilder.Entity<IRFDeal>()
+                .HasOne(i=>i.TransactionType)
+                .WithOne(t=>t.IRFDeal)
+                .HasForeignKey<TransactionType>(i=>i.Id);
+            modelBuilder.Entity<TransactionType>()
+                .HasOne(i=>i.IRFDeal)
+                .WithOne(t=>t.TransactionType)
+                .HasForeignKey<TransactionType> (i=>i.Id);
+            modelBuilder.Entity<TransactionType>()
+                .HasOne(i => i.SaleListing)
+                .WithOne(t => t.TransactionType)
+                .HasForeignKey<SaleListing>(i => i.Id);
+            modelBuilder.Entity<TransactionType>()
+                .HasOne(i => i.FileUpload)
+                .WithOne(t => t.TransactionType)
+                .HasForeignKey<TransactionType>(i => i.Id);
+
+        }
     }
 }

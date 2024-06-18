@@ -34,19 +34,24 @@ namespace Intl.Realty.Firm.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<IRFDeal>()
-            //    .HasMany(h => h.FileUploads)
-            //    .WithOne(w => w.IRFDeal)
-            //    .HasForeignKey(w => w.IRFDealId);
-
+            modelBuilder.Entity<IRFDeal>()
+                .HasMany(h => h.FileUploads)
+                .WithOne(t => t.IRFDeal)
+                .HasForeignKey(t => t.IRFDealId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<IRFDeal>()
+                .HasOne(h => h.TransactionType)
+                .WithOne(t => t.IRFDeal)
+                .HasForeignKey<TransactionType>(t => t.IRFDealId)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<FileUpload>()
                 .HasOne(t => t.TransactionType)
-                .WithOne(f => f.FileUpload)
-                .HasForeignKey<TransactionType>(f => f.FileUpload);
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<SaleListing>()
                 .HasOne(t => t.TransactionType)
-                .WithOne(t => t.SaleListing)
-                .HasForeignKey<TransactionType>(x => x.SaleListing);
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
             //modelBuilder.Entity<SaleListing>()
             //    .HasOne(t => t.IRFDeal)
             //    .WithOne(t=>t.SaleListing)

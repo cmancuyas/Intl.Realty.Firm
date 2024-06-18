@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models
 {
-    public class SaleListing : BaseModel
+    public class SaleListing : TransactionTypeDetailsBase
     {
         public int Id { get; set; }
-        public string PropertyAddress { get; set; } = string.Empty;
+        [ForeignKey("TransactionType")]
+        public int TransactionTypeId { get; set; }
         [JsonIgnore]
         public TransactionType? TransactionType { get; set; }
+        [ForeignKey("IRFDeal")]
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; }
     }

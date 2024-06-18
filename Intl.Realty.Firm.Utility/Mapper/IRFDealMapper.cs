@@ -14,7 +14,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(o => new IRFDealViewModel
                 {
                     Id = o.Id,
-                    TransactionTypeId = o.TransactionTypeId,
+                    //TransactionTypeId = o.TransactionTypeId,
                     DocumentTypeAssignmentList = o.DocumentTypeAssignmentList,
                     PropertyAddress = o.PropertyAddress,
                     FinalSalePrice = o.FinalSalePrice,
@@ -53,7 +53,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = model.Id,
                 //Code = model.Code,
                 //Description = model.Description,
-                TransactionTypeId = model.TransactionTypeId,
+                //TransactionTypeId = model.TransactionTypeId,
                 DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,
@@ -89,7 +89,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 //Code = viewModel.Code,
                 //Description = viewModel.Description,
-                TransactionTypeId = viewModel.TransactionTypeId,
+                //TransactionTypeId = viewModel.TransactionTypeId,
                 DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
@@ -121,7 +121,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new IRFDeal
             {
-                TransactionTypeId = viewModel.TransactionTypeId,
+                //TransactionTypeId = viewModel.TransactionTypeId,
                 DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
@@ -155,7 +155,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditIRFDealViewModel
             {
                 Id = model.Id,
-                TransactionTypeId = model.TransactionTypeId,
+                //TransactionTypeId = model.TransactionTypeId,
                 DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,

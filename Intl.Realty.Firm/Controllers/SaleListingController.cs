@@ -1,4 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.ViewModel;
@@ -33,7 +34,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.SaleListing.GetAllAsync();
+            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties:"TransactionType,IRFDeal,FileUpload");
 
             var viewModel = modelList.ToSaleListingListViewModel();
 
@@ -51,32 +52,43 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
         {
+            var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == "Sale Listing");
+
+            // Create IRF Deal Data
+            viewModel.TransactionType = transactionType;
             if (ModelState.IsValid)
             {
-                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == "Sale Listing");
+                var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
+                createIRFDealModel.CreatedAt = DateTime.Now;
+                createIRFDealModel.CreatedBy = 1;
+                await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
 
-                // Create IRF Deal Data
-                viewModel.TransactionType = transactionType;
-
-                var CreateIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
-                CreateIRFDealModel.CreatedAt = DateTime.Now;
-                CreateIRFDealModel.CreatedBy = 1;
-                await _unitOfWork.IRFDeal.AddAsync(CreateIRFDealModel);
-
-                var NewIRFDealId = await _unitOfWork.IRFDeal.GetAsync(x=>x.Id == CreateIRFDealModel.Id);
+                var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x=>x.Id == createIRFDealModel.Id);
 
                 // Get IRF Deal Data
                 viewModel.TransactionType = transactionType;
-                viewModel.IRFDealId = NewIRFDealId.Id;
-                viewModel.CreateIRFDealViewModel.IsActive = NewIRFDealId.IsActive;
-                viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDealId.CreatedBy;
-                viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDealId.CreatedAt;
+                viewModel.IRFDealId = NewIRFDeal.Id;
+                viewModel.CreateIRFDealViewModel.IsActive = NewIRFDeal.IsActive;
+                viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDeal.CreatedBy;
+                viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDeal.CreatedAt;
 
                 // Create FileUploadData
-                
-                var fileUploadViewModel = viewModel.CreateFileUploadViewModel.ToFileUploadModel();
+                var createFileUploadModel = viewModel.CreateFileUploadViewModel?.ToFileUploadModel();
+                await _unitOfWork.FileUpload.AddAsync(createFileUploadModel);
 
-                await _unitOfWork.FileUpload.AddAsync(fileUploadViewModel);
+                var newFileUpload = await _unitOfWork.FileUpload.GetAsync(x=>x.Id == createFileUploadModel.Id);
+
+                //viewModel.CreateFileUploadViewModel.IsActive = newFileUpload.IsActive;
+                //viewModel.CreateFileUploadViewModel.CreatedBy = newFileUpload.CreatedBy;
+                //viewModel.CreateFileUploadViewModel.CreatedAt = newFileUpload.CreatedAt;
+
+                viewModel.TransactionTypeId = transactionType.Id;
+                viewModel.IRFDealId = NewIRFDeal.Id;
+                viewModel.FileUploadId = newFileUpload.Id;
+
+                viewModel.IsActive = viewModel.IsActive;
+                viewModel.CreatedBy = viewModel.CreatedBy;
+                viewModel.CreatedAt = viewModel.CreatedAt;
 
                 var saleListingModel = viewModel.ToSaleListingModel();
                 await _unitOfWork.SaleListing.AddAsync(saleListingModel);

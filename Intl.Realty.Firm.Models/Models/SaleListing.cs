@@ -9,19 +9,16 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models
 {
-    public class SaleListing : TransactionTypeDetailsBase
+    public class SaleListing : BaseModel
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [ForeignKey("TransactionType")]
         public int TransactionTypeId { get; set; }
         [JsonIgnore]
         public TransactionType? TransactionType { get; set; }
-        [ForeignKey("IRFDeal")]
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; }
-        [ForeignKey("FileUpload")]
         public int FileUploadId { get; set; }
         [JsonIgnore]
         public FileUpload? FileUpload { get; set; }

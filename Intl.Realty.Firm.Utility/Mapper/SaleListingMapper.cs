@@ -54,11 +54,9 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new SaleListing
             {
-                TransactionTypeId = viewModel.TransactionType.Id,
-                TransactionType = viewModel.TransactionType,
+                TransactionTypeId = viewModel.TransactionTypeId,
                 IRFDealId = viewModel.IRFDealId,
-                IRFDeal = viewModel.CreateIRFDealViewModel.ToIRFDealModel(),
-                FileUpload = viewModel.CreateFileUploadViewModel.ToFileUploadModel(),
+                FileUploadId = viewModel.FileUploadId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -70,7 +68,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListing
             {
                 Id = viewModel.Id,
-                TransactionType = viewModel.TransactionType,
+                TransactionTypeId = viewModel.TransactionTypeId,
                 IRFDealId = viewModel.IRFDealId,
                 FileUploadId = viewModel.FileUploadId,
                 IsActive = viewModel.IsActive,

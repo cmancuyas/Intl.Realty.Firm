@@ -7,9 +7,11 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
 { 
     public class CreateSaleListingViewModel
     {
-        public TransactionType TransactionType { get; set; } = new TransactionType();
+        public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
         public CreateIRFDealViewModel CreateIRFDealViewModel { get; set; } = new CreateIRFDealViewModel();
+        public int FileUploadId { get; set; }
         public CreateFileUploadViewModel CreateFileUploadViewModel { get; set; } = new CreateFileUploadViewModel();
         [Required]
         public bool IsActive { get; set; }

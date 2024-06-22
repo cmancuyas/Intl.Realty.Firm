@@ -12,9 +12,11 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
     {
         [Key]
         public int Id { get; set; }
-        public string PropertyAddress { get; set; } = string.Empty;
-        public TransactionType? TransactionType { get; set; }
+        public int TransactionTypeId { get; set; }
+        public TransactionType? TransactionType { get; set; } = new TransactionType();
         public int IRFDealId { get; set; }
-        public IRFDeal? IRFDeal { get; set; }
+        public IRFDeal? IRFDeal { get; set; } = new IRFDeal();
+        public int FileUploadId { get; set; }
+        public FileUpload? FileUpload { get; set; } = new FileUpload();
     }
 }

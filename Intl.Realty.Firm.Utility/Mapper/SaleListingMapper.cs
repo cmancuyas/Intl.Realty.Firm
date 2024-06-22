@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -14,9 +15,12 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(o => new SaleListingViewModel
                 {
                     Id = o.Id,
-                    PropertyAddress = o.PropertyAddress,
+                    TransactionTypeId = o.TransactionTypeId,
                     TransactionType = o.TransactionType,
                     IRFDealId = o.IRFDealId,
+                    IRFDeal = o.IRFDeal,
+                    FileUploadId = o.FileUploadId, 
+                    FileUpload = o.FileUpload,
                     IsActive = o.IsActive,
                     CreatedBy = o.CreatedBy,
                     CreatedAt = o.CreatedAt,
@@ -33,9 +37,12 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListingViewModel
             {
                 Id = model.Id,
-                PropertyAddress = model.PropertyAddress,
+                TransactionTypeId = model.TransactionTypeId,
                 TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
+                IRFDeal = model.IRFDeal,
+                FileUploadId = model.FileUploadId,
+                FileUpload = model.FileUpload,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -47,12 +54,14 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new SaleListing
             {
-                PropertyAddress = viewModel.PropertyAddress,
+                TransactionTypeId = viewModel.TransactionType.Id,
                 TransactionType = viewModel.TransactionType,
                 IRFDealId = viewModel.IRFDealId,
+                IRFDeal = viewModel.CreateIRFDealViewModel.ToIRFDealModel(),
+                FileUpload = viewModel.CreateFileUploadViewModel.ToFileUploadModel(),
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
-                CreatedAt = viewModel.CreatedAt
+                CreatedAt = viewModel.CreatedAt,
             };
         }
 
@@ -61,13 +70,14 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new SaleListing
             {
                 Id = viewModel.Id,
-                PropertyAddress = viewModel.PropertyAddress,
                 TransactionType = viewModel.TransactionType,
                 IRFDealId = viewModel.IRFDealId,
+                FileUploadId = viewModel.FileUploadId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
-                CreatedAt = viewModel.CreatedAt
-
+                CreatedAt = viewModel.CreatedAt,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt,
             };
         }
         public static EditSaleListingViewModel ToEditSaleListingModel(this SaleListing model)
@@ -75,9 +85,12 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditSaleListingViewModel
             {
                 Id = model.Id,
-                PropertyAddress = model.PropertyAddress,
+                TransactionTypeId = model.TransactionTypeId,
                 TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
+                EditIRFDealViewModel = model.IRFDeal?.ToEditIRFDealModel(),
+                FileUploadId = model.FileUploadId,
+                EditFileUploadViewModel = model.FileUpload?.ToEditFileUploadModel(),
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt

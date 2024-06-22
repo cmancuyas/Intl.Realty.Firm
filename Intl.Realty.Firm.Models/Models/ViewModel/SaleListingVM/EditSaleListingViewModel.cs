@@ -1,4 +1,5 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +14,12 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
     {
         [Key]
         public int Id { get; set; }
-        public string PropertyAddress { get; set; } = string.Empty;
+        public int TransactionTypeId {  get; set; } 
         public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
-        public EditIRFDealViewModel? EditIRFDealViewModel { get; set; }
-
+        public EditIRFDealViewModel? EditIRFDealViewModel { get; set; } = new EditIRFDealViewModel();
+        public int FileUploadId {  get; set; }
+        public EditFileUploadViewModel? EditFileUploadViewModel { get; set; } = new EditFileUploadViewModel();
         [Required]
         public bool IsActive { get; set; }
         [Required]

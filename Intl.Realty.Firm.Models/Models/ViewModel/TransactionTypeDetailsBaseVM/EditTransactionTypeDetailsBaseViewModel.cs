@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace Intl.Realty.Firm.Models.Models
+namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeDetailsBaseVM
 {
-    public class SaleCoop : BaseModel
+    public class EditTransactionTypeDetailsBaseViewModel
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public int TransactionTypeId { get; set; }
-        [JsonIgnore]
-        public TransactionType? TransactionType { get; set; }
-        [JsonIgnore]
-        public List<DocumentTypeAssignment>? DocumentTypeAssignmentList { get; set; }
         public string PropertyAddress { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
         public Decimal FinalSalePrice { get; set; }
         public DateTime FinalClosingDate { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public Decimal DepositAmount { get; set; }
-        public DateTime DepositDate { get; set;}
+        public DateTime DepositDate { get; set; }
         public string BuyerName { get; set; } = string.Empty;
         public string LandLordName { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
@@ -42,5 +35,9 @@ namespace Intl.Realty.Firm.Models.Models
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
+        [Required]
+        public bool IsActive { get; set; }
+        public int? UpdatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

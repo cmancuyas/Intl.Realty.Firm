@@ -3,8 +3,7 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
-using System.Linq;
+
 
 namespace Intl.Realty.Firm.Controllers
 {

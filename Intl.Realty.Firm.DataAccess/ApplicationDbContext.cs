@@ -34,45 +34,19 @@ namespace Intl.Realty.Firm.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<IRFDeal>()
-                .HasMany(h => h.FileUploads)
-                .WithOne(t => t.IRFDeal)
-                .HasForeignKey(t => t.IRFDealId)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<IRFDeal>()
-                .HasOne(h => h.TransactionType)
-                .WithOne(t => t.IRFDeal)
-                .HasForeignKey<TransactionType>(t => t.IRFDealId)
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<FileUpload>()
-                .HasOne(t => t.TransactionType)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SaleListing>()
-                .HasOne(t => t.TransactionType)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
-            //modelBuilder.Entity<SaleListing>()
-            //    .HasOne(t => t.IRFDeal)
-            //    .WithOne(t=>t.SaleListing)
-            //    .HasForeignKey<IRFDeal>(c=>c.Id);
-            //modelBuilder.Entity<IRFDeal>()
-            //    .HasOne(i => i.TransactionType)
-            //    .WithOne(t => t.IRFDeal)
-            //    .HasForeignKey<TransactionType>(i => i.Id);
-            //modelBuilder.Entity<TransactionType>()
-            //    .HasOne(i=>i.IRFDeal)
-            //    .WithOne(t=>t.TransactionType)
-            //    .HasForeignKey<TransactionType> (i=>i.Id);
-            //modelBuilder.Entity<TransactionType>()
-            //    .HasOne(i => i.SaleListing)
-            //    .WithOne(t => t.TransactionType)
-            //    .HasForeignKey<SaleListing>(i => i.Id);
-            //modelBuilder.Entity<TransactionType>()
-            //    .HasOne(i => i.FileUpload)
-            //    .WithOne(t => t.TransactionType)
-            //    .HasForeignKey<TransactionType>(i => i.Id);
 
+            modelBuilder.Entity<SaleListing>()
+            .HasOne(f => f.FileUpload)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SaleListing>()
+            .HasOne(f => f.TransactionType)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SaleListing>()
+            .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

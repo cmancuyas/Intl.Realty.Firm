@@ -89,12 +89,33 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FileUploads",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebDirectoryPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileUploads", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IRFDeals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -167,6 +188,25 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Provinces", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,72 +332,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TransactionTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IRFDealId = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TransactionTypes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TransactionTypes_IRFDeals_IRFDealId",
-                        column: x => x.IRFDealId,
-                        principalTable: "IRFDeals",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FileUploads",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IRFDealId = table.Column<int>(type: "int", nullable: false),
-                    DocumentTypeId = table.Column<int>(type: "int", nullable: false),
-                    TransactionTypeId = table.Column<int>(type: "int", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebDirectoryPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileUploads", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FileUploads_DocumentTypes_DocumentTypeId",
-                        column: x => x.DocumentTypeId,
-                        principalTable: "DocumentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FileUploads_IRFDeals_IRFDealId",
-                        column: x => x.IRFDealId,
-                        principalTable: "IRFDeals",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FileUploads_TransactionTypes_TransactionTypeId",
-                        column: x => x.TransactionTypeId,
-                        principalTable: "TransactionTypes",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -503,6 +477,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IRFDealId = table.Column<int>(type: "int", nullable: false),
+                    FileUploadId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -534,11 +509,15 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_SaleListings", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_SaleListings_FileUploads_FileUploadId",
+                        column: x => x.FileUploadId,
+                        principalTable: "FileUploads",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_SaleListings_IRFDeals_IRFDealId",
                         column: x => x.IRFDealId,
                         principalTable: "IRFDeals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SaleListings_TransactionTypes_TransactionTypeId",
                         column: x => x.TransactionTypeId,
@@ -554,7 +533,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DocumentTypeId = table.Column<int>(type: "int", nullable: false),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
-                    IRFDealId = table.Column<int>(type: "int", nullable: true),
                     LeaseCoopId = table.Column<int>(type: "int", nullable: true),
                     LeaseListingId = table.Column<int>(type: "int", nullable: true),
                     SaleCoopId = table.Column<int>(type: "int", nullable: true),
@@ -573,11 +551,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         principalTable: "DocumentTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DocumentTypeAssignments_IRFDeals_IRFDealId",
-                        column: x => x.IRFDealId,
-                        principalTable: "IRFDeals",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_DocumentTypeAssignments_LeaseCoops_LeaseCoopId",
                         column: x => x.LeaseCoopId,
@@ -646,11 +619,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "DocumentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocumentTypeAssignments_IRFDealId",
-                table: "DocumentTypeAssignments",
-                column: "IRFDealId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DocumentTypeAssignments_LeaseCoopId",
                 table: "DocumentTypeAssignments",
                 column: "LeaseCoopId");
@@ -671,21 +639,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileUploads_DocumentTypeId",
-                table: "FileUploads",
-                column: "DocumentTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FileUploads_IRFDealId",
-                table: "FileUploads",
-                column: "IRFDealId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FileUploads_TransactionTypeId",
-                table: "FileUploads",
-                column: "TransactionTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LeaseCoops_TransactionTypeId",
                 table: "LeaseCoops",
                 column: "TransactionTypeId");
@@ -701,21 +654,19 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SaleListings_FileUploadId",
+                table: "SaleListings",
+                column: "FileUploadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SaleListings_IRFDealId",
                 table: "SaleListings",
-                column: "IRFDealId",
-                unique: true);
+                column: "IRFDealId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleListings_TransactionTypeId",
                 table: "SaleListings",
                 column: "TransactionTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TransactionTypes_IRFDealId",
-                table: "TransactionTypes",
-                column: "IRFDealId",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -743,9 +694,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "DocumentTypeAssignments");
 
             migrationBuilder.DropTable(
-                name: "FileUploads");
-
-            migrationBuilder.DropTable(
                 name: "ProfilePictures");
 
             migrationBuilder.DropTable(
@@ -764,6 +712,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "DocumentTypes");
+
+            migrationBuilder.DropTable(
                 name: "LeaseCoops");
 
             migrationBuilder.DropTable(
@@ -773,13 +724,13 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "SaleCoops");
 
             migrationBuilder.DropTable(
-                name: "DocumentTypes");
-
-            migrationBuilder.DropTable(
-                name: "TransactionTypes");
+                name: "FileUploads");
 
             migrationBuilder.DropTable(
                 name: "IRFDeals");
+
+            migrationBuilder.DropTable(
+                name: "TransactionTypes");
         }
     }
 }

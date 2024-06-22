@@ -14,8 +14,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(o => new IRFDealViewModel
                 {
                     Id = o.Id,
-                    //TransactionTypeId = o.TransactionTypeId,
-                    DocumentTypeAssignmentList = o.DocumentTypeAssignmentList,
                     PropertyAddress = o.PropertyAddress,
                     FinalSalePrice = o.FinalSalePrice,
                     FinalClosingDate = o.FinalClosingDate,
@@ -51,10 +49,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new IRFDealViewModel
             {
                 Id = model.Id,
-                //Code = model.Code,
-                //Description = model.Description,
-                //TransactionTypeId = model.TransactionTypeId,
-                DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,
                 FinalClosingDate = model.FinalClosingDate,
@@ -87,10 +81,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new IRFDeal
             {
-                //Code = viewModel.Code,
-                //Description = viewModel.Description,
-                //TransactionTypeId = viewModel.TransactionTypeId,
-                DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
                 FinalClosingDate = viewModel.FinalClosingDate,
@@ -121,8 +111,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new IRFDeal
             {
-                //TransactionTypeId = viewModel.TransactionTypeId,
-                DocumentTypeAssignmentList = viewModel.DocumentTypeAssignmentList,
                 PropertyAddress = viewModel.PropertyAddress,
                 FinalSalePrice = viewModel.FinalSalePrice,
                 FinalClosingDate = viewModel.FinalClosingDate,
@@ -155,8 +143,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditIRFDealViewModel
             {
                 Id = model.Id,
-                //TransactionTypeId = model.TransactionTypeId,
-                DocumentTypeAssignmentList = model.DocumentTypeAssignmentList,
                 PropertyAddress = model.PropertyAddress,
                 FinalSalePrice = model.FinalSalePrice,
                 FinalClosingDate = model.FinalClosingDate,

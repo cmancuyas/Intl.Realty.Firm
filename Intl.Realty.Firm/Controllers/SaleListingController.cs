@@ -1,4 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository;
@@ -52,26 +53,33 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
-                string selectedTransactionTypeId = Request.Form["TransactionTypeDDL"].ToString();
+                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == "Sale Listing");
 
-                var IRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
+                // Create IRF Deal Data
+                viewModel.TransactionType = transactionType;
 
-                IRFDealModel.CreatedAt = DateTime.Now;
-                IRFDealModel.CreatedBy = 1;
+                var CreateIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
+                CreateIRFDealModel.CreatedAt = DateTime.Now;
+                CreateIRFDealModel.CreatedBy = 1;
+                await _unitOfWork.IRFDeal.AddAsync(CreateIRFDealModel);
 
-                await _unitOfWork.IRFDeal.AddAsync(IRFDealModel);
+                var NewIRFDealId = await _unitOfWork.IRFDeal.GetAsync(x=>x.Id == CreateIRFDealModel.Id);
 
-                var IRFDealId = _unitOfWork.IRFDeal.GetAsync(x=>x.Id == IRFDealModel.Id);
+                // Get IRF Deal Data
+                viewModel.TransactionType = transactionType;
+                viewModel.IRFDealId = NewIRFDealId.Id;
+                viewModel.CreateIRFDealViewModel.IsActive = NewIRFDealId.IsActive;
+                viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDealId.CreatedBy;
+                viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDealId.CreatedAt;
 
-                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.IsActive = true;
-                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.CreatedBy = 1;
-                viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.CreatedAt = DateTime.Now;
-                var fileUploadViewModel = viewModel.CreateIRFDealViewModel.CreateFileUploadViewModel.ToFileUploadModel();
+                // Create FileUploadData
+                
+                var fileUploadViewModel = viewModel.CreateFileUploadViewModel.ToFileUploadModel();
 
                 await _unitOfWork.FileUpload.AddAsync(fileUploadViewModel);
 
-                var model = viewModel.ToSaleListingModel();
-                await _unitOfWork.SaleListing.AddAsync(model);
+                var saleListingModel = viewModel.ToSaleListingModel();
+                await _unitOfWork.SaleListing.AddAsync(saleListingModel);
 
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }

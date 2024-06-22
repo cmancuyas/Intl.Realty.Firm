@@ -11,8 +11,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
     {
         [Key]
         public int Id { get; set; }
-        public int TransactionTypeId { get; set; }
-        public int IRFDealId { get; set; }
         public string FileName { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
         public string FileType { get; set; } = string.Empty;

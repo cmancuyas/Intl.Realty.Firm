@@ -16,8 +16,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new FileUploadViewModel
             {
                 Id = model.Id,
-                //TransactionTypeId = model.TransactionTypeId,
-                IRFDealId = model.IRFDealId,
                 FileName = model.FileName,
                 FilePath = model.FilePath,
                 FileType = model.FileType,
@@ -34,8 +32,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new FileUpload
             {
-                //TransactionTypeId = viewModel.TransactionTypeId,
-                IRFDealId = viewModel.IRFDealId,
                 FileName = viewModel.FileName,
                 FilePath = viewModel.FilePath,
                 FileType = viewModel.FileType,
@@ -50,8 +46,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
         {
             return new CreateFileUploadViewModel
             {
-                //TransactionTypeId = model.TransactionTypeId,
-                IRFDealId = model.IRFDealId,
                 FileName = model.FileName,
                 FilePath = model.FilePath,
                 FileType = model.FileType,
@@ -67,8 +61,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditFileUploadViewModel
             {
                 Id = model.Id,
-                //TransactionTypeId = model.TransactionTypeId,
-                IRFDealId = model.IRFDealId,
                 FileName = model.FileName,
                 FilePath = model.FilePath,
                 FileType = model.FileType,
@@ -84,8 +76,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new EditFileUploadViewModel
             {
                 Id = model.Id,
-                //TransactionTypeId = model.TransactionTypeId,
-                IRFDealId = model.IRFDealId,
                 FileName = model.FileName,
                 FilePath = model.FilePath,
                 FileType = model.FileType,
@@ -104,8 +94,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new FileUploadViewModel()
                 {
                     Id = x.Id,
-                    //TransactionTypeId = x.TransactionTypeId,
-                    IRFDealId = x.IRFDealId,
                     FileName = x.FileName,
                     FilePath = x.FilePath,
                     FileType = x.FileType,
@@ -128,8 +116,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 viewModelList = modelList.Select(x => new FileUploadViewModel()
                 {
                     Id = x.Id,
-                    //TransactionTypeId = x.TransactionTypeId,
-                    IRFDealId = x.IRFDealId,
                     FileName = x.FileName,
                     FilePath = x.FilePath,
                     FileType = x.FileType,
@@ -152,8 +138,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 modelList = modelIEnum.Select(x => new FileUpload()
                 {
                     Id = x.Id,
-                    //TransactionTypeId = x.TransactionTypeId,
-                    IRFDealId = x.IRFDealId,
                     FileName = x.FileName,
                     FilePath = x.FilePath,
                     FileType = x.FileType,

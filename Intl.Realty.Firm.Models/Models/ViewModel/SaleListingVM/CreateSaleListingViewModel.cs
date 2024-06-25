@@ -12,7 +12,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int IRFDealId { get; set; }
         public CreateIRFDealViewModel CreateIRFDealViewModel { get; set; } = new CreateIRFDealViewModel();
         public int FileUploadId { get; set; }
-        public CreateFileUploadViewModel CreateFileUploadViewModel { get; set; } = new CreateFileUploadViewModel();
+        public List<CreateFileUploadViewModel>? CreateFileUploadsViewModel { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]

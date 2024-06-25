@@ -31,29 +31,31 @@
                 <tbody>
                     @{
                         int i = 0;
-                    }
-                    @try
-                    {
-                        @foreach (DocumentType item in @Model.DocumentTypeList)
+                     }
+                        @foreach (DocumentType item in Model.DocumentTypeList)
                         {
                             <tr>
-                                <input type="hidden" asp-for="@item.Id" value="@item.Id" />
                                 <td>
                                     @Html.DisplayFor(modelItem => @item.Description)
-                                <td>
-
-                                    <input type="file" id="formFileMultiple" multiple>
                                 </td>
-                                    @{
-                                        i++;
-                                    }
+                                <input type="hidden"
+                                       asp-for="CreateFileUploadsViewModel[i].Id"
+                                       value="@item.Id" />
+                                <td>
+                                    <select class="form-select fileListDropDown"
+                                            id="fileListDropDown_@i"
+                                            data-prevVal=""
+                                            data-curVal=""
+                                            onchange="fileSelected(this)"
+                                            asp-for="CreateFileUploadsViewModel[i].FileName"
+                                            multiple required>
+                                    </select>
+                                </td>
+                               @{
+                                i++;
+                               }
                             </tr>
                         }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
                 </tbody>
             </table>
         </div>
@@ -255,3 +257,149 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        function fileSelected(that) {
+            var curval = that.dataset.curval;
+            document.getElementById(that.id).setAttribute("data-prevVal", curval);
+            document.getElementById(that.id).setAttribute("data-curVal", that.value);
+        }
+    });
+
+    //Multiple Select
+    $('.form-select.fileListDropDown').each(function () {
+        //Initialize Selectize on the select element with the specified class
+
+        var $select = $(this).selectize({
+            create: true,
+            placeholder: 'Please select your uploaded file',
+            plugins: ['remove_button'], // Enable the remove button
+        })[0].selectize;
+
+
+        $('.file').on('change', function (event) {
+            var files = event.target.files;
+            //var formFiles = document.forms['ImporterRegForm']['filesUpload.Files'];
+            //console.log("formFiles.files jq: ", formFiles.files);
+
+            $select.clear();
+            // Clear existing options
+            $select.clearOptions();
+            $select.addOption({ value: "N/A", text: "N/A" });
+            // Loop through each selected file
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                // Get the file name
+                var fileName = file.name;
+                //Check if filename contains special characters
+                if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "File name not allowed!",
+                        text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
+                        confirmButtonColor: '#14984a'
+                    });
+                    const removeFileButton = document.querySelector('.fileinput-remove-button');
+                    removeFileButton.click();
+                    $select.clear();
+                    $select.clearOptions();
+                    break;
+                }
+                else {
+                    //Check if filename exists on the application
+                    var fileModel = @Html.Raw(Json.Serialize(Model.CreateFileUploadsViewModel));
+                    var hasFile = fileModel.some(f => f.filename === fileName);
+                    if (hasFile == true) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Duplicate Filename!",
+                            text: "The filename exists in your application, please rename it before uploading.",
+                            confirmButtonColor: '#14984a'
+                        });
+                        const removeFileButton = document.querySelector('.fileinput-remove-button');
+                        removeFileButton.click();
+                        $select.clear();
+                        $select.clearOptions();
+                        break;
+                    }
+                    else {
+                        // Add options based on the file name
+                        $select.addOption({ value: fileName, text: fileName });
+                    }
+                }
+            }
+
+            // Refresh the Selectize control to update the UI
+            //$select.refreshOptions();
+        });
+
+        //If files were placed using drag and drop feature
+        $(document).on('drop', '.file-drop-zone.clearfix', function () {
+            console.log("dropped");
+            $select.clear();
+            $select.clearOptions();
+
+            var formFiles = document.forms['EditApplicationForm']['filesUpload.Files'];
+            var files = formFiles.files;
+
+            $select.addOption({ value: "N/A", text: "N/A" });
+            // Loop through each selected file
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                // Get the file name
+                var fileName = file.name;
+                //Check if filename contains special characters
+                if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "File name not allowed!",
+                        text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
+                        confirmButtonColor: '#14984a'
+                    });
+                    const removeFileButton = document.querySelector('.fileinput-remove-button');
+                    removeFileButton.click();
+                    $select.clear();
+                    $select.clearOptions();
+                    break;
+                }
+                else {
+                    //Check if filename exists on the application
+                    var fileModel = @Html.Raw(Json.Serialize(Model.CreateFileUploadsViewModel));
+                    var hasFile = fileModel.some(f => f.filename === fileName);
+                    if (hasFile == true) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Duplicate Filename!",
+                            text: "The filename exists in your application, please rename it before uploading.",
+                            confirmButtonColor: '#14984a'
+                        });
+                        const removeFileButton = document.querySelector('.fileinput-remove-button');
+                        removeFileButton.click();
+                        $select.clear();
+                        $select.clearOptions();
+                        break;
+                    }
+                    else {
+                        // Add options based on the file name
+                        $select.addOption({ value: fileName, text: fileName });
+                    }
+                }
+            }
+
+        });
+
+        //If remove button of files will be clicked
+        $(document).on('click', '.fileinput-remove-button', function () {
+            console.log("remove button clicked");
+            $select.clear();
+            $select.clearOptions();
+        });
+
+    });
+
+    //End of Multiple Select
+
+</script>

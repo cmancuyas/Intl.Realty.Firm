@@ -28,19 +28,26 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
-        public static FileUpload ToFileUploadModel(this CreateFileUploadViewModel viewModel)
+        public static List<FileUpload> ToListFileUploadModel(this List<CreateFileUploadViewModel> viewModelList)
         {
-            return new FileUpload
+            var modelList = new List<FileUpload>();
+            if (viewModelList != null)
             {
-                FileName = viewModel.FileName,
-                FilePath = viewModel.FilePath,
-                FileType = viewModel.FileType,
-                FileSize = viewModel.FileSize,
-                WebDirectoryPath = viewModel.WebDirectoryPath,
-                IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
-                CreatedAt = viewModel.CreatedAt
-            };
+                modelList = viewModelList.Select(x => new FileUpload()
+                {
+                    FileName = x.FileName,
+                    FilePath = x.FilePath,
+                    FileType = x.FileType,
+                    FileSize = x.FileSize,
+                    WebDirectoryPath = x.WebDirectoryPath,
+                    IsActive = x.IsActive,
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt
+                }).ToList();
+            }
+
+            return modelList;
+
         }
         public static CreateFileUploadViewModel ToCreateFileUploadViewModel(this FileUpload model)
         {

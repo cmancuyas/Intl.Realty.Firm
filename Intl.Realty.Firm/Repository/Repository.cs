@@ -3,6 +3,7 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Intl.Realty.Firm.Repository
 {
@@ -23,6 +24,12 @@ namespace Intl.Realty.Firm.Repository
             _context.Add(entity);
             await _context.SaveChangesAsync();
         }
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            _context.AddRange(entities);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query;
@@ -47,7 +54,6 @@ namespace Intl.Realty.Firm.Repository
             return await query.FirstOrDefaultAsync();
 
         }
-
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -65,18 +71,34 @@ namespace Intl.Realty.Firm.Repository
             }
             return await query.ToListAsync();
         }
+        public async Task<IEnumerable<T>> GetAllByIdsAsync(IEnumerable<int> ids, string? includeProperties = null, bool tracked = false)
+        {
+            IQueryable<T> query = dbSet;
+            if (ids != null)
+            {
+                query = query.Where(x => x.Equals(ids));
+            }
 
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return await query.ToListAsync();
+        }
         public async Task RemoveAsync(T entity)
         {
             _context.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> entity)
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
         {
-            _context.RemoveRange(entity);
+            _context.RemoveRange(entities);
             await _context.SaveChangesAsync();
         }
-
     }
 }

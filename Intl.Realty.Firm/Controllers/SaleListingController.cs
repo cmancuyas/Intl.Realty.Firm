@@ -45,7 +45,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
             string transactionTypeName = "Sale Listing"; // 1 = Sale Listing
-            viewModel.DocumentTypeList = await GetDocumentTypeFromDocumentTypeAssignment(transactionTypeName);
+            viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionTypeName);
             return View(viewModel);
         }
         [HttpPost]
@@ -66,6 +66,7 @@ namespace Intl.Realty.Firm.Controllers
                 var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x=>x.Id == createIRFDealModel.Id);
 
                 // Get IRF Deal Data
+                viewModel.TransactionTypeId = transactionType.Id;
                 viewModel.TransactionType = transactionType;
                 viewModel.IRFDealId = NewIRFDeal.Id;
                 viewModel.CreateIRFDealViewModel.IsActive = NewIRFDeal.IsActive;
@@ -73,18 +74,26 @@ namespace Intl.Realty.Firm.Controllers
                 viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDeal.CreatedAt;
 
                 // Create FileUploadData
-                var createFileUploadModel = viewModel.CreateFileUploadViewModel?.ToFileUploadModel();
-                await _unitOfWork.FileUpload.AddAsync(createFileUploadModel);
 
-                var newFileUpload = await _unitOfWork.FileUpload.GetAsync(x=>x.Id == createFileUploadModel.Id);
+                var listFileUploadModel = viewModel.CreateFileUploadsViewModel?.ToListFileUploadModel();
+                if (listFileUploadModel != null) 
+                {
+                    await _unitOfWork.FileUpload.AddRangeAsync(listFileUploadModel);
+                }
 
+                if (listFileUploadModel != null) 
+                {
+                    var listFileUploadIds = listFileUploadModel.Select(x => x.Id).ToList();
+                    var createdFileUploads = await _unitOfWork.FileUpload.GetAllByIdsAsync(listFileUploadIds);
+                }
+                
                 //viewModel.CreateFileUploadViewModel.IsActive = newFileUpload.IsActive;
                 //viewModel.CreateFileUploadViewModel.CreatedBy = newFileUpload.CreatedBy;
                 //viewModel.CreateFileUploadViewModel.CreatedAt = newFileUpload.CreatedAt;
 
                 viewModel.TransactionTypeId = transactionType.Id;
                 viewModel.IRFDealId = NewIRFDeal.Id;
-                viewModel.FileUploadId = newFileUpload.Id;
+                //viewModel.FileUploadId = newFileUpload.Id;
 
                 viewModel.IsActive = viewModel.IsActive;
                 viewModel.CreatedBy = viewModel.CreatedBy;
@@ -99,7 +108,7 @@ namespace Intl.Realty.Firm.Controllers
             return View(viewModel);
         }
 
-        public async Task<List<DocumentType>> GetDocumentTypeFromDocumentTypeAssignment(string transactionTypeName)
+        public async Task<List<DocumentType>> GetDocumentTypesFromDocumentTypeAssignment(string transactionTypeName)
         {
             List<DocumentType> documentTypeList = new List<DocumentType>();
 

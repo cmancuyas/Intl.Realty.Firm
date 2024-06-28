@@ -9,6 +9,9 @@ namespace Intl.Realty.Firm.Models.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int SaleListingId { get; set; }
+        public SaleListing? SaleListing { get; set; }
+        [JsonIgnore]
         public string FileName { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
         public string FileSize {  get; set; } = string.Empty;

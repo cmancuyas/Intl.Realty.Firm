@@ -19,8 +19,6 @@ namespace Intl.Realty.Firm.Models.Models
         public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; }
-        public int FileUploadId { get; set; }
-        [JsonIgnore]
-        public FileUpload? FileUpload { get; set; }
+        public ICollection<FileUpload>? FileUploads { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
+        public DbSet<FileCheckList> FileCheckLists { get; set; }
         public DbSet<IRFDeal> IRFDeals { get; set; }
         public DbSet<SaleListing> SaleListings { get; set; }
         public DbSet<SaleCoop> SaleCoops { get; set; }
@@ -36,8 +37,9 @@ namespace Intl.Realty.Firm.DataAccess
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<SaleListing>()
-            .HasOne(f => f.FileUpload)
-            .WithMany()
+            .HasMany(f=>f.FileUploads)
+            .WithOne(s=>s.SaleListing)
+            .HasForeignKey(f=>f.SaleListingId)
             .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<SaleListing>()
             .HasOne(f => f.TransactionType)

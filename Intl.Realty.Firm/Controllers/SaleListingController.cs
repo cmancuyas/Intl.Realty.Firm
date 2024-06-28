@@ -34,7 +34,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties:"TransactionType,IRFDeal,FileUpload");
+            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties:"TransactionType,IRFDeal");
 
             var viewModel = modelList.ToSaleListingListViewModel();
 

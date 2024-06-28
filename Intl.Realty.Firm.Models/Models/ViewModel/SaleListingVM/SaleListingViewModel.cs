@@ -16,7 +16,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public TransactionType? TransactionType { get; set; } = new TransactionType();
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; } = new IRFDeal();
-        public int FileUploadId { get; set; }
-        public FileUpload? FileUpload { get; set; } = new FileUpload();
+        public ICollection<FileUpload>? FileUploads { get; set; }
     }
 }

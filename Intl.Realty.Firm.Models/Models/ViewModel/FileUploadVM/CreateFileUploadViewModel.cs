@@ -9,6 +9,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
 {
     public class CreateFileUploadViewModel
     {
+        public int TransactionTypeId { get; set; }
+        public int DocumentTypeId { get; set; }
         public string FileName { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
         public string FileType { get; set; } = string.Empty;
@@ -20,5 +22,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
         public int CreatedBy { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
+        public List<string>? FileNames { get; set; }
     }
 }

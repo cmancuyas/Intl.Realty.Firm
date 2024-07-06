@@ -291,13 +291,15 @@
         </form>
     </div>
 
-
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function ($) {
+           
             jQuery.noConflict();
+            // debugger;
             jQuery(function ($) {
                 const saleListingForm = document.getElementById('SaleListingForm');
-                $("#btnSubmit").click(function () {
+                $("#btnSubmit").click(function ($) {
+                    debugger;
                     //Check if required fields are filled up
                     if ($("#SaleListingForm")[0].checkValidity()) {
                         var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];

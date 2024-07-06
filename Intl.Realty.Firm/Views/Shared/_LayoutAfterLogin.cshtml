@@ -53,302 +53,9 @@
 
 </head>
 <body>
-    <aside class="sidebar">
-        <div class="h-auto d-flex align-items-center justify-content-center me-2 mt-3">
-            <img src="~/files/img/logo-irf-white.png" alt="INTLRealtyFirm Logo" class="img-fluid" />
-        </div>
 
-        <div class="nav-bar-container">
-            <div class="accordion py-3" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#menu-dashboard" aria-expanded="false" aria-controls="menu-dashboard" asp-controller="Home" asp-action="Dashboard">
-                            <i data-feather="bar-chart-2" data-placement="bottom" title="Dashboard"></i>
-                            <span>Dashboard</span>
-                        </button>
-                    </h2>
-                </div>
+    <partial name="~/Views/Shared/_SidebarItems.cshtml" />
 
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#menu-administrator" aria-expanded="false" aria-controls="menu-administrator">
-                            <i data-feather="unlock" data-bs-placement="right" title="Administrator"></i>
-                            <span class="flex-grow-1">Administrator</span>
-                        </button>
-                    </h2>
-                    <div id="menu-administrator" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="User" asp-action="Index">
-                                                <span data-bs-placement="right" title="Users">Users</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="UserType" asp-action="Index">
-                                                <span data-bs-placement="right" title="UserType">User Types</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="Department" asp-action="Index">
-                                                <span data-bs-placement="right" title="Departments">Departments</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="Province" asp-action="Index">
-                                                <span data-bs-placement="right" title="Province">Provinces/States</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="TransactionType" asp-action="Index">
-                                                <span data-bs-placement="right" title="Transaction Types">Transaction Types</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="DocumentType" asp-action="Index">
-                                                <span data-bs-placement="right" title="Document Types">Document Types</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="administratorSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="DocumentTypeAssignment" asp-action="Index">
-                                                <span data-bs-placement="right" title="Document Types Assignment">Document Types Assignment</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#menu-transactions" aria-expanded="false" aria-controls="menu-transactions">
-                            <i data-feather="file" data-bs-placement="right" title="Transactions"></i>
-                            <span class="flex-grow-1">Upload New Transactions</span>
-                        </button>
-                    </h2>
-                    <div id="menu-transactions" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="transactionSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="SaleListing" asp-action="Index">
-                                                <span data-bs-placement="right" title="SaleListing">Sale Listing</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="transactionSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="SaleCoop" asp-action="Index">
-                                                <span data-bs-placement="right" title="SaleCoop">Sale Co-op</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="transactionSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="LeaseListing" asp-action="Index">
-                                                <span data-bs-placement="right" title="LeaseListing">Lease Listing</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="transactionSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="LeaseCoop" asp-action="Index">
-                                                <span data-bs-placement="right" title="LeaseCoop">Lease Co-op</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#menu-info-packages" aria-expanded="false" aria-controls="menu-info-packages">
-
-                            <i data-feather="info" data-bs-placement="right" title="InformationPackages"></i>
-                            <span class="flex-grow-1">Information Packages</span>
-                        </button>
-                    </h2>
-                    <div id="menu-info-packages" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="informationPackageSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="InformationPackage" asp-action="BusinessCards">
-                                                <span data-bs-placement="right" title="BusinessCards">Business Cards & Signs</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="informationPackageSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="InformationPackage" asp-action="CommissionAdvance">
-                                                <span data-bs-placement="right" title="CommissionAdvance">Apply for Commission Advance</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" data-bs-target="#menu-training" aria-expanded="false" aria-controls="menu-training" asp-controller="Training" asp-action="Training">
-                            <i data-feather="award" data-placement="bottom" title="Training"></i>
-                            <span>Training</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#menu-programs" aria-expanded="false" aria-controls="menu-programs">
-
-                            <i data-feather="bookmark" data-bs-placement="right" title="IrdPrograms"></i>
-                            <span class="flex-grow-1">IRF Programs</span>
-                        </button>
-                    </h2>
-                    <div id="menu-programs" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="irfProgramsSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="IrfPrograms" asp-action="Mortgage">
-                                                <span data-bs-placement="right" title="Mortgage">IRF Mortgage Program</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="irfProgramsSubNavItem sub-nav-item">
-                                    <ul class="list-unstyled">
-                                        <li class="my-2 ms-4">
-                                            <a class="sub-nav-link" asp-controller="IrfPrograms" asp-action="Leads">
-                                                <span data-bs-placement="right" title="Leads">IRF Leads Program</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" aria-expanded="false" asp-controller="IrfBrandedWebsite" asp-action="IrfBrandedWebsite">
-                            <i data-feather="globe" data-placement="bottom" title="IrfBrandedWebsite"></i>
-                            <span>IRF Branded Website</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" aria-expanded="false" asp-controller="PurchaseIRFStocks" asp-action="PurchaseIRFStocks">
-                            <i data-feather="bar-chart" data-placement="bottom" title="PurchaseIRFStocks"></i>
-                            <span>Purchase IRF Stocks</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" aria-expanded="false" asp-controller="ReferAnAgent" asp-action="ReferAnAgent">
-                            <i data-feather="user-plus" data-placement="bottom" title="ReferAnAgent"></i>
-                            <span>Refer an Agent</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" aria-expanded="false" asp-controller="Preconstruction" asp-action="Preconstruction">
-                            <i data-feather="package" data-placement="bottom" title="Preconstruction"></i>
-                            <span>Pre-Construction</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" asp-controller="Media" asp-action="Index">
-                            <i data-feather="upload" data-placement="bottom" title="Media"></i>
-                            <span>Media</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" asp-controller="AccountManagement" asp-action="AccountManagement">
-                            <i data-feather="activity" data-placement="bottom" title="Account Management"></i>
-                            <span>Account Management</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" asp-controller="Profile" asp-action="Profile">
-                            <i data-feather="user" data-placement="bottom" title="Profile"></i>
-                            <span>Profile</span>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed no-arrow" type="button" data-bs-toggle="collapse" asp-controller="Account" asp-action="Logout">
-                            <i data-feather="power" data-placement="bottom" title="Logout"></i>
-                            <span>Logout</span>
-                        </button>
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </aside>
     <div class="top-bar">
         <div class="top-bar-container shadow-sm d-flex">
             <div class="d-flex align-items-center justify-content-between mx-4 w-100 d-none">
@@ -447,14 +154,12 @@
 
             var navConfigs = [
                 { itemId: '#administratorNavItem', subNavClass: '.administratorSubNavItem', caret: '#administratorNavLink .caret' },
-                { itemId: '#projectManagementNavItem', subNavClass: '.projectManagementSubNavItem', caret: '#projectManagementNavLink .caret' },
-                { itemId: '#knowledgeManagementNavItem', subNavClass: '.knowledgeManagementSubNavItem', caret: '#knowledgeManagementNavLink .caret' },
-                { itemId: '#partnerManagementNavItem', subNavClass: '.partnerManagementSubNavItem', caret: '#partnerManagementNavLink .caret' },
-                { itemId: '#LGISNavItem', subNavClass: '.LGISSubNavItem', caret: '#LGISNavLink .caret' },
-                { itemId: '#OOTDNavItem', subNavClass: '.OOTDSubNavItem', caret: '#OOTDNavLink .caret' },
-                { itemId: '#projectPreparationNavItem', subNavClass: '.projectPreparationSubNavItem', caret: '#projectPreparationNavLink .caret' },
-                { itemId: '#projectEvaluationNavItem', subNavClass: '.projectEvaluationSubNavItem', caret: '#projectEvaluationNavLink .caret' },
-                { itemId: '#projectAccountsNavItem', subNavClass: '.projectAccountsSubNavItem', caret: '#projectAccountsNavLink .caret' },
+                { itemId: '#transactionManagementNavItem', subNavClass: '.transactionManagementSubNavItem', caret: '#transactionManagementNavLink .caret' },
+                { itemId: '#informationPackageManagementNavItem', subNavClass: '.informationPackageManagementSubNavItem', caret: '#informationPackageManagementNavLink .caret' },
+                { itemId: '#irfProgramManagementNavItem', subNavClass: '.irfProgramManagementSubNavItem', caret: '#irfProgramPackageManagementNavLink .caret' },
+                { itemId: '#irfBrandedWebsiteNavItem', subNavClass: '.irfBrandedWebsiteSubNavItem', caret: '#irfBrandedWebsiteNavLink .caret' },
+                { itemId: '#purchaseIRFStocksNavItem', subNavClass: '.purchaseIRFStocksSubNavItem', caret: '#purchaseIRFStocksNavLink .caret' },
+                { itemId: '#referAnAgentNavItem', subNavClass: '.referAnAgentSubNavItem', caret: '#referAnAgentNavLink .caret' },
             ];
 
             navConfigs.forEach(function (config) {
@@ -513,18 +218,71 @@
             var navItems = [
                 {
                     id: 'administratorNavItem',
-                    links: ["Administrator", "Division", "ProjectSector", "Section", "ConsultantStatus", "ProjectStatus", "ProjectFunding", "ProjectType", "ConsultantType", "Office", "Region", "ActivityLog", "Workflow", "Position", "User", "Role", "Permission"],
+                    links: ["Administrator",
+                        "User",
+                        "UserType",
+                        "Department",
+                        "Province",
+                        "TransactionType",
+                        "DocumentType",
+                        "DocumentTypeAssignment"
+                    ],
                     subNavClass: 'administratorSubNavItem',
                     caretId: 'administratorNavLink'
                 },
-                { id: 'knowledgeManagementNavItem', links: ["KMPPD", "KMPPDPlans", "KMPPDCapacity", "KMPPDChallenges", "KMPMD", "coreProcesses", "projectKnowledge", "knowledgemanagementapproval"], subNavClass: 'knowledgeManagementSubNavItem', caretId: 'knowledgeManagementNavLink' },
-                { id: 'partnerManagementNavItem', links: ["Consultant", "Stakeholder", "PartnerInstitution", "TechnicalPartner", "StakeHolder"], subNavClass: 'partnerManagementSubNavItem', caretId: 'partnerManagementNavLink' },
-                { id: 'LGISNavItem', links: ["PMED", "LGISOM"], subNavClass: 'LGISSubNavItem', caretId: 'LGISNavLink' },
-                { id: 'OOTDNavItem', links: ["FASPSDB", "Profiles"], subNavClass: 'OOTDSubNavItem', caretId: 'OOTDNavLink' },
-                { id: 'projectManagementNavItem', links: ["Project", "PMDApproval", "PMD", "ProjectManagementApproval"], subNavClass: 'projectManagementSubNavItem', caretId: 'projectManagementNavLink' },
-                { id: 'projectPreparationNavItem', links: ["MyProposal", "ConceptProposal", "ProjectProposal", "ProposalApproval"], subNavClass: 'projectPreparationSubNavItem', caretId: 'projectPreparationNavLink' },
-                { id: 'projectEvaluationNavItem', links: ["Portfolio", "EvaluationTimeline", "AnnualReport", "ProjectEvaluationApproval"], subNavClass: 'projectEvaluationSubNavItem', caretId: 'projectEvaluationNavLink' },
-                { id: 'projectAccountsNavItem', links: ["ProjectAccounts"], subNavClass: 'projectAccountsSubNavItem', caretId: 'projectAccountsNavLink' }
+                {
+                    id: 'transactionManagementNavItem',
+                    links: [
+                        "SaleListing",
+                        "SaleCoop",
+                        "LeaseListing",
+                        "LeaseCoop",
+                    ],
+                    subNavClass: 'transactionManagementSubNavItem',
+                    caretId: 'transactionManagementNavLink'
+                },
+                {
+                    id: 'informationPackageManagementNavItem',
+                    links: [
+                        "BusinessCard",
+                        "CommissionAdvance"
+                    ],
+                    subNavClass: 'informationPackageManagementSubNavItem',
+                    caretId: 'informationPackageManagementNavLink'
+                },
+                {
+                    id: 'irfProgramManagementNavItem',
+                    links: [
+                        "IRFMortgage",
+                        "IRFLead"
+                    ],
+                    subNavClass: 'irfProgramManagementSubNavItem',
+                    caretId: 'irfProgramManagementNavLink'
+                },
+                {
+                    id: 'irfBrandedWebsiteNavItem',
+                    links: [
+                        "IRFBrandedWebsite"
+                    ],
+                    subNavClass: 'irfBrandedWebsiteSubNavItem',
+                    caretId: 'irfBrandedWebsiteNavLink'
+                },
+                {
+                    id: 'purchaseIRFStocksNavItem',
+                    links: [
+                        "PurchaseIRFStocks"
+                    ],
+                    subNavClass: 'purchaseIRFStocksSubNavItem',
+                    caretId: 'purchaseIRFStocksNavLink'
+                },
+                {
+                    id: 'referAnAgentNavItem',
+                    links: [
+                        "ReferAnAgent"
+                    ],
+                    subNavClass: 'referAnAgentSubNavItem',
+                    caretId: 'referAnAgentNavLink'
+                }
             ];
 
             $('.nav-item').removeClass('selected');
@@ -585,12 +343,13 @@
 
         function toggleAllCarets() {
             $('#administratorNavLink .caret').toggleClass('down');
-            $('#knowledgeManagementNavLink .caret').toggleClass('down');
-            $('#partnerManagementNavLink .caret').toggleClass('down');
-            $('#projectManagementNavLink .caret').toggleClass('down');
-            $('#LGISNavLink .caret').toggleClass('down');
-            $('#OOTDNavLink .caret').toggleClass('down');
-            $('#projectPreparationNavLink .caret').toggleClass('down');
+            $('#transactionManagementNavLink .caret').toggleClass('down');
+            $('#informationPackageManagementNavLink .caret').toggleClass('down');
+            $('#irfProgramManagementNavLink .caret').toggleClass('down');
+            $('#irfBrandedWebsiteNavLink .caret').toggleClass('down');
+            $('#purchaseIRFStocksNavLink .caret').toggleClass('down');
+            $('#referAnAgentNavLink .caret').toggleClass('down');
+
         }
     </script>
 

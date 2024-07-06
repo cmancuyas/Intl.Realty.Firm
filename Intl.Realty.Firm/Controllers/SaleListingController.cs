@@ -34,7 +34,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties:"TransactionType,IRFDeal");
+            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType,IRFDeal");
 
             var viewModel = modelList.ToSaleListingListViewModel();
 
@@ -63,7 +63,7 @@ namespace Intl.Realty.Firm.Controllers
                 createIRFDealModel.CreatedBy = 1;
                 await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
 
-                var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x=>x.Id == createIRFDealModel.Id);
+                var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
 
                 // Get IRF Deal Data
                 viewModel.TransactionTypeId = transactionType.Id;
@@ -76,17 +76,17 @@ namespace Intl.Realty.Firm.Controllers
                 // Create FileUploadData
 
                 var listFileUploadModel = viewModel.CreateFileUploadsViewModel?.ToListFileUploadModel();
-                if (listFileUploadModel != null) 
+                if (listFileUploadModel != null)
                 {
                     await _unitOfWork.FileUpload.AddRangeAsync(listFileUploadModel);
                 }
 
-                if (listFileUploadModel != null) 
+                if (listFileUploadModel != null)
                 {
                     var listFileUploadIds = listFileUploadModel.Select(x => x.Id).ToList();
                     var createdFileUploads = await _unitOfWork.FileUpload.GetAllByIdsAsync(listFileUploadIds);
                 }
-                
+
                 //viewModel.CreateFileUploadViewModel.IsActive = newFileUpload.IsActive;
                 //viewModel.CreateFileUploadViewModel.CreatedBy = newFileUpload.CreatedBy;
                 //viewModel.CreateFileUploadViewModel.CreatedAt = newFileUpload.CreatedAt;
@@ -112,9 +112,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             List<DocumentType> documentTypeList = new List<DocumentType>();
 
-            var transactionType = await _unitOfWork.TransactionType.GetAsync(x=>x.Description == transactionTypeName);
+            var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == transactionTypeName);
 
-            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties:"DocumentType,TransactionType") as List<DocumentTypeAssignment>;
+            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties: "DocumentType,TransactionType") as List<DocumentTypeAssignment>;
 
             var documentTypeIds = documentTypeAssignmentList?
                                     .GroupBy(x => x.DocumentType)
@@ -135,6 +135,79 @@ namespace Intl.Realty.Firm.Controllers
                 documentTypeList = documentTypeIEnum.ToList();
             }
             return documentTypeList;
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteModal(int id)
+        {
+            var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var editSaleListingViewModel = model.ToEditSaleListingViewModel();
+
+            return PartialView("~/Views/SaleListing/Modal/DeleteModal.cshtml", editSaleListingViewModel);
+        }
+
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<SaleListing> modelList = new List<SaleListing>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
+            {
+                return NotFound();
+            }
+
+            var transactionTypeViewModelList = modelList.ToSaleListingListViewModel();
+
+            IEnumerable<SaleListingViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+
+            return PartialView("~/Views/SaleListing/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.SaleListing.RemoveAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<SaleListingViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var documentTypeList = await _unitOfWork.SaleListing.GetAllAsync();
+            var modelList = documentTypeList.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.SaleListing.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
 }

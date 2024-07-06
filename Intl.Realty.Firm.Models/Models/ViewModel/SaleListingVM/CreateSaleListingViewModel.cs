@@ -15,6 +15,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public ICollection<FileUpload>? FileUploads { get; set; }
         public List<CreateFileUploadViewModel>? CreateFileUploadsViewModel { get; set; }
         public FormFileUploadList? FileUploadList { get; set; }
+        public string? Dataxxx { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]

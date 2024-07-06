@@ -6,13 +6,15 @@
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
             <h1 class="text-blue mb-0">Sales Listing</h1>
             <div class="d-flex gap-4">
-                <button id="btnMultipleDelete"
-                        class="btn btn-danger d-none align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmModal">
-                    <i data-feather="x" class="w-15px h-auto me-1"></i>
-                    Delete
-                </button>
+                <a id="btnMultipleDelete"
+                   class="btn btn-danger d-none align-items-center px-4"
+                   data-toggle="tooltip"
+                   data-bs-placement="left"
+                   title="Delete"
+                   onclick="OpenMultipleDeleteModal()">
+                    <i data-feather="trash-2"></i> Delete
+                </a>
+
                 <a asp-action="Create"
                    class="btn btn-primary d-flex align-items-center">
                     <i data-feather="plus" class="w-15px h-auto me-1"></i>Add New
@@ -108,95 +110,21 @@
     </form>
 </div>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
         feather.replace();
-        // PAGINATION
-        const rowsPerPage = 2; // Number of rows per page
-        const $table = $('#modelTable');
-        const $tbody = $table.find('tbody');
-        const $rows = $tbody.find('tr');
-        const totalRows = $rows.length;
-        let currentPage = 1;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-        function displayRows() {
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            $rows.each(function (index) {
-                $(this).toggle(index >= start && index < end);
-            });
-        }
-
-        function updatePaginationButtons() {
-            $('#prevPage').parent().toggleClass('disabled', currentPage === 1 || totalPages === 0);
-            $('#nextPage').parent().toggleClass('disabled', currentPage === totalPages || totalPages === 0);
-
-            $('#pagination li.page-number').remove();
-            for (let i = 1; i <= totalPages; i++) {
-                const $li = $('<li class="page-item page-number"><a class="page-link" href="#">' + i + '</a></li>');
-                $li.insertBefore($('#nextPage').parent());
-            }
-
-            $('#pagination li.page-number').removeClass('active').eq(currentPage - 1).addClass('active');
-        }
-
-        $(document).on('click', '#pagination li.page-number', function (event) {
-            event.preventDefault();
-            currentPage = parseInt($(this).text());
-            displayRows();
-            updatePaginationButtons();
-        });
-
-        $('#prevPage').click(function (event) {
-            event.preventDefault();
-            if (currentPage > 1) {
-                currentPage--;
-                displayRows();
-                updatePaginationButtons();
-            }
-        });
-
-        $('#nextPage').click(function (event) {
-            event.preventDefault();
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayRows();
-                updatePaginationButtons();
-            }
-        });
-
-        // Initial display
-        displayRows();
-        updatePaginationButtons();
-
-        // Show pagination if needed
-        if (totalPages > 1) {
-            $('#paginationNav').show();
-            $('#prevPageItem').show();
-            $('#nextPageItem').show();
-        } else {
-            $('#paginationNav').hide();
-            $('#prevPageItem').hide();
-            $('#nextPageItem').hide();
-        }
-        // END PAGINATION
-
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.data-table').DataTable({
             columnDefs: [
-                { targets: [0], orderable: false }
+                { targets: [0], orderable: false },
+                { targets: [1, 2], orderable: true },
             ],
             order: [[1, 'asc']]
         });
 
-        $('#modelTable').on('click', 'tbody tr', function (event) {
-            // Check if the clicked element is not the checkbox
-            if (!$(event.target).is(':checkbox')) {
-                var SaleListingId = $(this).data('SaleListing-id');
-                window.location.href = '@Url.Action("Edit", "UserType")' + '?id=' + SaleListingId;
-            }
-        });
+        $('[id^=dt-search]').attr('placeholder', 'Search...').addClass('fst-italic');
+
 
         $('.column-checkbox').change(function () {
             var isChecked = $(this).prop('checked');
@@ -233,30 +161,26 @@
             $('.column-checkbox').prop('checked', allChecked);
         });
 
-        if (getUrlParameter('deleteSuccess') === 'true') {
-            toastr.success('Selection deleted successfully!', '', {
-                timeOut: 10000,
-                closeButton: true,
-                onHidden: function () {
-                    updateUrlParameter('deleteSuccess', '');
-                }
-            });
-        }
-
         $('#btnConfirmDelete').click(function () {
             $('#deleteConfirmModal').modal('hide');
             window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
         });
+
+        $("#cancelBtn").click(function () {
+            CloseModal();
+        });
+
+        handleToastrNotification('addSuccess', 'New SaleListing added successfully!');
+        handleToastrNotification('editSuccess', 'SaleListing updated successfully!');
+        handleToastrNotification('deleteSuccess', 'SaleListing deleted successfully!');
     });
 
-    $("#cancelBtn").click(function () {
-        CloseModal();
-    });
     function CloseModal() {
         $("#deleteConfirmModal").modal("hide");
         let elem = document.querySelector('#deleteConfirmModal');
         elem.parentNode.removeChild(elem);
     }
+
     function OpenMultipleDeleteModal() {
         var selectedRows = getSelectedRows();
         var selectedIdsArray = getIdsFromSelectedRows(selectedRows);
@@ -275,23 +199,31 @@
             ids.push(selectedRows[i].value);
         return ids;
     }
-
-    // function OpenCreateModal() {
-    //     $('#CreateModalContainer').load('/SaleListing/Create/', function () {
-    //         $("#createModal").modal("show");
-    //     });
-    // }
-    // function OpenEditModal(id) {
-    //     $('#EditModalContainer').load('/SaleListing/Edit/' + id, function () {
-    //         $("#editModal").modal("show");
-    //     });
-    // }
-
+    function OpenCreateModal() {
+        $('#CreateModalContainer').load('/SaleListing/CreateModal/', function () {
+            $("#createModal").modal("show");
+        });
+    }
+    function OpenEditModal(id) {
+        $('#EditModalContainer').load('/SaleListing/EditModal/' + id, function () {
+            $("#editModal").modal("show");
+        });
+    }
     function OpenDeleteModal(id) {
 
         $('#DeleteModalContainer').load('/SaleListing/DeleteModal/' + id, function () {
 
             $("#deleteConfirmModal").modal("show");
         });
+    }
+    function ClearSearch() {
+        $("#dt-search-0").val("").keyup();
+    }
+
+    function getSelectedRows() {
+        var table = $('#modelTable').dataTable();
+        selectedRows = table.find('input[name="selectedRows"]:checked').serializeArray();
+
+        return selectedRows;
     }
 </script>

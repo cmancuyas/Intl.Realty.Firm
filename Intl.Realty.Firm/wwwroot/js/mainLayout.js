@@ -3,11 +3,11 @@
     $('[data-toggle="tooltip"]').tooltip();
     // $('.data-table').DataTable();
     $('[id^=dt-search-]').attr('placeholder', 'Search...').addClass('fst-italic');
-    $('.form-select').each(function () {
-        if ($(this).closest('.table-responsive').length === 0) {
-            $(this).select2();
-        }
-    });
+    //$('.form-select').each(function () {
+    //    if ($(this).closest('.table-responsive').length === 0) {
+    //        $(this).select2();
+    //    }
+    //});
     $(".required").each(function () {
         $(this).append('<span class="text-danger ms-1">*</span>');
     });
@@ -35,7 +35,7 @@
         });
     });
 
-    $('#sidebarToggle').click(function () {
+    $('#sidebarToggle').click(function ($) {
         $('aside').toggleClass('aside-minimized');
         $('.nav-link').toggleClass('hide-text');
 

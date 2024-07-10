@@ -5,5 +5,6 @@ namespace Intl.Realty.Firm.Repository.IRepository
     public interface ITransactionTypeRepository : IRepository<TransactionType>
     {
         Task UpdateAsync(TransactionType model);
+        Task<TransactionType> GetByNameAsync(string name);
     }
 }

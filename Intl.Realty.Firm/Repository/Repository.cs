@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Web.Mvc;
 
 namespace Intl.Realty.Firm.Repository
 {
@@ -61,24 +62,6 @@ namespace Intl.Realty.Firm.Repository
             {
                 query = query.Where(filter);
             }
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return await query.ToListAsync();
-        }
-        public async Task<IEnumerable<T>> GetAllByIdsAsync(IEnumerable<int> ids, string? includeProperties = null, bool tracked = false)
-        {
-            IQueryable<T> query = dbSet;
-            if (ids != null)
-            {
-                query = query.Where(x => x.Equals(ids));
-            }
-
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties

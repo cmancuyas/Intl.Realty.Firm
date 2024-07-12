@@ -198,6 +198,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -217,7 +220,14 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SaleListingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -232,7 +242,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DocumentTypeId");
+
                     b.HasIndex("SaleListingId");
+
+                    b.HasIndex("TransactionTypeId");
 
                     b.ToTable("FileUploads");
                 });
@@ -1104,13 +1118,29 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", "SaleListing")
                         .WithMany("FileUploads")
                         .HasForeignKey("SaleListingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
                     b.Navigation("SaleListing");
+
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>

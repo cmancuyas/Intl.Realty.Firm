@@ -36,11 +36,11 @@ namespace Intl.Realty.Firm.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SaleListing>()
-            .HasMany(f=>f.FileUploads)
-            .WithOne(s=>s.SaleListing)
-            .HasForeignKey(f=>f.SaleListingId)
-            .OnDelete(DeleteBehavior.NoAction);
+            ////modelBuilder.Entity<SaleListing>()
+            ////.HasMany(f => f.FileUploads)
+            ////.WithMany(f=>f.)
+            //.HasForeignKey(f=>f.SaleListingId)
+            //.OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<SaleListing>()
             .HasOne(f => f.TransactionType)
             .WithMany()

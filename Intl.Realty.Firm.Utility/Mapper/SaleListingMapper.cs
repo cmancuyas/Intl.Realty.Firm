@@ -1,7 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
-using System.Reflection;
-using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -62,6 +60,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
                 IRFDealId = model.IRFDealId,
+                FileUploads = model.FileUploads,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -95,7 +94,9 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = x.Id,
                     TransactionTypeId = x.TransactionTypeId,
+                    TransactionType = x.TransactionType,
                     IRFDealId = x.IRFDealId,
+                    IRFDeal = x.IRFDeal,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

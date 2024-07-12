@@ -21,6 +21,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 FileType = model.FileType,
                 FileSize = model.FileSize,
                 WebDirectoryPath = model.WebDirectoryPath,
+                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -40,6 +41,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     FileType = x.FileType,
                     FileSize = x.FileSize,
                     WebDirectoryPath = x.WebDirectoryPath,
+                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt
@@ -58,6 +60,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 FileType = model.FileType,
                 FileSize = model.FileSize,
                 WebDirectoryPath = model.WebDirectoryPath,
+                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -73,6 +76,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 FileType = model.FileType,
                 FileSize = model.FileSize,
                 WebDirectoryPath = model.WebDirectoryPath,
+                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -88,6 +92,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 FileType = model.FileType,
                 FileSize = model.FileSize,
                 WebDirectoryPath = model.WebDirectoryPath,
+                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -106,6 +111,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     FileType = x.FileType,
                     FileSize = x.FileSize,
                     WebDirectoryPath = x.WebDirectoryPath,
+                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -128,6 +134,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     FileType = x.FileType,
                     FileSize = x.FileSize,
                     WebDirectoryPath = x.WebDirectoryPath,
+                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -150,6 +157,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     FileType = x.FileType,
                     FileSize = x.FileSize,
                     WebDirectoryPath = x.WebDirectoryPath,
+                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

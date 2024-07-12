@@ -360,6 +360,7 @@
         $("#btnConfirmSubmit").click(function () {
 
             $("#confirmSubmitModal").modal("hide");
+            debugger;
             saleListingForm.submit();
             // CreateSaleListing();
             // $("#confirmSuccessModal").modal("show");
@@ -491,7 +492,7 @@
     }
 
     function fileSelected(that) {
-        debugger;
+        // debugger;
         var curval = that.dataset.curval;
         document.getElementById(that.id).setAttribute("data-prevVal", curval);
         document.getElementById(that.id).setAttribute("data-curVal", that.value);
@@ -509,7 +510,7 @@
             data: parameters,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
-                debugger;
+                // debugger;
                 // NOTE: TO DO better way of calling callback function from parent
                 CloseModal();
                 // Swal.fire({
@@ -524,7 +525,7 @@
             },
 
             error: function (xhr) {
-                debugger;
+                // debugger;
                 alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
             }
         });

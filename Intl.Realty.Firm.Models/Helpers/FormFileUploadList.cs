@@ -10,5 +10,6 @@ namespace Intl.Realty.Firm.Models.Helpers
     public class FormFileUploadList : Response
     {
         public List<IFormFile>? Files { get; set; }
+        public int DocumentTypeId { get; set; }
     }
 }

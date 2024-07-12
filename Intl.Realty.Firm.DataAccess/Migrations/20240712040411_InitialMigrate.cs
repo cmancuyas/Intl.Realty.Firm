@@ -114,11 +114,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+
                     PropertyAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FinalSalePrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     FinalClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -139,7 +135,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     SellersPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuyersLawyer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuyersLawyerAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BuyersPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    BuyersPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -551,12 +552,15 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SaleListingId = table.Column<int>(type: "int", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WebDirectoryPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OriginalFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SaleListingId = table.Column<int>(type: "int", nullable: false),
+                    DocumentTypeId = table.Column<int>(type: "int", nullable: false),
+                    TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -567,10 +571,23 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_FileUploads", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_FileUploads_DocumentTypes_DocumentTypeId",
+                        column: x => x.DocumentTypeId,
+                        principalTable: "DocumentTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_FileUploads_SaleListings_SaleListingId",
                         column: x => x.SaleListingId,
                         principalTable: "SaleListings",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileUploads_TransactionTypes_TransactionTypeId",
+                        column: x => x.TransactionTypeId,
+                        principalTable: "TransactionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -638,9 +655,19 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FileUploads_DocumentTypeId",
+                table: "FileUploads",
+                column: "DocumentTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FileUploads_SaleListingId",
                 table: "FileUploads",
                 column: "SaleListingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileUploads_TransactionTypeId",
+                table: "FileUploads",
+                column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeaseCoops_TransactionTypeId",
@@ -714,9 +741,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "DocumentTypes");
-
-            migrationBuilder.DropTable(
                 name: "LeaseCoops");
 
             migrationBuilder.DropTable(
@@ -724,6 +748,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "SaleCoops");
+
+            migrationBuilder.DropTable(
+                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
                 name: "SaleListings");

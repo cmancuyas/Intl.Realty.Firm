@@ -5,6 +5,7 @@
     ViewData["Title"] = "Department";
     Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
 }
+
 <div>
     <div class="c-content" id="ListPartialContainer">
         <div class="d-flex justify-content-center">
@@ -13,18 +14,20 @@
             </div>
         </div>
     </div>
-    <div id="CreateModalContainer"></div>
-    <div id="EditModalContainer"></div>
     <div id="DeleteModalContainer"></div>
     <div id="DeleteMultipleModalContainer"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
 @section Scripts {
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#ListPartialContainer').load('/Department/ListPartialView');
         });
-
+        function OpenDeleteModal(id) {
+            $('#DeleteModalContainer').load('/Department/DeleteModal/' + id, function () {
+                $("#deleteConfirmModal").modal("show");
+            });
+        }
         function ShowDetails(id) {
             $('#item-' + id).addClass('c-show-hidden');
         }

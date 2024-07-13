@@ -12,6 +12,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
         [Required]
         public string Code { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool IsRequired { get; set; }
         public bool IsActive { get; set; }
         [Required]
         public int CreatedBy { get; set; }

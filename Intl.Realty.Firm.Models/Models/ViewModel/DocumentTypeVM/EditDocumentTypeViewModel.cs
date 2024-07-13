@@ -14,10 +14,10 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
         public string Code { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         [Required]
+        public bool IsRequired { get; set; }
+        [Required]
         public bool IsActive { get; set; }
-        [Required]
         public int? UpdatedBy { get; set; }
-        [Required]
         public DateTime? UpdatedAt { get; set; }
     }
 }

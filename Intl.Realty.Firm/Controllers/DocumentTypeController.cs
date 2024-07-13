@@ -1,109 +1,101 @@
 ﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
+using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
-
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class DocumentTypeController : Controller
     {
+        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public DocumentTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<DocumentType> modelList = await _unitOfWork.DocumentType.GetAllAsync() as List<DocumentType> ?? throw new ArgumentException();
-
-            List<DocumentTypeViewModel> viewModelList = modelList.Select(x => x.ToDocumentTypeViewModel()).ToList();
-
-            return View(viewModelList);
+            return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListPartialView()
-        {
-            var modelList = await _unitOfWork.DocumentType.GetAllAsync();
-
-            var viewModel = modelList.ToDocumentTypeListViewModel();
-
-            return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModel);
-        }
-        public IActionResult CreateModal()
+        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
         {
             CreateDocumentTypeViewModel viewModel = new CreateDocumentTypeViewModel();
-            return PartialView("~/Views/DocumentType/Modal/CreateModal.cshtml", viewModel);
+            viewModel.IsRequired = true;
+            viewModel.IsActive = true;
+            return View(viewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
-
-            var checkIfExists = await _unitOfWork.DocumentType.GetAsync(x => x.Description == viewModel.Description);
-            if (checkIfExists != null)
-            {
-                ModelState.AddModelError("name", "User Type already exists");
-            }
-
-            viewModel.CreatedBy = 1;
-            viewModel.IsActive = true;
-            viewModel.CreatedAt = DateTime.UtcNow;
-
-            var model = viewModel.ToDocumentTypeModel();
-
             if (ModelState.IsValid)
             {
+                viewModel.IsActive = true;
+                viewModel.CreatedBy = _userId;
+                viewModel.CreatedAt = DateTime.UtcNow;  
+                var model = viewModel.FromCreateToDocumentTypeModel();
+
                 await _unitOfWork.DocumentType.AddAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "DocumentType created successfully";
+
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            //return RedirectToAction(nameof(Index), new { addSuccess = false });
 
-            return View("Index");
-
+            return View(viewModel);
         }
-
-        public async Task<IActionResult> EditModal(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == id);
-
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
+            var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            EditDocumentTypeViewModel viewModel = model.ToEditDocumentTypeModel();
+            var viewModel = model.ToEditDocumentTypeListViewModel();
 
-            return PartialView("~/Views/DocumentType/Modal/EditModal.cshtml", viewModel);
+            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedAt = DateTime.Now;
+
+            return View(viewModel);
         }
 
-        [HttpPut("DocumentType/Edit/{id:int}")]
-        public async Task<IActionResult> Edit(EditDocumentTypeViewModel viewModel)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditDocumentTypeViewModel viewModel)
         {
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
 
-            DocumentType? model = await _unitOfWork.DocumentType.GetAsync(u => u.Id == viewModel.Id);
+            if (ModelState.IsValid)
+            {
+                var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model = viewModel.FromEditToDocumentTypeModel();
+                model.UpdatedAt = DateTime.Now;
+                model.UpdatedBy = _userId;
+                await _unitOfWork.DocumentType.UpdateAsync(model);
+                return RedirectToAction(nameof(Index), new { editSuccess = true });
+            }
 
-            model.IsActive = viewModel.IsActive;
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
-            await _unitOfWork.DocumentType.UpdateAsync(model);
-            _unitOfWork.Save();
-            TempData["success"] = "DocumentType updated successfully";
-            return RedirectToAction("Index");
+            return View(viewModel);
         }
+        [HttpGet]
+        public async Task<IActionResult> ListPartialView()
+        {
+            var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
 
+            var viewModelIEnum = documentTypeIEnum.FromIEnumToDocumentTypeIEnumViewModel();
+
+            return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModelIEnum);
+        }
         [HttpGet]
         public async Task<IActionResult> DeleteModal(int id)
         {
@@ -113,7 +105,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var editDocumentTypeViewModel = model.ToEditDocumentTypeViewModel();
+            var editDocumentTypeViewModel = model.ToEditDocumentTypeListViewModel();
 
             return PartialView("~/Views/DocumentType/Modal/DeleteModal.cshtml", editDocumentTypeViewModel);
         }
@@ -132,9 +124,9 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var transactionTypeViewModelList = modelList.ToDocumentTypeListViewModel();
+            var DocumentTypeViewModelList = modelList.ToDocumentTypeListViewModel();
 
-            IEnumerable<DocumentTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+            IEnumerable<DocumentTypeViewModel> modelIEnum = DocumentTypeViewModelList.AsEnumerable();
 
             return PartialView("~/Views/DocumentType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
         }
@@ -147,10 +139,15 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-            await _unitOfWork.DocumentType.RemoveAsync(model);
+
+            var modelList = model.FromModelToDocumentTypeListModel();
+
+            await _unitOfWork.DocumentType.RemoveRangeAsync(modelList);
 
             return RedirectToAction(nameof(Index));
+
         }
+
         public async Task<IActionResult> DeleteMultiple(IEnumerable<DocumentTypeViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
@@ -159,8 +156,8 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             var ids = viewModelList.Select(o => o.Id).ToList();
-            var documentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
-            var modelList = documentTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var DocumentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
+            var modelList = DocumentTypeList.Where(o => ids.Contains(o.Id)).ToList();
 
             if (modelList != null)
             {

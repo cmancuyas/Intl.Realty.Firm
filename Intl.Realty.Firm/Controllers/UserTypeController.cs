@@ -1,16 +1,16 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
+using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class UserTypeController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private int _userId = 1;
+        private readonly IUnitOfWork _unitOfWork;
         public UserTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -19,27 +19,23 @@ namespace Intl.Realty.Firm.Controllers
         {
             return View();
         }
-        public IActionResult CreateModal()
+        [HttpGet]
+        public IActionResult Create(int? regionId, int? provinceId, int? municipalityId)
         {
             CreateUserTypeViewModel viewModel = new CreateUserTypeViewModel();
-            return PartialView("~/Views/UserType/Modal/CreateModal.cshtml", viewModel);
+            viewModel.IsActive = true;
+            return View(viewModel);
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserTypeViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var model = new UserType
-                {
-                    Code = viewModel.Code,
-                    Description = viewModel.Description,
-                    IsActive = true,
-                    CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
-                    CreatedBy = _userId,
-
-                    // Set other properties as needed
-                };
+                viewModel.IsActive = true;
+                viewModel.CreatedBy = _userId;
+                viewModel.CreatedAt = DateTime.UtcNow;  
+                var model = viewModel.FromCreateToUserTypeModel();
 
                 await _unitOfWork.UserType.AddAsync(model);
 
@@ -48,8 +44,8 @@ namespace Intl.Realty.Firm.Controllers
 
             return View(viewModel);
         }
-
-        public async Task<IActionResult> EditModal(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
             var model = await _unitOfWork.UserType.GetAsync(x => x.Id == id);
             if (model == null)
@@ -57,15 +53,17 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            EditUserTypeViewModel viewModel = model.ToEditUserTypeViewModel();
+            var viewModel = model.ToEditUserTypeListViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
 
-            return PartialView("~/Views/UserType/Modal/EditModal.cshtml", viewModel);
+            return View(viewModel);
         }
-        [HttpPut]
-        public async Task<IActionResult> Edit(int id, UserTypeViewModel viewModel)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditUserTypeViewModel viewModel)
         {
             if (id != viewModel.Id)
             {
@@ -79,16 +77,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model.Code = viewModel.Code;
-                model.Description = viewModel.Description;
-                model.IsActive = viewModel.IsActive;
-                model.UpdatedBy = _userId;
+                model = viewModel.FromEditToUserTypeModel();
                 model.UpdatedAt = DateTime.Now;
-
-                // Update other properties as needed
-
+                model.UpdatedBy = _userId;
                 await _unitOfWork.UserType.UpdateAsync(model);
-
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
 
@@ -97,11 +89,11 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var transactionTypeList = await _unitOfWork.UserType.GetAllAsync();
+            var UserTypeIEnum = await _unitOfWork.UserType.GetAllAsync();
 
-            var viewModel = transactionTypeList.ToUserTypeListViewModel();
+            var viewModelIEnum = UserTypeIEnum.FromIEnumToUserTypeIEnumViewModel();
 
-            return PartialView("~/Views/UserType/Partial/ListPartial.cshtml", viewModel);
+            return PartialView("~/Views/UserType/Partial/ListPartial.cshtml", viewModelIEnum);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteModal(int id)
@@ -112,11 +104,10 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var editUserTypeViewModel = model.ToEditUserTypeViewModel();
+            var editUserTypeViewModel = model.ToEditUserTypeListViewModel();
 
             return PartialView("~/Views/UserType/Modal/DeleteModal.cshtml", editUserTypeViewModel);
         }
-
         public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
         {
             List<UserType> modelList = new List<UserType>();
@@ -131,9 +122,9 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var transactionTypeViewModelList = modelList.ToUserTypeListViewModel();
+            var UserTypeViewModelList = modelList.ToUserTypeListViewModel();
 
-            IEnumerable<UserTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+            IEnumerable<UserTypeViewModel> modelIEnum = UserTypeViewModelList.AsEnumerable();
 
             return PartialView("~/Views/UserType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
         }
@@ -146,10 +137,15 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-            await _unitOfWork.UserType.RemoveAsync(model);
 
-            return RedirectToAction(nameof(Index));
+            var modelList = model.FromModelToUserTypeListModel();
+
+            await _unitOfWork.UserType.RemoveRangeAsync(modelList);
+
+            return RedirectToAction(nameof(Index), new { deleteSuccess = true });
+
         }
+        [HttpPost]
         public async Task<IActionResult> DeleteMultiple(IEnumerable<UserTypeViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
@@ -158,8 +154,8 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             var ids = viewModelList.Select(o => o.Id).ToList();
-            var tramsactonTypeList = await _unitOfWork.UserType.GetAllAsync();
-            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var UserTypeList = await _unitOfWork.UserType.GetAllAsync();
+            var modelList = UserTypeList.Where(o => ids.Contains(o.Id)).ToList();
 
             if (modelList != null)
             {
@@ -174,8 +170,7 @@ namespace Intl.Realty.Firm.Controllers
 
             }
 
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return RedirectToAction(nameof(Index), new { deleteSuccess = true });
         }
     }
-
 }

@@ -32,17 +32,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 CreatedAt = viewModel.CreatedAt,
             };
         }
-        public static CreateDocumentTypeAssignmentViewModel ToCreateDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
-        {
-            return new CreateDocumentTypeAssignmentViewModel
-            {
-                DocumentTypeId = model.DocumentTypeId,
-                TransactionTypeId = model.TransactionTypeId,
-                IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt
-            };
-        }
+
         public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentModel(this DocumentTypeAssignment model)
         {
             return new EditDocumentTypeAssignmentViewModel
@@ -106,27 +96,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 }).ToList();
             }
             return viewModelList;
-        }
-        public static List<DocumentTypeAssignment> FromIEnumToDocumentTypeAssignmentList(this IEnumerable<DocumentTypeAssignment> modelIEnum)
-        {
-            var modelList = new List<DocumentTypeAssignment>();
-            if (modelIEnum != null)
-            {
-                modelList = modelIEnum.Select(x => new DocumentTypeAssignment()
-                {
-                    Id = x.Id,
-                    DocumentTypeId = x.DocumentTypeId,
-                    DocumentType = x.DocumentType,
-                    TransactionTypeId = x.TransactionTypeId,
-                    TransactionType = x.TransactionType,
-                    IsActive = x.IsActive,
-                    CreatedBy = x.CreatedBy,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedAt = x.UpdatedAt,
-                }).ToList();
-            }
-            return modelList;
         }
     }
 

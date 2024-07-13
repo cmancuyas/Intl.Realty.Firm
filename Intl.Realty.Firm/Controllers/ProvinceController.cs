@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
+using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
@@ -8,133 +9,169 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class ProvinceController : Controller
     {
+        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public ProvinceController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<Province> modelList = await _unitOfWork.Province.GetAllAsync() as List<Province> ?? throw new ArgumentException();
-
-            List<ProvinceViewModel> viewModelList = modelList.Select(x => x.ToProvinceViewModel()).ToList();
-
-            return View(viewModelList);
+            return View();
         }
         [HttpGet]
-        public async Task<IActionResult> ListPartialView()
-        {
-            var modelList = await _unitOfWork.Province.GetAllAsync();
-
-            var viewModel = modelList.ToProvinceListViewModel();
-
-            return PartialView("~/Views/Province/Partial/ListPartial.cshtml", viewModel);
-        }
-        public IActionResult CreateModal()
+        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
         {
             CreateProvinceViewModel viewModel = new CreateProvinceViewModel();
-            return PartialView("~/Views/Province/Modal/CreateModal.cshtml", viewModel);
+            viewModel.IsActive = true;
+            return View(viewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateProvinceViewModel viewModel)
         {
-
-            var checkIfExists = await _unitOfWork.Province.GetAsync(x => x.Description == viewModel.Description);
-            if (checkIfExists != null)
-            {
-                ModelState.AddModelError("name", "User Type already exists");
-            }
-
-            viewModel.CreatedBy = 1;
-            viewModel.IsActive = true;
-            viewModel.CreatedAt = DateTime.UtcNow;
-
-            var model = viewModel.ToProvinceModel();
-
             if (ModelState.IsValid)
             {
+                viewModel.IsActive = true;
+                viewModel.CreatedBy = _userId;
+                viewModel.CreatedAt = DateTime.UtcNow;  
+                var model = viewModel.FromCreateToProvinceModel();
+
                 await _unitOfWork.Province.AddAsync(model);
-                _unitOfWork.Save();
-                TempData["success"] = "Province created successfully";
+
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
-            //return RedirectToAction(nameof(Index), new { addSuccess = false });
 
-            return View("Index");
-
+            return View(viewModel);
         }
-
-        public async Task<IActionResult> EditModal(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Province? model = await _unitOfWork.Province.GetAsync(u => u.Id == id);
-
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
+            var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            EditProvinceViewModel viewModel = model.ToEditProvinceModel();
+            var viewModel = model.ToEditProvinceListViewModel();
 
-            return PartialView("~/Views/Province/Modal/EditModal.cshtml", viewModel);
+            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedAt = DateTime.Now;
+
+            return View(viewModel);
         }
 
-        [HttpPut("Province/Edit/{id:int}")]
-
-        public async Task<IActionResult> Edit(EditProvinceViewModel viewModel)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditProvinceViewModel viewModel)
         {
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
 
-            Province? model = await _unitOfWork.Province.GetAsync(u => u.Id == viewModel.Id);
+            if (ModelState.IsValid)
+            {
+                var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model = viewModel.FromEditToProvinceModel();
+                model.UpdatedAt = DateTime.Now;
+                model.UpdatedBy = _userId;
+                await _unitOfWork.Province.UpdateAsync(model);
+                return RedirectToAction(nameof(Index), new { editSuccess = true });
+            }
 
-            model.IsActive = viewModel.IsActive;
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
-            await _unitOfWork.Province.UpdateAsync(model);
-            _unitOfWork.Save();
-            TempData["success"] = "Province updated successfully";
-            return RedirectToAction("Index");
+            return View(viewModel);
         }
-
         [HttpGet]
-        public async Task<IActionResult> DeleteModal(int? id)
+        public async Task<IActionResult> ListPartialView()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Province? userTypeFromDb = await _unitOfWork.Province.GetAsync(u => u.Id == id);
+            var ProvinceIEnum = await _unitOfWork.Province.GetAllAsync();
 
-            var viewModel = userTypeFromDb.ToProvinceViewModel();
+            var viewModelIEnum = ProvinceIEnum.FromIEnumToProvinceIEnumViewModel();
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
-            return PartialView("~/Views/Province/Modal/DeleteModal.cshtml", viewModel);
+            return PartialView("~/Views/Province/Partial/ListPartial.cshtml", viewModelIEnum);
         }
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteModal(int id)
         {
-            Province? obj = await _unitOfWork.Province.GetAsync(u => u.Id == id);
-
-            if (obj == null)
+            var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.Province.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Province deleted successfully";
-            return RedirectToAction("Index");
+
+            var editProvinceViewModel = model.ToEditProvinceListViewModel();
+
+            return PartialView("~/Views/Province/Modal/DeleteModal.cshtml", editProvinceViewModel);
+        }
+
+        public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
+        {
+            List<Province> modelList = new List<Province>();
+            foreach (var id in ids)
+            {
+                var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
+                modelList.Add(model);
+            }
+
+            if (modelList == null)
+            {
+                return NotFound();
+            }
+
+            var ProvinceViewModelList = modelList.ToProvinceListViewModel();
+
+            IEnumerable<ProvinceViewModel> modelIEnum = ProvinceViewModelList.AsEnumerable();
+
+            return PartialView("~/Views/Province/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var modelList = model.FromModelToProvinceListModel();
+
+            await _unitOfWork.Province.RemoveRangeAsync(modelList);
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<ProvinceViewModel> viewModelList)
+        {
+            if (viewModelList == null || !viewModelList.Any())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ids = viewModelList.Select(o => o.Id).ToList();
+            var ProvinceList = await _unitOfWork.Province.GetAllAsync();
+            var modelList = ProvinceList.Where(o => ids.Contains(o.Id)).ToList();
+
+            if (modelList != null)
+            {
+                try
+                {
+                    await _unitOfWork.Province.RemoveRangeAsync(modelList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+            return StatusCode(StatusCodes.Status200OK, ModelState);
         }
     }
 }
-

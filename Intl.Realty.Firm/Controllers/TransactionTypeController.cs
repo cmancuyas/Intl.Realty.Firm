@@ -1,16 +1,16 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
-using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
+using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class TransactionTypeController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private int _userId = 1;
+        private readonly IUnitOfWork _unitOfWork;
         public TransactionTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -19,27 +19,23 @@ namespace Intl.Realty.Firm.Controllers
         {
             return View();
         }
-        public IActionResult CreateModal()
+        [HttpGet]
+        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
         {
             CreateTransactionTypeViewModel viewModel = new CreateTransactionTypeViewModel();
-            return PartialView("~/Views/TransactionType/Modal/CreateModal.cshtml", viewModel);
+            viewModel.IsActive = true;
+            return View(viewModel);
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateTransactionTypeViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var model = new TransactionType
-                {
-                    Code = viewModel.Code,
-                    Description = viewModel.Description,
-                    IsActive = true,
-                    CreatedAt = DateTime.Now, // Set the CreatedAt property to the current date/time
-                    CreatedBy = _userId,
-
-                    // Set other properties as needed
-                };
+                viewModel.IsActive = true;
+                viewModel.CreatedBy = _userId;
+                viewModel.CreatedAt = DateTime.UtcNow;  
+                var model = viewModel.FromCreateToTransactionTypeModel();
 
                 await _unitOfWork.TransactionType.AddAsync(model);
 
@@ -48,8 +44,8 @@ namespace Intl.Realty.Firm.Controllers
 
             return View(viewModel);
         }
-
-        public async Task<IActionResult> EditModal(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
             var model = await _unitOfWork.TransactionType.GetAsync(x => x.Id == id);
             if (model == null)
@@ -57,15 +53,17 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            EditTransactionTypeViewModel viewModel = model.ToEditTransactionTypeViewModel();
+            var viewModel = model.ToEditTransactionTypeListViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
 
-            return PartialView("~/Views/TransactionType/Modal/EditModal.cshtml", viewModel);
+            return View(viewModel);
         }
-        [HttpPut]
-        public async Task<IActionResult> Edit(int id, TransactionTypeViewModel viewModel)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditTransactionTypeViewModel viewModel)
         {
             if (id != viewModel.Id)
             {
@@ -74,21 +72,15 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-                var model = await _unitOfWork.TransactionType.GetAsync(x=>x.Id== id);
+                var model = await _unitOfWork.TransactionType.GetAsync(x => x.Id == id);
                 if (model == null)
                 {
                     return NotFound();
                 }
-                model.Code = viewModel.Code;
-                model.Description = viewModel.Description;
-                model.IsActive = viewModel.IsActive;
-                model.UpdatedBy = _userId;
+                model = viewModel.FromEditToTransactionTypeModel();
                 model.UpdatedAt = DateTime.Now;
-
-                // Update other properties as needed
-
+                model.UpdatedBy = _userId;
                 await _unitOfWork.TransactionType.UpdateAsync(model);
-
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
 
@@ -97,11 +89,11 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var transactionTypeList = await _unitOfWork.TransactionType.GetAllAsync();
+            var TransactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
 
-            var viewModel = transactionTypeList.ToTransactionTypeListViewModel();
+            var viewModelIEnum = TransactionTypeIEnum.FromIEnumToTransactionTypeIEnumViewModel();
 
-            return PartialView("~/Views/TransactionType/Partial/ListPartial.cshtml", viewModel);
+            return PartialView("~/Views/TransactionType/Partial/ListPartial.cshtml", viewModelIEnum);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteModal(int id)
@@ -112,7 +104,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var editTransactionTypeViewModel = model.ToEditTransactionTypeViewModel();
+            var editTransactionTypeViewModel = model.ToEditTransactionTypeListViewModel();
 
             return PartialView("~/Views/TransactionType/Modal/DeleteModal.cshtml", editTransactionTypeViewModel);
         }
@@ -131,9 +123,9 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var transactionTypeViewModelList = modelList.ToTransactionTypeListViewModel();
+            var TransactionTypeViewModelList = modelList.ToTransactionTypeListViewModel();
 
-            IEnumerable<TransactionTypeViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+            IEnumerable<TransactionTypeViewModel> modelIEnum = TransactionTypeViewModelList.AsEnumerable();
 
             return PartialView("~/Views/TransactionType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
         }
@@ -146,10 +138,15 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-            await _unitOfWork.TransactionType.RemoveAsync(model);
+
+            var modelList = model.FromModelToTransactionTypeListModel();
+
+            await _unitOfWork.TransactionType.RemoveRangeAsync(modelList);
 
             return RedirectToAction(nameof(Index));
+
         }
+
         public async Task<IActionResult> DeleteMultiple(IEnumerable<TransactionTypeViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
@@ -158,8 +155,8 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             var ids = viewModelList.Select(o => o.Id).ToList();
-            var tramsactonTypeList = await _unitOfWork.TransactionType.GetAllAsync();
-            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var TransactionTypeList = await _unitOfWork.TransactionType.GetAllAsync();
+            var modelList = TransactionTypeList.Where(o => ids.Contains(o.Id)).ToList();
 
             if (modelList != null)
             {

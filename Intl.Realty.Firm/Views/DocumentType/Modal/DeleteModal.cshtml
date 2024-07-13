@@ -1,43 +1,40 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM
 @model DocumentTypeViewModel
 
-<partial name="~/Views/Shared/Modal/_DeleteModal.cshtml" for="Id">
+<partial name="~/Views/Shared/_DeleteModal.cshtml" for="Id">
 
-<script type="text/javascript">
-    $("#cancelBtn").click(function () {
-            CloseModal();
-    });
-
-    $("#btnConfirmDelete").click(function () {
-        let parameters = {
-            id: @Model.Id };
-        $.ajax({
-            url: '/DocumentType/Delete/' + @Model.Id,
-            type: 'post',
-            data: parameters,
-            success: function (data) {
-                // NOTE: TO DO better way of calling callback function from parent
-                CloseModal();
-                // Swal.fire({
-                //     title: "Success!",
-                //     icon: "success",
-                //     confirmButtonText: "Ok",
-                //     confirmButtonColor: '#14984a'
-                // });
-                window.location.reload()
-
-                // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
-
-            }, 
-            error: function (e) {
-                console.log(e);
-            }
+    <script type="text/javascript">
+        $("#cancelBtn").click(function () {
+            closeModal();
         });
-    });
 
-    function CloseModal() {
-        $("#deleteConfirmModal").modal("hide");
-        let elem = document.querySelector('#deleteConfirmModal');
-        elem.parentNode.removeChild(elem);
-    }
-</script>
+        $("#btnConfirmDelete").click(function () {
+            let parameters = {
+                id: @Model.Id };
+            $.ajax({
+                url: '/Department/Delete/' + @Model.Id,
+                type: 'post',
+                data: parameters,
+                success: function (data) {
+                    // NOTE: TO DO better way of calling callback function from parent
+                    closeModal();
+                    // Swal.fire({
+                    //     title: "Success!",
+                    //     icon: "success",
+                    //     confirmButtonText: "Ok",
+                    //     confirmButtonColor: '#14984a'
+                    // });
+                    window.location.reload()
+
+                    // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
+
+                }
+            });
+        });
+
+        function closeModal() {
+            $("#deleteConfirmModal").modal("hide");
+            let elem = document.querySelector('#deleteConfirmModal');
+            elem.parentNode.removeChild(elem);
+        }
+    </script>

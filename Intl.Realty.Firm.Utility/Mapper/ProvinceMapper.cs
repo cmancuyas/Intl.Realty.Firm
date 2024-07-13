@@ -1,77 +1,35 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
-using Intl.Realty.Firm.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
 using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class ProvinceMapper
     {
-        public static List<ProvinceViewModel> ToProvinceListViewModel(this IEnumerable<Province> modelList)
-        {
-            List<ProvinceViewModel> viewModelList = new List<ProvinceViewModel>();
-
-            if(modelList != null)
-            {
-                viewModelList = modelList.Select(o => new ProvinceViewModel
-                {
-                    Id = o.Id,
-                    Code = o.Code,
-                    Description = o.Description,
-                    IsActive = o.IsActive,
-                    CreatedBy = o.CreatedBy,
-                    CreatedAt = o.CreatedAt,
-                    UpdatedBy = o.UpdatedBy,
-                    UpdatedAt = o.UpdatedAt
-                }).ToList();
-            }
-
-            return viewModelList;
-        }
-        public static ProvinceViewModel ToProvinceViewModel(this Province model)
-        {
-            return new ProvinceViewModel
-            {
-                Id = model.Id,
-                Code = model.Code,
-                Description = model.Description,
-                IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-        public static Province ToProvinceModel(this CreateProvinceViewModel viewModel)
+        public static Province FromCreateToProvinceModel(this CreateProvinceViewModel viewModel)
         {
             return new Province
             {
                 Code = viewModel.Code,
                 Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
+                CreatedBy = viewModel.CreatedBy,
             };
         }
-
-        public static Province ToProvinceModel(this ProvinceViewModel viewModel)
+        public static Province FromEditToProvinceModel(this EditProvinceViewModel viewModel)
         {
             return new Province
             {
+                Id = viewModel.Id,
                 Code = viewModel.Code,
                 Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
-                CreatedAt = viewModel.CreatedAt,
                 UpdatedBy = viewModel.UpdatedBy,
-                UpdatedAt = viewModel.UpdatedAt
+                UpdatedAt = viewModel.UpdatedAt,
             };
         }
-        public static EditProvinceViewModel ToEditProvinceModel(this Province model)
+        public static EditProvinceViewModel ToEditProvinceListViewModel(this Province model)
         {
             return new EditProvinceViewModel
             {
@@ -83,5 +41,57 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
+
+        public static List<Province> FromModelToProvinceListModel(this Province model)
+        {
+            var modelList = new List<Province>();
+            if (model != null)
+            {
+                modelList.Add(model);
+            }
+            return modelList;
+        }
+
+        public static List<ProvinceViewModel> ToProvinceListViewModel(this List<Province> modelList)
+        {
+            var viewModelList = new List<ProvinceViewModel>();
+            if (modelList != null)
+            {
+                viewModelList = modelList.Select(x => new ProvinceViewModel()
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Description = x.Description,
+                    IsActive = x.IsActive,
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedBy = x.UpdatedBy,
+                    UpdatedAt = x.UpdatedAt,
+                }).ToList();
+            }
+            return viewModelList;
+        }
+
+
+        public static IEnumerable<ProvinceViewModel> FromIEnumToProvinceIEnumViewModel(this IEnumerable<Province> modelIEnum)
+        {
+            IEnumerable<ProvinceViewModel> viewModelIEnum = new List<ProvinceViewModel>();
+            if (modelIEnum != null)
+            {
+                viewModelIEnum = modelIEnum.Select(x => new ProvinceViewModel()
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Description = x.Description,
+                    IsActive = x.IsActive,
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedBy = x.UpdatedBy,
+                    UpdatedAt = x.UpdatedAt,
+                }).ToList();
+            }
+            return viewModelIEnum;
+        }
+        
     }
 }

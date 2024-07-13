@@ -1,60 +1,35 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class DepartmentMapper
     {
-        public static DepartmentViewModel ToDepartmentViewModel(this Department model)
-        {
-            return new DepartmentViewModel
-            {
-                Id = model.Id,
-                Code = model.Code,
-                Description = model.Description,
-                IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-        public static Department ToDepartmentModel(this CreateDepartmentViewModel viewModel)
+        public static Department FromCreateToDepartmentModel(this CreateDepartmentViewModel viewModel)
         {
             return new Department
             {
                 Code = viewModel.Code,
                 Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
+                CreatedBy = viewModel.CreatedBy,
             };
         }
-        public static CreateDepartmentViewModel ToCreateDepartmentViewModel(this Department model)
+        public static Department FromEditToDepartmentModel(this EditDepartmentViewModel viewModel)
         {
-            return new CreateDepartmentViewModel
+            return new Department
             {
-                Code = model.Code,
-                Description = model.Description,
-                IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt
+                Id = viewModel.Id,
+                Code = viewModel.Code,
+                Description = viewModel.Description,
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt,
             };
         }
-        public static EditDepartmentViewModel ToEditDepartmentModel(this Department model)
-        {
-            return new EditDepartmentViewModel
-            {
-                Id = model.Id,
-                Code = model.Code,
-                Description = model.Description,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-        public static EditDepartmentViewModel ToEditDepartmentViewModel(this Department model)
+        public static EditDepartmentViewModel ToEditDepartmentListViewModel(this Department model)
         {
             return new EditDepartmentViewModel
             {
@@ -66,6 +41,17 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 UpdatedAt = model.UpdatedAt
             };
         }
+
+        public static List<Department> FromModelToDepartmentListModel(this Department model)
+        {
+            var modelList = new List<Department>();
+            if (model != null)
+            {
+                modelList.Add(model);
+            }
+            return modelList;
+        }
+
         public static List<DepartmentViewModel> ToDepartmentListViewModel(this List<Department> modelList)
         {
             var viewModelList = new List<DepartmentViewModel>();
@@ -85,31 +71,14 @@ namespace Intl.Realty.Firm.Utility.Mapper
             }
             return viewModelList;
         }
-        public static List<DepartmentViewModel> ToDepartmentListViewModel(this IEnumerable<Department> modelList)
+
+
+        public static IEnumerable<DepartmentViewModel> FromIEnumToDepartmentIEnumViewModel(this IEnumerable<Department> modelIEnum)
         {
-            var viewModelList = new List<DepartmentViewModel>();
-            if (modelList != null)
-            {
-                viewModelList = modelList.Select(x => new DepartmentViewModel()
-                {
-                    Id = x.Id,
-                    Code = x.Code,
-                    Description = x.Description,
-                    IsActive = x.IsActive,
-                    CreatedBy = x.CreatedBy,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedAt = x.UpdatedAt,
-                }).ToList();
-            }
-            return viewModelList;
-        }
-        public static List<Department> FromIEnumToDepartmentList(this IEnumerable<Department> modelIEnum)
-        {
-            var modelList = new List<Department>();
+            IEnumerable<DepartmentViewModel> viewModelIEnum = new List<DepartmentViewModel>();
             if (modelIEnum != null)
             {
-                modelList = modelIEnum.Select(x => new Department()
+                viewModelIEnum = modelIEnum.Select(x => new DepartmentViewModel()
                 {
                     Id = x.Id,
                     Code = x.Code,
@@ -121,7 +90,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     UpdatedAt = x.UpdatedAt,
                 }).ToList();
             }
-            return modelList;
+            return viewModelIEnum;
         }
+        
     }
 }

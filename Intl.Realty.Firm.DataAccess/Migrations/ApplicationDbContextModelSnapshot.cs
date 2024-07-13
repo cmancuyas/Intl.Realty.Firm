@@ -117,15 +117,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LeaseCoopId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("LeaseListingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SaleCoopId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
 
@@ -138,12 +129,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentTypeId");
-
-                    b.HasIndex("LeaseCoopId");
-
-                    b.HasIndex("LeaseListingId");
-
-                    b.HasIndex("SaleCoopId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -223,9 +208,18 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LeaseCoopId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LeaseListingId")
+                        .HasColumnType("int");
+
                     b.Property<string>("OriginalFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SaleCoopId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SaleListingId")
                         .HasColumnType("int");
@@ -246,6 +240,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("LeaseCoopId");
+
+                    b.HasIndex("LeaseListingId");
+
+                    b.HasIndex("SaleCoopId");
 
                     b.HasIndex("SaleListingId");
 
@@ -368,92 +368,17 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BuyerAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("BuyingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("DepositAmount")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime>("DepositDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FinalClosingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FinalSalePrice")
-                        .HasColumnType("decimal(18,4)");
+                    b.Property<int>("IRFDealId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LandLordName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ListingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("PropertyAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
@@ -465,6 +390,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IRFDealId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -479,92 +406,17 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BuyerAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("BuyingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("DepositAmount")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime>("DepositDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FinalClosingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FinalSalePrice")
-                        .HasColumnType("decimal(18,4)");
+                    b.Property<int>("IRFDealId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LandLordName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ListingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("PropertyAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
@@ -576,6 +428,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IRFDealId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -677,92 +531,17 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BuyerAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BuyersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("BuyingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("DepositAmount")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<DateTime>("DepositDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FinalClosingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FinalSalePrice")
-                        .HasColumnType("decimal(18,4)");
+                    b.Property<int>("IRFDealId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LandLordName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingAgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListingBrokerageFax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ListingCommissionPercentage")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("PropertyAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersLawyerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellersPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
@@ -774,6 +553,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IRFDealId");
 
                     b.HasIndex("TransactionTypeId");
 
@@ -1096,19 +877,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseCoop", null)
-                        .WithMany("DocumentTypeAssignmentList")
-                        .HasForeignKey("LeaseCoopId");
-
-                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseListing", null)
-                        .WithMany("DocumentTypeAssignmentList")
-                        .HasForeignKey("LeaseListingId");
-
-                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleCoop", null)
-                        .WithMany("DocumentTypeAssignmentList")
-                        .HasForeignKey("SaleCoopId");
-
-                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1116,7 +885,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Navigation("DocumentType");
 
-                    b.Navigation("TransactionType");
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>
@@ -1126,6 +895,18 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("DocumentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseCoop", null)
+                        .WithMany("FileUploads")
+                        .HasForeignKey("LeaseCoopId");
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseListing", null)
+                        .WithMany("FileUploads")
+                        .HasForeignKey("LeaseListingId");
+
+                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleCoop", null)
+                        .WithMany("FileUploads")
+                        .HasForeignKey("SaleCoopId");
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", "SaleListing")
                         .WithMany("FileUploads")
@@ -1148,33 +929,57 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
+                        .WithMany()
+                        .HasForeignKey("IRFDealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IRFDeal");
 
                     b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
+                        .WithMany()
+                        .HasForeignKey("IRFDealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IRFDeal");
 
                     b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
+                        .WithMany()
+                        .HasForeignKey("IRFDealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IRFDeal");
 
                     b.Navigation("TransactionType");
                 });
@@ -1251,17 +1056,17 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
                 {
-                    b.Navigation("DocumentTypeAssignmentList");
+                    b.Navigation("FileUploads");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
                 {
-                    b.Navigation("DocumentTypeAssignmentList");
+                    b.Navigation("FileUploads");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
                 {
-                    b.Navigation("DocumentTypeAssignmentList");
+                    b.Navigation("FileUploads");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>

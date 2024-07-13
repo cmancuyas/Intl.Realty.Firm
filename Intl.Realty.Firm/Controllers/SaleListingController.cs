@@ -1,6 +1,7 @@
 ﻿using DENR_FAPIS.Utilities;
 using Intl.Realty.Firm.Models.Helpers;
 using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
@@ -177,9 +178,9 @@ namespace Intl.Realty.Firm.Controllers
 
             var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == transactionTypeName);
 
-            var documentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties: "DocumentType,TransactionType") as List<DocumentTypeAssignment>;
+            var documentTypeAssignmentListViewModel = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties: "DocumentType,TransactionType") as List<DocumentTypeAssignment>;
 
-            var documentTypeIds = documentTypeAssignmentList?
+            var documentTypeIds = documentTypeAssignmentListViewModel?
                                     .GroupBy(x => x.DocumentType)
                                     .Select(grp => new DocumentType
                                     {

@@ -13,35 +13,35 @@
                 <form class="" id="CreateForm" role="form" method="post">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label fw-bolder">Type of Transaction</label>
+                            <label class="control-label fw-bolder">Region</label>
 
                             @Html.DropDownList("TransactionTypeDDL", Model.TransactionTypeIEnum, "Select Transaction Type...",
                                      new
                                      {
                                          @class = "form-select",
-                                         @required = "required"
+                                         @required = "required",
                                      })
 
                             @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.TransactionTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
                             {
-                                @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "error" })
+                                @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "text-danger" })
                             }
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label fw-bolder">Type of Document</label>
+                            <label class="control-label fw-bolder">Region</label>
 
-                            @Html.DropDownList("DocumentTypeDDL", Model.DocumentTypeIEnum, "Select Document Type...",
+                            @Html.DropDownList("DocumentTypeDDL", Model.TransactionTypeIEnum, "Select Document Type...",
                                      new
                                      {
                                          @class = "form-select",
-                                         @required = "required"
+                                         @required = "required",
                                      })
 
                             @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DocumentTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
                             {
-                                @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "error" })
+                                @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "text-danger" })
                             }
                         </div>
                     </div>

@@ -1,45 +1,52 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
 @model IEnumerable<DocumentTypeAssignmentViewModel>
 
+
 <div>
     <form id="ListFormId" method="post">
 
         <div class="row">
             <div class="col-md-12 d-flex justify-content-md-between align-items-center">
                 <h1 class="text-blue mb-0">DocumentTypeAssignments</h1>
-                <div class="d-flex gap-4">
-                    <button type="button" id="btnMultipleDelete"
-                            class="btn btn-danger d-none align-items-center"
+                <div class="d-flex gap-2">
+                    <a id="btnMultipleDelete"
+                            class="btn btn-danger d-none align-items-center px-4"
                             data-toggle="tooltip"
                             data-bs-placement="left"
                             title="Delete"
                             onclick="OpenMultipleDeleteModal()">
-                        <i data-feather="trash-2"></i>
-                    </button>
-                    <a asp-action="Create"
-                       class="btn btn-primary d-flex align-items-center">
-                        <i data-feather="plus" class="w-15px h-auto me-1"></i>Add New
+                        <i data-feather="trash-2"></i> Delete
+                    </a>
+
+                    <a href="#"
+                       class="btn btn-primary d-flex align-items-center"
+                       type="button"
+                       data-bs-toggle="modal"
+                       onclick="OpenCreateModal()"
+                       style="text-decoration: none;">
+                        <span class="px-1 pb-1" title="create">
+                            <i data-feather="plus" class="w-15px h-auto me-1"></i>
+                            Add New
+                        </span>
                     </a>
                 </div>
             </div>
         </div>
 
-        <hr class="my-4" />
-
-        <div class="table-responsive">
-            <table id="modelTable" class="data-table table w-100">
+        <div class="table-responsive mt-4">
+            <table id="modelTable" class="data-table table-striped table table-hover w-100">
                 <thead>
                     <tr>
-                        <th class="text-center w-5">
+                        <th class="text-lg-start align-middle w-5" width="5%">
                             <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
                         </th>
-                        <th class="text-start">
+                        <th class="text-lg-start align-middle">
                             Transaction Type
                         </th>
-                        <th class="text-start">
+                        <th class="text-lg-start align-middle">
                             Document Type
                         </th>
-                        <th class="text-center">
+                        <th class="text-lg-start align-middle">
                             Action
                         </th>
                     </tr>
@@ -47,35 +54,31 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr data-position-id="@item.Id">
-                            <input type="hidden" name="id" id="id" />
-                            <td class="text-center">
+                        <tr>
+                            <input type="hidden" name="id" id="@item.Id" />
+                            <td class="text-lg-start align-middle" width="5%">
                                 <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
                             </td>
-                            <td id="name" class="text-start">
+                            <td id="transactionType" class="text-lg-start align-middle">
                                 @Html.DisplayFor(modelItem => item.TransactionType.Description)
                             </td>
-                            <td id="name" class="text-start">
+                            <td id="documentName" class="text-lg-start align-middle">
                                 @Html.DisplayFor(modelItem => item.DocumentType.Description)
                             </td>
-                            @*                           <td id="isActive">
-                        @if (item.IsActive == true)
-                        {
-                        <label class="status-active">Active</label>
-                        }
-                        else if (item.IsActive == false)
-                        {
-                        <label class="status-inactive pe-cursor">Inactive</label>
-                        }
-                        </td> *@
-                            <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
-                                    Edit
+                            <td class="align-middle">
+                                <a href="#"
+                                   class="cta-edit btn p-0 m-0"
+                                   data-bs-toggle="modal"
+                                   onclick="OpenEditModal(@item.Id)"
+                                   style="text-decoration: none;">
+                                    <i data-feather="edit" class="h-auto me-1"></i>Update
+                                    @* <span class="px-1 pb-1" title="edit">
+                                        <i data-feather="edit" class="h-auto me-1"></i>
+                                    </span> *@
                                 </a>
                             </td>
                         </tr>
                     }
-
                 </tbody>
             </table>
         </div>
@@ -89,7 +92,8 @@
 
         $('.data-table').DataTable({
             columnDefs: [
-                { targets: [0, 3], orderable: false }
+                { targets: [0], orderable: false },
+                { targets: [1,2], orderable: true },
             ],
             order: [[1, 'asc']]
         });
@@ -141,9 +145,9 @@
             closeModal();
         });
 
-        handleToastrNotification('addSuccess', 'New DocumentTypeAssignment added successfully!');
-        handleToastrNotification('editSuccess', 'DocumentTypeAssignment updated successfully!');
-        handleToastrNotification('deleteSuccess', 'Selection deleted successfully!');
+        handleToastrNotification('addSuccess', 'New transaction type added successfully!');
+        handleToastrNotification('editSuccess', 'Transaction type updated successfully!');
+        handleToastrNotification('deleteSuccess', 'Transaction type deleted successfully!');
     });
 
     function closeModal() {
@@ -170,7 +174,16 @@
             ids.push(selectedRows[i].value);
         return ids;
     }
-
+    function OpenCreateModal() {
+        $('#CreateModalContainer').load('/DocumentTypeAssignment/CreateModal/', function () {
+            $("#createModal").modal("show");
+        });
+    }
+    function OpenEditModal(id) {
+        $('#EditModalContainer').load('/DocumentTypeAssignment/EditModal/' + id, function () {
+            $("#editModal").modal("show");
+        });
+    }
     function OpenDeleteModal(id) {
 
         $('#DeleteModalContainer').load('/DocumentTypeAssignment/DeleteModal/' + id, function () {

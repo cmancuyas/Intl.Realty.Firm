@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
+using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Utility.Utilities;
@@ -9,8 +10,8 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class DocumentTypeAssignmentController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private int _userId = 1;
+        private readonly IUnitOfWork _unitOfWork;
         public DocumentTypeAssignmentController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -19,37 +20,42 @@ namespace Intl.Realty.Firm.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> CreateModal()
+        [HttpGet]
+        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
         {
             CreateDocumentTypeAssignmentViewModel viewModel = new CreateDocumentTypeAssignmentViewModel();
             var transactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
             viewModel.TransactionTypeIEnum = SelectListConverter.CreateSelectList(transactionTypeIEnum.ToList(), x => x.Id, x => x.Description);
             viewModel.DocumentTypeIEnum = SelectListConverter.CreateSelectList(documentTypeIEnum.ToList(), x => x.Id, x => x.Description);
-
-            return PartialView("~/Views/DocumentTypeAssignment/Modal/CreateModal.cshtml", viewModel);
+            viewModel.IsActive = true;
+            return View(viewModel);
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDocumentTypeAssignmentViewModel viewModel)
         {
-            var modelList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == viewModel.TransactionTypeId, includeProperties: "DocumentType,TransactionType");
+            string selectedTransactionTypeId = Request.Form["TransactionTypeDDL"].ToString();
+            string selectedDocumentTypeId = Request.Form["DocumentTypeDDL"].ToString();
+
+            var modelList = await _unitOfWork.DocumentTypeAssignment
+                                    .GetAllAsync(x => x.TransactionTypeId == Convert.ToInt32(selectedDocumentTypeId), includeProperties:"DocumentType,TransactionType");
             if (modelList.Any())
             {
-                var modelCheckIfExists = modelList.Where(x => x.DocumentTypeId == viewModel.DocumentTypeId);
+                var modelCheckIfExists = modelList.Where(x => x.DocumentTypeId == Convert.ToInt32(selectedDocumentTypeId));
                 if (modelCheckIfExists.Any())
                 {
                     ModelState.AddModelError("name", "Document Type assignment already exists");
                 }
             }
 
-            viewModel.TransactionTypeId = viewModel.TransactionTypeId;
-            viewModel.DocumentTypeId = viewModel.DocumentTypeId;
+            viewModel.TransactionTypeId = Convert.ToInt32(selectedTransactionTypeId);
+            viewModel.DocumentTypeId = Convert.ToInt32(selectedDocumentTypeId);
             viewModel.CreatedBy = 1;
             viewModel.IsActive = true;
             viewModel.CreatedAt = DateTime.UtcNow;
 
-            var model = viewModel.ToDocumentTypeAssignmentModel();
+            var model = viewModel.FromCreateToDocumentTypeAssignmentModel();
 
             if (ModelState.IsValid)
             {
@@ -59,56 +65,64 @@ namespace Intl.Realty.Firm.Controllers
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
             return RedirectToAction(nameof(Index), new { addSuccess = false });
-
         }
-        public async Task<IActionResult> EditModal(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            DocumentTypeAssignment? model = await _unitOfWork.DocumentTypeAssignment.GetAsync(u => u.Id == id);
-
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
-
+            var model = await _unitOfWork.DocumentTypeAssignment.GetAsync(x => x.Id == id);
             if (model == null)
             {
                 return NotFound();
             }
 
-            EditDocumentTypeAssignmentViewModel viewModel = model.ToEditDocumentTypeAssignmentModel();
             var transactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
 
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
+
+            var viewModel = model.ToEditDocumentTypeAssignmentListViewModel();
+
             viewModel.TransactionTypeList = transactionTypeIEnum.ToList();
             viewModel.DocumentTypeList = documentTypeIEnum.ToList();
-            return PartialView("~/Views/DocumentTypeAssignment/Modal/EditModal.cshtml", viewModel);
+
+            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedAt = DateTime.Now;
+
+            return View(viewModel);
         }
-        [HttpPut]
-        public async Task<IActionResult> Edit(int id, DocumentTypeAssignmentViewModel viewModel)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditDocumentTypeAssignmentViewModel viewModel)
         {
-            DocumentTypeAssignment? model = await _unitOfWork.DocumentTypeAssignment.GetAsync(u => u.Id == viewModel.Id);
+            if (id != viewModel.Id)
+            {
+                return NotFound();
+            }
 
-            model.TransactionTypeId = viewModel.TransactionTypeId;
-            model.DocumentTypeId = viewModel.DocumentTypeId;
-            model.IsActive = viewModel.IsActive;
-            model.UpdatedBy = 1;
-            model.UpdatedAt = DateTime.UtcNow;
+            if (ModelState.IsValid)
+            {
+                var model = await _unitOfWork.DocumentTypeAssignment.GetAsync(x => x.Id == id);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model = viewModel.FromEditToDocumentTypeAssignmentModel();
+                model.UpdatedAt = DateTime.Now;
+                model.UpdatedBy = _userId;
+                await _unitOfWork.DocumentTypeAssignment.UpdateAsync(model);
+                return RedirectToAction(nameof(Index), new { editSuccess = true });
+            }
 
-            await _unitOfWork.DocumentTypeAssignment.UpdateAsync(model);
-            _unitOfWork.Save();
-            TempData["success"] = "Document Type Assignment updated successfully";
-            return RedirectToAction("Index");
+            return View(viewModel);
         }
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(includeProperties: "DocumentType,TransactionType");
+            var DocumentTypeAssignmentIEnum = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(includeProperties: "DocumentType,TransactionType");
 
-            var viewModel = modelList.ToDocumentTypeAssignmentListViewModel();
+            var viewModelIEnum = DocumentTypeAssignmentIEnum.FromIEnumToDocumentTypeAssignmentIEnumViewModel();
 
-            return PartialView("~/Views/DocumentTypeAssignment/Partial/ListPartial.cshtml", viewModel);
+            return PartialView("~/Views/DocumentTypeAssignment/Partial/ListPartial.cshtml", viewModelIEnum);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteModal(int id)
@@ -119,7 +133,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var editDocumentTypeAssignmentViewModel = model.ToEditDocumentTypeAssignmentViewModel();
+            var editDocumentTypeAssignmentViewModel = model.ToEditDocumentTypeAssignmentListViewModel();
 
             return PartialView("~/Views/DocumentTypeAssignment/Modal/DeleteModal.cshtml", editDocumentTypeAssignmentViewModel);
         }
@@ -138,9 +152,9 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var transactionTypeViewModelList = modelList.ToDocumentTypeAssignmentListViewModel();
+            var DocumentTypeAssignmentViewModelList = modelList.ToDocumentTypeAssignmentListViewModel();
 
-            IEnumerable<DocumentTypeAssignmentViewModel> modelIEnum = transactionTypeViewModelList.AsEnumerable();
+            IEnumerable<DocumentTypeAssignmentViewModel> modelIEnum = DocumentTypeAssignmentViewModelList.AsEnumerable();
 
             return PartialView("~/Views/DocumentTypeAssignment/Modal/DeleteMultipleModal.cshtml", modelIEnum);
         }
@@ -148,17 +162,20 @@ namespace Intl.Realty.Firm.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            DocumentTypeAssignment? obj = await _unitOfWork.DocumentTypeAssignment.GetAsync(u => u.Id == id);
-
-            if (obj == null)
+            var model = await _unitOfWork.DocumentTypeAssignment.GetAsync(x => x.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
-            await _unitOfWork.DocumentTypeAssignment.RemoveAsync(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "DocumentTypeAssignment deleted successfully";
-            return RedirectToAction("Index");
+
+            var modelList = model.FromModelToDocumentTypeAssignmentListModel();
+
+            await _unitOfWork.DocumentTypeAssignment.RemoveRangeAsync(modelList);
+
+            return RedirectToAction(nameof(Index));
+
         }
+
         public async Task<IActionResult> DeleteMultiple(IEnumerable<DocumentTypeAssignmentViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
@@ -167,8 +184,8 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             var ids = viewModelList.Select(o => o.Id).ToList();
-            var tramsactonTypeList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync();
-            var modelList = tramsactonTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var DocumentTypeAssignmentList = await _unitOfWork.DocumentTypeAssignment.GetAllAsync();
+            var modelList = DocumentTypeAssignmentList.Where(o => ids.Contains(o.Id)).ToList();
 
             if (modelList != null)
             {

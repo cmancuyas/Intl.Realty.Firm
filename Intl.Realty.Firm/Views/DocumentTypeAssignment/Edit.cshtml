@@ -1,0 +1,118 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
+@model EditDocumentTypeAssignmentViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+
+<div class="mb-5">
+    <a href="@Url.Action("Index","DocumentTypeAssignment")" class="text-decoration-none text-blue d-flex mb-4">
+        <i data-feather="chevron-left"></i><span>Back</span>
+    </a>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 card p-4">
+            <h1 class="text-blue mb-0">Edit DocumentTypeAssignment</h1>
+            <hr class="my-4" />
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label fw-bolder">Transaction Type</label>
+                        <select id="TransactionTypeDDL" name="TransactionTypeDDL" class="form-select">
+                            @{
+                                @if (Model.TransactionTypeList != null)
+                                {
+                                    @foreach (var transactionType in Model.TransactionTypeList)
+                                    {
+                                        if (transactionType.Id == Model.TransactionTypeId)
+                                        {
+                                            <option value="@transactionType.Id" selected>@transactionType.Description</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@transactionType.Id">@transactionType.Description</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.TransactionTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                        {
+                            @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label fw-bolder">Region</label>
+                        <select id="RegionDDL" name="RegionDDL" class="form-select">
+                            @{
+                                @if (Model.DocumentTypeList != null)
+                                {
+                                    @foreach (var documentType in Model.DocumentTypeList)
+                                    {
+                                        if (documentType.Id == Model.DocumentTypeId)
+                                        {
+                                            <option value="@documentType.Id" selected>@documentType.Description</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@documentType.Id">@documentType.Description</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DocumentTypeId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                        {
+                            @Html.ValidationMessageFor(m => m.DocumentTypeId, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2">
+                            <input id="isActiveCheckbox" class="form-check-input" type="checkbox" asp-for="IsActive">
+                            <label id="lblStatus" class="fw-bolder">Active</label>
+                        </div>
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="my-5" />
+                <div class="form-group d-flex justify-content-center gap-4">
+                    <input type="button" value="Cancel" class="btn btn-secondary w-15" onclick="window.location.href='@Url.Action("Index", "DocumentTypeAssignment")'" />
+                    <input type="submit" value="Save" class="btn btn-primary w-15" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#isActiveCheckbox').on('click', toggleStatusLabels);
+
+            toggleStatusLabels();
+        });
+
+        function toggleStatusLabels() {
+            if ($('#isActiveCheckbox').is(':checked')) {
+                $('#lblStatus').css('color', '#0d6efd').text("Active");
+            } else {
+                $('#lblStatus').css('color', '#bfbfbf').text("Inactive");
+            }
+        }
+    </script>
+
+}

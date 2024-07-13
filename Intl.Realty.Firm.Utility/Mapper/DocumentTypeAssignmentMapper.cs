@@ -1,62 +1,57 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
-    public static class DocumentTypeAssignmentAssignmentMapper
+    public static class DocumentTypeAssignmentMapper
     {
-        public static DocumentTypeAssignmentViewModel ToDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
-        {
-            return new DocumentTypeAssignmentViewModel
-            {
-                Id = model.Id,
-                DocumentTypeId = model.DocumentTypeId,
-                DocumentType = model.DocumentType,
-                TransactionTypeId = model.TransactionTypeId,
-                TransactionType = model.TransactionType,
-                IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-        public static DocumentTypeAssignment ToDocumentTypeAssignmentModel(this CreateDocumentTypeAssignmentViewModel viewModel)
+        public static DocumentTypeAssignment FromCreateToDocumentTypeAssignmentModel(this CreateDocumentTypeAssignmentViewModel viewModel)
         {
             return new DocumentTypeAssignment
             {
                 DocumentTypeId = viewModel.DocumentTypeId,
                 TransactionTypeId = viewModel.TransactionTypeId,
                 IsActive = viewModel.IsActive,
-                CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
+                CreatedBy = viewModel.CreatedBy,
+            };
+        }
+        public static DocumentTypeAssignment FromEditToDocumentTypeAssignmentModel(this EditDocumentTypeAssignmentViewModel viewModel)
+        {
+            return new DocumentTypeAssignment
+            {
+                Id = viewModel.Id,
+                DocumentTypeId = viewModel.DocumentTypeId,
+                TransactionTypeId = viewModel.TransactionTypeId,
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt,
+            };
+        }
+        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentListViewModel(this DocumentTypeAssignment model)
+        {
+            return new EditDocumentTypeAssignmentViewModel
+            {
+                Id = model.Id,
+                DocumentTypeId = model.DocumentTypeId,
+                TransactionTypeId = model.TransactionTypeId,
+                IsActive = model.IsActive,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
             };
         }
 
-        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentModel(this DocumentTypeAssignment model)
+        public static List<DocumentTypeAssignment> FromModelToDocumentTypeAssignmentListModel(this DocumentTypeAssignment model)
         {
-            return new EditDocumentTypeAssignmentViewModel
+            var modelList = new List<DocumentTypeAssignment>();
+            if (model != null)
             {
-                Id = model.Id,
-                DocumentTypeId = model.DocumentTypeId,
-                TransactionTypeId = model.TransactionTypeId,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
+                modelList.Add(model);
+            }
+            return modelList;
         }
-        public static EditDocumentTypeAssignmentViewModel ToEditDocumentTypeAssignmentViewModel(this DocumentTypeAssignment model)
-        {
-            return new EditDocumentTypeAssignmentViewModel
-            {
-                Id = model.Id,
-                DocumentTypeId = model.DocumentTypeId,
-                TransactionTypeId = model.TransactionTypeId,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
+
         public static List<DocumentTypeAssignmentViewModel> ToDocumentTypeAssignmentListViewModel(this List<DocumentTypeAssignment> modelList)
         {
             var viewModelList = new List<DocumentTypeAssignmentViewModel>();
@@ -76,12 +71,14 @@ namespace Intl.Realty.Firm.Utility.Mapper
             }
             return viewModelList;
         }
-        public static List<DocumentTypeAssignmentViewModel> ToDocumentTypeAssignmentListViewModel(this IEnumerable<DocumentTypeAssignment> modelList)
+
+
+        public static IEnumerable<DocumentTypeAssignmentViewModel> FromIEnumToDocumentTypeAssignmentIEnumViewModel(this IEnumerable<DocumentTypeAssignment> modelIEnum)
         {
-            var viewModelList = new List<DocumentTypeAssignmentViewModel>();
-            if (modelList != null)
+            IEnumerable<DocumentTypeAssignmentViewModel> viewModelIEnum = new List<DocumentTypeAssignmentViewModel>();
+            if (modelIEnum != null)
             {
-                viewModelList = modelList.Select(x => new DocumentTypeAssignmentViewModel()
+                viewModelIEnum = modelIEnum.Select(x => new DocumentTypeAssignmentViewModel()
                 {
                     Id = x.Id,
                     DocumentTypeId = x.DocumentTypeId,
@@ -95,8 +92,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     UpdatedAt = x.UpdatedAt,
                 }).ToList();
             }
-            return viewModelList;
+            return viewModelIEnum;
         }
+        
     }
-
 }

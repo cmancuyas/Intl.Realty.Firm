@@ -12,8 +12,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
     {
         public int DocumentTypeId { get; set; }
         public int TransactionTypeId { get; set; }
-        public List<DocumentType>? DocumentTypeList { get; set; }
-        public List<TransactionType>? TransactionTypeList { get; set;}
         public IEnumerable<SelectListItem>? DocumentTypeIEnum { get; set; }
         public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
         [Required]

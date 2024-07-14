@@ -877,7 +877,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "Transaction")
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -885,7 +885,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Navigation("DocumentType");
 
-                    b.Navigation("Transaction");
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>

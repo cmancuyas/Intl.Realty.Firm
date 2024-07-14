@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intl.Realty.Firm.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240713204344_InitialMigrate")]
+    [Migration("20240714153042_InitialMigrate")]
     partial class InitialMigrate
     {
         /// <inheritdoc />
@@ -880,7 +880,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "Transaction")
+                    b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -888,7 +888,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Navigation("DocumentType");
 
-                    b.Navigation("Transaction");
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>

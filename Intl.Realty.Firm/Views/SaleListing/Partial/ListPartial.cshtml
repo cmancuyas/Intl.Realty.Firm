@@ -2,6 +2,7 @@
 @model List<SaleListingViewModel>
 
 <div>
+
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
             <h1 class="text-blue mb-0">Sales Listing</h1>
@@ -22,7 +23,7 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-action="DeleteMultiple">
+    <form id="ListFormId" method="post">
         <table id="modelTable" class="data-table table-striped table table-hover mt-4 w-100">
             <thead>
                 <tr>
@@ -54,7 +55,10 @@
                 {
                     count++;
                     <tr data-SaleListing-id="@item.Id">
-                        <td class="text-lg-start"> <input type="checkbox" class="row-checkbox" name="ids" value="@item.Id" /></td>
+                        <input type="hidden" name="id" id="id" />
+                        <td class="text-lg-start">
+                            <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
+                        </td>
                         <td class="text-lg-start">
                             @{
                                 @count.ToString()
@@ -73,9 +77,7 @@
                             @Html.DisplayFor(modelItem => @item.CreatedBy)
                         </td>
                         <td class="text-lg-start">
-                            <a 
-          
-                               type="button"
+                            <a type="button"
                                asp-action="Edit"
                                asp-route-id="@item.Id"
                                style="text-decoration: none;">
@@ -90,11 +92,11 @@
             </tbody>
         </table>
 
-@*         <nav class="table-pagination mt-5" id="paginationNav" style="display: none;">
-            <ul class="pagination justify-content-center" id="pagination">
-                <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
-                <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
-            </ul>
+        @*         <nav class="table-pagination mt-5" id="paginationNav" style="display: none;">
+        <ul class="pagination justify-content-center" id="pagination">
+        <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
+        <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
+        </ul>
         </nav> *@
     </form>
 </div>
@@ -171,6 +173,7 @@
     }
 
     function OpenMultipleDeleteModal() {
+        debugger;
         var selectedRows = getSelectedRows();
         var selectedIdsArray = getIdsFromSelectedRows(selectedRows);
 

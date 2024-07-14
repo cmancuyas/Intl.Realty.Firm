@@ -275,7 +275,7 @@ namespace Intl.Realty.Firm.Controllers
                 modelList.Add(model);
             }
 
-            if (modelList == null)
+            if (modelList == null || !modelList.Any())
             {
                 return NotFound();
             }
@@ -306,15 +306,26 @@ namespace Intl.Realty.Firm.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var documentTypeList = await _unitOfWork.SaleListing.GetAllAsync();
-            var modelList = documentTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var saleListingIds = viewModelList.Select(x => x.Id).ToList();
+            var saleListingListToBeDeleted = await _unitOfWork.SaleListing.GetAllAsync(x=>saleListingIds.Contains(x.Id));
 
-            if (modelList != null)
+            var IRFDealIds = saleListingListToBeDeleted.Select(x=>x.IRFDealId).ToList();
+            var IRFDealListToBeDeleted = await _unitOfWork.IRFDeal.GetAllAsync(x => IRFDealIds.Contains(x.Id));
+
+            var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.Id));
+
+            if (saleListingListToBeDeleted != null)
             {
                 try
                 {
-                    await _unitOfWork.SaleListing.RemoveRangeAsync(modelList);
+                    foreach(var file in fileUploadList)
+                    {
+                        FileHandler.DeleteFile(file.FilePath + "/" + file.OriginalFileName);
+                    }
+
+                    await _unitOfWork.FileUpload.RemoveRangeAsync(fileUploadList);
+                    await _unitOfWork.SaleListing.RemoveRangeAsync(saleListingListToBeDeleted);
+                    await _unitOfWork.IRFDeal.RemoveRangeAsync(IRFDealListToBeDeleted);
                 }
                 catch (Exception ex)
                 {

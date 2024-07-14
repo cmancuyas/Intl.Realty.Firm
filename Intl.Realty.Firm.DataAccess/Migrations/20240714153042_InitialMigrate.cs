@@ -115,7 +115,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-
                     PropertyAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FinalSalePrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     FinalClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),

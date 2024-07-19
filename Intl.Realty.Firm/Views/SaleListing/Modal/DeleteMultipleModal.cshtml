@@ -9,7 +9,6 @@
     });
 
     $("#btnConfirmDelete").click(function () {
-        debugger;
         var viewModelList = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
         viewModelList = JSON.parse(viewModelList);
         let parameters = { viewModelList: viewModelList };

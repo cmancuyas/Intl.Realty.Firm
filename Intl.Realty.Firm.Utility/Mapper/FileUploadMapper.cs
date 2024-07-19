@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -17,11 +18,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 FileName = model.FileName,
-                FilePath = model.FilePath,
-                FileType = model.FileType,
+                FullPath = model.FullPath,
+                Directory = model.Directory,
+                FileExtension = model.FileExtension,
                 FileSize = model.FileSize,
-                WebDirectoryPath = model.WebDirectoryPath,
-                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -37,11 +37,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 modelList = viewModelList.Select(x => new FileUpload()
                 {
                     FileName = x.FileName,
-                    FilePath = x.FilePath,
-                    FileType = x.FileType,
+                    FullPath = x.FullPath,
+                    Directory = x.Directory,
+                    FileExtension = x.FileExtension,
                     FileSize = x.FileSize,
-                    WebDirectoryPath = x.WebDirectoryPath,
-                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt
@@ -56,11 +55,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
             return new CreateFileUploadViewModel
             {
                 FileName = model.FileName,
-                FilePath = model.FilePath,
-                FileType = model.FileType,
+                FullPath = model.FullPath,
+                Directory = model.Directory,
+                FileExtension = model.FileExtension,
                 FileSize = model.FileSize,
-                WebDirectoryPath = model.WebDirectoryPath,
-                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -72,11 +70,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 FileName = model.FileName,
-                FilePath = model.FilePath,
-                FileType = model.FileType,
+                FullPath = model.FullPath,
+                Directory = model.Directory,
+                FileExtension = model.FileExtension,
                 FileSize = model.FileSize,
-                WebDirectoryPath = model.WebDirectoryPath,
-                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -88,11 +85,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 FileName = model.FileName,
-                FilePath = model.FilePath,
-                FileType = model.FileType,
+                FullPath = model.FullPath,
+                Directory = model.Directory,
+                FileExtension = model.FileExtension,
                 FileSize = model.FileSize,
-                WebDirectoryPath = model.WebDirectoryPath,
-                OriginalFileName = model.OriginalFileName,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -107,11 +103,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = x.Id,
                     FileName = x.FileName,
-                    FilePath = x.FilePath,
-                    FileType = x.FileType,
+                    FullPath = x.FullPath,
+                    Directory = x.Directory,
+                    FileExtension = x.FileExtension,
                     FileSize = x.FileSize,
-                    WebDirectoryPath = x.WebDirectoryPath,
-                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -130,11 +125,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = x.Id,
                     FileName = x.FileName,
-                    FilePath = x.FilePath,
-                    FileType = x.FileType,
+                    FullPath = x.FullPath,
+                    Directory = x.Directory,
+                    FileExtension = x.FileExtension,
                     FileSize = x.FileSize,
-                    WebDirectoryPath = x.WebDirectoryPath,
-                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -153,11 +147,10 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = x.Id,
                     FileName = x.FileName,
-                    FilePath = x.FilePath,
-                    FileType = x.FileType,
+                    FullPath = x.FullPath,
+                    Directory = x.Directory,
+                    FileExtension = x.FileExtension,
                     FileSize = x.FileSize,
-                    WebDirectoryPath = x.WebDirectoryPath,
-                    OriginalFileName = x.OriginalFileName,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

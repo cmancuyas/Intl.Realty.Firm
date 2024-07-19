@@ -318,7 +318,7 @@
                         confirmButtonColor: '#14984a'
                     });
                 } else {
-                    // debugger;
+                    debugger;
                     $("#confirmSubmitModal").modal("show");
                     // saleListingForm.submit();
                     // $("#confirmSubmitModal").modal("hide");
@@ -357,12 +357,9 @@
         });
 
         $("#btnConfirmSubmit").click(function () {
-
-            $("#confirmSubmitModal").modal("hide");
             debugger;
+            $("#confirmSubmitModal").modal("hide");
             saleListingForm.submit();
-            // CreateSaleListing();
-            // $("#confirmSuccessModal").modal("show");
         });
 
         $("#finalOKBtn").click(function () {
@@ -498,41 +495,10 @@
     }
     //END FOR CHECKLIST OF DOCUMENTS
 
-    function CreateSaleListing() {
-        // debugger;
-        var viewModel = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
-        viewModel = JSON.parse(viewModel);
-        let parameters = { viewModel: viewModel };
-        $.ajax({
-            url: '/SaleListing/Create',
-            type: 'POST',
-            data: parameters,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            success: function (data) {
-                // debugger;
-                // NOTE: TO DO better way of calling callback function from parent
-                CloseModal();
-                // Swal.fire({
-                //     title: "Success!",
-                //     icon: "success",
-                //     confirmButtonText: "Ok",
-                //     confirmButtonColor: '#14984a'
-                // });
-                window.location.reload()
-                // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
-
-            },
-
-            error: function (xhr) {
-                // debugger;
-                alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-            }
-        });
-    }
 </script>
 
-        @section Scripts {
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-        }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

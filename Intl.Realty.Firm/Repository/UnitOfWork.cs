@@ -33,7 +33,7 @@ namespace Intl.Realty.Firm.Repository
             SaleCoop = new SaleCoopRepository(_db);
             LeaseListing = new LeaseListingRepository(_db);
             LeaseCoop = new LeaseCoopRepository(_db);
-            FileUpload = new FileUploadRepository(_db);
+            //FileUpload = new FileUploadRepository(_db);
             ProfilePicture = new ProfilePictureRepository(_db);
         }
 

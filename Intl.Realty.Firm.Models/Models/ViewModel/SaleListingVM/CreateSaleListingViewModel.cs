@@ -22,6 +22,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int CreatedBy { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
-        public List<DocumentType>? DocumentTypeList { get; set; }
+        public IEnumerable<DocumentType>? DocumentTypeList { get; set; }
     }
 }

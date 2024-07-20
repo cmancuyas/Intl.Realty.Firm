@@ -51,114 +51,106 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(List<CreateSaleListingViewModel> viewModel)
+        public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
         {
-            //List<CreateSaleListingViewModel> myDeserializedObjList = (List<CreateSaleListingViewModel>)Newtonsoft.Json.JsonConvert.DeserializeObject(viewModel., typeof(List<CreateSaleListingViewModel>));
             var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == "Sale Listing");
+
+            // Create IRF Deal Data
+            viewModel.TransactionType = transactionType;
+            if (ModelState.IsValid)
+            {
+                var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
+                createIRFDealModel.CreatedAt = DateTime.Now;
+                createIRFDealModel.CreatedBy = 1;
+                await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
+
+                var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
+
+                // Get IRF Deal Data
+                viewModel.TransactionTypeId = transactionType.Id;
+                viewModel.TransactionType = transactionType;
+                viewModel.IRFDealId = NewIRFDeal.Id;
+                if (NewIRFDeal != null)
+                {
+                    viewModel.CreateIRFDealViewModel.IsActive = NewIRFDeal.IsActive;
+                    viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDeal.CreatedBy;
+                    viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDeal.CreatedAt;
+                }
+
+                // Create SaleListing Data
+                viewModel.TransactionTypeId = transactionType.Id;
+                viewModel.IRFDealId = NewIRFDeal.Id;
+
+                viewModel.IsActive = viewModel.IsActive;
+                viewModel.CreatedBy = viewModel.CreatedBy;
+                viewModel.CreatedAt = viewModel.CreatedAt;
+
+                var saleListingModel = viewModel.ToSaleListingModel();
+                await _unitOfWork.SaleListing.AddAsync(saleListingModel);
+
+                // Create FileUploadData
+                if (viewModel.FileUploadList != null)
+                {
+
+                    var uploadPath = string.Empty;
+                    var defaultPathFromConfig = _fileUploadRepository.GetDefaultUploadPathFromConfig();
+                    if (defaultPathFromConfig != null)
+                    {
+                        uploadPath = defaultPathFromConfig;
+                    }
+                    else
+                    {
+                        uploadPath = _backupFileDirectory;
+                    }
+                    var userIdPath = _userId.ToString() + "\\";
+                    uploadPath = Path.Combine(uploadPath, userIdPath);
+
+                    if (viewModel.FileUploadList != null)
+                    {
+                        var fileUploadList = viewModel.FileUploadList.Files;
+                        if (fileUploadList != null)
+                        {
+                            int index = 0;
+                            foreach (var fileUpload in fileUploadList)
+                            {
+                                var (fileNameWithoutExtension, fileExtension) = await _fileUploadRepository.UploadFile(fileUpload, uploadPath);
+
+                                if (viewModel.CreateFileUploadsViewModel != null)
+                                {
+                                    var createFileUpload = new FileUpload()
+                                    {
+                                        FileName = fileNameWithoutExtension,
+                                        FileExtension = fileExtension,
+                                        Directory = uploadPath,
+                                        FullPath = uploadPath + fileNameWithoutExtension + fileExtension,
+                                        FileSize = fileUpload.Length.ToString(),
+                                        IsActive = true,
+                                        CreatedAt = DateTime.Now,
+                                        CreatedBy = _userId,
+                                        SaleListingId = saleListingModel.Id,
+                                        TransactionTypeId = transactionType.Id,
+                                        DocumentTypeId = viewModel.CreateFileUploadsViewModel[index].DocumentTypeId
+
+                                    };
+                                    await _fileUploadRepository.AddAsync(createFileUpload);
+                                }
+
+                                index++;
+
+                            }
+                        }
+
+                    }
+
+                }
+
+
+
+                return RedirectToAction(nameof(Index), new { addSuccess = true });
+            }
+
             return View(viewModel);
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
-        //{
-        //    var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == "Sale Listing");
-
-        //    // Create IRF Deal Data
-        //    viewModel.TransactionType = transactionType;
-        //    if (ModelState.IsValid)
-        //    {
-        //        var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
-        //        createIRFDealModel.CreatedAt = DateTime.Now;
-        //        createIRFDealModel.CreatedBy = 1;
-        //        await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
-
-        //        var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
-
-        //        // Get IRF Deal Data
-        //        viewModel.TransactionTypeId = transactionType.Id;
-        //        viewModel.TransactionType = transactionType;
-        //        viewModel.IRFDealId = NewIRFDeal.Id;
-        //        if (NewIRFDeal != null)
-        //        {
-        //            viewModel.CreateIRFDealViewModel.IsActive = NewIRFDeal.IsActive;
-        //            viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDeal.CreatedBy;
-        //            viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDeal.CreatedAt;
-        //        }
-
-        //        // Create SaleListing Data
-        //        viewModel.TransactionTypeId = transactionType.Id;
-        //        viewModel.IRFDealId = NewIRFDeal.Id;
-
-        //        viewModel.IsActive = viewModel.IsActive;
-        //        viewModel.CreatedBy = viewModel.CreatedBy;
-        //        viewModel.CreatedAt = viewModel.CreatedAt;
-
-        //        var saleListingModel = viewModel.ToSaleListingModel();
-        //        await _unitOfWork.SaleListing.AddAsync(saleListingModel);
-
-        //        // Create FileUploadData
-        //        if (viewModel.FileUploadList != null)
-        //        {
-
-        //            var uploadPath = string.Empty;
-        //            var defaultPathFromConfig = _fileUploadRepository.GetDefaultUploadPathFromConfig();
-        //            if (defaultPathFromConfig != null)
-        //            {
-        //                uploadPath = defaultPathFromConfig;
-        //            }
-        //            else
-        //            {
-        //                uploadPath = _backupFileDirectory;
-        //            }
-        //            var userIdPath = _userId.ToString() + "\\";
-        //            uploadPath = Path.Combine(uploadPath, userIdPath);
-
-        //            if (viewModel.FileUploadList != null)
-        //            {
-        //                var fileUploadList = viewModel.FileUploadList.Files;
-        //                if (fileUploadList != null)
-        //                {
-        //                    int index = 0;
-        //                    foreach (var fileUpload in fileUploadList)
-        //                    {
-        //                        var (fileNameWithoutExtension, fileExtension) = await _fileUploadRepository.UploadFile(fileUpload, uploadPath);
-
-        //                        if (viewModel.CreateFileUploadsViewModel != null)
-        //                        {
-        //                            var createFileUpload = new FileUpload()
-        //                            {
-        //                                FileName = fileNameWithoutExtension,
-        //                                FileExtension = fileExtension,
-        //                                Directory = uploadPath,
-        //                                FullPath = uploadPath + fileNameWithoutExtension + fileExtension,
-        //                                FileSize = fileUpload.Length.ToString(),
-        //                                IsActive = true,
-        //                                CreatedAt = DateTime.Now,
-        //                                CreatedBy = _userId,
-        //                                SaleListingId = saleListingModel.Id,
-        //                                TransactionTypeId = transactionType.Id,
-        //                                DocumentTypeId = viewModel.CreateFileUploadsViewModel[index].DocumentTypeId
-
-        //                            };
-        //                            await _fileUploadRepository.AddAsync(createFileUpload);
-        //                        }
-
-        //                        index++;
-
-        //                    }
-        //                }
-
-        //            }
-
-        //        }
-
-
-
-        //        return RedirectToAction(nameof(Index), new { addSuccess = true });
-        //    }
-
-        //    return View(viewModel);
-        //}
 
         //public List<FileUpload> CreateFileUploadData(FormFileUploadList formFileUploadList,
         //                                            int userId,

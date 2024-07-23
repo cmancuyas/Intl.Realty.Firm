@@ -2,6 +2,10 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Repository;
 using Intl.Realty.Firm.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Intl.Realty.Firm.Service;
+using Intl.Realty.Firm.Service.IServices;
+using Intl.Realty.Firm.Models.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IFileUploadRepository, FileUploadRepository>();
+builder.Services.AddTransient<IConfigurationService, ConfigurationService>();
+builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 

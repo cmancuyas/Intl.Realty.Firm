@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intl.Realty.Firm.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240714153042_InitialMigrate")]
+    [Migration("20240718194045_InitialMigrate")]
     partial class InitialMigrate
     {
         /// <inheritdoc />
@@ -189,14 +189,18 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("DocumentTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
+                    b.Property<string>("Directory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FilePath")
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileExtension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -204,7 +208,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FileType")
+                    b.Property<string>("FullPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -216,10 +220,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Property<int?>("LeaseListingId")
                         .HasColumnType("int");
-
-                    b.Property<string>("OriginalFileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SaleCoopId")
                         .HasColumnType("int");
@@ -235,10 +235,6 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
-
-                    b.Property<string>("WebDirectoryPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

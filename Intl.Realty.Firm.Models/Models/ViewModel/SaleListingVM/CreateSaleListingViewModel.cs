@@ -12,9 +12,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public TransactionType? TransactionType { get; set; }
         public int IRFDealId { get; set; }
         public CreateIRFDealViewModel CreateIRFDealViewModel { get; set; } = new CreateIRFDealViewModel();
-        public ICollection<FileUpload>? FileUploads { get; set; }
+        public IEnumerable<FileUpload>? FileUploads { get; set; }
         public List<CreateFileUploadViewModel>? CreateFileUploadsViewModel { get; set; }
-        public FormFileUploadList? FileUploadList { get; set; }
+        public FileUploadList? FileUploadList { get; set; }
         public string? Dataxxx { get; set; }
         [Required]
         public bool IsActive { get; set; }
@@ -22,6 +22,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int CreatedBy { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
-        public List<DocumentType>? DocumentTypeList { get; set; } = new List<DocumentType>();
+        public IEnumerable<DocumentType>? DocumentTypeList { get; set; }
     }
 }

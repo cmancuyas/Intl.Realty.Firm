@@ -318,7 +318,7 @@
                         confirmButtonColor: '#14984a'
                     });
                 } else {
-                    // debugger;
+                    debugger;
                     $("#confirmSubmitModal").modal("show");
                     // saleListingForm.submit();
                     // $("#confirmSubmitModal").modal("hide");
@@ -357,12 +357,10 @@
         });
 
         $("#btnConfirmSubmit").click(function () {
-
+            // debugger;
             $("#confirmSubmitModal").modal("hide");
-            debugger;
             saleListingForm.submit();
-            // CreateSaleListing();
-            // $("#confirmSuccessModal").modal("show");
+            // CreateFileUpload();
         });
 
         $("#finalOKBtn").click(function () {
@@ -498,18 +496,17 @@
     }
     //END FOR CHECKLIST OF DOCUMENTS
 
-    function CreateSaleListing() {
-        // debugger;
+    function CreateFileUpload(){
+        debugger;
         var viewModel = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
-        viewModel = JSON.parse(viewModel);
+        // viewModel = JSON.parse(viewModel);
         let parameters = { viewModel: viewModel };
         $.ajax({
-            url: '/SaleListing/Create',
+            url: '/SaleListing/Create/',
             type: 'POST',
-            data: parameters,
+            data: JSON.stringify(parameters),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (data) {
-                // debugger;
                 // NOTE: TO DO better way of calling callback function from parent
                 CloseModal();
                 // Swal.fire({
@@ -519,20 +516,21 @@
                 //     confirmButtonColor: '#14984a'
                 // });
                 window.location.reload()
-                // $('#positionListPartialContainer').load('/Position/PositionListPartialView');
+                // $('#ListPartialContainer').load('/SaleListing/ListPartialView');
 
             },
 
-            error: function (xhr) {
-                // debugger;
-                alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+            error: function (e) {
+                debugger;
+                console.log("error in ajax call salelisting/create" + e);
             }
         });
     }
+
 </script>
 
-        @section Scripts {
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-        }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

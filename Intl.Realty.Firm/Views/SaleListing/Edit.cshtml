@@ -31,7 +31,7 @@
                             {
                                 <tr>
                                     <td>@file.DocumentType.Description</td>
-                                    <td>@Html.ActionLink(file.OriginalFileName, "DownloadFile", new { filePath = file.FilePath, fileName = file.OriginalFileName })</td>
+                                    <td>@Html.ActionLink(file.FileName, "DownloadFile", new { filePath = file.FullPath, fileName = file.FileName })</td>
                                 </tr>
                             }
                         }

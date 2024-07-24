@@ -56,7 +56,7 @@ namespace Intl.Realty.Firm.Service
                 throw new Exception("File could not be uploaded", ex);
             }
         }
-        public async Task<(string, string, string)> UploadFileToDirectory(IFormFile iFormFile, string directory)
+        private async Task<(string, string, string)> UploadFileToDirectory(IFormFile iFormFile, string directory)
         {
             string fileNameWithoutExtension = string.Empty;
             string fileExtension = string.Empty;

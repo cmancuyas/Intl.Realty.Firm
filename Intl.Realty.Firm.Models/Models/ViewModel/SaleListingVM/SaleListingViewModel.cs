@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Intl.Realty.Firm.Models.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public TransactionType? TransactionType { get; set; } = new TransactionType();
         public int IRFDealId { get; set; }
         public IRFDeal? IRFDeal { get; set; } = new IRFDeal();
-        public ICollection<FileUpload>? FileUploads { get; set; }
+        public List<FileUpload>? FileUploads { get; set; }
     }
 }

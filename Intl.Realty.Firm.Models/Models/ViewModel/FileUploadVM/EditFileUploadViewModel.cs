@@ -30,5 +30,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
         public int? UpdatedBy { get; set; }
         [Required]
         public DateTime? UpdatedAt { get; set; }
+        //used for selectize
+        public List<string>? FileNames { get; set; }
     }
 }

@@ -37,36 +37,41 @@ namespace Intl.Realty.Firm.Service
             }
         }
 
-        public async Task<(string, string)> UploadFile(IFormFile iFormFile, string directory)
+        public async Task<(string, string, string)> UploadFile(IFormFile iFormFile, string directory)
         {
             string fileNameWithoutExtension = string.Empty;
             string fileExtension = string.Empty;
+            string originalFileName = string.Empty;
 
             try
             {
                 if (iFormFile != null && iFormFile?.Length > 0)
                 {
-                    (fileNameWithoutExtension, fileExtension) = await UploadFileToDirectory(iFormFile, directory);
+                    (fileNameWithoutExtension, fileExtension, originalFileName) = await UploadFileToDirectory(iFormFile, directory);
                 }
-                return (fileNameWithoutExtension, fileExtension);
+                return (fileNameWithoutExtension, fileExtension, originalFileName);
             }
             catch (Exception ex)
             {
                 throw new Exception("File could not be uploaded", ex);
             }
         }
-        public async Task<(string, string)> UploadFileToDirectory(IFormFile iFormFile, string directory)
+        public async Task<(string, string, string)> UploadFileToDirectory(IFormFile iFormFile, string directory)
         {
             string fileNameWithoutExtension = string.Empty;
             string fileExtension = string.Empty;
+            string originalFileName = string.Empty;
 
             FileInfo fileInfo = new FileInfo(iFormFile.FileName);
 
             fileExtension = fileInfo.Extension;
 
-            var fileName = iFormFile.FileName;
-            fileNameWithoutExtension = FileHandler.GetFileNameWithoutExtension(fileName);
-            var fullFileName = fileNameWithoutExtension + "_" + DateTime.Now.Ticks.ToString() + fileExtension;
+            originalFileName = iFormFile.FileName;
+
+            var originalFileNameWithoutExtension = FileHandler.GetFileNameWithoutExtension(originalFileName);
+
+            var fullFileName = originalFileNameWithoutExtension + "_" + DateTime.Now.Ticks.ToString() + fileExtension;
+
             fileNameWithoutExtension = FileHandler.GetFileNameWithoutExtension(fullFileName);
 
             var filePath = FileHandler.GetFilePath(directory, fullFileName);
@@ -75,7 +80,7 @@ namespace Intl.Realty.Firm.Service
             {
                 await iFormFile.CopyToAsync(fileStream);
             }
-            return (fileNameWithoutExtension, fileExtension);
+            return (fileNameWithoutExtension, fileExtension, originalFileName);
         }
     }
 }

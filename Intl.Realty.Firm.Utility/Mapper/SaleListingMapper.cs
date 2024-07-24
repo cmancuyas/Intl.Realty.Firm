@@ -41,26 +41,15 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 CreatedAt = model.CreatedAt
             };
         }
-        public static EditSaleListingViewModel ToEditSaleListingModel(this SaleListing model)
-        {
-            return new EditSaleListingViewModel
-            {
-                Id = model.Id,
-                TransactionTypeId = model.TransactionTypeId,
-                IRFDealId = model.IRFDealId,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
         public static EditSaleListingViewModel ToEditSaleListingViewModel(this SaleListing model)
         {
             return new EditSaleListingViewModel
             {
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
+                TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
-                FileUploads = model.FileUploads,
+                EditIRFDealViewModel = model.IRFDeal?.ToEditIRFDealModel(),
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt

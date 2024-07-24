@@ -14,9 +14,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
         public string Directory { get; set; } = string.Empty;
         public string FileExtension { get; set; } = string.Empty;
         public string FileSize { get; set; } = string.Empty;
-        public int SaleListingId { get; set; }
-        public int DocumentTypeId { get; set; }
-        public int TransactionTypeId { get; set; }
+        public int? DocumentTypeId { get; set; }
+        public int? SaleListingId { get; set; }
+        public int? TransactionTypeId { get; set; }
         public bool IsActive { get; set; }
         [Required]
         public int CreatedBy { get; set; }

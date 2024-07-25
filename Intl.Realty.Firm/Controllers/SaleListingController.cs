@@ -1,4 +1,6 @@
-﻿using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Models.Helpers;
+using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Service.IServices;
@@ -55,7 +57,11 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
         {
+            string transactionTypeName = _saleListingName; // 1 = Sale Listing
             var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName); //Sale Listing
+            viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
+            viewModel.TransactionTypeId = viewModel.TransactionType.Id;
+            viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionType.Description);
 
             // Create IRF Deal Data
             viewModel.TransactionType = transactionType;
@@ -67,6 +73,8 @@ namespace Intl.Realty.Firm.Controllers
                 await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
 
                 var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
+
+
 
                 // Get IRF Deal Data
                 viewModel.TransactionTypeId = transactionType.Id;
@@ -108,52 +116,78 @@ namespace Intl.Realty.Firm.Controllers
 
                     uploadPath = Path.Combine(uploadPath, userIdPath);
 
-                    if (viewModel.FileUploadList != null)
+                    if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
                     {
-                        var fileUploadList = viewModel.FileUploadList.Files;
-                        if (fileUploadList != null)
-                        {
-                            int index = 0;
-                            foreach (var fileUpload in fileUploadList)
-                            {
-
-                                var (fileNameWithoutExtension, fileExtension, originalFileName) = await _fileHandlerService.UploadFile(fileUpload, uploadPath);
-
-                                if (viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel != null)
-                                {
-                                    var createFileUpload = new FileUpload()
-                                    {
-                                        FileName = fileNameWithoutExtension,
-                                        FileExtension = fileExtension,
-                                        OriginalFileName = originalFileName,
-                                        Directory = uploadPath,
-                                        FullPath = uploadPath + fileNameWithoutExtension + fileExtension,
-                                        FileSize = fileUpload.Length.ToString(),
-                                        IsActive = true,
-                                        CreatedAt = DateTime.Now,
-                                        CreatedBy = _userId,
-                                        SaleListingId = saleListingModel.Id,
-                                        TransactionTypeId = transactionType.Id,
-                                        DocumentTypeId = viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel[index].DocumentTypeId ?? 0,
-
-                                    };
-                                    await _unitOfWork.FileUpload.AddAsync(createFileUpload);
-                                }
-
-                                index++;
-
-                            }
-                        }
-
+                        await CreateFileUploadData(viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel,
+                                             viewModel.FileUploadList,
+                                             saleListingModel.Id,
+                                             transactionType.Id,
+                                             viewModel.DocumentTypeList,
+                                             uploadPath);
                     }
-
                 }
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }
 
             return View(viewModel);
         }
+        private async Task<bool> CreateFileUploadData(List<CreateFileUploadViewModel> createFileUploadsViewModel,
+                                                    FileUploadList fileUploadList,
+                                                    int saleListingModelId,
+                                                    int transactionTypeId,
+                                                    IEnumerable<DocumentType> documentTypeList,
+                                                    string uploadPath)
+        {
+            var files = fileUploadList.Files;
+            int index = 0;
+            string updatedUploadPath = string.Empty;
+            FileUpload createFileUpload = new FileUpload();
+            foreach (var createFileUploadViewModel in createFileUploadsViewModel)
+            {
+                var documentType = documentTypeList.Where(x => x.Id == createFileUploadViewModel.DocumentTypeId).FirstOrDefault();
+                if (documentType != null)
+                {
+                    updatedUploadPath = Path.Combine(uploadPath, documentType.Description + "\\");
+                }
 
+                if (files != null)
+                {
+                    var filesFromCreateUploadsViewModel = createFileUploadsViewModel[index].FileNames;
+
+                    if (filesFromCreateUploadsViewModel != null)
+                    {
+                        foreach (var fileUpload in files)
+                        {
+                            if (filesFromCreateUploadsViewModel.Contains(fileUpload.FileName))
+                            {
+                                var (fileNameWithoutExtension, fileExtension, originalFileName) = await _fileHandlerService.UploadFile(fileUpload, updatedUploadPath);
+                                createFileUpload = new FileUpload()
+                                {
+                                    FileName = fileNameWithoutExtension,
+                                    FileExtension = fileExtension,
+                                    OriginalFileName = originalFileName,
+                                    Directory = updatedUploadPath,
+                                    FullPath = updatedUploadPath + fileNameWithoutExtension + fileExtension,
+                                    FileSize = fileUpload.Length.ToString(),
+                                    IsActive = true,
+                                    CreatedAt = DateTime.Now,
+                                    CreatedBy = _userId,
+                                    SaleListingId = saleListingModelId,
+                                    TransactionTypeId = transactionTypeId,
+                                    DocumentTypeId = createFileUploadViewModel.DocumentTypeId ?? 0
+
+                                };
+                                await _unitOfWork.FileUpload.AddAsync(createFileUpload);
+                            }
+                        }
+                    }
+
+                }
+
+                index++;
+            }
+            return true;
+        }
         public async Task<List<DocumentType>> GetDocumentTypesFromDocumentTypeAssignment(string transactionTypeName)
         {
             List<DocumentType> documentTypeList = new List<DocumentType>();
@@ -206,7 +240,7 @@ namespace Intl.Realty.Firm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SaleListingViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, EditSaleListingViewModel viewModel)
         {
             if (id != viewModel.Id)
             {
@@ -215,13 +249,13 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-                var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: ("IRFDeal,FileUploads"));
+                var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: ("IRFDeal,FileUploads,TransactionType"));
                 if (model == null)
                 {
                     return NotFound();
                 }
 
-                model.IRFDeal = viewModel.IRFDeal;
+                model.IRFDeal = viewModel.EditIRFDealViewModel?.ToIRFDealModel();
                 model.FileUploads = viewModel.FileUploads;
 
                 model.IsActive = viewModel.IsActive;
@@ -297,7 +331,7 @@ namespace Intl.Realty.Firm.Controllers
             var IRFDealIds = saleListingListToBeDeleted.Select(x => x.IRFDealId).ToList();
             var IRFDealListToBeDeleted = await _unitOfWork.IRFDeal.GetAllAsync(x => IRFDealIds.Contains(x.Id));
 
-            var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.Id));
+            var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.SaleListingId));
 
             if (saleListingListToBeDeleted != null)
             {
@@ -326,14 +360,14 @@ namespace Intl.Realty.Firm.Controllers
         [Route("DownloadFile")]
         public async Task<IActionResult> Download(int id)
         {
-            var fileUpload = await _unitOfWork.FileUpload.GetAsync(x=>x.Id==id);
+            var fileUpload = await _unitOfWork.FileUpload.GetAsync(x => x.Id == id);
             if (fileUpload != null)
             {
                 var result = await _fileHandlerService.DownloadFile(fileUpload.Directory, fileUpload.FileName, fileUpload.FileExtension);
                 return File(result.Item1, result.Item2, result.Item3);
             }
-            
-           return NotFound();
+
+            return NotFound();
         }
 
     }

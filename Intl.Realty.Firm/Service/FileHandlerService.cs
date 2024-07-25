@@ -22,7 +22,7 @@ namespace Intl.Realty.Firm.Service
             try
             {
                 var filePath = FileHandler.GetFilePath(directory, fileName + fileExtension);
-                filePath = StringManipulation.ReplaceWhitespace(filePath, "");
+                //filePath = StringManipulation.ReplaceWhitespace(filePath, "");
                 var provider = new FileExtensionContentTypeProvider();
                 if (!provider.TryGetContentType(filePath, out var contentType))
                 {

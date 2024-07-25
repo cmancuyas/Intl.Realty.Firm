@@ -15,6 +15,7 @@
         ILeaseCoopRepository LeaseCoop { get; }
         IFileUploadRepository FileUpload { get; }
         IProfilePictureRepository ProfilePicture { get; }
+        IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; }
         void Save();
     }
 }

@@ -26,9 +26,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         [Required]
         public bool IsActive { get; set; }
         [Required]
-        public int? UpdatedBy { get; set; }
+        public int UpdatedBy { get; set; }
         [Required]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public IEnumerable<DocumentType>? DocumentTypeList { get; set; }
         //used for selectize
         public List<string>? FileNames { get; set; }

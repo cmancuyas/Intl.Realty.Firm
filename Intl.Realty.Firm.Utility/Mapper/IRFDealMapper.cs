@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
 using Intl.Realty.Firm.Models.Models;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -44,7 +45,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
 
             return viewModelList;
         }
-        public static IRFDealViewModel ToIRFDealViewModel(this IRFDeal model)
+        public static IRFDealViewModel ToIRFDealViewModel(this EditIRFDealViewModel model)
         {
             return new IRFDealViewModel
             {
@@ -70,8 +71,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 BuyersLawyer = model.BuyersLawyer,
                 BuyersLawyerAddress = model.BuyersLawyerAddress,
                 IsActive = model.IsActive,
-                CreatedBy = model.CreatedBy,
-                CreatedAt = model.CreatedAt,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
             };
@@ -106,7 +105,36 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 CreatedAt = viewModel.CreatedAt,
             };
         }
-
+        public static IRFDeal ToIRFDealModel(this EditIRFDealViewModel viewModel)
+        {
+            return new IRFDeal
+            {
+                Id = viewModel.Id,
+                PropertyAddress = viewModel.PropertyAddress,
+                FinalSalePrice = viewModel.FinalSalePrice,
+                FinalClosingDate = viewModel.FinalClosingDate,
+                DepositAmount = viewModel.DepositAmount,
+                DepositDate = viewModel.DepositDate,
+                BuyerName = viewModel.BuyerName,
+                LandLordName = viewModel.LandLordName,
+                ListingCommissionPercentage = viewModel.ListingCommissionPercentage,
+                BuyingCommissionPercentage = viewModel.BuyingCommissionPercentage,
+                ListingAgentName = viewModel.ListingAgentName,
+                ListingBrokerage = viewModel.ListingBrokerage,
+                ListingBrokerageFax = viewModel.ListingBrokerageFax,
+                BuyerAgentName = viewModel.BuyerAgentName,
+                BuyerBrokerage = viewModel.BuyerBrokerage,
+                BuyerBrokerageFax = viewModel.BuyerBrokerageFax,
+                SellersLawyer = viewModel.SellersLawyer,
+                SellersLawyerAddress = viewModel.SellersLawyerAddress,
+                SellersPhoneNumber = viewModel.SellersPhoneNumber,
+                BuyersLawyer = viewModel.BuyersLawyer,
+                BuyersLawyerAddress = viewModel.BuyersLawyerAddress,
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt
+            };
+        }
         public static IRFDeal ToIRFDealModel(this IRFDealViewModel viewModel)
         {
             return new IRFDeal

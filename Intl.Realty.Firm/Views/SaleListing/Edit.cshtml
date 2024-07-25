@@ -224,33 +224,38 @@
                     <table>
                         <thead class="bg-blue">
                             <tr>
-                                <th class="w-50 text-white ps-2">
+                                <th class="w-5 text-white ps-2">
                                     Document Type
                                 </th>
-                                <th class="w-10"></th>
-                                <th class="w-5"></th>
+                                <th class="w-5 text-white ps-2">Filename</th>
+                                <th class="w-5 text-white ps-2">Action</th>
                             </tr>
                         </thead>
                         <tbody id="fileTableBody">
-                            @foreach(DocumentType item in Model.DocumentTypeList)
+                            @foreach (DocumentType item in Model.DocumentTypeList)
                             {
                                 <tr class="border-bottom">
                                     <td>
                                         <span class="mt-3 ms-2 mb-1 fw-bold">@item.Description</span>
                                     </td>
 
-                                    @foreach (FileUpload fileUpload in Model.FileUploads)
-                                    {
+                                    @{
+                                        var filesWithDocumentTypeId = Model.FileUploads.Where(x => x.DocumentTypeId == item.Id);
 
-                                        <td class="text-end">
-                                            <input type="file" class="d-none file-input">
-                                        </td>
+                                        @foreach (FileUpload fileUpload in filesWithDocumentTypeId)
+                                        {
+                                            <td class="w-5 ps-2">
+                                                @fileUpload.OriginalFileName
+                                            </td>
+
+                                            <td class="w-5 ps-2">
+                                                <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                    Download
+                                                </a>
+                                            </td>
+                                        }
                                     }
-                                    <td class="text-center">
-                                        <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
-                                            Download
-                                        </a>
-                                    </td>
+
                                 </tr>
                             }
 
@@ -342,6 +347,7 @@
                 </div>
             </div>
 
+            <hr class="my-5" />
 
             <div class="form-group d-flex justify-content-center gap-4">
                 <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>

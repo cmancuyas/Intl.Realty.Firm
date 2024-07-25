@@ -30,6 +30,7 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<LeaseListing> LeaseListings { get; set; }
         public DbSet<LeaseCoop> LeaseCoops { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
+        public DbSet<FileDocumentTypeBridge> FileDocumentTypeBridges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

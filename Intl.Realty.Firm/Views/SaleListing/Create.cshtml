@@ -506,8 +506,9 @@
     }
 
     function fileSelected(that) {
-        // debugger;
+        debugger;
         var curval = that.dataset.curval;
+        var id = that.id;
         document.getElementById(that.id).setAttribute("data-prevVal", curval);
         document.getElementById(that.id).setAttribute("data-curVal", that.value);
     }

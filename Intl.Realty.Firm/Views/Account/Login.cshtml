@@ -6,63 +6,69 @@
     ViewData["Title"] = "Login";
 }
 
-<container class="login-page">
-    <div class="row m-0 p-0">
-        <div class="col-md-6 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part bg-splash">
-            <img src="~/files/img/logo-irf-default.jpg" alt="" class="logo-login img-fluid" width="300" height="300" />
-            <span class="text-white position-relative top-10">© 2024 International Realty Firm</span>
-        </div>
-        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center right-part">
-            <h3 class="fw-bolder text-center mb-md-5 font">
-                International Realty Firm
-            </h3>
-            @if (!string.IsNullOrEmpty(ViewBag.Error))
-            {
-                <div class="text-danger">@ViewBag.Error</div>
-            }
-            <div class="w-50 mb-md-2">
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-                {
-                    <div class="form-group mb-4">
-                        <label class="fw-bolder">@Html.DisplayNameFor(model => model.Username)</label>
-                        <div class="input-group">
-                        @Html.TextBoxFor(m => m.Username, new
-                            {
-                                @class = "form-control", 
-                                @id = "username",
-                                @name = "username",
-                                @placeholder = "Please enter username",
-                            })
-                        </div>
-                    </div>
-                    <div class="form-group mb-1">
-                        <label class="fw-bolder" for="password">Password</label>
-                        <div class="input-group">
-                            @Html.PasswordFor(m => m.Password, new
-                                { 
-                                    @class = "form-control", 
-                                    @id = "password", 
-                                    @name = "password", 
-                                    @placeholder = "Please enter password",
-                                    @Value = Model.SetPassword
-                                })
-                            <button class="btn" type="button" id="password-toggle">
-                                <i data-feather="eye" type="button"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end mb-md-5">
-                        <a href="#" class="text-decoration-none">Forgot Password?</a>
-                    </div>
-                    <input type="submit" value="Sign in" class="btn btn-primary w-100" />
-                }
-                
+<container class="page-login">
+    <div class="container-fluid p-0">
+        <div class="row m-0 p-0">
+            <div class="col-md-6 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part bg-splash">
+                <img src="~/files/img/logo-irf-default.jpg" alt="" class="logo-login img-fluid" width="300" height="300" />
+                <span class="text-white position-relative top-10">© 2024 International Realty Firm</span>
             </div>
-            <div class="d-flex gap-1">
-                <span class="text-secondary">Don't have an account?</span><a href="@Url.Action("SignUp", "Account")" class="text-decoration-none">Sign Up</a>
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center right-part">
+                <h3 class="fw-bolder text-center mb-md-5 font">
+                    International Realty Firm
+                </h3>
+                
+                <div class="w-50 mb-md-2">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        <div class="form-group mb-4">
+                            <label class="fw-bolder">@Html.DisplayNameFor(model => model.Username)</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.Username, new
+                                    {
+                                        @class = "form-control",
+                                        @id = "username",
+                                        @name = "username",
+                                        @placeholder = "Please enter username",
+                                    })
+                            </div>
+                        </div>
+                        <div class="form-group mb-1">
+                            <label class="fw-bolder" for="password">Password</label>
+                            <div class="input-group">
+                                @Html.PasswordFor(m => m.Password, new
+                                    {
+                                        @class = "form-control",
+                                        @id = "password",
+                                        @name = "password",
+                                        @placeholder = "Please enter password",
+                                        @Value = Model.SetPassword
+                                    })
+                                <button class="btn" type="button" id="password-toggle">
+                                    <i data-feather="eye" type="button"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mb-md-5">
+                            <a href="#" class="text-decoration-none cta-forgot-password">Forgot Password?</a>
+                        </div>
+                        <input type="submit" value="Sign in" class="btn btn-primary w-100" />
+                    }
+
+                </div>
+                <div class="d-flex gap-1">
+                    <span class="text-secondary">Don't have an account?</span><a href="@Url.Action("SignUp", "Account")" class="text-decoration-none cta-sign-up">Sign Up</a>
+                </div>
+
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="text-danger hint-validation">@ViewBag.Error</div>
+                }
+
             </div>
         </div>
     </div>
+    
 </container>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

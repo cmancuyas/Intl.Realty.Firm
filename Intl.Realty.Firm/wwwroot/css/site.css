@@ -1,4 +1,5 @@
-﻿html {
+﻿
+html {
     font-size: 14px;
 }
 
@@ -13,8 +14,8 @@
 }
 
 .form-check-input:checked {
-    background-color: #004aab !important;
-    border-color: #004aab !important;
+    background-color: #203d57 !important;
+    border-color: #203d57 !important;
 }
 
 .form-check-input:hover {
@@ -25,10 +26,11 @@ html {
     position: relative;
     min-height: 100%;
 }
-
-/*body {
-  margin-bottom: 60px;
-}*/
+select:focus, select:focus-visible {
+    outline: none !important;
+    border: 1px solid #203d57 !important;
+    box-shadow: none !important;
+}
 
 /*custom styling*/
 body {
@@ -65,15 +67,25 @@ button#password-toggle {
 }
 
 .btn-primary {
-    background-color: #033da5 !important;
-    border-color: #033da5 !important;
+    background-color: #203d57 !important;
+    border-color: #203d57 !important;
     min-width: 4rem;
 }
 
+    .btn-primary:hover {
+        background-color: #31698a !important;
+        border-color: #31698a !important;
+        min-width: 4rem;
+    }
+    
+    .btn-primary svg {
+        color: #FFF !important;
+    }
+
 .btn-secondary {
-    color: #033da5 !important;
+    color: #31698a !important;
     background-color: transparent !important;
-    border-color: #033da5 !important;
+    border-color: #31698a !important;
     min-width: 4rem;
 }
 
@@ -83,13 +95,17 @@ button#password-toggle {
     left: 37%;
 }
 
+.btn-danger svg {
+    width: 20px;
+}
+
 .form-control::placeholder {
     font-style: italic;
     font-size: smaller;
 }
 
 /*a {
-    color: #033da5 !important;
+    color: #31698a  !important;
 }*/
 
 .border-icon {
@@ -182,7 +198,7 @@ svg:focus {
 }
 
 aside {
-    background: #004aab;
+    background: #203d57;
     position: fixed;
     top: 0;
     width: 300px;
@@ -239,7 +255,8 @@ aside {
 }
 
 .navbar-nav .nav-item .nav-link {
-    color: #fff;
+    color: #CCC;
+    padding: 12px 0;
 }
 
 .navbar-nav .nav-item {
@@ -247,40 +264,53 @@ aside {
 }
 
     .navbar-nav .nav-item.selected {
-        background-color: white;
+        background-color: #31698a;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
 
     .navbar-nav .nav-item:hover {
-        background-color: #C3C4C6;
+        background-color: #31698a;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         transform: translateY(-5px);
     }
 
         .navbar-nav .nav-item.selected .nav-link,
         .navbar-nav .nav-item:hover .nav-link {
-            color: #004AAB !important;
+            color: #FFF;
         }
-
-.down {
-    -webkit-transform: rotate(90deg);
-    transition: all 0.1s ease-in-out;
-}
 
 .sub-nav-item {
     display: none;
-    margin: 0 0 10px 56px;
+    margin: 0 0 0 35px;
 }
-
+    .sub-nav-item ul li {
+        padding: 10px 0;
+        display: list-item;
+    }
     .sub-nav-item ul li:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         transition: all 0.2s ease;
     }
+        .sub-nav-item ul li:hover a {
+            cursor: pointer;
+            color: #FFF;
+        }
 
-a.sub-nav-link {
-    font-weight: 600;
-    color: #fff;
-    text-decoration: none;
+    .sub-nav-item a.sub-nav-link {
+        font-weight: 500;
+        color: #CCC;
+        text-decoration: none;
+    }
+    
+
+        .sub-nav-item a.sub-nav-link::before {
+            content: "¬";
+            margin-right: 5px;
+        }
+    
+ .down {
+    -webkit-transform: rotate(90deg);
+    transition: all 0.1s ease-in-out;
 }
 
 .main {
@@ -352,7 +382,7 @@ footer {
 }
 
 .text-blue {
-    color: #004AAB;
+    color: #203d57;
 }
 
 .forgot-pass-modal-content {
@@ -453,7 +483,7 @@ footer {
 }
 
 .bg-blue {
-    background: #004AAB;
+    background: #203d57;
 }
 
 .bg-lightblue {
@@ -544,8 +574,8 @@ input#summaryPassword {
 }
 
     .form-submit-step.active {
-        color: #004aab;
-        border-bottom: solid 3px #004aab;
+        color: #203d57;
+        border-bottom: solid 3px #203d57;
         background-image: linear-gradient(#fff, #e6f1ff);
     }
 /* multi-step concept proposal end */
@@ -571,7 +601,7 @@ input#summaryPassword {
 }
 
 .dt-container thead {
-    background: #004AAB;
+    background: #203d57;
     color: #fff;
 }
 
@@ -626,9 +656,9 @@ table.dataTable th.dt-type-date, .dt-type-date, table.dataTable th.dt-type-numer
 }
 
 .page-item.active .page-link {
-    background-color: #004AAB;
-    border-color: #004AAB;
-    border-radius: 100%;
+    background-color: #203d57;
+    border-color: #203d57;
+    border-radius: 4px
 }
 
 .page-item:not(.active) .page-link {
@@ -752,7 +782,7 @@ input.select2-search__field {
 }
 
 .select2-results__option--highlighted[aria-selected] {
-    background-color: #004aab !important;
+    background-color: #203d57 !important;
     color: white;
 }
 
@@ -763,9 +793,9 @@ input.select2-search__field {
 }
 
 .tab-page .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #004aab;
+    color: #203d57;
     background-color: rgba(229, 230, 231, 0.5);
-    border-bottom: solid 3px #004aab;
+    border-bottom: solid 3px #203d57;
     font-weight: 600;
 }
 
@@ -784,19 +814,19 @@ input.select2-search__field {
 
 /*
 #workflowsTab .nav-link.active, .tab-page .nav-link.active {
-    color: #004aab !important;
+    color: #203d57 !important;
     font-weight: 600;
     background-color: transparent;
     border: none !important;
-    border-bottom: solid 3px #004aab;
+    border-bottom: solid 3px #203d57;
 }
 
 #workflowsTab .nav-link.active, .tab-page .nav-link.active {
-    color: #004aab !important;
+    color: #203d57 !important;
     font-weight: 600;
     background-color: transparent;
     border: none !important;
-    border-bottom: solid 3px #004aab !important;
+    border-bottom: solid 3px #203d57 !important;
 }
 
 #workflowsTab .nav-link:not(.active), .tab-page .nav-link:not(.active) {
@@ -850,4 +880,38 @@ input.select2-search__field {
 .project-status-content.show {
     opacity: 1;
     transform: translate(0px, 5px);
+}
+
+/* LOGIN */
+.page-login .logo-login {
+    padding: 30px;
+    background: white;
+    border-radius: 10%;
+}
+
+.page-login h3 {
+    color: #203d57;
+}
+
+.page-login .form-control {
+    height: 60px;
+    border-radius: 0;
+    border: 0;
+}
+
+.page-login label {
+    margin-bottom: 6px;
+}
+
+.page-login .input-group {
+    border: 1px solid #CCC;
+}
+
+.page-login .cta-forgot-password,
+.page-login .cta-sign-up {
+    color: #203d57;
+}
+
+.page-login .hint-validation {
+    margin-top: 30px;
 }

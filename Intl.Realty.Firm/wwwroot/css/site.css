@@ -26,13 +26,26 @@ html {
     position: relative;
     min-height: 100%;
 }
+label {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #203d57;
+}
+input:focus, input:focus-visible,
+button:focus, button:focus-visible,
 select:focus, select:focus-visible {
     outline: none !important;
-    border: 1px solid #203d57 !important;
+    border: 1px solid #31698a !important;
     box-shadow: none !important;
 }
 
 /*custom styling*/
+.pos-absolute {
+    position: absolute;
+}
+.pos-relative {
+    position: relative;
+}
 body {
     background: url('../files/img/bg-wavy.png') no-repeat;
     background-size: cover;
@@ -49,16 +62,31 @@ body {
     background: url('../files/img/bg-wavy.png') no-repeat;
     background-size: cover;
 }
-
+.form-check-input {
+    outline: none;
+    box-shadow: none;
+}
+.form-switch label {
+    margin: 0 !important;
+    color: #31698a !important;
+}
+.form-check-input:checked + .form-switch label {
+    color: #31698a !important;
+}
+.form-switch .form-check-input {
+    height: 24px;
+    width: 40px;
+}
 button#password-toggle {
-    border: 1px solid #ced4da;
+    position: absolute;
+    right: 0;
     background: white;
     border-left: 0;
 }
 
-    button#password-toggle:focus {
-        box-shadow: none;
-    }
+button#password-toggle:focus {
+    box-shadow: none;
+}
 
 .btn:hover {
     box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
@@ -84,7 +112,7 @@ button#password-toggle {
 
 .btn-secondary {
     color: #31698a !important;
-    background-color: transparent !important;
+    background-color: white !important;
     border-color: #31698a !important;
     min-width: 4rem;
 }
@@ -98,7 +126,9 @@ button#password-toggle {
 .btn-danger svg {
     width: 20px;
 }
-
+.form-control {
+    color: #31698a !important;
+}
 .form-control::placeholder {
     font-style: italic;
     font-size: smaller;
@@ -639,6 +669,8 @@ label[for="dt-search-0"], .workflow-table label[for^="dt-search-"], label[for^="
 #dt-search-0, .workflow-table [id^="dt-search-"], [id^="dt-search-"] {
     margin-left: 0px !important;
     width: max(300px, 100%) !important;
+    font-size: 16px;
+    font-style: normal !important;
 }
 
     #dt-search-0:focus, .workflow-table [id^="dt-search-"]:focus {

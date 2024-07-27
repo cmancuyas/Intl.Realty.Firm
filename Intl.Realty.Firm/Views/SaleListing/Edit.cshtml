@@ -15,6 +15,7 @@
         <i data-feather="chevron-left"></i><span>Back</span>
     </a>
     <form asp-action="Edit" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center">
             <input type="text" asp-for="Dataxxx" multiple hidden />
 
@@ -251,6 +252,16 @@
                                             <td class="w-5 ps-2">
                                                 <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
                                                     Download
+                                                </a>
+                                            </td>
+                                            <td class="w-5 ps-2">
+                                                <a asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                            <td class="w-5 ps-2">
+                                                <a asp-action="Preview" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                    Preview
                                                 </a>
                                             </td>
                                         }

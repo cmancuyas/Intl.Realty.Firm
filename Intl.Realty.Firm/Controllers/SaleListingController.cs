@@ -357,7 +357,6 @@ namespace Intl.Realty.Firm.Controllers
         }
 
         [HttpGet]
-        [Route("DownloadFile")]
         public async Task<IActionResult> Download(int id)
         {
             var fileUpload = await _unitOfWork.FileUpload.GetAsync(x => x.Id == id);
@@ -365,6 +364,21 @@ namespace Intl.Realty.Firm.Controllers
             {
                 var result = await _fileHandlerService.DownloadFile(fileUpload.Directory, fileUpload.FileName, fileUpload.FileExtension);
                 return File(result.Item1, result.Item2, result.Item3);
+            }
+
+            return NotFound();
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteFile (int id)
+        {
+            var fileUpload = await _unitOfWork.FileUpload.GetAsync(x => x.Id == id);
+            if (fileUpload != null)
+            {
+                await _unitOfWork.FileUpload.RemoveAsync(fileUpload);
+
+                var isSuccess = await _fileHandlerService.DeleteFile(fileUpload.FullPath);
+
+                return RedirectToAction(nameof(Edit), new { id = fileUpload.SaleListingId });
             }
 
             return NotFound();

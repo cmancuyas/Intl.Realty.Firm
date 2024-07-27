@@ -7,6 +7,15 @@ namespace Intl.Realty.Firm.Service
 {
     public class FileHandlerService : IFileHandlerService
     {
+        public Task<bool> CheckIfFileExists(string fullPath)
+        {
+            if (File.Exists(fullPath))
+            {
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
+
         public Task<bool> DeleteFile(string fullPath)
         {
             if (File.Exists(fullPath))

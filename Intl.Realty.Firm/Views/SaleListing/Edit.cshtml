@@ -245,6 +245,9 @@
 
                                         @foreach (FileUpload fileUpload in filesWithDocumentTypeId)
                                         {
+                                            
+
+
                                             <td class="w-5 ps-2">
                                                 @fileUpload.OriginalFileName
                                             </td>
@@ -255,7 +258,7 @@
                                                 </a>
                                             </td>
                                             <td class="w-5 ps-2">
-                                                <a asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
                                                     Delete
                                                 </a>
                                             </td>
@@ -335,7 +338,7 @@
                                             @Html.DisplayFor(modelItem => item.Description)<span class="s-required">*</span>
                                         </td>
                                         <input type="hidden"
-                                               asp-for="EditFileUploadsViewModel[i].DocumentTypeId"
+                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
                                                value="@item.Id" />
                                         <td>
                                             <select class="form-select fileListDropDown"
@@ -343,7 +346,7 @@
                                                     data-prevVal=""
                                                     data-curVal=""
                                                     onchange="fileSelected(this)"
-                                                    asp-for="EditFileUploadsViewModel[i].FileNames"
+                                                    asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
                                                     multiple required>
                                             </select>
                                         </td>
@@ -376,28 +379,24 @@
 
         <script type="text/javascript">
 
-
-
-
-
-
-        </script>
-
-
-        <script type="text/javascript">
-
             $(document).ready(function () {
 
                 $('#isActiveCheckbox').on('click', toggleStatusLabels);
 
                 toggleStatusLabels();
 
-                // debugger;
+                debugger;
+                $('#btnDeleteFile').click(function (e) {
+                    // debugger;
+                    e.preventDefault();
+                    GoToStep2(1);
+                });
+                // GoToStep2();
                 const saleListingForm = document.getElementById('SaleListingForm');
                 $("#btnSubmit").click(function () {
                     //Check if required fields are filled up
                     if ($("#SaleListingForm")[0].checkValidity()) {
-                        debugger;
+                        // debugger;
                         var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
 
                         var x = document.forms['SaleListingForm']['Dataxxx'];
@@ -412,7 +411,7 @@
                                 confirmButtonColor: '#14984a'
                             });
                         } else {
-                            debugger;
+                            // debugger;
                             $("#confirmSubmitModal").modal("show");
                             // saleListingForm.submit();
                             // $("#confirmSubmitModal").modal("hide");
@@ -452,7 +451,7 @@
                 });
 
                 $("#btnConfirmSubmit").click(function () {
-                    debugger;
+                    // debugger;
                     $("#confirmSubmitModal").modal("hide");
                     saleListingForm.submit();
                     // CreateFileUpload();
@@ -460,6 +459,12 @@
 
                 $("#finalOKBtn").click(function () {
                     $("#confirmSuccessModal").modal("hide");
+                });
+                $("#btnDeleteFile").click(function () {
+
+                    GoToStep2();
+                    // window.location.reload();
+
                 });
                 //END FOR MODAL FORM SUBMISSION CONFIRMATION
             });
@@ -635,7 +640,10 @@
 
                 showTab(currentTab);
             }
-
+            function GoToStep2() {
+                curentTab = 1;
+                nextPrev(step)
+            }
 
             function toggleStatusLabels() {
                 if ($('#isActiveCheckbox').is(':checked')) {

@@ -74,8 +74,6 @@ namespace Intl.Realty.Firm.Controllers
 
                 var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
 
-
-
                 // Get IRF Deal Data
                 viewModel.TransactionTypeId = transactionType.Id;
                 viewModel.TransactionType = transactionType;
@@ -114,7 +112,7 @@ namespace Intl.Realty.Firm.Controllers
                     }
                     var userIdPath = _userId.ToString() + "\\";
 
-                    uploadPath = Path.Combine(uploadPath, userIdPath);
+                    uploadPath = Path.Combine(uploadPath, userIdPath + saleListingModel.Id + "\\");
 
                     if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
                     {
@@ -223,7 +221,7 @@ namespace Intl.Realty.Firm.Controllers
 
             int saleListingId = saleListingModel.Id;
 
-            var fileUploads = await _unitOfWork.FileUpload.GetFilesBySaleListingIdAsync(saleListingId);
+            var fileUploads = await _unitOfWork.FileUpload.GetFileUploadsBySaleListingIdAsync(saleListingId);
 
             if (saleListingModel == null)
             {
@@ -232,6 +230,10 @@ namespace Intl.Realty.Firm.Controllers
             var viewModel = saleListingModel.ToEditSaleListingViewModel();
 
             viewModel.FileUploads = fileUploads;
+
+            var fileUploadsWithFiles = FilterFileUploadsWithFilesOnly(viewModel.FileUploads);
+
+            viewModel.FileUploads = fileUploadsWithFiles;
 
             viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(saleListingModel?.TransactionType?.Description ?? _saleListingName);
 
@@ -249,28 +251,93 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-                var model = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: ("IRFDeal,FileUploads,TransactionType"));
-                if (model == null)
+
+                string transactionTypeName = _saleListingName; // 1 = Sale Listing
+                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName, tracked:true); //Sale Listing
+                viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
+                viewModel.TransactionTypeId = viewModel.TransactionType.Id;
+                viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionType.Description);
+
+                var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: ("IRFDeal,FileUploads,TransactionType"), tracked:true);
+                if (saleListingModel == null)
                 {
                     return NotFound();
                 }
+                var fileUploadsWithFiles = FilterFileUploadsWithFilesOnly(saleListingModel.FileUploads);
+                saleListingModel.FileUploads = fileUploadsWithFiles;
+                saleListingModel.IRFDeal = viewModel.EditIRFDealViewModel?.ToIRFDealModel();
 
-                model.IRFDeal = viewModel.EditIRFDealViewModel?.ToIRFDealModel();
-                model.FileUploads = viewModel.FileUploads;
+                // Update IRD Deal
+                if(saleListingModel.IRFDeal != null)
+                {
+                    await _unitOfWork.IRFDeal.UpdateAsync(saleListingModel.IRFDeal);
+                }
+                
+                saleListingModel.FileUploads = viewModel.FileUploads;
 
-                model.IsActive = viewModel.IsActive;
-                model.UpdatedBy = _userId;
-                model.UpdatedAt = DateTime.Now;
+                saleListingModel.IsActive = viewModel.IsActive;
+                saleListingModel.UpdatedBy = _userId;
+                saleListingModel.UpdatedAt = DateTime.Now;
 
                 // Update other properties as needed
 
-                await _unitOfWork.SaleListing.UpdateAsync(model);
+                await _unitOfWork.SaleListing.UpdateAsync(saleListingModel);
 
-                return RedirectToAction(nameof(Index), new { editSuccess = true });
+
+                // Create FileUploadData
+                if (viewModel.FileUploadList != null)
+                {
+
+                    var uploadPath = string.Empty;
+                    var defaultPathFromConfig = _configurationService.GetDefaultUploadPathFromConfig();
+                    if (defaultPathFromConfig != null)
+                    {
+                        uploadPath = defaultPathFromConfig;
+                    }
+                    else
+                    {
+                        uploadPath = _backupFileDirectory;
+                    }
+                    var userIdPath = _userId.ToString() + "\\";
+
+                    uploadPath = Path.Combine(uploadPath, userIdPath);
+
+                    if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
+                    {
+                        await CreateFileUploadData(viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel,
+                                             viewModel.FileUploadList,
+                                             saleListingModel.Id,
+                                             transactionType.Id,
+                                             viewModel.DocumentTypeList,
+                                             uploadPath);
+                    }
+                }
+                return RedirectToAction(nameof(Index), new { addSuccess = true });
+
             }
 
             return View(viewModel);
         }
+
+        private List<FileUpload>? FilterFileUploadsWithFilesOnly(List<FileUpload>? fileUploads)
+        {
+            List<FileUpload> fileUploadsWithFiles = new List<FileUpload>();
+            if (fileUploads != null)
+            {
+                foreach (var fileUpload in fileUploads)
+                {
+                    var isExists = _fileHandlerService.CheckIfFileExists(fileUpload.FullPath);
+                    if (isExists.Result == true)
+                    {
+                        fileUploadsWithFiles.Add(fileUpload);
+                    }
+                }
+            }
+
+            return fileUploadsWithFiles;
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> DeleteModal(int id)
         {

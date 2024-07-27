@@ -64,36 +64,6 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 CreatedAt = model.CreatedAt
             };
         }
-        public static EditFileUploadViewModel ToEditFileUploadModel(this FileUpload model)
-        {
-            return new EditFileUploadViewModel
-            {
-                Id = model.Id,
-                FileName = model.FileName,
-                FullPath = model.FullPath,
-                Directory = model.Directory,
-                FileExtension = model.FileExtension,
-                FileSize = model.FileSize,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-        public static EditFileUploadViewModel ToEditFileUploadViewModel(this FileUpload model)
-        {
-            return new EditFileUploadViewModel
-            {
-                Id = model.Id,
-                FileName = model.FileName,
-                FullPath = model.FullPath,
-                Directory = model.Directory,
-                FileExtension = model.FileExtension,
-                FileSize = model.FileSize,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
         public static List<FileUploadViewModel> ToFileUploadListViewModel(this List<FileUpload> modelList)
         {
             var viewModelList = new List<FileUploadViewModel>();

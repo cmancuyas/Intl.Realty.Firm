@@ -78,7 +78,6 @@ namespace Intl.Realty.Firm.Controllers
                 model = viewModel.ToProvinceModel();
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = _userId;
-
                 await _unitOfWork.Province.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
@@ -103,7 +102,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var deleteProvinceIEnumViewModel = modelIEnum.ToDeleteProvinceIEnumViewModel;
+            var deleteProvinceIEnumViewModel = modelIEnum.ToDeleteProvinceIEnumViewModel();
 
             return PartialView("~/Views/Province/Modal/DeleteMultipleModal.cshtml", deleteProvinceIEnumViewModel);
         }

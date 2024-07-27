@@ -63,13 +63,15 @@ namespace Intl.Realty.Firm.Utility.Mapper
         }
         public static UserType ToUserTypeModel(this EditUserTypeViewModel viewModel)
         {
-            var model = new UserType();
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.IsActive = viewModel.IsActive;
-            model.UpdatedAt = viewModel.UpdatedAt;
-            model.UpdatedBy = viewModel.UpdatedBy;
-            return model;
+            return new UserType
+            {
+                Id = viewModel.Id,
+                Code = viewModel.Code,
+                Description = viewModel.Description ?? "",
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt
+            };
         }
     }
 }

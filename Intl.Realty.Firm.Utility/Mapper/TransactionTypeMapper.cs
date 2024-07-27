@@ -61,13 +61,15 @@ namespace Intl.Realty.Firm.Utility.Mapper
         }
         public static TransactionType ToTransactionTypeModel(this EditTransactionTypeViewModel viewModel)
         {
-            var model = new TransactionType();
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.IsActive = viewModel.IsActive;
-            model.UpdatedAt = viewModel.UpdatedAt;
-            model.UpdatedBy = viewModel.UpdatedBy;
-            return model;
+            return new TransactionType
+            {
+                Id = viewModel.Id,
+                Code = viewModel.Code,
+                Description = viewModel.Description ?? "",
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt
+            };
         }
 
     }

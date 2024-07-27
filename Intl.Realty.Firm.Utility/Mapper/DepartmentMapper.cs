@@ -1,7 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -62,13 +60,15 @@ namespace Intl.Realty.Firm.Utility.Mapper
         }
         public static Department ToDepartmentModel(this EditDepartmentViewModel viewModel)
         {
-            var model = new Department();
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.IsActive = viewModel.IsActive;
-            model.UpdatedAt = viewModel.UpdatedAt;
-            model.UpdatedBy = viewModel.UpdatedBy;
-            return model;
+            return new Department
+            {
+                Id = viewModel.Id,
+                Code = viewModel.Code,
+                Description = viewModel.Description ?? "",
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt
+            };
         }
     }
 }

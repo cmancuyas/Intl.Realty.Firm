@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
+using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -60,13 +61,15 @@ namespace Intl.Realty.Firm.Utility.Mapper
         }
         public static Province ToProvinceModel(this EditProvinceViewModel viewModel)
         {
-            var model = new Province();
-            model.Code = viewModel.Code;
-            model.Description = viewModel.Description;
-            model.IsActive = viewModel.IsActive;
-            model.UpdatedAt = viewModel.UpdatedAt;
-            model.UpdatedBy = viewModel.UpdatedBy;
-            return model;
+            return new Province
+            {
+                Id = viewModel.Id,
+                Code = viewModel.Code,
+                Description = viewModel.Description ?? "",
+                IsActive = viewModel.IsActive,
+                UpdatedBy = viewModel.UpdatedBy,
+                UpdatedAt = viewModel.UpdatedAt
+            };
         }
 
     }

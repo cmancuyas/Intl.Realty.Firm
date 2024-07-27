@@ -1,7 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
-using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {

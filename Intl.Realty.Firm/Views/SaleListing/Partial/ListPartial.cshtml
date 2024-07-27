@@ -48,21 +48,15 @@
                 </tr>
             </thead>
             <tbody>
-                @{
-                    var count = 0;
-                }
                 @foreach (var item in Model)
                 {
-                    count++;
                     <tr data-SaleListing-id="@item.Id">
                         <input type="hidden" name="id" id="id" />
                         <td class="text-lg-start">
                             <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
                         </td>
                         <td class="text-lg-start">
-                            @{
-                                @count.ToString()
-                            }
+                            @Html.DisplayFor(modelItem => @item.Id)
                         </td>
                         <td class="text-lg-start">
                             @if (Model != null && !String.IsNullOrEmpty(@item.IRFDeal?.PropertyAddress))

@@ -52,7 +52,7 @@ namespace Intl.Realty.Firm.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return await query.FirstOrDefaultAsync();
+            return await query.FirstOrDefaultAsync()??query.FirstOrDefault()!;
 
         }
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)

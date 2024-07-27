@@ -1,6 +1,4 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
-using Intl.Realty.Firm.Models.ViewModel;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +18,7 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
+        public IActionResult Create()
         {
             CreateProvinceViewModel viewModel = new CreateProvinceViewModel();
             viewModel.IsActive = true;
@@ -34,8 +32,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 viewModel.IsActive = true;
                 viewModel.CreatedBy = _userId;
-                viewModel.CreatedAt = DateTime.UtcNow;  
-                var model = viewModel.FromCreateToProvinceModel();
+                viewModel.CreatedAt = DateTime.UtcNow;
+                var model = viewModel.ToProvinceModel();
 
                 await _unitOfWork.Province.AddAsync(model);
 
@@ -53,7 +51,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var viewModel = model.ToEditProvinceListViewModel();
+            var viewModel = model.ToEditProvinceViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
@@ -77,9 +75,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model = viewModel.FromEditToProvinceModel();
+                model = viewModel.ToProvinceModel();
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = _userId;
+
                 await _unitOfWork.Province.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
@@ -89,89 +88,51 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var ProvinceIEnum = await _unitOfWork.Province.GetAllAsync();
+            var provinceIEnum = await _unitOfWork.Province.GetAllAsync();
 
-            var viewModelIEnum = ProvinceIEnum.FromIEnumToProvinceIEnumViewModel();
+            var viewModelIEnum = provinceIEnum.ToProvinceIEnumViewModel();
 
             return PartialView("~/Views/Province/Partial/ListPartial.cshtml", viewModelIEnum);
         }
-        [HttpGet]
-        public async Task<IActionResult> DeleteModal(int id)
-        {
-            var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var editProvinceViewModel = model.ToEditProvinceListViewModel();
-
-            return PartialView("~/Views/Province/Modal/DeleteModal.cshtml", editProvinceViewModel);
-        }
-
         public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
         {
-            List<Province> modelList = new List<Province>();
-            foreach (var id in ids)
-            {
-                var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
-                modelList.Add(model);
-            }
+            var modelIEnum = await _unitOfWork.Province.GetAllAsync(x => ids.Contains(x.Id));
 
-            if (modelList == null)
+            if (modelIEnum == null)
             {
                 return NotFound();
             }
 
-            var ProvinceViewModelList = modelList.ToProvinceListViewModel();
+            var deleteProvinceIEnumViewModel = modelIEnum.ToDeleteProvinceIEnumViewModel;
 
-            IEnumerable<ProvinceViewModel> modelIEnum = ProvinceViewModelList.AsEnumerable();
-
-            return PartialView("~/Views/Province/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+            return PartialView("~/Views/Province/Modal/DeleteMultipleModal.cshtml", deleteProvinceIEnumViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var model = await _unitOfWork.Province.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var modelList = model.FromModelToProvinceListModel();
-
-            await _unitOfWork.Province.RemoveRangeAsync(modelList);
-
-            return RedirectToAction(nameof(Index));
-
-        }
-
-        public async Task<IActionResult> DeleteMultiple(IEnumerable<ProvinceViewModel> viewModelList)
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DeleteProvinceViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
             {
                 return RedirectToAction(nameof(Index));
             }
+            var ids = viewModelList.Select(x => x.Id).ToList();
 
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var ProvinceList = await _unitOfWork.Province.GetAllAsync();
-            var modelList = ProvinceList.Where(o => ids.Contains(o.Id)).ToList();
+            var modelList = await _unitOfWork.Province.GetAllAsync(x => ids.Contains(x.Id));
 
             if (modelList != null)
             {
                 try
                 {
                     await _unitOfWork.Province.RemoveRangeAsync(modelList);
+
+                    return RedirectToAction(nameof(Index), new { deleteSuccess = true });
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
 
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

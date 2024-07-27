@@ -16,7 +16,7 @@ namespace Intl.Realty.Firm.Repository
         {
             _db = db;
         }
-        public Task<List<FileUpload>> GetFilesBySaleListingIdAsync(int saleListingId)
+        public Task<List<FileUpload>> GetFileUploadsBySaleListingIdAsync(int saleListingId)
         {
             var records =_db.FileUploads
                             .Include(x=>x.TransactionType)
@@ -27,6 +27,7 @@ namespace Intl.Realty.Firm.Repository
 
             return records;
         }
+
         public Task UpdateAsync(FileUpload model)
         {
             _db.FileUploads.Update(model);

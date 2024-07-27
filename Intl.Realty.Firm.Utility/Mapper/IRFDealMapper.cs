@@ -35,6 +35,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     SellersPhoneNumber = o.SellersPhoneNumber,
                     BuyersLawyer = o.BuyersLawyer,
                     BuyersLawyerAddress = o.BuyersLawyerAddress,
+                    BuyersPhoneNumber = o.BuyersPhoneNumber,
                     IsActive = o.IsActive,
                     CreatedBy = o.CreatedBy,
                     CreatedAt = o.CreatedAt,
@@ -70,7 +71,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 SellersPhoneNumber = model.SellersPhoneNumber,
                 BuyersLawyer = model.BuyersLawyer,
                 BuyersLawyerAddress = model.BuyersLawyerAddress,
-                IsActive = model.IsActive,
+                BuyersPhoneNumber = model.BuyersPhoneNumber,
+                IsActive = model.IsActive??true,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
             };
@@ -100,6 +102,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 SellersPhoneNumber = viewModel.SellersPhoneNumber,
                 BuyersLawyer = viewModel.BuyersLawyer,
                 BuyersLawyerAddress = viewModel.BuyersLawyerAddress,
+                BuyersPhoneNumber = viewModel.BuyersPhoneNumber,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -130,7 +133,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 SellersPhoneNumber = viewModel.SellersPhoneNumber,
                 BuyersLawyer = viewModel.BuyersLawyer,
                 BuyersLawyerAddress = viewModel.BuyersLawyerAddress,
-                IsActive = viewModel.IsActive,
+                BuyersPhoneNumber = viewModel.BuyersPhoneNumber,
+                IsActive = viewModel.IsActive ?? true,
                 UpdatedBy = viewModel.UpdatedBy,
                 UpdatedAt = viewModel.UpdatedAt
             };
@@ -159,6 +163,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 SellersPhoneNumber = viewModel.SellersPhoneNumber,
                 BuyersLawyer = viewModel.BuyersLawyer,
                 BuyersLawyerAddress = viewModel.BuyersLawyerAddress,
+                BuyersPhoneNumber = viewModel.BuyersPhoneNumber,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -191,6 +196,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 SellersPhoneNumber = model.SellersPhoneNumber,
                 BuyersLawyer = model.BuyersLawyer,
                 BuyersLawyerAddress = model.BuyersLawyerAddress,
+                BuyersPhoneNumber = model.BuyersPhoneNumber,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt

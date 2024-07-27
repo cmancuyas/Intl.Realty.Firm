@@ -1,6 +1,4 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
-using Intl.Realty.Firm.Models.ViewModel;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +18,9 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
+        public IActionResult Create()
         {
             CreateDocumentTypeViewModel viewModel = new CreateDocumentTypeViewModel();
-            viewModel.IsRequired = true;
             viewModel.IsActive = true;
             return View(viewModel);
         }
@@ -35,8 +32,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 viewModel.IsActive = true;
                 viewModel.CreatedBy = _userId;
-                viewModel.CreatedAt = DateTime.UtcNow;  
-                var model = viewModel.FromCreateToDocumentTypeModel();
+                viewModel.CreatedAt = DateTime.UtcNow;
+                var model = viewModel.ToDocumentTypeModel();
 
                 await _unitOfWork.DocumentType.AddAsync(model);
 
@@ -54,7 +51,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var viewModel = model.ToEditDocumentTypeListViewModel();
+            var viewModel = model.ToEditDocumentTypeViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
@@ -78,9 +75,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model = viewModel.FromEditToDocumentTypeModel();
+                model = viewModel.ToDocumentTypeModel();
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = _userId;
+
                 await _unitOfWork.DocumentType.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
@@ -92,87 +90,49 @@ namespace Intl.Realty.Firm.Controllers
         {
             var documentTypeIEnum = await _unitOfWork.DocumentType.GetAllAsync();
 
-            var viewModelIEnum = documentTypeIEnum.FromIEnumToDocumentTypeIEnumViewModel();
+            var viewModelIEnum = documentTypeIEnum.ToDocumentTypeIEnumViewModel();
 
             return PartialView("~/Views/DocumentType/Partial/ListPartial.cshtml", viewModelIEnum);
         }
-        [HttpGet]
-        public async Task<IActionResult> DeleteModal(int id)
-        {
-            var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var editDocumentTypeViewModel = model.ToEditDocumentTypeListViewModel();
-
-            return PartialView("~/Views/DocumentType/Modal/DeleteModal.cshtml", editDocumentTypeViewModel);
-        }
-
         public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
         {
-            List<DocumentType> modelList = new List<DocumentType>();
-            foreach (var id in ids)
-            {
-                var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
-                modelList.Add(model);
-            }
+            var modelIEnum = await _unitOfWork.DocumentType.GetAllAsync(x => ids.Contains(x.Id));
 
-            if (modelList == null)
+            if (modelIEnum == null)
             {
                 return NotFound();
             }
 
-            var DocumentTypeViewModelList = modelList.ToDocumentTypeListViewModel();
+            var deleteDocumentTypeIEnumViewModel = modelIEnum.ToDeleteDocumentTypeIEnumViewModel;
 
-            IEnumerable<DocumentTypeViewModel> modelIEnum = DocumentTypeViewModelList.AsEnumerable();
-
-            return PartialView("~/Views/DocumentType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+            return PartialView("~/Views/DocumentType/Modal/DeleteMultipleModal.cshtml", deleteDocumentTypeIEnumViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var modelList = model.FromModelToDocumentTypeListModel();
-
-            await _unitOfWork.DocumentType.RemoveRangeAsync(modelList);
-
-            return RedirectToAction(nameof(Index));
-
-        }
-
-        public async Task<IActionResult> DeleteMultiple(IEnumerable<DocumentTypeViewModel> viewModelList)
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DeleteDocumentTypeViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
             {
                 return RedirectToAction(nameof(Index));
             }
+            var ids = viewModelList.Select(x => x.Id).ToList();
 
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var DocumentTypeList = await _unitOfWork.DocumentType.GetAllAsync();
-            var modelList = DocumentTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var modelList = await _unitOfWork.DocumentType.GetAllAsync(x => ids.Contains(x.Id));
 
             if (modelList != null)
             {
                 try
                 {
                     await _unitOfWork.DocumentType.RemoveRangeAsync(modelList);
+
+                    return RedirectToAction(nameof(Index), new { deleteSuccess = true });
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
 
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

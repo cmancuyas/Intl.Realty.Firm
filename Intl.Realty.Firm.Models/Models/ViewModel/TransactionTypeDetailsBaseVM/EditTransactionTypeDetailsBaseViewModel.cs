@@ -35,8 +35,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeDetailsBaseVM
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
-        [Required]
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

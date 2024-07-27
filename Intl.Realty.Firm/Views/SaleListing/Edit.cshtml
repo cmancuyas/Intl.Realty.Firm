@@ -15,6 +15,7 @@
         <i data-feather="chevron-left"></i><span>Back</span>
     </a>
     <form asp-action="Edit" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center">
             <input type="text" asp-for="Dataxxx" multiple hidden />
 
@@ -232,7 +233,7 @@
                             </tr>
                         </thead>
                         <tbody id="fileTableBody">
-                            @foreach (DocumentType item in Model.DocumentTypeList)
+                            @foreach (DocumentType item in Model.DocumentTypeList!)
                             {
                                 <tr class="border-bottom">
                                     <td>
@@ -240,7 +241,7 @@
                                     </td>
 
                                     @{
-                                        var filesWithDocumentTypeId = Model.FileUploads.Where(x => x.DocumentTypeId == item.Id);
+                                        var filesWithDocumentTypeId = Model.FileUploads!.Where(x => x.DocumentTypeId == item.Id);
 
                                         @foreach (FileUpload fileUpload in filesWithDocumentTypeId)
                                         {
@@ -252,6 +253,17 @@
                                                 <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
                                                     Download
                                                 </a>
+                                            </td>
+                                            <td class="w-5 ps-2">
+                                                <a id="btnDeleteFile" onclick="GoToStep2()" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                            <td class="w-5 ps-2">
+
+                                                <div class="file-loading">
+                                                    <input id="input-iconic" name="input-iconic[]" type="file" multiple>
+                                                </div>
                                             </td>
                                         }
                                     }
@@ -324,7 +336,7 @@
                                             @Html.DisplayFor(modelItem => item.Description)<span class="s-required">*</span>
                                         </td>
                                         <input type="hidden"
-                                               asp-for="EditFileUploadsViewModel[i].DocumentTypeId"
+                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
                                                value="@item.Id" />
                                         <td>
                                             <select class="form-select fileListDropDown"
@@ -332,7 +344,7 @@
                                                     data-prevVal=""
                                                     data-curVal=""
                                                     onchange="fileSelected(this)"
-                                                    asp-for="EditFileUploadsViewModel[i].FileNames"
+                                                    asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
                                                     multiple required>
                                             </select>
                                         </td>
@@ -365,28 +377,104 @@
 
         <script type="text/javascript">
 
-
-
-
-
-
-        </script>
-
-
-        <script type="text/javascript">
-
             $(document).ready(function () {
+
+                $("#input-iconic").fileinput({
+                    uploadUrl: "/file-upload-batch/1",
+                    uploadAsync: false,
+                    minFileCount: 2,
+                    maxFileCount: 5,
+                    overwriteInitial: false,
+                    initialPreview: [
+                        // IMAGE DATA
+                        'https://picsum.photos/id/702/1920/1080',
+                        // IMAGE RAW MARKUP
+                        '<img src="https://picsum.photos/id/703/1920/1080" class="kv-preview-data file-preview-image">',
+                        // TEXT DATA
+                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/SampleTextFile_10kb.txt',
+                        // PDF DATA
+                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/pdf-sample.pdf',
+                        // VIDEO DATA
+                        "https://kartik-v.github.io/bootstrap-fileinput-samples/samples/small.mp4"
+                    ],
+                    initialPreviewAsData: true, // defaults markup
+                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                    initialPreviewConfig: [
+                        { caption: "Business 1", filename: "Business-1.jpg", description: "<h5>Number One</h5> This is a representative placeholder description # 1 for this image.", size: 762980, url: "/site/file-delete", key: 11 },
+                        { previewAsData: false, description: "<h5>Number Two</h5> This is a representative placeholder description # 2 for this image.", size: 823782, caption: "Business 2", filename: "Business-2.jpg", url: "/site/file-delete", key: 13 },
+                        { caption: "Lorem Ipsum", filename: "LoremIpsum.txt", type: "text", description: "<h5>Number Three</h5> This is a representative placeholder description # 3 for this text file.", size: 1430, url: "/site/file-delete", key: 12 },
+                        { type: "pdf", description: "<h5>Number Four</h5> This is a representative placeholder description # 4 for this PDF file.", size: 8000, caption: "PDF Sample", filename: "PDF-Sample.pdf", url: "/file-upload-batch/2", key: 14 },
+                        { type: "video", description: "<h5>Number Five</h5> This is a representative placeholder description # 5 for this video file.", size: 375000, filetype: "video/mp4", caption: "Krajee Sample", filename: "KrajeeSample.mp4", url: "/file-upload-batch/2", key: 15 }
+                    ],
+                    uploadExtraData: {
+                        img_key: "1000",
+                        img_keywords: "happy, nature",
+                    },
+                    preferIconicPreview: true, // this will force thumbnails to display icons for following file extensions
+                    previewFileIconSettings: { // configure your icon file extensions
+                        'doc': '<i class="fas fa-file-word text-primary"></i>',
+                        'xls': '<i class="fas fa-file-excel text-success"></i>',
+                        'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+                        'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+                        'zip': '<i class="fas fa-file-archive text-muted"></i>',
+                        'htm': '<i class="fas fa-file-code text-info"></i>',
+                        'txt': '<i class="fas fa-file-alt text-info"></i>',
+                        'mov': '<i class="fas fa-file-video text-warning"></i>',
+                        'mp3': '<i class="fas fa-file-audio text-warning"></i>',
+                        // note for these file types below no extension determination logic
+                        // has been configured (the keys itself will be used as extensions)
+                        'jpg': '<i class="fas fa-file-image text-danger"></i>',
+                        'gif': '<i class="fas fa-file-image text-muted"></i>',
+                        'png': '<i class="fas fa-file-image text-primary"></i>'
+                    },
+                    previewFileExtSettings: { // configure the logic for determining icon file extensions
+                        'doc': function (ext) {
+                            return ext.match(/(doc|docx)$/i);
+                        },
+                        'xls': function (ext) {
+                            return ext.match(/(xls|xlsx)$/i);
+                        },
+                        'ppt': function (ext) {
+                            return ext.match(/(ppt|pptx)$/i);
+                        },
+                        'zip': function (ext) {
+                            return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+                        },
+                        'htm': function (ext) {
+                            return ext.match(/(htm|html)$/i);
+                        },
+                        'txt': function (ext) {
+                            return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
+                        },
+                        'mov': function (ext) {
+                            return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
+                        },
+                        'mp3': function (ext) {
+                            return ext.match(/(mp3|wav)$/i);
+                        }
+                    }
+                }).on('filesorted', function (e, params) {
+                    console.log('File sorted params', params);
+                }).on('fileuploaded', function (e, params) {
+                    console.log('File uploaded params', params);
+                });
 
                 $('#isActiveCheckbox').on('click', toggleStatusLabels);
 
                 toggleStatusLabels();
 
                 // debugger;
+                $('#btnDeleteFile').click(function (e) {
+                    // debugger;
+                    // e.preventDefault();
+                    // GoToStep2(1);
+                });
+                // GoToStep2();
                 const saleListingForm = document.getElementById('SaleListingForm');
                 $("#btnSubmit").click(function () {
                     //Check if required fields are filled up
                     if ($("#SaleListingForm")[0].checkValidity()) {
-                        debugger;
+                        // debugger;
                         var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
 
                         var x = document.forms['SaleListingForm']['Dataxxx'];
@@ -401,7 +489,7 @@
                                 confirmButtonColor: '#14984a'
                             });
                         } else {
-                            debugger;
+                            // debugger;
                             $("#confirmSubmitModal").modal("show");
                             // saleListingForm.submit();
                             // $("#confirmSubmitModal").modal("hide");
@@ -441,7 +529,7 @@
                 });
 
                 $("#btnConfirmSubmit").click(function () {
-                    debugger;
+                    // debugger;
                     $("#confirmSubmitModal").modal("hide");
                     saleListingForm.submit();
                     // CreateFileUpload();
@@ -449,6 +537,12 @@
 
                 $("#finalOKBtn").click(function () {
                     $("#confirmSuccessModal").modal("hide");
+                });
+                $("#btnDeleteFile").click(function () {
+
+                    GoToStep2();
+                    // window.location.reload();
+
                 });
                 //END FOR MODAL FORM SUBMISSION CONFIRMATION
             });
@@ -624,7 +718,10 @@
 
                 showTab(currentTab);
             }
-
+            function GoToStep2() {
+                curentTab = 1;
+                nextPrev(1)
+            }
 
             function toggleStatusLabels() {
                 if ($('#isActiveCheckbox').is(':checked')) {

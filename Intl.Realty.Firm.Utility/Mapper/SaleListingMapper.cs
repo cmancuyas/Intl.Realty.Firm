@@ -52,7 +52,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 EditIRFDealViewModel = model.IRFDeal?.ToEditIRFDealModel(),
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy??1, //1 is admin
-                UpdatedAt = model.UpdatedAt??DateTime.UtcNow
+                UpdatedAt = model.UpdatedAt??DateTime.UtcNow,
             };
         }
         public static List<SaleListingViewModel> ToSaleListingListViewModel(this List<SaleListing> modelList)

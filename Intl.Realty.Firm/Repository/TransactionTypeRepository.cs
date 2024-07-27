@@ -15,7 +15,7 @@ namespace Intl.Realty.Firm.Repository
 
         public Task<TransactionType> GetByNameAsync(string name)
         {
-            return _db.TransactionTypes.FirstOrDefaultAsync(x => x.Description == name);
+            return _db.TransactionTypes.FirstOrDefaultAsync(x => x.Description == name)!;
         }
 
         public Task UpdateAsync(TransactionType model)

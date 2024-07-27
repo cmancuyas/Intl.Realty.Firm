@@ -103,7 +103,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var deleteDocumentTypeIEnumViewModel = modelIEnum.ToDeleteDocumentTypeIEnumViewModel;
+            var deleteDocumentTypeIEnumViewModel = modelIEnum.ToDeleteDocumentTypeIEnumViewModel();
 
             return PartialView("~/Views/DocumentType/Modal/DeleteMultipleModal.cshtml", deleteDocumentTypeIEnumViewModel);
         }

@@ -12,5 +12,6 @@ namespace Intl.Realty.Firm.Repository.IRepository
         Task AddRangeAsync(IEnumerable<T> entity);
         Task RemoveAsync(T entity);
         Task RemoveRangeAsync(IEnumerable<T> entity);
+        Task SaveChangesAsync();
     }
 }

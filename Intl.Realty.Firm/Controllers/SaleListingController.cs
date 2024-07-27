@@ -68,8 +68,9 @@ namespace Intl.Realty.Firm.Controllers
             if (ModelState.IsValid)
             {
                 var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
-                createIRFDealModel.CreatedAt = DateTime.Now;
+                createIRFDealModel!.CreatedAt = DateTime.Now;
                 createIRFDealModel.CreatedBy = 1;
+                createIRFDealModel.IsActive = true;
                 await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
 
                 var NewIRFDeal = await _unitOfWork.IRFDeal.GetAsync(x => x.Id == createIRFDealModel.Id);
@@ -80,14 +81,14 @@ namespace Intl.Realty.Firm.Controllers
                 viewModel.IRFDealId = NewIRFDeal.Id;
                 if (NewIRFDeal != null)
                 {
-                    viewModel.CreateIRFDealViewModel.IsActive = NewIRFDeal.IsActive;
+                    viewModel.CreateIRFDealViewModel!.IsActive = NewIRFDeal.IsActive;
                     viewModel.CreateIRFDealViewModel.CreatedBy = NewIRFDeal.CreatedBy;
                     viewModel.CreateIRFDealViewModel.CreatedAt = NewIRFDeal.CreatedAt;
                 }
 
                 // Create SaleListing Data
                 viewModel.TransactionTypeId = transactionType.Id;
-                viewModel.IRFDealId = NewIRFDeal.Id;
+                viewModel.IRFDealId = NewIRFDeal!.Id;
 
                 viewModel.IsActive = viewModel.IsActive;
                 viewModel.CreatedBy = viewModel.CreatedBy;
@@ -100,28 +101,16 @@ namespace Intl.Realty.Firm.Controllers
                 if (viewModel.FileUploadList != null)
                 {
 
-                    var uploadPath = string.Empty;
-                    var defaultPathFromConfig = _configurationService.GetDefaultUploadPathFromConfig();
-                    if (defaultPathFromConfig != null)
-                    {
-                        uploadPath = defaultPathFromConfig;
-                    }
-                    else
-                    {
-                        uploadPath = _backupFileDirectory;
-                    }
-                    var userIdPath = _userId.ToString() + "\\";
-
-                    uploadPath = Path.Combine(uploadPath, userIdPath + saleListingModel.Id + "\\");
+                    var uploadPath = CreateFilePath(saleListingModel.Id);
 
                     if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
                     {
                         await CreateFileUploadData(viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel,
-                                             viewModel.FileUploadList,
-                                             saleListingModel.Id,
-                                             transactionType.Id,
-                                             viewModel.DocumentTypeList,
-                                             uploadPath);
+                                                    viewModel.FileUploadList,
+                                                    saleListingModel.Id,
+                                                    transactionType.Id,
+                                                    viewModel.DocumentTypeList,
+                                                    uploadPath);
                     }
                 }
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
@@ -198,7 +187,7 @@ namespace Intl.Realty.Firm.Controllers
                                     .GroupBy(x => x.DocumentType)
                                     .Select(grp => new DocumentType
                                     {
-                                        Id = grp.Key.Id,
+                                        Id = grp.Key!.Id,
                                         Code = grp.Key.Code,
                                         Description = grp.Key.Description,
                                         IsActive = grp.Key.IsActive,
@@ -217,6 +206,10 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
             var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: "IRFDeal,TransactionType");
 
             int saleListingId = saleListingModel.Id;
@@ -251,7 +244,6 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
-
                 string transactionTypeName = _saleListingName; // 1 = Sale Listing
                 var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName, tracked:true); //Sale Listing
                 viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
@@ -283,24 +275,10 @@ namespace Intl.Realty.Firm.Controllers
 
                 await _unitOfWork.SaleListing.UpdateAsync(saleListingModel);
 
-
                 // Create FileUploadData
                 if (viewModel.FileUploadList != null)
                 {
-
-                    var uploadPath = string.Empty;
-                    var defaultPathFromConfig = _configurationService.GetDefaultUploadPathFromConfig();
-                    if (defaultPathFromConfig != null)
-                    {
-                        uploadPath = defaultPathFromConfig;
-                    }
-                    else
-                    {
-                        uploadPath = _backupFileDirectory;
-                    }
-                    var userIdPath = _userId.ToString() + "\\";
-
-                    uploadPath = Path.Combine(uploadPath, userIdPath);
+                    var uploadPath = CreateFilePath(saleListingModel.Id);
 
                     if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
                     {
@@ -317,6 +295,25 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             return View(viewModel);
+        }
+
+        private string CreateFilePath(int saleListingId)
+        {
+            var uploadPath = string.Empty;
+            var defaultPathFromConfig = _configurationService.GetDefaultUploadPathFromConfig();
+            if (defaultPathFromConfig != null)
+            {
+                uploadPath = defaultPathFromConfig;
+            }
+            else
+            {
+                uploadPath = _backupFileDirectory;
+            }
+            var userIdPath = _userId.ToString() + "\\";
+
+            uploadPath = Path.Combine(uploadPath, userIdPath + saleListingId + "\\");
+
+            return uploadPath;
         }
 
         private List<FileUpload>? FilterFileUploadsWithFilesOnly(List<FileUpload>? fileUploads)

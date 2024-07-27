@@ -1,9 +1,11 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -20,7 +22,7 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
+        public IActionResult Create()
         {
             CreateDepartmentViewModel viewModel = new CreateDepartmentViewModel();
             viewModel.IsActive = true;
@@ -34,8 +36,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 viewModel.IsActive = true;
                 viewModel.CreatedBy = _userId;
-                viewModel.CreatedAt = DateTime.UtcNow;  
-                var model = viewModel.FromCreateToDepartmentModel();
+                viewModel.CreatedAt = DateTime.UtcNow;
+                var model = viewModel.ToDepartmentModel();
 
                 await _unitOfWork.Department.AddAsync(model);
 
@@ -53,7 +55,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var viewModel = model.ToEditDepartmentListViewModel();
+            var viewModel = model.ToEditDepartmentViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
@@ -77,9 +79,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model = viewModel.FromEditToDepartmentModel();
+                model = viewModel.ToDepartmentModel();
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = _userId;
+
                 await _unitOfWork.Department.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
@@ -89,89 +92,51 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var DepartmentIEnum = await _unitOfWork.Department.GetAllAsync();
+            var departmentIEnum = await _unitOfWork.Department.GetAllAsync();
 
-            var viewModelIEnum = DepartmentIEnum.FromIEnumToDepartmentIEnumViewModel();
+            var viewModelIEnum = departmentIEnum.ToDepartmentIEnumViewModel(); ;
 
             return PartialView("~/Views/Department/Partial/ListPartial.cshtml", viewModelIEnum);
         }
-        [HttpGet]
-        public async Task<IActionResult> DeleteModal(int id)
-        {
-            var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var editDepartmentViewModel = model.ToEditDepartmentListViewModel();
-
-            return PartialView("~/Views/Department/Modal/DeleteModal.cshtml", editDepartmentViewModel);
-        }
-
         public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
         {
-            List<Department> modelList = new List<Department>();
-            foreach (var id in ids)
-            {
-                var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
-                modelList.Add(model);
-            }
+            var modelIEnum = await _unitOfWork.Department.GetAllAsync(x => ids.Contains(x.Id));
 
-            if (modelList == null)
+            if (modelIEnum == null)
             {
                 return NotFound();
             }
 
-            var DepartmentViewModelList = modelList.ToDepartmentListViewModel();
+            var deleteDepartmentIEnumViewModel = modelIEnum.ToDeleteDepartmentIEnumViewModel;
 
-            IEnumerable<DepartmentViewModel> modelIEnum = DepartmentViewModelList.AsEnumerable();
-
-            return PartialView("~/Views/Department/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+            return PartialView("~/Views/Department/Modal/DeleteMultipleModal.cshtml", deleteDepartmentIEnumViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var modelList = model.FromModelToDepartmentListModel();
-
-            await _unitOfWork.Department.RemoveRangeAsync(modelList);
-
-            return RedirectToAction(nameof(Index));
-
-        }
-
-        public async Task<IActionResult> DeleteMultiple(IEnumerable<DepartmentViewModel> viewModelList)
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DeleteDepartmentViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
             {
                 return RedirectToAction(nameof(Index));
             }
+            var ids = viewModelList.Select(x => x.Id).ToList();
 
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var DepartmentList = await _unitOfWork.Department.GetAllAsync();
-            var modelList = DepartmentList.Where(o => ids.Contains(o.Id)).ToList();
+            var modelList = await _unitOfWork.Department.GetAllAsync(x => ids.Contains(x.Id));
 
             if (modelList != null)
             {
                 try
                 {
                     await _unitOfWork.Department.RemoveRangeAsync(modelList);
+
+                    return RedirectToAction(nameof(Index), new { deleteSuccess = true });
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
 
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

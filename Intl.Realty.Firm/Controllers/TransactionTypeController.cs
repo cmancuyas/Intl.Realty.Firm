@@ -1,14 +1,17 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
 using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class TransactionTypeController : Controller
     {
+
         private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public TransactionTypeController(IUnitOfWork unitOfWork)
@@ -20,7 +23,7 @@ namespace Intl.Realty.Firm.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create(int? regionId, int? provinceId, int? municipalityId)
+        public IActionResult Create()
         {
             CreateTransactionTypeViewModel viewModel = new CreateTransactionTypeViewModel();
             viewModel.IsActive = true;
@@ -34,8 +37,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 viewModel.IsActive = true;
                 viewModel.CreatedBy = _userId;
-                viewModel.CreatedAt = DateTime.UtcNow;  
-                var model = viewModel.FromCreateToTransactionTypeModel();
+                viewModel.CreatedAt = DateTime.UtcNow;
+                var model = viewModel.ToTransactionTypeModel();
 
                 await _unitOfWork.TransactionType.AddAsync(model);
 
@@ -53,7 +56,7 @@ namespace Intl.Realty.Firm.Controllers
                 return NotFound();
             }
 
-            var viewModel = model.ToEditTransactionTypeListViewModel();
+            var viewModel = model.ToEditTransactionTypeViewModel();
 
             viewModel.UpdatedBy = _userId;
             viewModel.UpdatedAt = DateTime.Now;
@@ -77,9 +80,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
-                model = viewModel.FromEditToTransactionTypeModel();
+                model = viewModel.ToTransactionTypeModel();
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = _userId;
+
                 await _unitOfWork.TransactionType.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }
@@ -89,89 +93,51 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var TransactionTypeIEnum = await _unitOfWork.TransactionType.GetAllAsync();
+            var departmentIEnum = await _unitOfWork.TransactionType.GetAllAsync();
 
-            var viewModelIEnum = TransactionTypeIEnum.FromIEnumToTransactionTypeIEnumViewModel();
+            var viewModelIEnum = departmentIEnum.ToTransactionTypeIEnumViewModel();
 
             return PartialView("~/Views/TransactionType/Partial/ListPartial.cshtml", viewModelIEnum);
         }
-        [HttpGet]
-        public async Task<IActionResult> DeleteModal(int id)
-        {
-            var model = await _unitOfWork.TransactionType.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var editTransactionTypeViewModel = model.ToEditTransactionTypeListViewModel();
-
-            return PartialView("~/Views/TransactionType/Modal/DeleteModal.cshtml", editTransactionTypeViewModel);
-        }
-
         public async Task<IActionResult> DeleteMultipleModal(List<int> ids)
         {
-            List<TransactionType> modelList = new List<TransactionType>();
-            foreach (var id in ids)
-            {
-                var model = await _unitOfWork.TransactionType.GetAsync(x => x.Id == id);
-                modelList.Add(model);
-            }
+            var modelIEnum = await _unitOfWork.TransactionType.GetAllAsync(x => ids.Contains(x.Id));
 
-            if (modelList == null)
+            if (modelIEnum == null)
             {
                 return NotFound();
             }
 
-            var TransactionTypeViewModelList = modelList.ToTransactionTypeListViewModel();
+            var deleteTransactionTypeIEnumViewModel = modelIEnum.ToDeleteTransactionTypeIEnumViewModel;
 
-            IEnumerable<TransactionTypeViewModel> modelIEnum = TransactionTypeViewModelList.AsEnumerable();
-
-            return PartialView("~/Views/TransactionType/Modal/DeleteMultipleModal.cshtml", modelIEnum);
+            return PartialView("~/Views/TransactionType/Modal/DeleteMultipleModal.cshtml", deleteTransactionTypeIEnumViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var model = await _unitOfWork.TransactionType.GetAsync(x => x.Id == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var modelList = model.FromModelToTransactionTypeListModel();
-
-            await _unitOfWork.TransactionType.RemoveRangeAsync(modelList);
-
-            return RedirectToAction(nameof(Index));
-
-        }
-
-        public async Task<IActionResult> DeleteMultiple(IEnumerable<TransactionTypeViewModel> viewModelList)
+        public async Task<IActionResult> DeleteMultiple(IEnumerable<DeleteTransactionTypeViewModel> viewModelList)
         {
             if (viewModelList == null || !viewModelList.Any())
             {
                 return RedirectToAction(nameof(Index));
             }
+            var ids = viewModelList.Select(x => x.Id).ToList();
 
-            var ids = viewModelList.Select(o => o.Id).ToList();
-            var TransactionTypeList = await _unitOfWork.TransactionType.GetAllAsync();
-            var modelList = TransactionTypeList.Where(o => ids.Contains(o.Id)).ToList();
+            var modelList = await _unitOfWork.TransactionType.GetAllAsync(x => ids.Contains(x.Id));
 
             if (modelList != null)
             {
                 try
                 {
                     await _unitOfWork.TransactionType.RemoveRangeAsync(modelList);
+
+                    return RedirectToAction(nameof(Index), new { deleteSuccess = true });
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
 
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

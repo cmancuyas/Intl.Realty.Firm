@@ -1,82 +1,26 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.ProvinceVM;
-using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
     public static class ProvinceMapper
     {
-        public static Province FromCreateToProvinceModel(this CreateProvinceViewModel viewModel)
+        public static IEnumerable<DeleteProvinceViewModel> ToDeleteProvinceIEnumViewModel(this IEnumerable<Province> modelIEnum)
         {
-            return new Province
+            IEnumerable<DeleteProvinceViewModel> viewModelIEnum = new List<DeleteProvinceViewModel>();
+            if (modelIEnum != null)
             {
-                Code = viewModel.Code,
-                Description = viewModel.Description,
-                IsActive = viewModel.IsActive,
-                CreatedAt = viewModel.CreatedAt,
-                CreatedBy = viewModel.CreatedBy,
-            };
-        }
-        public static Province FromEditToProvinceModel(this EditProvinceViewModel viewModel)
-        {
-            return new Province
-            {
-                Id = viewModel.Id,
-                Code = viewModel.Code,
-                Description = viewModel.Description,
-                IsActive = viewModel.IsActive,
-                UpdatedBy = viewModel.UpdatedBy,
-                UpdatedAt = viewModel.UpdatedAt,
-            };
-        }
-        public static EditProvinceViewModel ToEditProvinceListViewModel(this Province model)
-        {
-            return new EditProvinceViewModel
-            {
-                Id = model.Id,
-                Code = model.Code,
-                Description = model.Description,
-                IsActive = model.IsActive,
-                UpdatedBy = model.UpdatedBy,
-                UpdatedAt = model.UpdatedAt
-            };
-        }
-
-        public static List<Province> FromModelToProvinceListModel(this Province model)
-        {
-            var modelList = new List<Province>();
-            if (model != null)
-            {
-                modelList.Add(model);
-            }
-            return modelList;
-        }
-
-        public static List<ProvinceViewModel> ToProvinceListViewModel(this List<Province> modelList)
-        {
-            var viewModelList = new List<ProvinceViewModel>();
-            if (modelList != null)
-            {
-                viewModelList = modelList.Select(x => new ProvinceViewModel()
+                viewModelIEnum = modelIEnum.Select(x => new DeleteProvinceViewModel()
                 {
                     Id = x.Id,
-                    Code = x.Code,
-                    Description = x.Description,
-                    IsActive = x.IsActive,
-                    CreatedBy = x.CreatedBy,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedAt = x.UpdatedAt,
-                }).ToList();
+                });
             }
-            return viewModelList;
+            return viewModelIEnum;
         }
-
-
-        public static IEnumerable<ProvinceViewModel> FromIEnumToProvinceIEnumViewModel(this IEnumerable<Province> modelIEnum)
+        public static IEnumerable<ProvinceViewModel> ToProvinceIEnumViewModel(this IEnumerable<Province> modelIEnum)
         {
             IEnumerable<ProvinceViewModel> viewModelIEnum = new List<ProvinceViewModel>();
-            if (modelIEnum != null)
+            if (viewModelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new ProvinceViewModel()
                 {
@@ -84,14 +28,46 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     Code = x.Code,
                     Description = x.Description,
                     IsActive = x.IsActive,
-                    CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy,
+                    CreatedBy = x.CreatedBy,
                     UpdatedAt = x.UpdatedAt,
-                }).ToList();
+                    UpdatedBy = x.UpdatedBy,
+                });
             }
-            return viewModelIEnum;
+            return viewModelIEnum!;
         }
-        
+        public static EditProvinceViewModel ToEditProvinceViewModel(this Province model)
+        {
+            return new EditProvinceViewModel
+            {
+                Id = model.Id,
+                Code = model.Code,
+                Description = model.Description ?? "",
+                IsActive = model.IsActive,
+                UpdatedBy = model.UpdatedBy,
+                UpdatedAt = model.UpdatedAt
+            };
+        }
+        public static Province ToProvinceModel(this CreateProvinceViewModel viewModel)
+        {
+            var model = new Province();
+            model.Code = viewModel.Code;
+            model.Description = viewModel.Description;
+            model.IsActive = viewModel.IsActive;
+            model.CreatedAt = viewModel.CreatedAt;
+            model.CreatedBy = viewModel.CreatedBy;
+            return model;
+        }
+        public static Province ToProvinceModel(this EditProvinceViewModel viewModel)
+        {
+            var model = new Province();
+            model.Code = viewModel.Code;
+            model.Description = viewModel.Description;
+            model.IsActive = viewModel.IsActive;
+            model.UpdatedAt = viewModel.UpdatedAt;
+            model.UpdatedBy = viewModel.UpdatedBy;
+            return model;
+        }
+
     }
 }

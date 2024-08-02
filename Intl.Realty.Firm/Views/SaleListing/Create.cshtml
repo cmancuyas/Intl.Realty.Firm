@@ -18,7 +18,7 @@
         <div class="row justify-content-center">
             <input type="text" asp-for="Dataxxx" multiple hidden />
 
-            <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between w-100 p-0">
                 <div class="form-submit-step d-flex flex-column  w-100">
                     <span class="small">STEP 1</span>
                     <span class="fw-bolder">Transaction Information</span>
@@ -29,22 +29,22 @@
                 </div>
             </div>
 
-            <div class="form-submit-tab mt-4">
+            <div class="form-submit-tab p-4">
                 <div class="col-md-12 p-4">
-                    <h1 class="text-blue mb-0">New Sale Listing</h1>
+                    <h3 class="text-blue mb-0">New Sale Listing</h3>
                     <hr class="my-4" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.PropertyAddress" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.PropertyAddress" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.PropertyAddress" class="form-control" value="PropertyAddress" />
                                 <span asp-validation-for="CreateIRFDealViewModel.PropertyAddress" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreatedBy" class="control-label fw-bolder"></label>
+                                <label asp-for="CreatedBy" class="control-label"></label>
                                 <input asp-for="CreatedBy" class="form-control" value="1" />
                                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
                             </div>
@@ -53,14 +53,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.FinalSalePrice" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.FinalSalePrice" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.FinalSalePrice" class="form-control" value="1" />
                                 <span asp-validation-for="CreateIRFDealViewModel.FinalSalePrice" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.FinalClosingDate" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.FinalClosingDate" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.FinalClosingDate" class="form-control" />
                                 <span asp-validation-for="CreateIRFDealViewModel.FinalClosingDate" class="text-danger"></span>
                             </div>
@@ -69,14 +69,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.DepositAmount" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.DepositAmount" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.DepositAmount" class="form-control" value="1" />
                                 <span asp-validation-for="CreateIRFDealViewModel.DepositAmount" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.DepositDate" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.DepositDate" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.DepositDate" class="form-control" />
                                 <span asp-validation-for="CreateIRFDealViewModel.DepositDate" class="text-danger"></span>
                             </div>
@@ -85,14 +85,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyerName" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyerName" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyerName" class="form-control" value="BuyerName" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyerName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.LandLordName" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.LandLordName" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.LandLordName" class="form-control" value="LandLordName" />
                                 <span asp-validation-for="CreateIRFDealViewModel.LandLordName" class="text-danger"></span>
                             </div>
@@ -101,14 +101,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="form-control" value="1" />
                                 <span asp-validation-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="form-control" value="1" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="text-danger"></span>
                             </div>
@@ -117,14 +117,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.ListingAgentName" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.ListingAgentName" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.ListingAgentName" class="form-control" value="ListingAgentName" />
                                 <span asp-validation-for="CreateIRFDealViewModel.ListingAgentName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.ListingBrokerage" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.ListingBrokerage" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.ListingBrokerage" class="form-control" value="ListingBrokerage" />
                                 <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerage" class="text-danger"></span>
                             </div>
@@ -133,14 +133,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.ListingBrokerageFax" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.ListingBrokerageFax" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.ListingBrokerageFax" class="form-control" value="ListingBrokerageFax" />
                                 <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerageFax" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyerAgentName" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyerAgentName" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyerAgentName" class="form-control" value="BuyerAgentName" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyerAgentName" class="text-danger"></span>
                             </div>
@@ -149,14 +149,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyerBrokerage" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyerBrokerage" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyerBrokerage" class="form-control" value="BuyerBrokerage" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerage" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="form-control" value="BuyerBrokerageFax" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="text-danger"></span>
                             </div>
@@ -165,14 +165,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.SellersLawyer" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.SellersLawyer" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.SellersLawyer" class="form-control" value="SellersLawyer" />
                                 <span asp-validation-for="CreateIRFDealViewModel.SellersLawyer" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.SellersLawyerAddress" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.SellersLawyerAddress" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.SellersLawyerAddress" class="form-control" value="SellersLawyerAddress" />
                                 <span asp-validation-for="CreateIRFDealViewModel.SellersLawyerAddress" class="text-danger"></span>
                             </div>
@@ -181,14 +181,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.SellersPhoneNumber" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.SellersPhoneNumber" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.SellersPhoneNumber" class="form-control" value="SellersPhoneNumber" />
                                 <span asp-validation-for="CreateIRFDealViewModel.SellersPhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyersLawyer" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyersLawyer" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyersLawyer" class="form-control" value="BuyersLawyer" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyer" class="text-danger"></span>
                             </div>
@@ -197,14 +197,14 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="form-control" value="BuyersLawyerAddress" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="control-label fw-bolder"></label>
+                                <label asp-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="control-label"></label>
                                 <input asp-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="form-control" value="BuyersPhoneNumber" />
                                 <span asp-validation-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="text-danger"></span>
                             </div>
@@ -215,14 +215,14 @@
                 </div>
             </div>
 
-            <div class="form-submit-tab mt-4">
+            <div class="form-submit-tab p-4">
                 <div class="row m-0 mb-4">
                     <div class="col-md-12">
                         <div class="mb-4">
                             <span class="c-preline" style="white-space: pre-line">@ViewBag.RequiredDocsList</span>
                         </div>
                         <div class="gap-4 mb-5">
-                            <h2 class="text-secondary fw-bold m-0">Attach Required Documents<span class="s-required">*</span></h2>
+                            <h5 class="text-blue m-0">Attach Required Documents<span class="s-required">*</span></h5>
                             <div class="alert alert-warning mt-3 mb-3" role="alert">
                                 <ul style="margin-bottom: 0px;">
                                     <li>When uploading multiple files, drag all files at once on the field.</li>
@@ -230,7 +230,7 @@
                                 </ul>
                             </div>
 
-                            <label for="input-25">Sale Listing</label>
+                            @* <label for="input-25">Sale Listing</label> *@
                             <div class="file-loading">
                                 <input asp-for="FileUploadList.Files"
                                        type="file"
@@ -251,8 +251,8 @@
                 <hr />
                 <div class="row d-flex justify-content-center m-0">
                     <div class="col-md-12">
-                        <h5 class="text-secondary">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
-                        <table class="table dataTable" id="tblApplicantFiles">
+                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
+                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
                             <thead>
                                 <tr>
                                     <th style="width: 30%">
@@ -298,7 +298,7 @@
                 </div>
             </div>
 
-            <div class="form-group d-flex justify-content-end mt-5 gap-4">
+            <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
                 <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
                 <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
                 <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>

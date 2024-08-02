@@ -71,14 +71,8 @@
                             @Html.DisplayFor(modelItem => @item.CreatedBy)
                         </td>
                         <td class="text-lg-start">
-                            <a type="button"
-                               asp-action="Edit"
-                               asp-route-id="@item.Id"
-                               style="text-decoration: none;">
-                                <span class="px-1 pb-1 icon-green" title="Edit" data-position-id="@item.Id">
-                                    <i data-feather="edit" class="data-feather-20"></i>
-                                    Edit
-                                </span>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
+                                Edit
                             </a>
                         </td>
                     </tr>

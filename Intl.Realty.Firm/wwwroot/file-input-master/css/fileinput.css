@@ -256,6 +256,7 @@ input[type=file].file-loading {
     top: 1px;
     right: 1px;
     line-height: 10px;
+    font-size: 10px;
 }
 
 .file-preview .clickable {

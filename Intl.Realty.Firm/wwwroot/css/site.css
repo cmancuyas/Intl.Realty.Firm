@@ -594,19 +594,22 @@ input#summaryPassword {
 /* multi-step submission form */
 .form-submit-tab {
     display: none;
+    background-color: #f3f3f3;
 }
 
 .form-submit-step {
     color: #6c757d;
     padding: 1rem;
-    border-bottom: 1px solid #ced4da;
-    background-image: linear-gradient(#fff, #f3f4f5);
+    /*border-bottom: 1px solid #ced4da;*/
+    /* background-image: linear-gradient(#fff, #f3f4f5); */
+    background-color: #e6e6e6;
 }
 
     .form-submit-step.active {
         color: #203d57;
-        border-bottom: solid 3px #203d57;
-        background-image: linear-gradient(#fff, #e6f1ff);
+        /*border-bottom: solid 3px #203d57;*/
+        /* background-image: linear-gradient(#fff, #e6f1ff); */
+        background-color: #f3f3f3;
     }
 /* multi-step concept proposal end */
 
@@ -659,6 +662,7 @@ input#summaryPassword {
 
 .dt-container tbody tr {
     background: #fff;
+    vertical-align: middle;
     /*cursor: pointer;*/
 }
 
@@ -667,7 +671,7 @@ label[for="dt-search-0"], .workflow-table label[for^="dt-search-"], label[for^="
 }
 
 #dt-search-0, .workflow-table [id^="dt-search-"], [id^="dt-search-"] {
-    margin-left: 0px !important;
+    /*margin-left: 0px !important;*/
     width: max(300px, 100%) !important;
     font-size: 16px;
     font-style: normal !important;
@@ -946,4 +950,7 @@ input.select2-search__field {
 
 .page-login .hint-validation {
     margin-top: 30px;
+}
+.form-bg-gray {
+    background-color: #f3f3f3;
 }

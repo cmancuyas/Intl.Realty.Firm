@@ -8,16 +8,13 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Models
 {
-    public class ProfilePicture : BaseModel
+    public class EmployeeStatus : BaseModel
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public string FileName { get; set; } = string.Empty;
-        public string FullPath { get; set; } = string.Empty;
-        public string Directory { get; set; } = string.Empty;
-        public string FileExtension { get; set; } = string.Empty;
-        public string FileSize { get; set; } = string.Empty;
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

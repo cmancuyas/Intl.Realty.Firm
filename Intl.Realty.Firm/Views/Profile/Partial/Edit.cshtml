@@ -1,0 +1,133 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserProfileVM
+@model EditUserProfileViewModel
+
+<div id="ContainerInsidePartial">
+    <form id="EditProfileForm">
+        @Html.AntiForgeryToken()
+        <!--PERSONAL INFORMATION-->
+        <div class="mb-5" id="PersonalInfoContainer">
+            <div class="d-flex justify-content-between">
+                <h5 class="text-blue fw-bold">Personal Information</h5>
+            </div>
+            <!--FIELDS-->
+            <div class="px-3">
+                <div class="row mt-2 mb-lg-4">
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            @Html.HiddenFor(m=>m.Email) <!--DO NOT ALLOW EMAIL ADDRESS TO BE EDITED-->
+                            @Html.HiddenFor(m=>m.Id) <!--DO NOT ALLOW USER ID TO BE EDITED-->
+                            <label class="text-muted fw-bold mb-0">First Name</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control", @id = "firstname", @required="required", @placeholder = "First Name"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="FirstName"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.FirstName</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            <label class="text-muted fw-bold mb-0">Middle Name</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.MiddleName, new { htmlAttributes = new { @class = "form-control", @id = "middlename", @placeholder = "Middle Name (if any)"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="MiddleName"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.MiddleName</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-lg-4">
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            <label class="text-muted fw-bold mb-0">Last Name</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control", @id = "lastname", @required="required", @placeholder = "Last Name"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="LastName"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.LastName</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            <label class="text-muted fw-bold mb-0">Suffix</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.Suffix, new { htmlAttributes = new { @class = "form-control", @id = "suffix", @placeholder = "Suffix (if any)"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="Suffix"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.Suffix</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-lg-4">
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            <label class="text-muted fw-bold mb-0">Date of Birth</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control", @id = "birthdate", @required="required", @type="Date", @placeholder = "Birth Date"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="BirthDate"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.BirthDate.ToString("MMMM dd, yyyy")</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <div class="form-group">
+                            <label class="text-muted fw-bold mb-0">Contact Number</label>
+                            @if (Model.allowEdit == true)
+                            {
+                                @Html.EditorFor(m => m.ContactNo, new { htmlAttributes = new { @class = "form-control", @id = "contactnumber", @required="required", @placeholder = "Contact Number"} })
+                                <span class="validation-message-for-edit text-danger small fst-italic" data-validation-for="ContactNo"></span>
+                            }
+                            else
+                            {
+                                <p class="text-dark mb-0">@Model.ContactNo</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--EMPLOYMENT DETAILS-->
+        <div class="mb-5" id="EmploymentDetailsContainer">
+            <div class="d-flex justify-content-between">
+                <h5 class="text-blue fw-bold">Employment Details</h5>
+            </div>
+   
+        </div>
+
+        <!--SKILLS-->
+        <div class="mb-5" id="SkillsContainer">
+            <div class="d-flex justify-content-between">
+                <h5 class="text-blue fw-bold">Skills & Background</h5>
+            </div>
+            <!--FIELDS-->
+          
+        </div>
+
+        @if (Model.allowEdit == true)
+        {
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary mx-2 CancelBtn" id="CancelEditProfileBtn">Cancel</button>
+                <button type="button" class="btn btn-primary mx-2 SaveBtn" id="SaveEditProfileBtn">Save</button>
+            </div>
+        }
+    </form>
+</div>

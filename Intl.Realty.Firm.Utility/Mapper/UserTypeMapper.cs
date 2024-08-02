@@ -1,8 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.UserTypeVM;
-using System.Reflection;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {

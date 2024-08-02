@@ -53,23 +53,6 @@ namespace Intl.Realty.Firm.Controllers
         {
             RegisterViewModel model = new RegisterViewModel();
 
-            model.OfficeNameList = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Office 1" },
-                new SelectListItem { Value = "2", Text = "Office 2" },
-            };
-
-            model.DivisionNameList = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Division 1" },
-                new SelectListItem { Value = "2", Text = "Division 2" },
-            };
-
-            model.PositionList = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Position 1" },
-                new SelectListItem { Value = "2", Text = "Position 2" },
-            };
 
             model.EmploymentStatusList = new List<SelectListItem>
             {

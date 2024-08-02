@@ -1,0 +1,976 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserProfileVM;
+@model ViewUserProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+<!--CROPPER CSS-->
+<link href="~/lib/cropperjs-1.6.2/dist/cropper.min.css" rel="stylesheet" />
+<style>
+
+    /* CUSTOM NAVIGATION */
+    .nav-tabs .nav-link {
+        border: none;
+        color: #6c757d; /* Default grey color */
+        background-color: transparent; /* No background color */
+    }
+
+        .nav-tabs .nav-link:hover {
+            color: #004aab; /* Blue color on hover */
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #004aab; /* Blue color for active tab */
+            background-color: transparent; /* No background color */
+            border: none;
+            border-bottom: 3px solid #004aab; /* Blue underline */
+        }
+
+    #ProfilePicturePreview {
+        width: 100%;
+        max-height: 500px;
+        /* width: 500;
+        height: 500;
+        object-fit: cover; */
+    }
+
+    button.password-eye-toggle {
+        border: 1px solid #ced4da;
+        background: white;
+        border-left: 0;
+    }
+
+    @@media (max-width: 992px) {
+        .width-max-large-100 {
+            width: 100% !important;
+        }
+    }
+    @@media (min-width: 768px) 
+    {
+        .margin-med-1 {
+            margin-left: 0.25rem !important;
+            margin-right: 0.25rem !important;
+        }
+    }
+
+    .password-tooltip {
+        color: #000;
+        background-color: white;
+        position: absolute;
+        top: 10vh;
+        left: 25vw;
+        z-index: 1000; /* Increase the z-index */
+    }
+</style>
+
+<div> <!--Formely using class="card"-->
+    <div> <!--Formely using class="card-body"-->
+        <h1 class="text-blue">Profile Management</h1>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                <button class="nav-link" id="nav-password-tab" data-bs-toggle="tab" data-bs-target="#nav-password" type="button" role="tab" aria-controls="nav-password" aria-selected="false">Update Password</button>
+                @* <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</button> *@
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <!--PROFILE TAB CONTENTS-->
+            <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                <div class="mx-4 px-2 text-center text-lg-start">
+                    <img id="ProfilePicture" src="@Model.ProfilePictureId" alt="Avatar" class="avatar img-fluid m-2 profile-pic" width="170" height="170">
+                    <button id="uploadPhotoBtn" class="btn btn-secondary fw-bold m-2"><i data-feather="upload-cloud" class="data-feather-20"></i> Upload Profile Picture</button>
+                    <input type="file" id="ProfilePictureInput" style="display: none;" accept="image/*" />
+                    <!--<p class="text-secondary">Size 170x170 px. Your face must occupy 80% of the circle.</p>-->
+                </div>
+
+                <hr />
+                <div class="d-flex justify-content-end">
+                    @* <a asp-action="Edit"
+                    class="btn btn-secondary w-25">
+                    <i data-feather="edit" class="data-feather-20"></i> Edit
+                    </a> *@
+                    <button class="btn btn-secondary w-25" id="EditBtn">
+                        <i data-feather="edit" class="data-feather-20"></i> Edit
+                    </button>
+                </div>
+                <!--EDITABLE SECTION-->
+                <section class="mx-3 my-5 mx-lg-4 px-lg-4 EditableSection" id="EditableSection">
+                    <div id="PartialContainerForEdit">
+                        <div id="ContainerInsidePartial">
+                            <!--PERSONAL INFORMATION-->
+                            <div class="mb-5" id="PersonalInfoContainer">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="text-blue fw-bold">Personal Information</h5>
+                                </div>
+                                <!--FIELDS-->
+                                <div class="px-3">
+                                    <div class="row mt-2 mb-lg-4">
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">First Name</label>
+                                                <p class="text-dark mb-0">@Model.FirstName</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Middle Name</label>
+                                                <p class="text-dark mb-0">@Model.MiddleName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-lg-4">
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Last Name</label>
+                                                <p class="text-dark mb-0">@Model.LastName</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Suffix</label>
+                                                <p class="text-dark mb-0">@Model.Suffix</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-lg-4">
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Date of Birth</label>
+                                                <p class="text-dark mb-0">@Model.BirthDate.ToString("MMMM dd, yyyy")</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Contact Number</label>
+                                                <p class="text-dark mb-0">@Model.ContactNo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--EMPLOYMENT DETAILS-->
+                            <div class="mb-5" id="EmploymentDetailsContainer">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="text-blue fw-bold">Employment Details</h5>
+                                </div>
+                                <!--FIELDS-->
+                                <div class="px-3">
+                                    <div class="row my-lg-4">
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Employment Date</label>
+                                                <p class="text-dark mb-0">
+                                                    @(Model.EmploymentDate.ToString("MMMM dd, yyyy") ?? "")
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">Employment Status</label>
+                                                <p class="text-dark mb-0">@Model.EmployeeStatus</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-lg-4">                                        
+                                        <div class="col-lg-6 my-2">
+                                            <div class="form-group">
+                                                <label class="text-muted fw-bold mb-0">System Role</label>
+                                                <p class="text-dark mb-0">@Model.Role.Id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--SKILLS-->
+                            <div class="mb-5" id="SkillsContainer">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="text-blue fw-bold">Skills & Background</h5>
+                                </div>
+                                <!--FIELDS-->
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <hr />
+                <!--ACCOUNT INFORMATION-->
+                <section class="mx-3 mt-4 mb-5 mx-lg-4 px-lg-4" id="AccountInfoSection">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="text-blue fw-bold">Account Information</h5>
+                        <button class="btn btn-secondary w-25 EditBtn" id="EditAccountInfoBtn" onclick="CPass()">
+                            <i data-feather="settings" class="data-feather-20"></i> Update Password
+                        </button>
+                    </div>
+                    <div class="ContainerForPartial px-3">
+                        <div class="form-group mt-3 mb-lg-4">
+                            <div class="col-lg-12 my-2">
+                                <label class="text-muted fw-bold mb-0">Email Address</label>
+                                <p class="text-dark mb-0">@Model.Email</p>
+                            </div>
+                        </div>
+                        <div class="form-group my-lg-4">
+                            <div class="col-lg-12 my-2">
+                                <label class="text-muted fw-bold mb-0">Password</label>
+                                <p class="text-dark mb-0">●●●●●●●●</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!--PROFILE TAB CONTENTS END-->
+            <!--PASSWORD TAB CONTENTS-->
+            <div class="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-password-tab">
+                <div class="m-4 margin-med-1 d-flex justify-content-center align-items-center">
+                    <div class="card w-50 width-max-large-100 mb-5">
+                        <div class="card-body m-3 p-3">
+                            <form id="changePasswordForm">
+                                @Html.AntiForgeryToken()
+                                <h3 class="text-blue">Update Password</h3>
+                                <div class="form-group my-3">
+                                    <label class="text-muted fw-bold mb-0 p-0">Current Password</label>
+                                    @* @Html.PasswordFor(m => m.CurrentPassword, new { @class = "form-control", placeholder = "Enter your current password", id="CurrentPassword" })
+                                    @Html.ValidationMessageFor(m => m.CurrentPassword) *@
+                                    <div class="input-group">
+                                        <input id="CurrentPassword" name="CurrentPassword" class="form-control" placeholder="Enter your current password" type="password" autocomplete="off" required />
+                                        <button class="btn password-eye-toggle" type="button" id="current-password-toggle" data-eye-toggle-for="CurrentPassword">
+                                            <i data-feather="eye" type="button"></i>
+                                        </button>
+                                    </div>
+                                    <span class="validation-message-for-password text-danger small fst-italic" data-validation-for="CurrentPassword"></span>
+                                </div>
+
+                                <!--NEW PASSWORD-->
+                                <div class="form-group my-3">
+                                    <label class="text-muted fw-bold mb-0 p-0">New Password</label>
+                                    @* @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control", placeholder = "Enter your new password", id="NewPassword" })
+                                    @Html.ValidationMessageFor(m => m.CurrentPassword) *@
+                                    <div class="input-group">
+                                        <input id="NewPassword" name="NewPassword" class="form-control" placeholder="Enter your new password" type="password" autocomplete="off" required/>
+                                        <button class="btn password-eye-toggle" type="button" id="new-password-toggle" data-eye-toggle-for="NewPassword">
+                                            <i data-feather="eye" type="button"></i>
+                                        </button>
+                                    </div>
+                                    <span class="validation-message-for-password text-danger small fst-italic" data-validation-for="NewPassword"></span>
+                                    <!--TOOLTIP-->
+                                    <div id="pwdTooltip" class="password-tooltip p-2 border rounded" style="display: none;">
+                                        <span class="small fw-bolder">Your password needs to have:</span>
+                                        <ul class="list-unstyled mt-1">
+                                            <li class="d-flex align-items-center gap-1 mb-1" id="Length">
+                                                <i data-feather="check" class="border rounded-circle p-1 text-white bg-lightblue"></i>
+                                                <span class="text-secondary small">Minimum 8 characters</span>
+                                            </li>
+                                            <li class="d-flex align-items-center gap-1 mb-1" id="UpperCase">
+                                                <i data-feather="check" class="border rounded-circle p-1 text-white bg-lightblue"></i>
+                                                <span class="text-secondary small">One upper case character</span>
+                                            </li>
+                                            <li class="d-flex align-items-center gap-1 mb-1" id="LowerCase">
+                                                <i data-feather="check" class="border rounded-circle p-1 text-white bg-lightblue bg-"></i>
+                                                <span class="text-secondary small">One lower case character</span>
+                                            </li>
+                                            <li class="d-flex align-items-center gap-1 mb-1" id="Numbers">
+                                                <i data-feather="check" class="border rounded-circle p-1 text-white bg-lightblue"></i>
+                                                <span class="text-secondary small">One number</span>
+                                            </li>
+                                            <li class="d-flex align-items-center gap-1 mb-1" id="Symbols">
+                                                <i data-feather="check" class="border rounded-circle p-1 text-white bg-lightblue"></i>
+                                                <span class="text-secondary small">One special character</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="form-group my-3">
+                                    <label class="text-muted fw-bold mb-0 p-0">Confirm Password</label>
+                                    @* @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your new password", id="ConfirmPassword" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword) *@
+
+                                    <div class="input-group">
+                                        <input id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Confirm your new password" type="password" autocomplete="off" required />
+                                        <button class="btn password-eye-toggle" type="button" id="confirm-password-toggle" data-eye-toggle-for="ConfirmPassword">
+                                            <i data-feather="eye" type="button"></i>
+                                        </button>
+                                    </div>
+                                    <span class="validation-message-for-password text-danger small fst-italic" data-validation-for="ConfirmPassword"></span>
+                                </div>
+
+                                <div id="changePassMessage" class="text-center"></div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-secondary mx-2" id="cancelChangePassBtn">Cancel</button>
+                                    <button type="button" class="btn btn-primary mx-2" id="confirmChangePassBtn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--PASSWORD TAB CONTENTS END-->
+            @* <!--SETTINGS TAB CONTENTS-->
+            <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+                SETTINGS
+            </div>
+            <!--SETTINGS TAB CONTENTS END--> *@
+        </div>
+
+    </div>
+</div>
+
+<!--MODALS-->
+
+<!--PRE-CONFIRMATION MODAL-->
+<div class="modal fade" id="preConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="preConfirmationModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="d-flex justify-content-end mt-3 mx-3">
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-start px-5 gap-3 mb-3 text-center">
+                <h1 class="h1 fw-bolder mb-0 fs-1 text-blue" id="preConfirmationTitle">Confirm Details</h1>
+                <span class="text-black small fst-italic" id="preConfirmationMessage">Please confirm that the details you entered are correct.</span>
+            </div>
+            <div class="modal-footer d-flex justify-content-center pt-4 mb-3 px-0">
+                <button type="button" class="btn btn-primary w-25" data-bs-dismiss="modal" id="preConfirmationCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary w-25" data-bs-dismiss="modal" id="preConfirmationOkBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--MODAL FOR UPLOADING PROFILE PICTURE-->
+<div class="modal fade " id="uploadProfilePicModal" tabindex="-1" aria-labelledby="uploadProfilePicModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="h5 fw-bolder mb-0 fs-1 text-blue" id="uploadProfilePicModalLabel">Upload Profile Picture</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-start px-5 gap-3 mb-3 text-center">
+                <div class="container">
+                    <img id="ProfilePicturePreview" src="/files/img/avatar-blank.png" alt="Avatar" class="img-fluid m-2 profile-pic">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center pt-4 mb-3 px-0">
+                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal" id="uploadProfilePicCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary w-25" id="uploadProfilePicOkBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--MODAL SHOWING SUCCESS OR FAILED-->
+<div class="modal fade" id="successOrFailedModal" tabindex="-1" role="dialog" aria-labelledby="successOrFailedModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="d-flex justify-content-center mt-5 mx-3" id="successOrFailedIconDiv">
+                <div class="text-white bg-blue p-4 rounded-circle border-icon" id="successIconDiv" style="display: none;">
+                    <i data-feather="check" width="100" height="100"></i>
+                </div>
+                <div class="text-white bg-danger p-4 rounded-circle border-icon-danger" id="failedIconDiv" style="display: none;">
+                    <i data-feather="x" width="100" height="100"></i>
+                </div>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-start px-5 gap-3 mb-3 text-center">
+                <h1 class="h1 fw-bolder mb-0 fs-1 text-blue" id="isSubmissionSuccess"></h1>
+                <span class="text-black small fst-italic" id="SuccessOrFailedModalMessage"></span>
+            </div>
+            <div class="modal-footer d-flex justify-content-center pt-4 mb-3 px-0">
+                <button type="button" class="btn btn-primary w-25" data-bs-dismiss="modal" id="ModalBtnOk">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--MODAL FOR SUCCESSFUL CHANGE OF PASSWORD-->
+<div class="modal fade" id="successPasswordUpdateModal" tabindex="-1" role="dialog" aria-labelledby="successPasswordUpdateModal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="d-flex justify-content-center mt-5 mx-3">
+                <div class="text-white bg-blue p-4 rounded-circle border-icon">
+                    <i data-feather="check" width="100" height="100"></i>
+                </div>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-start px-5 gap-3 mb-3 text-center">
+                <h1 class="h1 fw-bolder mb-0 fs-1 text-blue">Password Updated!</h1>
+                <span class="text-black small fst-italic">You may now login with your new password.</span>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--CROPPER JAVASCRIPT-->
+<script src="~/lib/cropperjs-1.6.2/dist/cropper.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Replace icons with Feather icons
+        feather.replace();
+
+        let cropper;
+        // jQuery to trigger file input click
+        $('#uploadPhotoBtn').click(function () {
+            $('#ProfilePictureInput').click();
+        });
+
+
+        // Load and show the image in the modal for cropping
+        $('#ProfilePictureInput').on('change', function (e) {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const url = URL.createObjectURL(file);
+                $('#ProfilePicturePreview').attr('src', url);
+                $('#uploadProfilePicModal').modal('show');
+
+                $('#uploadProfilePicModal').on('shown.bs.modal', function () {
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                    cropper = new Cropper($('#ProfilePicturePreview')[0], {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                    });
+                });
+            }
+        });
+
+        // Confirm button click to get the cropped image and display it
+        $('#uploadProfilePicOkBtn').on('click', function () {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({
+                    // width: 170,
+                    // height: 170,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
+                },1);
+                canvas.toBlob(function (blob) {
+
+                    const file = $('#ProfilePictureInput')[0].files[0];
+                    const fileName = file.name.split('.')[0] + '-cropped.' + file.type.split('/')[1];
+                    const croppedFile = new File([blob], fileName, { type: file.type });
+
+                    //Add Loading Spinner to Upload Button
+                    $('#uploadProfilePicOkBtn').html('<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Uploading...');
+                    const url = URL.createObjectURL(blob);
+                    //$('#ProfilePicture').attr('src', url);
+
+                    // Uploading the image to a server
+                    const formData = new FormData();
+                    formData.append('ProfilePhoto', croppedFile);
+                    $.ajax('/Profile/UploadProfilePicture', {
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            $('#ProfilePicture').attr('src', response.webpath);
+                            $('#uploadProfilePicModal').modal('hide');
+                            $('#uploadProfilePicOkBtn').html('Confirm');
+                            $("#SuccessOrFailedModalMessage").html(response.message);
+                            $("#isSubmissionSuccess").html('Success!');
+                            $('#successOrFailedModal').modal('show');
+                            IconForSuccessOrFailedModal(true);
+                            UpdateTopRightProfileInfo();
+                            console.log(response);
+                        },
+                        error: function(error) {
+                            console.error(error);
+                        }
+                    });
+                });
+            }
+        });
+
+        // Reset cropper and input on cancel
+        $('#uploadProfilePicCancelBtn, .btn-close').on('click', function () {
+            if (cropper) {
+                cropper.destroy();
+            }
+            //$('#ProfilePicturePreview').attr('src', '/files/img/avatar-blank.png');
+            $('#ProfilePictureInput').val('');
+        });
+  
+        // For Change Password
+        //$("#changePasswordForm").on("submit", function (event) {
+        $("#confirmChangePassBtn").on("click", function (event) {
+
+            //Check if fields are filled out
+            if ($("#changePasswordForm")[0].checkValidity()) {
+                event.preventDefault();
+                var token = $("#changePasswordForm").find('input[name="__RequestVerificationToken"]').val(); // Retrieve token from this form
+                $("#nav-password :input").removeClass("border border-danger");
+                $("#nav-password .btn.password-eye-toggle").removeClass("border border-danger");
+                $(".validation-message-for-password").html("");
+                $.ajax({
+                    url: '@Url.Action("ChangePassword", "Profile")',
+                    type: 'POST',
+                    data: $("#changePasswordForm").serialize(),
+                    headers: {
+                        'RequestVerificationToken': token  // Add the token to the headers
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            //$("#changePassMessage").html('<div class="my-3 text-success">' + response.message + '</div>');
+                            //Change Modal Messages and Icon
+                            // $("#SuccessOrFailedModalMessage").html(response.message);
+                            // $("#isSubmissionSuccess").html('Success!');
+                            // IconForSuccessOrFailedModal(true);
+                            //Clear after success change of password
+                            $('#changePasswordForm').find('input').val('');
+                            $("#changePassMessage").html('');
+                            //Show Modal
+                            $('#successPasswordUpdateModal').modal('show');
+                            // $('#successOrFailedModal').modal('show');
+                            //Success Change Password Modal
+                            var count = 3; // Countdown duration in seconds
+                            var progressBar = $('#progressBar');
+                            var width = 100; // Initial width of progress bar
+                            var interval = 1000; // Update interval in milliseconds
+
+                            // Set the width and aria-valuenow attribute of the progress bar
+                            progressBar.width(width + '%').attr('aria-valuenow', width);
+
+                            // Update progress bar and countdown timer
+                            var countdownTimer = setInterval(function () {
+                                count--;
+                                width = (count / 3) * 100; // Calculate width based on remaining time
+                                progressBar.width(width + '%').attr('aria-valuenow', width);
+                                if (count <= 0) {
+                                    clearInterval(countdownTimer);
+                                    $('#exampleModal').modal('hide');
+                                }
+                            }, interval);
+
+                            setTimeout(function () {
+                                location.reload();
+                            }, 4000);
+                        } else {
+                            //Display error
+                            //$("#changePassMessage").html('<div class="my-3 text-danger small fst-italic">' + response.message + '</div>');
+                            //Change Modal Message and Icon
+                            $("#SuccessOrFailedModalMessage").html(response.message);
+                            $("#isSubmissionSuccess").html('Failed to update Password!');
+                            IconForSuccessOrFailedModal(false);
+
+                            //Display Error on fields
+                            if (response.invalidFields != null) {
+                                var invalidKey = response.invalidFields;
+                                var fieldsWithErrors = response.fieldsWithErrorMsg;
+                                var firstInvalidFieldId = null
+                                for (let i = 0; i < fieldsWithErrors.length; i++) {
+                                    $("[name='" + fieldsWithErrors[i].key + "']").addClass("border border-danger");
+                                    $("[data-eye-toggle-for='" + fieldsWithErrors[i].key + "']").addClass("border border-danger");
+                                    $("[data-validation-for='" + fieldsWithErrors[i].key + "']").html(fieldsWithErrors[i].error);
+                                    if (firstInvalidFieldId == null) {
+                                        firstInvalidFieldId = "#" + $("[name='" + fieldsWithErrors[i].key + "']").attr('id');
+                                    }
+                                }
+                                ScrollInvalidElement(firstInvalidFieldId);
+                            }
+                            //Show Modal
+                            $('#successOrFailedModal').modal('show');
+                        }
+                    }
+                });
+            }
+
+            else {
+                validatePasswordFields();
+            }
+        });
+
+
+        function validatePasswordFields() {
+
+            var firstInvalidField = null;
+
+            var fields = [
+                { id: "#CurrentPassword", dataValidationFor: "CurrentPassword", errorMessage: "Please enter your current password." },
+                { id: "#NewPassword", dataValidationFor: "NewPassword", errorMessage: "Please enter a new password." },
+                { id: "#ConfirmPassword", dataValidationFor: "ConfirmPassword", errorMessage: "Please confirm your new password." },
+            ];
+
+            fields.forEach(function (field) {
+                var value = $(field.id).val().trim();
+                if (!value) {
+                    $(field.id).addClass("border border-danger");
+                    $('[data-validation-for="' + field.dataValidationFor + '"]').text(field.errorMessage);
+                    $("[data-eye-toggle-for='" + field.dataValidationFor + "']").addClass("border border-danger");
+
+                } else {
+                    $(field.id).removeClass("border border-danger");
+                    $("[data-eye-toggle-for='" + field.dataValidationFor + "']").removeClass("border border-danger");
+                    $('[data-validation-for="' + field.dataValidationFor + '"]').text("");
+                    if (field.validate && !field.validate(value)) {
+                    }
+                }
+            });
+        }
+
+        $("#current-password-toggle").click(function () {
+            var passwordInput = $("#CurrentPassword");
+            var passwordToggle = $(this).find("i");
+
+            if (passwordInput.attr("type") === "password") {
+                passwordInput.attr("type", "text");
+
+            } else {
+                passwordInput.attr("type", "password");
+            }
+        });
+
+        $("#new-password-toggle").click(function () {
+            var passwordInput = $("#NewPassword");
+            var passwordToggle = $(this).find("i");
+
+            if (passwordInput.attr("type") === "password") {
+                passwordInput.attr("type", "text");
+
+            } else {
+                passwordInput.attr("type", "password");
+            }
+        });
+
+        $("#confirm-password-toggle").click(function () {
+            var passwordInput = $("#ConfirmPassword");
+            var passwordToggle = $(this).find("i");
+
+            if (passwordInput.attr("type") === "password") {
+                passwordInput.attr("type", "text");
+
+            } else {
+                passwordInput.attr("type", "password");
+            }
+        });
+
+
+        //Password Tooltip
+
+        $("#NewPassword").focus(function () {
+            $("#pwdTooltip").show();
+        });
+
+        $("#NewPassword").blur(function () {
+            $("#pwdTooltip").hide();
+        });
+
+        $("#NewPassword").on('keyup', checkPassword);
+
+        function checkPassword() {
+            var rules = [{
+                Pattern: "[A-Z]",
+                Target: "UpperCase"
+            },
+            {
+                Pattern: "[a-z]",
+                Target: "LowerCase"
+            },
+            {
+                Pattern: "[0-9]",
+                Target: "Numbers"
+            },
+            {
+                Pattern: "[!@@#$%^&*~)(|,<.>/?]",
+                Target: "Symbols"
+            }
+            ];
+
+            var password = $(this).val();
+
+            var isValidLength = password.length > 7;
+
+            var $icon = $("#Length").find("svg");
+            $icon.removeClass(isValidLength ? "bg-lightblue" : "bg-lightgreen");
+            $icon.addClass(isValidLength ? "bg-lightgreen" : "bg-lightblue");
+
+            for (var i = 0; i < rules.length; i++) {
+                var isValid = new RegExp(rules[i].Pattern).test(password);
+                var $icon = $("#" + rules[i].Target).find("svg");
+                if (isValid) {
+                    $icon.removeClass("bg-lightblue").addClass("bg-lightgreen");
+                } else {
+                    $icon.removeClass("bg-lightgreen").addClass("bg-lightblue");
+                }
+            }
+        }
+
+
+        //For Displaying Partial View
+        //$(document).on('click', '#EditBtn', function () {
+        $("#EditBtn").click(function () {
+            $("#EditBtn").hide();
+            //$('#PartialContainerForEdit').empty();
+            $('#PartialContainerForEdit').load('/Profile/Edit?editable=true', function (data) {
+                $('.form-select').select2();
+                // $('#division').prepend($('<option>', {
+                //     value: '0',
+                //     text: 'N/A'
+                // }));
+                // $('#division').prepend($('<option>', {
+                //     value: '0',
+                //     text: 'Select Division (Optional)'
+                // }));
+
+                $('#section').prepend($('<option>', {
+                    value: '0',
+                    text: 'N/A'
+                }));
+                $('#section').prepend($('<option>', {
+                    value: '0',
+                    text: 'Select Section (Optional)'
+                }));
+
+                // $('#position').prepend($('<option>', {
+                //     value: '0',
+                //     text: 'N/A'
+                // }));
+                // $('#position').prepend($('<option>', {
+                //     value: '0',
+                //     text: 'Select Position (Optional)'
+                // }));
+
+            });
+        });
+
+
+        function validateFields() {
+
+            var firstInvalidField = null;
+
+            var fields = [
+                { id: "#firstname", dataValidationFor: "FirstName", errorMessage: "First Name is Required" },
+                { id: "#lastname", dataValidationFor: "LastName", errorMessage: "Last Name is Required" },
+                { id: "#birthdate", dataValidationFor: "BirthDate", errorMessage: "Birth Date is Required" },
+                { id: "#contactnumber", dataValidationFor: "ContactNo", errorMessage: "Contact Number is Required" },
+                { id: "#office", dataValidationFor: "OfficeId", errorMessage: "Office Name is Required" },
+                { id: "#employmentdate", dataValidationFor: "EmploymentDate", errorMessage: "Date of Employment is Required" },
+                { id: "#employmentstatus", dataValidationFor: "EmployeeStatus", errorMessage: "Employment Status is Required" },
+                { id: "#systemrole", dataValidationFor: "RoleId", errorMessage: "System Role is Required" },
+                { id: "#educationalAttainment", dataValidationFor: "EducAttainment", errorMessage: "Educational Attainment is Required" },
+                { id: "#areaofexpertise", dataValidationFor: "FieldOfExpertise", errorMessage: "Area of Expertise is Required" }
+            ];
+
+            fields.forEach(function (field) {
+                var value = $(field.id).val().trim();
+                if (!value) {
+                    $(field.id).addClass("border border-danger");
+                    $('[data-validation-for="' + field.dataValidationFor + '"]').text(field.errorMessage);
+
+                    // Store the first invalid field
+                    if (!firstInvalidField) {
+                        firstInvalidField = field.id;
+                    }
+
+                } else {
+                    $(field.id).removeClass("border border-danger");
+                    $('[data-validation-for="' + field.dataValidationFor + '"]').text("");
+                    if (field.validate && !field.validate(value)) {
+                    }
+                }
+            });
+
+            // Scroll to the first invalid field
+            if (firstInvalidField) {                
+                ScrollInvalidElement(firstInvalidField);
+            }
+
+        }
+
+        // function to scroll the invalid element 
+        function ScrollInvalidElement(firstInvalidField) {
+            var mainElement = document.querySelector('main'); // Select your main element
+
+            // Get the target element within main
+            var targetElement = $(firstInvalidField)[0];
+
+            // Calculate the scroll position relative to main
+            var offsetTop = targetElement.offsetTop - mainElement.offsetTop;
+            var offsetLeft = targetElement.offsetLeft - mainElement.offsetLeft;
+
+            // Scroll main element to the calculated position
+            mainElement.scrollTo({
+                top: offsetTop,
+                left: offsetLeft,
+                behavior: 'smooth'
+            });
+        }
+
+        $(document).on('click', '#SaveEditProfileBtn', function (event) {
+            event.preventDefault();
+
+            if ($("#EditProfileForm")[0].checkValidity()) {
+                $('#preConfirmationModal').modal('show');
+            } else {
+                //$("#EditProfileForm").validate().form();
+                validateFields();
+            }
+        });
+
+
+        // //For Saving Edit
+        // $(document).on('click', '#SaveEditProfileBtn', function () {
+        //     event.preventDefault();
+
+        //     //var formId = $(this).closest("form").attr("id");
+        //     // var action = getActionName($(this).attr("id"));
+        //     // var editBtnID = $(this).closest('section.PartialParentSection').find('.EditBtn').attr("id");
+        //     // var partialContainer = $(this).closest('div.PartialContainer').attr('id');
+
+
+        //     //report validity
+
+        //     if ($("#EditProfileForm")[0].checkValidity()) {
+
+        //         $('#preConfirmationModal').modal('show');
+
+        //         // $('#preConfirmationOkBtn').attr({
+        //         //     'data-formId': formId,
+        //         //     'data-action': action,
+        //         //     'data-editBtnID': editBtnID,
+        //         //     'data-partialContainer': partialContainer,
+        //         // });
+        //     }
+
+        //     else {
+        //         //Validate Form
+        //         $("#EditProfileForm")[0].reportValidity();
+        //     }
+        // });
+
+        $(document).on('click', '#preConfirmationOkBtn', function () {
+            var formId = "EditProfileForm";//this.dataset.formid;
+            var action = "Edit";//this.dataset.action;
+            var editBtnID = "EditBtn";//this.dataset.editbtnid;
+            var partialContainer = "PartialContainerForEdit";//this.dataset.partialcontainer;
+            var token = $('#' + formId).find('input[name="__RequestVerificationToken"]').val(); // Retrieve token from this form
+            $("#" + partialContainer + " :input").removeClass("border border-danger");
+            $(".validation-message-for-edit").html("");
+            $.ajax({
+                url: '/Profile/' + action,
+                type: 'POST',
+                data: $('#' + formId).serialize(),
+                headers: {
+                    'RequestVerificationToken': token  // Add the token to the headers
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#SuccessOrFailedModalMessage").html(response.message);
+                        $("#isSubmissionSuccess").html('Success!');
+                        $('#successOrFailedModal').modal('show');
+                        IconForSuccessOrFailedModal(true)
+                        $('#' + editBtnID).show();
+                        //$('#' + partialContainer + ' div').empty();
+                        $('#' + partialContainer + ' div').load('/Profile/Edit?editable=false', function (data) { });
+                        UpdateTopRightProfileInfo();
+                    } else {
+                        $("#isSubmissionSuccess").html('Failed!');
+                        $("#SuccessOrFailedModalMessage").html(response.message);
+                        $('#successOrFailedModal').modal('show');
+                        IconForSuccessOrFailedModal(false)
+                        if (response.invalidFields != null) {
+                            var invalidKey = response.invalidFields;
+                            var fieldsWithErrors = response.fieldsWithErrorMsg;
+                            var firstInvalidFieldId = null
+                            for (let i = 0; i < fieldsWithErrors.length; i++) {
+                                $("[name='" + fieldsWithErrors[i].key + "']").addClass("border border-danger");
+                                $("[data-validation-for='" + fieldsWithErrors[i].key + "']").html(fieldsWithErrors[i].error);
+                                if (firstInvalidFieldId == null) { 
+                                    firstInvalidFieldId = "#" + $("[name='" + fieldsWithErrors[i].key + "']").attr('id');
+                                }
+                            }
+
+                            ScrollInvalidElement(firstInvalidFieldId);
+                        }
+                    }
+                }
+            });
+        });
+
+        function UpdateTopRightProfileInfo() {
+            $.get("/Profile/CurrentUserInfos", function (data) {
+                $('#DisplayName').text(data.displayName);
+                $('#DisplayRole').text(data.role);
+                $('#avatar').attr('src', data.profilePictureSource);
+            });
+        }
+
+        //For Cancel Button
+        $(document).on('click', '#CancelEditProfileBtn', function () {            
+            $("#EditBtn").show(); //$(this).closest('section.PartialParentSection').find('.EditBtn').show();
+            //$('#PartialContainerForEdit div').empty();
+            $('#PartialContainerForEdit div').load('/Profile/Edit?editable=false', function (data) { });
+        });
+
+        $(document).on('click', '#cancelChangePassBtn', function () {
+            $('#nav-profile-tab').click();
+            $('#CurrentPassword').val('');
+            $('#NewPassword').val('');
+            $('#ConfirmPassword').val('');
+            $('#changePassMessage').html('');
+        });
+
+        //Populate Section Dropdown
+        $(document).on('change', '#division', function () {
+            var divisionId = $(this).val();
+            if (divisionId) {
+                //For Section
+                $.ajax({
+                    url: '@Url.Action("GetSectionsByDivisionIdForDropdown", "Profile")',
+                    type: 'GET',
+                    data: { divisionId: divisionId },
+                    success: function (data) {
+                        var sectionSelect = $('#section');
+                        sectionSelect.empty();
+                        sectionSelect.prepend('<option value="0">Select Section (Optional)</option>');
+                        sectionSelect.append('<option value="0">N/A</option>');
+
+                        $.each(data, function (index, item) {
+                            sectionSelect.append('<option value="' + item.id + '">' + item.description + '</option>');
+                        });
+                    }
+                });
+
+                //For position
+                $.ajax({
+                    url: '@Url.Action("GetPositionsByDivisionIdForDropdown", "Profile")',
+                    type: 'GET',
+                    data: { divisionId: divisionId },
+                    success: function (data) {
+                        var positionSelect = $('#position');
+                        positionSelect.empty();
+                        positionSelect.prepend('<option value="" disabled>Select Position (Optional)</option>');
+                        //positionSelect.append('<option value="0">N/A</option>');
+                        $.each(data, function (index, item) {
+                            positionSelect.append('<option value="' + item.id + '">' + item.description + '</option>');
+                        });
+                    }
+                });
+
+            }
+            console.log('Division Changed to: ', divisionId);
+        });
+
+        function IconForSuccessOrFailedModal(isSuccess) {
+            
+            $('#successIconDiv').hide();
+            $('#failedIconDiv').hide();
+
+            if (isSuccess == true) {
+                $('#successIconDiv').show();
+            }
+            else {
+                $('#failedIconDiv').show();
+            }
+        }        
+
+        
+    });
+
+    function CPass() {
+        $('#nav-password-tab').click();
+    }
+</script>

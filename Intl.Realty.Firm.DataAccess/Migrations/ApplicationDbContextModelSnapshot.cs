@@ -55,7 +55,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.DocumentType", b =>
@@ -94,7 +94,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentTypes");
+                    b.ToTable("DocumentTypes", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.DocumentTypeAssignment", b =>
@@ -132,7 +132,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("DocumentTypeAssignments");
+                    b.ToTable("DocumentTypeAssignments", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileCheckList", b =>
@@ -169,7 +169,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FileCheckLists");
+                    b.ToTable("FileCheckLists", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.FileUpload", b =>
@@ -247,7 +247,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("FileUploads");
+                    b.ToTable("FileUploads", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.IRFDeal", b =>
@@ -353,7 +353,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IRFDeals");
+                    b.ToTable("IRFDeals", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
@@ -391,7 +391,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("LeaseCoops");
+                    b.ToTable("LeaseCoops", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
@@ -429,7 +429,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("LeaseListings");
+                    b.ToTable("LeaseListings", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.ProfilePicture", b =>
@@ -480,7 +480,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProfilePictures");
+                    b.ToTable("ProfilePictures", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.Province", b =>
@@ -516,7 +516,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Provinces");
+                    b.ToTable("Provinces", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
@@ -554,7 +554,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("SaleCoops");
+                    b.ToTable("SaleCoops", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>
@@ -592,7 +592,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("SaleListings");
+                    b.ToTable("SaleListings", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.TransactionType", b =>
@@ -628,7 +628,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransactionTypes");
+                    b.ToTable("TransactionTypes", (string)null);
                 });
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.UserType", b =>
@@ -664,7 +664,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserTypes");
+                    b.ToTable("UserTypes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -2,9 +2,6 @@
 using Intl.Realty.Firm.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Web.Mvc;
 
 namespace Intl.Realty.Firm.Repository
 {

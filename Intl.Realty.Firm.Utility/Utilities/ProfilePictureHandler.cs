@@ -30,9 +30,9 @@ namespace DENR_FAPIS.Utilities
             {
                 UserId = userId,
                 FileName = fileName,
-                FileType = fileInfo.Extension,
-                FilePath = directoryPath,
-                WebDirectoryPath = webDirectoryPath,
+                FileExtension = fileInfo.Extension,
+                Directory = directoryPath,
+                FullPath = webDirectoryPath,
                 FileSize = profilePhoto.Length.ToString(),
                 IsActive = true,
                 // CreatedBy and CreatedAt can be set in the service layer

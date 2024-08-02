@@ -16,6 +16,7 @@
         IFileUploadRepository FileUpload { get; }
         IProfilePictureRepository ProfilePicture { get; }
         IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; }
+        IActivityLogRepository Log { get; }
         void Save();
     }
 }

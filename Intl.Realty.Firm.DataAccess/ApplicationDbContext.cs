@@ -1,9 +1,11 @@
 ﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.Auxiliary;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -31,6 +33,7 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<LeaseCoop> LeaseCoops { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<FileDocumentTypeBridge> FileDocumentTypeBridges { get; set; }
+        public DbSet<ActivityLog> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

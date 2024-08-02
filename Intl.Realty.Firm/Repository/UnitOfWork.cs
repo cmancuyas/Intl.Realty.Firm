@@ -20,6 +20,7 @@ namespace Intl.Realty.Firm.Repository
         public IFileUploadRepository FileUpload { get; private set; }
         public IProfilePictureRepository ProfilePicture { get; private set; }
         public IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; private set; }
+        public IActivityLogRepository Log { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -37,6 +38,7 @@ namespace Intl.Realty.Firm.Repository
             ProfilePicture = new ProfilePictureRepository(_db);
             FileUpload = new FileUploadRepository(_db);
             FileDocumentTypeBridge = new FileDocumentTypeBridgeRepository(_db);
+            Log = new ActivityLogRepository(_db);
         }
 
         public void Save()

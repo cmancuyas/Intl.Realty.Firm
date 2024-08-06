@@ -1,12 +1,4 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Intl.Realty.Firm.Models.Models.Auxiliary
+﻿namespace Intl.Realty.Firm.Models.Models.Auxiliary
 {
     public class ActivityLog : BaseModel
     {

@@ -1,7 +1,10 @@
-﻿namespace Intl.Realty.Firm.Service.IServices
+﻿using Intl.Realty.Firm.Service.IServices.IConfiguration;
+
+namespace Intl.Realty.Firm.Service.IServices
 {
-    public interface IConfigurationService
+    public interface IConfigurationService : IConfigurationReCaptcha
     {
         string GetDefaultUploadPathFromConfig();
+
     }
 }

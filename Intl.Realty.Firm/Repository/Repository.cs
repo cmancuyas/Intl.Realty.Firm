@@ -52,20 +52,45 @@ namespace Intl.Realty.Firm.Repository
             return await query.FirstOrDefaultAsync()??query.FirstOrDefault()!;
 
         }
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string?
+                                                    includeProperties = null,
+                                                    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null!,
+                                                    bool tracked = false,
+                                                    int pageSize = 0, int pageNumber = 1)
         {
             IQueryable<T> query = dbSet;
+
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
+
             if (filter != null)
             {
                 query = query.Where(filter);
             }
-            if (!string.IsNullOrEmpty(includeProperties))
+            if (pageSize > 0)
             {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+                query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+            }
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
                 }
+            }
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
             }
             return await query.ToListAsync();
         }
@@ -84,6 +109,46 @@ namespace Intl.Realty.Firm.Repository
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public Task<IQueryable<T>> AsQueryableAsync(string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return Task.FromResult(query);
+        }
+
+        public IQueryable<T> AsQueryable(string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return query;
+        }
+
+        public Task<int> CountAsync()
+        {
+            var count = dbSet.CountAsync();
+            return count; ;
+        }
+
+        public int Count()
+        {
+            return dbSet.Count();
         }
     }
 }

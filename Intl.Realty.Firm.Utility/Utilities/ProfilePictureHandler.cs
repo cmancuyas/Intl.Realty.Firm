@@ -1,7 +1,7 @@
 ﻿using Intl.Realty.Firm.Models.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace DENR_FAPIS.Utilities
+namespace Intl.Realty.Firm.Utility.Utilities
 {
     public class ProfilePictureHandler
     {

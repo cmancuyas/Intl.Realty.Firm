@@ -15,7 +15,7 @@ namespace Intl.Realty.Firm.Repository
 
         public async Task<List<ActivityLog>> GetRecordsByUserIdAsync(int userId)
         {
-            return await _db.Logs
+            return await _db.ActivityLogs
                 .Where(x => x.CreatedBy == userId)
                 .Include(x => x.Module)
                 .AsNoTracking()
@@ -24,7 +24,7 @@ namespace Intl.Realty.Firm.Repository
 
         public Task UpdateAsync(ActivityLog model)
         {
-            _db.Logs.Update(model);
+            _db.ActivityLogs.Update(model);
             return _db.SaveChangesAsync();
         }
     }

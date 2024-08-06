@@ -21,7 +21,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static IEnumerable<ProvinceViewModel> ToProvinceIEnumViewModel(this IEnumerable<Province> modelIEnum)
         {
             IEnumerable<ProvinceViewModel> viewModelIEnum = new List<ProvinceViewModel>();
-            if (viewModelIEnum != null)
+
+            if (modelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new ProvinceViewModel()
                 {

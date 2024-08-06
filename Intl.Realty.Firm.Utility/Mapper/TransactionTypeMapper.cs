@@ -21,7 +21,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static IEnumerable<TransactionTypeViewModel> ToTransactionTypeIEnumViewModel(this IEnumerable<TransactionType> modelIEnum)
         {
             IEnumerable<TransactionTypeViewModel> viewModelIEnum = new List<TransactionTypeViewModel>();
-            if (viewModelIEnum != null)
+            if (modelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new TransactionTypeViewModel()
                 {

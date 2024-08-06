@@ -1,4 +1,6 @@
-﻿namespace Intl.Realty.Firm.Helper
+﻿using Intl.Realty.Firm.Helper.Auxiliary;
+
+namespace Intl.Realty.Firm.Helper
 {
     public static class Session
     {

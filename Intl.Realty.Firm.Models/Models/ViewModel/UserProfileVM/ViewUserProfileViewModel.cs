@@ -17,7 +17,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.UserProfileVM
         public string ContactNo { get; set; }
 
         public DateTime EmploymentDate { get; set; }
-        public EmployeeStatus EmployeeStatus { get; set; }
+        public EmploymentStatus EmployeeStatus { get; set; }
         public Role Role { get; set; }
         public string Email { get; set; }
     }

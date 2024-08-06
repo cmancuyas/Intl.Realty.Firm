@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,13 @@ namespace Intl.Realty.Firm.Models.Models
     [Table("Roles")]
     public class Role : BaseModel
     {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string? Code { get; set; }
-        public string? Description { get; set; }
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        [Required]
+        public string Description { get; set; } = string.Empty;
         public ICollection<RolePermission>? RolePermissions { get; set; }
     }
 }

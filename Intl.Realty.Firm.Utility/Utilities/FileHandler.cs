@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace DENR_FAPIS.Utilities
+namespace Intl.Realty.Firm.Utility.Utilities
 {
     public static class FileHandler
     {

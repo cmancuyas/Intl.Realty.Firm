@@ -1,5 +1,4 @@
-﻿using DENR_FAPIS.Utilities;
-using Intl.Realty.Firm.Service.IServices;
+﻿using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Utilities;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -31,13 +30,16 @@ namespace Intl.Realty.Firm.Service
             try
             {
                 var filePath = FileHandler.GetFilePath(directory, fileName + fileExtension);
-                //filePath = StringManipulation.ReplaceWhitespace(filePath, "");
+
                 var provider = new FileExtensionContentTypeProvider();
+
                 if (!provider.TryGetContentType(filePath, out var contentType))
                 {
                     contentType = "application/octet-stream";
                 }
+
                 var readAllBytesAsync = await File.ReadAllBytesAsync(filePath);
+
                 return (readAllBytesAsync, contentType, Path.GetFileName(filePath));
             }
             catch (Exception ex)

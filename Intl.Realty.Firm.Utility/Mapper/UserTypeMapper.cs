@@ -20,7 +20,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static IEnumerable<UserTypeViewModel> ToUserTypeIEnumViewModel(this IEnumerable<UserType> modelIEnum)
         {
             IEnumerable<UserTypeViewModel> viewModelIEnum = new List<UserTypeViewModel>();
-            if (viewModelIEnum != null)
+            if (modelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new UserTypeViewModel()
                 {

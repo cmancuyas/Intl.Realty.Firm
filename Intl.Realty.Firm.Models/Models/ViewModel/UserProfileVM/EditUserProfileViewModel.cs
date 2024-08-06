@@ -26,7 +26,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.UserProfileVM
         public string Password { get; set; } = string.Empty;
         public int RoleId { get; set; }
         public Role? Role { get; set; }
-        public EmployeeStatus? EmployeeStatus { get; set; }
+        public EmploymentStatus? EmployeeStatus { get; set; }
         public DateTime? EmploymentDate { get; set; }
 
         //Allow Edit

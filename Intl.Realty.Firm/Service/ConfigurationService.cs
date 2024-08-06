@@ -19,5 +19,15 @@ namespace Intl.Realty.Firm.Service
             }
             return "";
         }
+
+        public string GetLocalSiteKey()
+        {
+            return _configuration["GoogleReCaptchaLocalHost:SiteKey"]!;
+        }
+
+        public string GetSiteKey()
+        {
+            return _configuration["GoogleReCaptcha:SiteKey"]!;
+        }
     }
 }

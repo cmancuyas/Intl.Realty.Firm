@@ -1,4 +1,5 @@
-﻿@using Intl.Realty.Firm.Models.ViewModel
+﻿@using Intl.Realty.Firm.Models.ViewModel;
+@using Intl.Realty.Firm.Models.Models.ViewModel.AccountVM
 
 @model RegisterViewModel
 
@@ -39,7 +40,7 @@
                         </div>
                         <div>
                             <h5 class="mb-0">Set Up Account</h5>
-                            <span class="small">Set up your account in FASPIS</span>
+                            <span class="small">Set up your account in INTL Realty FIrm</span>
                         </div>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
         <div class="col-md-8 d-flex align-items-center justify-content-center right-part">
             <div class="d-flex flex-column w-75 px-5">
                 <div class="w-10 mb-2">
-                    <img src="~/files/img/logo-faspis.png" alt="FASP IS Logo" class="img-fluid" />
+                    <img src="~/files/img/logo-intlrealtyfirm.png" alt="FASP IS Logo" class="img-fluid" />
                 </div>
                 @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "signUpForm" }))
                 {
@@ -72,28 +73,69 @@
                         <label class="fw-bolder">Full Name</label>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @id = "firstName", @name = "firstname", @placeholder = "First Name" })
+                                @Html.TextBoxFor(m => m.FirstName, 
+                                            new 
+                                                { 
+                                                    @class = "form-control", 
+                                                    @id = "firstName", 
+                                                    @name = "firstName", 
+                                                    @placeholder = "First Name" 
+                                                })
                             </div>
                             <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", @id = "middleName", @name = "middlename", @placeholder = "Middle Name (Optional)" })
+                                @Html.TextBoxFor(m => m.MiddleName, 
+                                            new 
+                                                { 
+                                                    @class = "form-control", 
+                                                    @id = "middleName", 
+                                                    @name = "middleName", 
+                                                    @placeholder = "Middle Name (Optional)" 
+                                                })
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @id = "lastName", @name = "lastname", @placeholder = "Last Name" })
+                                @Html.TextBoxFor(m => m.LastName, 
+                                            new 
+                                                { 
+                                                    @class = "form-control", 
+                                                    @id = "lastName", 
+                                                    @name = "lastName", 
+                                                    @placeholder = "Last Name" 
+                                                })
                             </div>
                             <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.Suffix, new { @class = "form-control", @id = "suffix", @name = "suffix", @placeholder = "Suffix (Optional)" })
+                                @Html.TextBoxFor(m => m.Suffix, 
+                                                new { 
+                                                        @class = "form-control", 
+                                                        @id = "suffix", 
+                                                        @name = "suffix", 
+                                                        @placeholder = "Suffix (Optional)" 
+                                                    })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="fw-bolder">Birth Date</label>
-                                @Html.EditorFor(m => m.BirthDate, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @id = "birthDate", @type = "Date" } })
+                                @Html.EditorFor(m => m.BirthDate, "{0:yyyy-MM-dd}", 
+                                                    new 
+                                                        { htmlAttributes = 
+                                                            new { 
+                                                                    @class = "form-control", 
+                                                                    @id = "birthDate", 
+                                                                    @type = "Date" 
+                                                                } 
+                                                        })
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bolder">Contact Number</label>
-                                @Html.TextBoxFor(m => m.ContactNumber, new { @class = "form-control", @id = "contactNumber", @name = "contactnumber", @placeholder = "(+63) 999 999 9999" })
+                                @Html.TextBoxFor(m => m.ContactNumber, 
+                                                    new { 
+                                                            @class = "form-control", 
+                                                            @id = "contactNumber", 
+                                                            @name = "contactNumber", 
+                                                            @placeholder = "(+63) 999 999 9999" 
+                                                        })
                             </div>
                         </div>
                     </div>
@@ -106,17 +148,44 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bolder">Date of Employment</label>
-                                @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @id = "employmentDate", @type = "Date" } })
+                                @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}", 
+                                    new { htmlAttributes = 
+                                        new 
+                                            { 
+                                                @class = "form-control",
+                                                @id = "employmentDate", 
+                                                @type = "Date" } 
+                                            })
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bolder">Employment Status</label>
-                                @Html.DropDownListFor(m => m.EmploymentStatus, new SelectList(Model.EmploymentStatusList, "Value", "Text"), "Select Employment Status...", new { @class = "form-select", @id = "employmentStatus" })
+                                    @Html.DropDownList("EmploymentStatusDDL", Model.EmploymentStatusIEnum, "Select Employment Status...",
+                                             new
+                                             {
+                                                 @class = "form-select",
+                                                 @required = "required"
+                                             })
+
+                                    @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.EmploymentStatusId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                                    {
+                                        @Html.ValidationMessageFor(m => m.EmploymentStatusId, "", new { @class = "error" })
+                                    }
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="fw-bolder">System Role</label>
-                                @Html.DropDownListFor(m => m.SystemRole, new SelectList(Model.SystemRoleList, "Value", "Text"), "Select System Role...", new { @class = "form-select", @id = "systemRole"})
+                                    @Html.DropDownList("RoleDDL", Model.RoleIEnum, "Select Role...",
+                                             new
+                                             {
+                                                 @class = "form-select",
+                                                 @required = "required"
+                                             })
+
+                                    @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.RoleId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                                    {
+                                        @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "error" })
+                                    }
                             </div>
                         </div>
                     </div>
@@ -137,19 +206,36 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label class="fw-bolder">Email Address</label>
-                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @id = "emailAddress", @name = "emailaddress", @placeholder = "example@domain.com", @type = "email" })
+                                @Html.TextBoxFor(m => m.EmailAddress, 
+                                                    new { @class = "form-control", 
+                                                            @id = "emailAddress",
+                                                            @name = "emailAddress", 
+                                                            @placeholder = "example@domain.com", 
+                                                            @type = "email" 
+                                                        }
+                                                   )
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label class="fw-bolder">Create Password</label>
-                                @Html.TextBoxFor(m => m.CreatePassword, new { @class = "form-control", @id = "createPassword", @name = "createpassword", @type = "password" })
+                                @Html.TextBoxFor(m => m.CreatePassword, 
+                                                    new { @class = "form-control", 
+                                                            @id = "createPassword", 
+                                                            @name = "createPassword", 
+                                                            @type = "password" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="fw-bolder">Confirm Password</label>
-                                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @id = "confirmPassword", @name = "confirmpassword", @type = "password" })
+                                @Html.TextBoxFor(m => m.ConfirmPassword, 
+                                                    new { @class = "form-control", 
+                                                            @id = "confirmPassword", 
+                                                            @name = "confirmPassword", 
+                                                            @type = "password" 
+                                                        }
+                                                    )
                             </div>
                         </div>
                         <div class="form-check">

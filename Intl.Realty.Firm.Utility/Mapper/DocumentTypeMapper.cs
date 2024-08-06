@@ -20,7 +20,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static IEnumerable<DocumentTypeViewModel> ToDocumentTypeIEnumViewModel(this IEnumerable<DocumentType> modelIEnum)
         {
             IEnumerable<DocumentTypeViewModel> viewModelIEnum = new List<DocumentTypeViewModel>();
-            if (viewModelIEnum != null)
+            if (modelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new DocumentTypeViewModel()
                 {

@@ -13,13 +13,18 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<EmploymentStatus> EmploymentStatuses { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -33,7 +38,7 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<LeaseCoop> LeaseCoops { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<FileDocumentTypeBridge> FileDocumentTypeBridges { get; set; }
-        public DbSet<ActivityLog> Logs { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

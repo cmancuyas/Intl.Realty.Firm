@@ -32,7 +32,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static IEnumerable<DepartmentViewModel> ToDepartmentIEnumViewModel(this IEnumerable<Department> modelIEnum)
         {
             IEnumerable<DepartmentViewModel> viewModelIEnum = new List<DepartmentViewModel>();
-            if (viewModelIEnum != null)
+            if (modelIEnum != null)
             {
                 viewModelIEnum = modelIEnum.Select(x => new DepartmentViewModel()
                 {

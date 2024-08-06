@@ -1,10 +1,6 @@
-﻿using DENR_FAPIS.Utilities;
-using Intl.Realty.Firm.DataAccess;
+﻿using Intl.Realty.Firm.DataAccess;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Repository.IRepository;
-using Intl.Realty.Firm.Service;
-using Intl.Realty.Firm.Utility.Utilities;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace Intl.Realty.Firm.Repository

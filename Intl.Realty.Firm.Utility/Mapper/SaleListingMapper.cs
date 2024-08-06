@@ -98,6 +98,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
         public static List<SaleListing> FromIEnumToSaleListingList(this IEnumerable<SaleListing> modelIEnum)
         {
             var modelList = new List<SaleListing>();
+
             if (modelIEnum != null)
             {
                 modelList = modelIEnum.Select(x => new SaleListing()

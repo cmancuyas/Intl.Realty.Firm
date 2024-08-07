@@ -192,9 +192,10 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task ForgotPassword(User model)
+        public IActionResult ForgotPassword(User model)
         {
-
+            User user = new User();
+            return PartialView("~/Views/Account/ForgotPasswordPartialView");
         }
         public async Task<bool> ResetPassword(User user, string resetLink)
         {

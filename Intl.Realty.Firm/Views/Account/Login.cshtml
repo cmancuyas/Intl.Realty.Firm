@@ -5,7 +5,16 @@
 @{
     ViewData["Title"] = "Login";
 }
-
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>International Realty Firm - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/files/img/logo-intl.png" />
+    <link rel="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+</head>
 <container class="page-login">
     <div class="container-fluid p-0">
         <div class="row m-0 p-0">
@@ -50,7 +59,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mb-md-5">
-                            <a href="#" class="text-decoration-none cta-forgot-password">Forgot Password?</a>
+                            <a href="@Url.Action("ForgotPassword", "Account")" class="text-decoration-none cta-forgot-password">Forgot Password?</a>
                         </div>
                         <input type="submit" value="Sign in" class="btn btn-primary w-100" />
                     }

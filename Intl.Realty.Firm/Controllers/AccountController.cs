@@ -24,11 +24,11 @@ namespace Intl.Realty.Firm.Controllers
         private readonly IConfigurationService _configurationService;
         private readonly IMemoryCache _memoryCache;
 
-        public AccountController(ILogger<AccountController> logger, 
-                                IOptions<Jwt> jWT, 
+        public AccountController(ILogger<AccountController> logger,
+                                IOptions<Jwt> jWT,
                                 IUnitOfWork unitOfWork,
                                 IEmailService emailService,
-                                IReCaptchaService reCaptchaService, 
+                                IReCaptchaService reCaptchaService,
                                 IConfigurationService configurationService,
                                 IMemoryCache memoryCache)
         {
@@ -154,7 +154,7 @@ namespace Intl.Realty.Firm.Controllers
                 if (validate.Item2)
                 {
                     var permissions = await _unitOfWork.Permission.GetPermissionsByRoleId(1);
-                    var permissionStringList = permissions.Select(x=>x.Description).ToList();
+                    var permissionStringList = permissions.Select(x => x.Description).ToList();
                     var token = JWTToken.GenerateJwtToken(validate.Item1, _jWT.ToString()!, permissionStringList!);
 
                     Response.Cookies.Append("JWT", token, new CookieOptions
@@ -201,30 +201,30 @@ namespace Intl.Realty.Firm.Controllers
             try
             {
                 model.AccountMode = MODE.RESET;
-                if (ModelState["ResetPasswordViewModel.Username"].Errors.Any())
+                if (ModelState["ResetPasswordViewModel.Username"]!.Errors.Any())
                 {
                     ModelState.ClearValidationState(nameof(model.Username));
                     ModelState.ClearValidationState(nameof(model.Password));
                     return View("Login", model);
                 }
 
-                //ModelState.Clear();
-                //var user = await _unitOfWork.User.GetUserByUserName(model.Username);
-                //if (user is null)
-                //{
-                //    ModelState.AddModelError(nameof(model.ResetPasswordViewModel.Username), "Email did not exist");
-                //}
-                //else
-                //{
-                //    var resetLink = CreateResetPasswordTokenRequest(model.ResetPasswordViewModel);
-                //    if (!string.IsNullOrEmpty(resetLink))
-                //    {
-                //        await CreateResetPasswordEmailRequest(user, resetLink);
-                //        model.AccountMode = MODE.RESET_REQUEST;
-                //    }
-                //    else
-                //        ModelState.AddModelError("ResetPasswordViewModel.Username", "Reset Password email request already sent");
-                //}
+                ModelState.Clear();
+                var user = await _unitOfWork.User.GetAsync(x => x.Email == model.Username);
+                if (user is null)
+                {
+                    ModelState.AddModelError(nameof(model.ResetPasswordViewModel.Username), "Email did not exist");
+                }
+                else
+                {
+                    var resetLink = CreateResetPasswordTokenRequest(model.ResetPasswordViewModel);
+                    if (!string.IsNullOrEmpty(resetLink))
+                    {
+                        await CreateResetPasswordEmailRequest(user, resetLink);
+                        model.AccountMode = MODE.RESET_REQUEST;
+                    }
+                    else
+                        ModelState.AddModelError("ResetPasswordViewModel.Username", "Reset Password email request already sent");
+                }
             }
             catch (Exception ex)
             {
@@ -232,6 +232,7 @@ namespace Intl.Realty.Firm.Controllers
             }
 
             return View("Login", model);
+
         }
         public async Task<bool> ResetPassword(User user, string resetLink)
         {
@@ -265,7 +266,7 @@ namespace Intl.Realty.Firm.Controllers
                 return (new(), false);
             }
 
-            var user = await _unitOfWork.User.GetAsync(x=>x.Email == model.Username);
+            var user = await _unitOfWork.User.GetAsync(x => x.Email == model.Username);
             if (user == null)
             {
                 ModelState.AddModelError(nameof(model.Username), "Invalid Email");
@@ -285,6 +286,34 @@ namespace Intl.Realty.Firm.Controllers
                 return (new(), false);
             }
             return (user, true);
+        }
+        private async Task CreateResetPasswordEmailRequest(User user, string resetLink)
+        {
+            var template = EmailTemplate.UserResetPasswordTemplate(user, resetLink);
+            var mailRequest = new MailRequest
+            {
+                ToEmail = user.Email,
+                Subject = "do not reply",
+                Body = template
+            };
+            await _emailService.SendEmailAsync(mailRequest);
+        }
+
+        private string CreateResetPasswordTokenRequest(ResetPasswordViewModel viewModel)
+        {
+            string callBack = string.Empty;
+            var userHash = viewModel.Username.GetHashCode();
+            if (!_memoryCache.TryGetValue(userHash, out _))
+            {
+                _memoryCache.Set<string>(userHash, viewModel.Username, TimeSpan.FromMinutes(20));
+
+                callBack = Url.Action("Index", "ResetPassword",
+                    new
+                    {
+                        rt = userHash,
+                    }, protocol: Request.Scheme);
+            }
+            return callBack;
         }
     }
 }

@@ -60,105 +60,112 @@
         <div class="col-md-8 d-flex align-items-center justify-content-center right-part">
             <div class="d-flex flex-column w-75 px-5">
                 <div class="w-10 mb-2">
-                    <img src="~/files/img/logo-intlrealtyfirm.png" alt="FASP IS Logo" class="img-fluid" />
+                    <img src="~/files/img/logo-irf-default.jpg" alt="INTLRealtyLogo" class="img-fluid" />
                 </div>
                 @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "signUpForm" }))
                 {
-                <div class="w-100">
-                    <div class="tab">
-                        <div class="mb-4">
-                            <span class="small text-blue fw-bolder">STEP 1 of 3</span>
-                            <h5 class="fw-bolder mb-0">About You</h5>
+                    <div class="w-100">
+                        <div class="tab">
+                            <div class="mb-4">
+                                <span class="small text-blue fw-bolder">STEP 1 of 3</span>
+                                <h5 class="fw-bolder mb-0">About You</h5>
+                            </div>
+                            <label class="fw-bolder">Full Name</label>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.FirstName,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "firstName",
+                                                 @name = "firstName",
+                                                 @placeholder = "First Name"
+                                             })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.MiddleName,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "middleName",
+                                                 @name = "middleName",
+                                                 @placeholder = "Middle Name (Optional)"
+                                             })
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.LastName,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "lastName",
+                                                 @name = "lastName",
+                                                 @placeholder = "Last Name"
+                                             })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.Suffix,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "suffix",
+                                                 @name = "suffix",
+                                                 @placeholder = "Suffix (Optional)"
+                                             })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="fw-bolder">Birth Date</label>
+                                    @Html.EditorFor(m => m.BirthDate, "{0:yyyy-MM-dd}",
+                                             new
+                                             {
+                                                 htmlAttributes =
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "birthDate",
+                                                 @type = "Date"
+                                             }
+                                             })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-bolder">Contact Number</label>
+                                    @Html.TextBoxFor(m => m.ContactNumber,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "contactNumber",
+                                                 @name = "contactNumber",
+                                                 @placeholder = "(+63) 999 999 9999"
+                                             })
+                                </div>
+                            </div>
                         </div>
-                        <label class="fw-bolder">Full Name</label>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.FirstName, 
-                                            new 
-                                                { 
-                                                    @class = "form-control", 
-                                                    @id = "firstName", 
-                                                    @name = "firstName", 
-                                                    @placeholder = "First Name" 
-                                                })
-                            </div>
-                            <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.MiddleName, 
-                                            new 
-                                                { 
-                                                    @class = "form-control", 
-                                                    @id = "middleName", 
-                                                    @name = "middleName", 
-                                                    @placeholder = "Middle Name (Optional)" 
-                                                })
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.LastName, 
-                                            new 
-                                                { 
-                                                    @class = "form-control", 
-                                                    @id = "lastName", 
-                                                    @name = "lastName", 
-                                                    @placeholder = "Last Name" 
-                                                })
-                            </div>
-                            <div class="col-md-6">
-                                @Html.TextBoxFor(m => m.Suffix, 
-                                                new { 
-                                                        @class = "form-control", 
-                                                        @id = "suffix", 
-                                                        @name = "suffix", 
-                                                        @placeholder = "Suffix (Optional)" 
-                                                    })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="fw-bolder">Birth Date</label>
-                                @Html.EditorFor(m => m.BirthDate, "{0:yyyy-MM-dd}", 
-                                                    new 
-                                                        { htmlAttributes = 
-                                                            new { 
-                                                                    @class = "form-control", 
-                                                                    @id = "birthDate", 
-                                                                    @type = "Date" 
-                                                                } 
-                                                        })
-                            </div>
-                            <div class="col-md-6">
-                                <label class="fw-bolder">Contact Number</label>
-                                @Html.TextBoxFor(m => m.ContactNumber, 
-                                                    new { 
-                                                            @class = "form-control", 
-                                                            @id = "contactNumber", 
-                                                            @name = "contactNumber", 
-                                                            @placeholder = "(+63) 999 999 9999" 
-                                                        })
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="tab">
-                        <div class="mb-4">
-                            <span class="small text-blue fw-bolder">STEP 2 of 3</span>
-                            <h5 class="fw-bolder mb-0">Employment Details</h5>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="fw-bolder">Date of Employment</label>
-                                @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}", 
-                                    new { htmlAttributes = 
-                                        new 
-                                            { 
-                                                @class = "form-control",
-                                                @id = "employmentDate", 
-                                                @type = "Date" } 
-                                            })
+                        <div class="tab">
+                            <div class="mb-4">
+                                <span class="small text-blue fw-bolder">STEP 2 of 3</span>
+                                <h5 class="fw-bolder mb-0">Employment Details</h5>
                             </div>
-                            <div class="col-md-6">
-                                <label class="fw-bolder">Employment Status</label>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="fw-bolder">Date of Employment</label>
+                                    @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}",
+                                             new
+                                             {
+                                                 htmlAttributes =
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "employmentDate",
+                                                 @type = "Date"
+                                             }
+                                             })
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-bolder">Employment Status</label>
                                     @Html.DropDownList("EmploymentStatusDDL", Model.EmploymentStatusIEnum, "Select Employment Status...",
                                              new
                                              {
@@ -170,11 +177,11 @@
                                     {
                                         @Html.ValidationMessageFor(m => m.EmploymentStatusId, "", new { @class = "error" })
                                     }
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="fw-bolder">System Role</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="fw-bolder">System Role</label>
                                     @Html.DropDownList("RoleDDL", Model.RoleIEnum, "Select Role...",
                                              new
                                              {
@@ -186,199 +193,192 @@
                                     {
                                         @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "error" })
                                     }
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="mb-4">
-                            <span class="small text-blue fw-bolder">STEP 3 of 3</span>
-                            <h5 class="fw-bolder mb-0">User Account Info</h5>
-                        </div>
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <img src="~/files/img/avatar-blank.png" class="w-10 rounded-circle mt-1" id="avatar" />
-                            <div class="d-flex flex-column gap-1">
-                                <span class="fw-bolder">Profile Picture</span>
-                                <span class="small text-secondary">Size: 170x170 px. Your face must occupy 80% of the circle.</span>
-                                <button class="btn btn-secondary w-50 d-flex align-items-center justify-content-around" id="btnUploadAvatar">Upload Photo <i data-feather="upload" class="w-10"></i></button>
-                                <input type="file" id="uploadAvatar" class="d-none" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label class="fw-bolder">Email Address</label>
-                                @Html.TextBoxFor(m => m.EmailAddress, 
-                                                    new { @class = "form-control", 
-                                                            @id = "emailAddress",
-                                                            @name = "emailAddress", 
-                                                            @placeholder = "example@domain.com", 
-                                                            @type = "email" 
-                                                        }
-                                                   )
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label class="fw-bolder">Create Password</label>
-                                @Html.TextBoxFor(m => m.CreatePassword, 
-                                                    new { @class = "form-control", 
-                                                            @id = "createPassword", 
-                                                            @name = "createPassword", 
-                                                            @type = "password" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="fw-bolder">Confirm Password</label>
-                                @Html.TextBoxFor(m => m.ConfirmPassword, 
-                                                    new { @class = "form-control", 
-                                                            @id = "confirmPassword", 
-                                                            @name = "confirmPassword", 
-                                                            @type = "password" 
-                                                        }
-                                                    )
-                            </div>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="togglePassword">
-                            <label class="form-check-label">
-                                Show Password
-                            </label>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <div class="mb-4">
-                            <h5 class="fw-bolder mb-0">Summary</h5>
-                            <span class="small">Kindly double check your information before signing up</span>
-                        </div>
-                        
-                        <div class="row overflow-auto" style="max-height:55vh;">
-                            <div class="col-md-12">
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <span class="text-blue fw-bolder">Personal Information</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            First Name
-                                        </label>
-                                            <span class="fw-bolder" id="summaryFirstName"></span>
-                                    </div>
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Middle Name
-                                        </label>
-                                        <span class="fw-bolder" id="summaryMiddleName"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Last Name
-                                        </label>
-                                        <span class="fw-bolder" id="summaryLastName"></span>
-                                    </div>
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Suffix
-                                        </label>
-                                        <span class="fw-bolder" id="summarySuffix"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Date of Birth
-                                        </label>
-                                            <span class="fw-bolder" id="summaryBirthDate"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Email Address
-                                        </label>
-                                        <span class="fw-bolder" id="summaryEmailAddress"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Contact Number
-                                        </label>
-                                        <span class="fw-bolder" id="summaryContactNumber"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <span class="text-blue fw-bolder">Role Information</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Office Name
-                                        </label>
-                                        <span class="fw-bolder" id="summaryOfficeName"></span>
-                                    </div>
-                                    <div class="col-md-6 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Division Name
-                                        </label>
-                                        <span class="fw-bolder" id="summaryDivisionName"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Position
-                                        </label>
-                                        <span class="fw-bolder" id="summaryPosition"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Start Date
-                                        </label>
-                                        <span class="fw-bolder" id="summaryEmploymentDate"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            Status of Employment
-                                        </label>
-                                        <span class="fw-bolder" id="summaryEmploymentStatus"></span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12 d-flex flex-column">
-                                        <label class="text-secondary small">
-                                            PCM Role
-                                        </label>
-                                        <span class="fw-bolder" id="summarySystemRole"></span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab">
+                            <div class="mb-4">
+                                <span class="small text-blue fw-bolder">STEP 3 of 3</span>
+                                <h5 class="fw-bolder mb-0">User Account Info</h5>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <img src="~/files/img/avatar-blank.png" class="w-10 rounded-circle mt-1" id="avatar" />
+                                <div class="d-flex flex-column gap-1">
+                                    <span class="fw-bolder">Profile Picture</span>
+                                    <span class="small text-secondary">Size: 170x170 px. Your face must occupy 80% of the circle.</span>
+                                    <button class="btn btn-secondary w-50 d-flex align-items-center justify-content-around" id="btnUploadAvatar">Upload Photo <i data-feather="upload" class="w-10"></i></button>
+                                    <input type="file" id="uploadAvatar" class="d-none" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="fw-bolder">Email Address</label>
+                                    @Html.TextBoxFor(m => m.EmailAddress,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "emailAddress",
+                                                 @name = "emailAddress",
+                                                 @placeholder = "example@domain.com",
+                                                 @type = "email"
+                                             }
+                                             )
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="fw-bolder">Create Password</label>
+                                    @Html.TextBoxFor(m => m.CreatePassword,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "createPassword",
+                                                 @name = "createPassword",
+                                                 @type = "password"
+                                             })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="fw-bolder">Confirm Password</label>
+                                    @Html.TextBoxFor(m => m.ConfirmPassword,
+                                             new
+                                             {
+                                                 @class = "form-control",
+                                                 @id = "confirmPassword",
+                                                 @name = "confirmPassword",
+                                                 @type = "password"
+                                             }
+                                             )
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="togglePassword">
+                                <label class="form-check-label">
+                                    Show Password
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tab">
+                            <div class="mb-4">
+                                <h5 class="fw-bolder mb-0">Summary</h5>
+                                <span class="small">Kindly double check your information before signing up</span>
+                            </div>
 
-                        <div class="row mt-2">
-                            <span class="small text-secondary">
+                            <div class="row overflow-auto" style="max-height:55vh;">
+                                <div class="col-md-12">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <span class="text-blue fw-bolder">Personal Information</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                First Name
+                                            </label>
+                                            <span class="fw-bolder" id="summaryFirstName"></span>
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Middle Name
+                                            </label>
+                                            <span class="fw-bolder" id="summaryMiddleName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Last Name
+                                            </label>
+                                            <span class="fw-bolder" id="summaryLastName"></span>
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Suffix
+                                            </label>
+                                            <span class="fw-bolder" id="summarySuffix"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Date of Birth
+                                            </label>
+                                            <span class="fw-bolder" id="summaryBirthDate"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Email Address
+                                            </label>
+                                            <span class="fw-bolder" id="summaryEmailAddress"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Contact Number
+                                            </label>
+                                            <span class="fw-bolder" id="summaryContactNumber"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <span class="text-blue fw-bolder">Role Information</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Start Date
+                                            </label>
+                                            <span class="fw-bolder" id="summaryEmploymentDate"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Status of Employment
+                                            </label>
+                                            <span class="fw-bolder" id="summaryEmploymentStatus"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                Department
+                                            </label>
+                                            <span class="fw-bolder" id="summaryDepartment"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12 d-flex flex-column">
+                                            <label class="text-secondary small">
+                                                System Role
+                                            </label>
+                                            <span class="fw-bolder" id="summarySystemRole"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <span class="small text-secondary">
                                     By creating an account, you agree to our <a href="#" class="link-secondary">User Agreement</a> and have read and acknowledged the <a href="#" class="link-secondary">Data Privacy Statement</a>.
-                            </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-12 d-flex justify-content-between">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary w-25 btnCancel">Cancel</button>
+                                <button type="button" id="prevBtn" class="btn btn-secondary w-25" onclick="nextPrev(-1)">Back</button>
+                                <button type="button" id="nextBtn" class="btn btn-primary w-25 btnContinue" onclick="nextPrev(1)">Continue</button>
+                                <button type="submit" id="submitBtn" class="btn btn-primary w-25 btnSubmit">Sign Up</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-md-12 d-flex justify-content-between">
-                            <button type="button" id="cancelBtn" class="btn btn-secondary w-25 btnCancel">Cancel</button>
-                            <button type="button" id="prevBtn" class="btn btn-secondary w-25" onclick="nextPrev(-1)">Back</button>
-                            <button type="button" id="nextBtn" class="btn btn-primary w-25 btnContinue" onclick="nextPrev(1)">Continue</button>
-                            <button type="submit" id="submitBtn" class="btn btn-primary w-25 btnSubmit">Sign Up</button>
-                        </div>
-                    </div>
-                </div>
                 }
             </div>
         </div>
@@ -400,9 +400,7 @@
         </div>
     </div>
 </container>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         feather.replace();

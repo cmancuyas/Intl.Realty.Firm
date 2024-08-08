@@ -180,9 +180,13 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
-
+            AccountViewModel viewModel = new();
+            viewModel.ResetPasswordViewModel = new();
+            Activity.Log(ActivityType.LOGOUT, typeof(AccountController), viewModel);
+            Session.Clear();
+            return View("Login", viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -192,10 +196,42 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ForgotPassword(User model)
+        public async Task<IActionResult> ForgotPassword(AccountViewModel model)
         {
-            User user = new User();
-            return PartialView("~/Views/Account/ForgotPasswordPartialView");
+            try
+            {
+                model.AccountMode = MODE.RESET;
+                if (ModelState["ResetPasswordViewModel.Username"].Errors.Any())
+                {
+                    ModelState.ClearValidationState(nameof(model.Username));
+                    ModelState.ClearValidationState(nameof(model.Password));
+                    return View("Login", model);
+                }
+
+                //ModelState.Clear();
+                //var user = await _unitOfWork.User.GetUserByUserName(model.Username);
+                //if (user is null)
+                //{
+                //    ModelState.AddModelError(nameof(model.ResetPasswordViewModel.Username), "Email did not exist");
+                //}
+                //else
+                //{
+                //    var resetLink = CreateResetPasswordTokenRequest(model.ResetPasswordViewModel);
+                //    if (!string.IsNullOrEmpty(resetLink))
+                //    {
+                //        await CreateResetPasswordEmailRequest(user, resetLink);
+                //        model.AccountMode = MODE.RESET_REQUEST;
+                //    }
+                //    else
+                //        ModelState.AddModelError("ResetPasswordViewModel.Username", "Reset Password email request already sent");
+                //}
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+            }
+
+            return View("Login", model);
         }
         public async Task<bool> ResetPassword(User user, string resetLink)
         {

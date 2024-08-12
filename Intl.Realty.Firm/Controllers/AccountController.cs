@@ -213,13 +213,13 @@ namespace Intl.Realty.Firm.Controllers
             }
             return View(viewModel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             AccountViewModel viewModel = new();
             viewModel.ResetPasswordViewModel = new();
-            Activity.Log(ActivityType.LOGOUT, typeof(AccountController), viewModel);
+            //Activity.Log(ActivityType.LOGOUT, typeof(AccountController), viewModel);
             Session.Clear();
             return View("Login", viewModel);
         }

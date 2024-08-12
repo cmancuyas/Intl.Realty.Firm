@@ -16,6 +16,7 @@ namespace Intl.Realty.Firm.Models.Models
         public int UserId { get; set; }
         public string FileName { get; set; } = string.Empty;
         public string FullPath { get; set; } = string.Empty;
+        public string OriginalFileName { get; set; } = string.Empty;
         public string Directory { get; set; } = string.Empty;
         public string FileExtension { get; set; } = string.Empty;
         public string FileSize { get; set; } = string.Empty;

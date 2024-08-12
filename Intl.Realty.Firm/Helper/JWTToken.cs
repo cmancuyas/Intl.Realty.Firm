@@ -33,8 +33,8 @@ namespace Intl.Realty.Firm.Helper
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = "FapisIssuer.com",
-                Audience = "FapisAudience.com"
+                Issuer = "INTLRealtyFirmIssuer.com",
+                Audience = "INTLRealtyFirmAudience.com"
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);

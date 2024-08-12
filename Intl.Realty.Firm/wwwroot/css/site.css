@@ -39,6 +39,14 @@ select:focus, select:focus-visible {
     box-shadow: none !important;
 }
 
+.d-none {
+    display: none !important;
+}
+
+.b-none {
+    border: none !important;
+}
+
 /*custom styling*/
 .pos-absolute {
     position: absolute;
@@ -415,6 +423,12 @@ footer {
     color: #203d57;
 }
 
+
+/* FORGOT PASSWORD */
+.modal-forgot-password {
+    top: 10%;
+}
+
 .forgot-pass-modal-content {
     -webkit-border-radius: 15px !important;
     -moz-border-radius: 15px !important;
@@ -424,6 +438,7 @@ footer {
 
 .forgot-pass-modal-header {
     border-bottom: none;
+    padding-top: 0;
 }
 
 .forgot-pass-modal-footer {
@@ -929,18 +944,37 @@ input.select2-search__field {
     color: #203d57;
 }
 
+.page-registration .form-control,
+.page-registration .form-select,
 .page-login .form-control {
-    height: 60px;
-    border-radius: 0;
-    border: 0;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid #EEE;
 }
 
+.page-registration label,
 .page-login label {
     margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 500;
 }
 
+.page-registration .form-check-label {
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.page-login .login-logo {
+    width: 250px;
+    padding: 30px;
+    border-radius: 30px;
+    background: #FFF;
+}
+
+.page-registration .input-group,
 .page-login .input-group {
-    border: 1px solid #CCC;
+    border: 1px solid transparent;
 }
     .page-login .input-group #password {
         padding-right: 64px;
@@ -968,4 +1002,19 @@ input.select2-search__field {
 }
 .form-bg-gray {
     background-color: #f3f3f3;
+}
+
+.page-registration .breadcrumbs {
+    text-transform: uppercase;
+    font-size: 10px;
+    color: red;
+}
+.page-registration .cta-controls {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.page-registration .form-user-agreement {
+    margin-right: 30%;
 }

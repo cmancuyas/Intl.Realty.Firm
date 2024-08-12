@@ -8,7 +8,7 @@
 }
 
 <container>
-    <div class="row m-0 p-0">
+    <div class="row m-0 p-0 page-registration">
         <div class="col-md-4 min-vh-100 d-flex flex-column align-items-center justify-content-center left-part">
             <div class="d-flex flex-column">
                 <div class="step my-4">
@@ -58,20 +58,20 @@
             </div>
         </div>
         <div class="col-md-8 d-flex align-items-center justify-content-center right-part">
-            <div class="d-flex flex-column w-75 px-5">
-                <div class="w-10 mb-2">
+            <div class="d-flex flex-column w-75">
+                @* <div class="w-10 mb-2">
                     <img src="~/files/img/logo-irf-default.jpg" alt="INTLRealtyLogo" class="img-fluid" />
-                </div>
+                </div> *@
                 @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "signUpForm" }))
                 {
                     <div class="w-100">
                         <div class="tab">
                             <div class="mb-4">
-                                <span class="small text-blue fw-bolder">STEP 1 of 3</span>
-                                <h5 class="fw-bolder mb-0">About You</h5>
+                                <span class="small text-blue fw-bolder breadcrumbs">STEP 1 of 3</span>
+                                <h5 class="fw-bolder mb-0">Personal Details</h5>
                             </div>
                             <label class="fw-bolder">Full Name</label>
-                            <div class="row mb-3">
+                            <div class="row mb-4">
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.FirstName,
                                              new
@@ -93,7 +93,7 @@
                                              })
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-5">
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.LastName,
                                              new
@@ -146,10 +146,10 @@
 
                         <div class="tab">
                             <div class="mb-4">
-                                <span class="small text-blue fw-bolder">STEP 2 of 3</span>
+                                <span class="small text-blue fw-bolder breadcrumbs">STEP 2 of 3</span>
                                 <h5 class="fw-bolder mb-0">Employment Details</h5>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 mb-4">
                                 <div class="col-md-6">
                                     <label class="fw-bolder">Date of Employment</label>
                                     @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}",
@@ -198,7 +198,7 @@
                         </div>
                         <div class="tab">
                             <div class="mb-4">
-                                <span class="small text-blue fw-bolder">STEP 3 of 3</span>
+                                <span class="small text-blue fw-bolder breadcrumbs">STEP 3 of 3</span>
                                 <h5 class="fw-bolder mb-0">User Account Info</h5>
                             </div>
                             <div class="d-flex align-items-center gap-3 mb-3">
@@ -252,12 +252,13 @@
                                              )
                                 </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="togglePassword">
-                                <label class="form-check-label">
+                            <div class="form-check mt-2">
+                                <label class="form-check-label" for="togglePassword">
+                                    <input class="form-check-input" type="checkbox" value="" id="togglePassword">
                                     Show Password
                                 </label>
                             </div>
+
                         </div>
                         <div class="tab">
                             <div class="mb-4">
@@ -364,18 +365,23 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
-                                <span class="small text-secondary">
-                                    By creating an account, you agree to our <a href="#" class="link-secondary">User Agreement</a> and have read and acknowledged the <a href="#" class="link-secondary">Data Privacy Statement</a>.
-                                </span>
+                            <div class="form-user-agreement row mt-5">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="userAgreement">
+                                        <input class="form-check-input" type="checkbox" value="" id="userAgreement">
+                                        <span class="small text-secondary">
+                                            By creating an account, you agree to our <a href="#" class="link-secondary">User Agreement</a> and have read and acknowledged the <a href="#" class="link-secondary">Data Privacy Statement</a>.
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="row mt-5">
-                            <div class="col-md-12 d-flex justify-content-between">
-                                <button type="button" id="cancelBtn" class="btn btn-secondary w-25 btnCancel">Cancel</button>
-                                <button type="button" id="prevBtn" class="btn btn-secondary w-25" onclick="nextPrev(-1)">Back</button>
-                                <button type="button" id="nextBtn" class="btn btn-primary w-25 btnContinue" onclick="nextPrev(1)">Continue</button>
-                                <button type="submit" id="submitBtn" class="btn btn-primary w-25 btnSubmit">Sign Up</button>
+                            <div class="col-md-12 cta-controls">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary w-25 btnCancel ms-3">Cancel</button>
+                                <button type="button" id="prevBtn" class="btn btn-secondary w-25 ms-3" onclick="nextPrev(-1)">Back</button>
+                                <button type="button" id="nextBtn" class="btn btn-primary w-25 btnContinue ms-3" onclick="nextPrev(1)">Continue</button>
+                                <button type="submit" id="submitBtn" class="btn btn-primary w-25 btnSubmit ms-3">Sign Up</button>
                             </div>
                         </div>
                     </div>

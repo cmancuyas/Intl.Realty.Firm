@@ -1,5 +1,4 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Intl.Realty.Firm.Repository.IRepository
 {

@@ -13,15 +13,6 @@ namespace Intl.Realty.Firm.Repository
             _db = db;
         }
 
-        public async Task<List<Permission>> GetPermissionsByRoleId(int roleId)
-        {
-            var permissions = await _db.RolePermissions
-                                    .Where(x => x.RoleId == roleId)
-                                    .Select(x => x.Permission)
-                                    .ToListAsync();
-            return permissions!;
-        }
-
         public Task UpdateAsync(Permission model)
         {
             _db.Permissions.Update(model);

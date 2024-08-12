@@ -1,7 +1,7 @@
 ﻿using Intl.Realty.Firm.DataAccess;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Repository.IRepository;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Intl.Realty.Firm.Repository
 {
@@ -12,7 +12,15 @@ namespace Intl.Realty.Firm.Repository
         {
             _db = db;
         }
-
+        public async Task<List<Permission>> GetRolePermissionsByRoleId(int roleId)
+        {
+            var rolePermissions = await _db.RolePermissions
+                                    .Include(x => x.Permission)
+                                    .Where(x => x.RoleId == roleId)
+                                    .Select(x => x.Permission)
+                                    .ToListAsync();
+            return rolePermissions!;
+        }
         public Task UpdateAsync(RolePermission model)
         {
             _db.RolePermissions.Update(model);

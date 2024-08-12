@@ -19,8 +19,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.AccountVM
         [Required(ErrorMessage = "Confirm Password is required")]
         [Compare(nameof(Password), ErrorMessage = "Password doesn't match")]
         public string? ConfirmPassword { get; set; }
-        public string SetUsername { get; set; } = "busybee_admin";
-        public string SetPassword { get; set; } = "busybeeadmin1234";
+        public string SetUsername { get; set; } 
+        public string SetPassword { get; set; }
 
         public MODE AccountMode { get; set; }
 

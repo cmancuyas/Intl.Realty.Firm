@@ -164,7 +164,7 @@
                                              }
                                              })
                                 </div>
-                                <div class="col-md-6">
+                @*                 <div class="col-md-6">
                                     <label class="fw-bolder">Employment Status</label>
                                     @Html.DropDownList("EmploymentStatusDDL", Model.EmploymentStatusIEnum, "Select Employment Status...",
                                              new
@@ -177,12 +177,12 @@
                                     {
                                         @Html.ValidationMessageFor(m => m.EmploymentStatusId, "", new { @class = "error" })
                                     }
-                                </div>
+                                </div> *@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="fw-bolder">System Role</label>
-                                    @Html.DropDownList("RoleDDL", Model.RoleIEnum, "Select Role...",
+                                    @Html.DropDownList("SystemRoleDDL", Model.RoleIEnum, "Select Role...",
                                              new
                                              {
                                                  @class = "form-select",
@@ -190,6 +190,22 @@
                                              })
 
                                     @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.RoleId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                                    {
+                                        @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "error" })
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="fw-bolder">Department</label>
+                                    @Html.DropDownList("DepartmentDDL", Model.DepartmentIEnum, "Select Department...",
+                                             new
+                                             {
+                                                 @class = "form-select",
+                                                 @required = "required"
+                                             })
+
+                                    @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DepartmentId)]?.Errors.FirstOrDefault()?.ErrorMessage))
                                     {
                                         @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "error" })
                                     }
@@ -338,14 +354,14 @@
                                             <span class="fw-bolder" id="summaryEmploymentDate"></span>
                                         </div>
                                     </div>
-                                    <div class="row mb-2">
+        @*                             <div class="row mb-2">
                                         <div class="col-md-12 d-flex flex-column">
                                             <label class="text-secondary small">
                                                 Status of Employment
                                             </label>
                                             <span class="fw-bolder" id="summaryEmploymentStatus"></span>
                                         </div>
-                                    </div>
+                                    </div> *@
                                     <div class="row mb-2">
                                         <div class="col-md-12 d-flex flex-column">
                                             <label class="text-secondary small">
@@ -410,7 +426,7 @@
 <script>
     $(document).ready(function () {
         feather.replace();
-
+        debugger;
         $('#togglePassword').click(function () {
             var type = $(this).is(':checked') ? 'text' : 'password';
 
@@ -451,7 +467,7 @@
             $("#summarySuffix").text($("#suffix").val() || "N/A");
             $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
             $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
-            $("#summaryDesignation").text($("#designation").val() || "N/A");
+            $("#summaryDepartment").text($("#department").val() || "N/A");
 
             function formatAndUpdateSummary(dateElementId, summaryElementId) {
                 var dateValue = $(dateElementId).val();
@@ -477,15 +493,12 @@
             }
 
             updateDropdownSummary("#systemRole", "#summarySystemRole");
-            updateDropdownSummary("#officeName", "#summaryOfficeName");
-            updateDropdownSummary("#divisionName", "#summaryDivisionName");
-            updateDropdownSummary("#position", "#summaryPosition");
-            updateDropdownSummary("#employmentStatus", "#summaryEmploymentStatus");
+            updateDropdownSummary("#department", "#summaryDepartment");
         }
 
         updateSummary();
 
-        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber, #officeName, #divisionName, #position, #designation, #employmentDate, #employmentStatus, #systemRole").change(function () {
+        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber,#department, #employmentDate, #employmentStatus, #systemRole").change(function () {
             updateSummary();
         });
 

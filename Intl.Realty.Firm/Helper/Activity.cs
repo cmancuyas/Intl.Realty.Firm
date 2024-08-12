@@ -64,6 +64,7 @@ namespace Intl.Realty.Firm.Helper
         {
             var currentModules = Attribute.GetCustomAttributes(tpe);
             var currentModule = currentModules.OfType<Module>().FirstOrDefault();
+
             var moduleRecord = _moduleService.GetAllAsync().Result;
             return moduleRecord.FirstOrDefault(f => f.Name.Equals(currentModule.Name));
         }

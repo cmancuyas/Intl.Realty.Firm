@@ -7,10 +7,6 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "library": "popper.js@2.11.8",
-      "destination": "wwwroot/lib/popper.js/"
-    },
-    {
       "library": "bootstrap@5.3.3",
       "destination": "wwwroot/lib/bootstrap/"
     },
@@ -33,6 +29,10 @@
     {
       "library": "bootstrap-popup@1.0.1",
       "destination": "wwwroot/lib/bootstrap-popup/"
+    },
+    {
+      "library": "popper.js@2.11.8",
+      "destination": "wwwroot/lib/popper.js/"
     }
   ]
 }

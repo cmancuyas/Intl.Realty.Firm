@@ -935,9 +935,10 @@ input.select2-search__field {
 
 /* LOGIN */
 .page-login .logo-login {
-    padding: 30px;
+    padding: 20px;
     background: white;
     border-radius: 10%;
+    width: 30%;
 }
 
 .page-login h3 {

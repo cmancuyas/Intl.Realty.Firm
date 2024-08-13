@@ -183,6 +183,7 @@
                                 <div class="col-md-12">
                                     <label class="fw-bolder">System Role</label>
                                     @Html.DropDownList("SystemRoleDDL", Model.RoleIEnum, "Select Role...",
+                                             
                                              new
                                              {
                                                  @class = "form-select",
@@ -425,8 +426,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
+
         feather.replace();
-        debugger;
         $('#togglePassword').click(function () {
             var type = $(this).is(':checked') ? 'text' : 'password';
 
@@ -460,47 +461,15 @@
             }
         });
 
-        function updateSummary() {
-            $("#summaryFirstName").text($("#firstName").val() || "N/A");
-            $("#summaryMiddleName").text($("#middleName").val() || "N/A");
-            $("#summaryLastName").text($("#lastName").val() || "N/A");
-            $("#summarySuffix").text($("#suffix").val() || "N/A");
-            $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
-            $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
-            $("#summaryDepartment").text($("#department").val() || "N/A");
 
-            function formatAndUpdateSummary(dateElementId, summaryElementId) {
-                var dateValue = $(dateElementId).val();
-
-                if (dateValue && dateValue.trim() !== "") {
-                    var date = new Date(dateValue);
-
-                    var formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-                    $(summaryElementId).text(formattedDate);
-                } else {
-                    $(summaryElementId).text("N/A");
-                }
-            }
-
-            formatAndUpdateSummary("#birthDate", "#summaryBirthDate");
-            formatAndUpdateSummary("#employmentDate", "#summaryEmploymentDate");
-
-            function updateDropdownSummary(dropdownSelector, summarySelector) {
-                var dropdownValue = $(dropdownSelector).val();
-                var dropdownText = $(dropdownSelector + " option:selected").text();
-                $(summarySelector).text(dropdownValue && dropdownValue.trim() !== "" ? dropdownText : "N/A");
-            }
-
-            updateDropdownSummary("#systemRole", "#summarySystemRole");
-            updateDropdownSummary("#department", "#summaryDepartment");
-        }
 
         updateSummary();
 
-        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber,#department, #employmentDate, #employmentStatus, #systemRole").change(function () {
+        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber,#DepartmentDDL, #employmentDate, #SystemRoleDDL").change(function () {
             updateSummary();
         });
+
+
 
         $('#signUpForm').submit(function (e) {
             e.preventDefault();
@@ -529,6 +498,44 @@
         // $('#successModal').on('hidden.bs.modal', function () {
         //     window.location.href = '@Url.Action("Login", "Account")';
         // });
+
+        function updateSummary() {
+            // debugger;
+            $("#summaryFirstName").text($("#firstName").val() || "N/A");
+            $("#summaryMiddleName").text($("#middleName").val() || "N/A");
+            $("#summaryLastName").text($("#lastName").val() || "N/A");
+            $("#summarySuffix").text($("#suffix").val() || "N/A");
+            $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
+            $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
+            $("#summaryDepartment").text($("#DepartmentDDL").val() || "N/A");
+            $("#summarySystemRole").text($("#SystemRoleDDL").val() || "N/A");
+
+            function formatAndUpdateSummary(dateElementId, summaryElementId) {
+                var dateValue = $(dateElementId).val();
+
+                if (dateValue && dateValue.trim() !== "") {
+                    var date = new Date(dateValue);
+
+                    var formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                    $(summaryElementId).text(formattedDate);
+                } else {
+                    $(summaryElementId).text("N/A");
+                }
+            }
+
+            formatAndUpdateSummary("#birthDate", "#summaryBirthDate");
+            formatAndUpdateSummary("#employmentDate", "#summaryEmploymentDate");
+
+            function updateDropdownSummary(dropdownSelector, summarySelector) {
+                var dropdownValue = $(dropdownSelector).val();
+                var dropdownText = $(dropdownSelector + " option:selected").text();
+                $(summarySelector).text(dropdownValue && dropdownValue.trim() !== "" ? dropdownText : "N/A");
+            }
+
+            updateDropdownSummary("#SystemRoleDDL", "#summarySystemRole");
+            updateDropdownSummary("#DepartmentDDL", "#summaryDepartment");
+        }
     });
 
     var currentTab = 0;

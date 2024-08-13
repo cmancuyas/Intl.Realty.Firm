@@ -1,4 +1,5 @@
 ﻿using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Service.IServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ namespace Intl.Realty.Firm.Helper
     {
         public static string GenerateJwtToken(User entity, string base64Key, List<string> permissions)
         {
+           
             // TO DO : use entity.RoleId
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -37,6 +39,7 @@ namespace Intl.Realty.Firm.Helper
                 Audience = "INTLRealtyFirmAudience.com"
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
             return tokenHandler.WriteToken(token);
         }
     }

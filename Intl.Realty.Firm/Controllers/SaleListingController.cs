@@ -6,27 +6,37 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class SaleListingController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfigurationService _configurationService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly string _backupFileDirectory = "Uploads\\Documents\\";
         private readonly string _saleListingName = "Sale Listing";
-        private int _userId = 1;
+        private IEnumerable<Claim> _userClaims;
         public SaleListingController(IUnitOfWork unitOfWork,
+                                    IHttpContextAccessor httpContextAccessor,
                                     IConfigurationService configurationService,
                                     IFileHandlerService fileHandlerService)
         {
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
             _configurationService = configurationService;
             _fileHandlerService = fileHandlerService;
+
+            _userClaims = httpContextAccessor.HttpContext.User.Claims;
+
         }
         public async Task<IActionResult> Index()
         {
+
+            //Get values from the current user
+
             List<SaleListing> modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType") as List<SaleListing> ?? throw new ArgumentException();
 
             List<SaleListingViewModel> viewModelList = modelList.ToSaleListingListViewModel();
@@ -57,6 +67,8 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateSaleListingViewModel viewModel)
         {
+            var userId = Convert.ToInt32(_userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
             string transactionTypeName = _saleListingName; // 1 = Sale Listing
             var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName); //Sale Listing
             viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
@@ -69,7 +81,7 @@ namespace Intl.Realty.Firm.Controllers
             {
                 var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
                 createIRFDealModel!.CreatedAt = DateTime.Now;
-                createIRFDealModel.CreatedBy = 1;
+                createIRFDealModel.CreatedBy = userId;
                 createIRFDealModel.IsActive = true;
                 await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
 
@@ -125,6 +137,9 @@ namespace Intl.Realty.Firm.Controllers
                                                     IEnumerable<DocumentType> documentTypeList,
                                                     string uploadPath)
         {
+
+            var userId = Convert.ToInt32(_userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
             var files = fileUploadList.Files;
             int index = 0;
             string updatedUploadPath = string.Empty;
@@ -158,7 +173,7 @@ namespace Intl.Realty.Firm.Controllers
                                     FileSize = fileUpload.Length.ToString(),
                                     IsActive = true,
                                     CreatedAt = DateTime.Now,
-                                    CreatedBy = _userId,
+                                    CreatedBy = userId,
                                     SaleListingId = saleListingModelId,
                                     TransactionTypeId = transactionTypeId,
                                     DocumentTypeId = createFileUploadViewModel.DocumentTypeId ?? 0
@@ -244,6 +259,8 @@ namespace Intl.Realty.Firm.Controllers
 
             if (ModelState.IsValid)
             {
+                var userId = Convert.ToInt32(_userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
                 string transactionTypeName = _saleListingName; // 1 = Sale Listing
                 var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName, tracked:true); //Sale Listing
                 viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
@@ -268,7 +285,7 @@ namespace Intl.Realty.Firm.Controllers
                 saleListingModel.FileUploads = viewModel.FileUploads;
 
                 saleListingModel.IsActive = viewModel.IsActive;
-                saleListingModel.UpdatedBy = _userId;
+                saleListingModel.UpdatedBy = userId;
                 saleListingModel.UpdatedAt = DateTime.Now;
 
                 // Update other properties as needed
@@ -299,6 +316,8 @@ namespace Intl.Realty.Firm.Controllers
 
         private string CreateFilePath(int saleListingId)
         {
+            var userId = Convert.ToInt32(_userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
             var uploadPath = string.Empty;
             var defaultPathFromConfig = _configurationService.GetDefaultUploadPathFromConfig();
             if (defaultPathFromConfig != null)
@@ -309,7 +328,7 @@ namespace Intl.Realty.Firm.Controllers
             {
                 uploadPath = _backupFileDirectory;
             }
-            var userIdPath = _userId.ToString() + "\\";
+            var userIdPath = userId.ToString() + "\\";
 
             uploadPath = Path.Combine(uploadPath, userIdPath + saleListingId + "\\");
 

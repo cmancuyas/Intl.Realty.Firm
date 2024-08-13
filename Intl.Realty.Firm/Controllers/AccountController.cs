@@ -81,6 +81,13 @@ namespace Intl.Realty.Firm.Controllers
                 }
                 //end of reCaptcha verification
 
+                var email = await _unitOfWork.User.GetAsync(x => x.Email == viewModel.EmailAddress);
+                if(email != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Email already exists");
+                    return Json(new { success = false, elementId = "Email Error", message = "Email already exists" });
+                }
+
                 if (ModelState.IsValid)
                 {
                     byte[] salt;
@@ -90,13 +97,13 @@ namespace Intl.Realty.Firm.Controllers
                     string selectedDepartmentId = Request.Form["DepartmentDDL"].ToString();
 
                     viewModel.CreatePassword = hashedPassword;
-                    viewModel.EmploymentStatusId = 1;
+                    viewModel.EmploymentStatusId = 1; // Set 1 = Active during register/signup
                     viewModel.DepartmentId = Convert.ToInt32(selectedDepartmentId);
                     viewModel.RoleId = Convert.ToInt32(selectedRoleId);
 
                     var user = viewModel.ToUserModel();
 
-
+                    
 
                     await _unitOfWork.User.AddAsync(user);
 

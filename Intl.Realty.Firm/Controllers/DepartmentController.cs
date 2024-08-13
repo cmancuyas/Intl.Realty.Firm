@@ -1,21 +1,21 @@
-﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
-using Intl.Realty.Firm.Models.ViewModel;
+﻿using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class DepartmentController : Controller
     {
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
-        public DepartmentController(IUnitOfWork unitOfWork)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DepartmentController(IUnitOfWork unitOfWork,
+                                    IHttpContextAccessor httpContextAccessor
+                                    )
         {
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {
@@ -34,8 +34,10 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = _httpContextAccessor.HttpContext?.User.Claims;
+
                 viewModel.IsActive = true;
-                viewModel.CreatedBy = _userId;
+                viewModel.CreatedBy = Convert.ToInt32(userId);
                 viewModel.CreatedAt = DateTime.UtcNow;
                 var model = viewModel.ToDepartmentModel();
 
@@ -49,6 +51,11 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var userClaims = User.Claims;
+            var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var userId = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
             var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
             if (model == null)
             {
@@ -57,7 +64,7 @@ namespace Intl.Realty.Firm.Controllers
 
             var viewModel = model.ToEditDepartmentViewModel();
 
-            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -67,6 +74,10 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditDepartmentViewModel viewModel)
         {
+            var userClaims = User.Claims;
+            var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var userId = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+
             if (id != viewModel.Id)
             {
                 return NotFound();
@@ -81,7 +92,7 @@ namespace Intl.Realty.Firm.Controllers
                 }
                 model = viewModel.ToDepartmentModel();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
 
                 await _unitOfWork.Department.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });

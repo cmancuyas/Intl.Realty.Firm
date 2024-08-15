@@ -1,4 +1,5 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
+﻿using Intl.Realty.Firm.Helper;
+using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class DocumentTypeController : Controller
     {
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public DocumentTypeController(IUnitOfWork unitOfWork)
         {
@@ -28,10 +28,12 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDocumentTypeViewModel viewModel)
         {
+            var userId = Session.UserId;
+
             if (ModelState.IsValid)
             {
                 viewModel.IsActive = true;
-                viewModel.CreatedBy = _userId;
+                viewModel.CreatedBy = userId;
                 viewModel.CreatedAt = DateTime.UtcNow;
                 var model = viewModel.ToDocumentTypeModel();
 
@@ -45,6 +47,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = Session.UserId;
             var model = await _unitOfWork.DocumentType.GetAsync(x => x.Id == id);
             if (model == null)
             {
@@ -53,7 +56,7 @@ namespace Intl.Realty.Firm.Controllers
 
             var viewModel = model.ToEditDocumentTypeViewModel();
 
-            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -63,6 +66,7 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditDocumentTypeViewModel viewModel)
         {
+            var userId = Session.UserId;
             if (id != viewModel.Id)
             {
                 return NotFound();
@@ -77,7 +81,7 @@ namespace Intl.Realty.Firm.Controllers
                 }
                 model = viewModel.ToDocumentTypeModel();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
 
                 await _unitOfWork.DocumentType.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });

@@ -20,12 +20,12 @@ namespace Intl.Realty.Firm.DataAccess
 
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
         public DbSet<EmploymentStatus> EmploymentStatuses { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }

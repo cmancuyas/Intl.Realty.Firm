@@ -1,0 +1,38 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.CustomerVM
+@model IEnumerable<CustomerViewModel>
+@using System.ComponentModel.DataAnnotations
+@{
+    ViewData["Title"] = "Customer";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+
+<div>
+    <div class="c-content" id="ListPartialContainer">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border m-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div id="DeleteModalContainer"></div>
+    <div id="DeleteMultipleModalContainer"></div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ListPartialContainer').load('/Customer/ListPartialView');
+        });
+        function OpenDeleteModal(id) {
+            $('#DeleteModalContainer').load('/Customer/DeleteModal/' + id, function () {
+                $("#deleteConfirmModal").modal("show");
+            });
+        }
+        function ShowDetails(id) {
+            $('#item-' + id).addClass('c-show-hidden');
+        }
+        function HideDetails(id) {
+            $('#item-' + id).removeClass('c-show-hidden');
+        }
+    </script>
+}

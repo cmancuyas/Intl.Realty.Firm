@@ -1,4 +1,5 @@
-﻿using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Helper;
+using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
 using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
@@ -10,7 +11,6 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class DocumentTypeAssignmentController : Controller
     {
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public DocumentTypeAssignmentController(IUnitOfWork unitOfWork)
         {
@@ -69,6 +69,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = Session.UserId;
             var model = await _unitOfWork.DocumentTypeAssignment.GetAsync(x => x.Id == id);
             if (model == null)
             {
@@ -84,7 +85,7 @@ namespace Intl.Realty.Firm.Controllers
             viewModel.TransactionTypeList = transactionTypeIEnum.ToList();
             viewModel.DocumentTypeList = documentTypeIEnum.ToList();
 
-            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -94,6 +95,7 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditDocumentTypeAssignmentViewModel viewModel)
         {
+            var userId = Session.UserId;
             if (id != viewModel.Id)
             {
                 return NotFound();
@@ -108,7 +110,7 @@ namespace Intl.Realty.Firm.Controllers
                 }
                 model = viewModel.ToDocumentTypeAssignment();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
                 await _unitOfWork.DocumentTypeAssignment.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }

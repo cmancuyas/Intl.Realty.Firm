@@ -7,8 +7,8 @@
         ITransactionTypeRepository TransactionType { get; }
         IDocumentTypeRepository DocumentType { get; }
         IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; }
-        IUserTypeRepository UserType { get; }
         IEmploymentStatusRepository EmploymentStatus { get; }
+        ICustomerRepository Customer { get; }
         IRoleRepository Role { get; }
         IRolePermissionRepository RolePermission { get; }
         IPermissionRepository Permission { get; }

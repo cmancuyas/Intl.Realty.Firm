@@ -1,7 +1,9 @@
-﻿using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
+﻿using Intl.Realty.Firm.Helper;
+using Intl.Realty.Firm.Models.Models.ViewModel.DepartmentVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
@@ -34,8 +36,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = _httpContextAccessor.HttpContext?.User.Claims;
-
+                var userId = Session.UserId;
                 viewModel.IsActive = true;
                 viewModel.CreatedBy = Convert.ToInt32(userId);
                 viewModel.CreatedAt = DateTime.UtcNow;
@@ -51,11 +52,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            var userClaims = User.Claims;
-            var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-            var userId = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
+            var userId = Session.UserId;
             var model = await _unitOfWork.Department.GetAsync(x => x.Id == id);
             if (model == null)
             {
@@ -74,9 +71,7 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditDepartmentViewModel viewModel)
         {
-            var userClaims = User.Claims;
-            var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-            var userId = Convert.ToInt32(userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+            var userId = Session.UserId;
 
             if (id != viewModel.Id)
             {

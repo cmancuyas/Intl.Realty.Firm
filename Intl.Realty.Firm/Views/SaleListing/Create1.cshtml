@@ -16,38 +16,7 @@
     </a>
     <form asp-action="Create" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
         <div class="row justify-content-center">
-            <div class="row m-0 mb-4">
-                <div class="col-md-12">
-                    <div class="mb-4">
-                        <span class="c-preline" style="white-space: pre-line">@ViewBag.RequiredDocsList</span>
-                    </div>
-                    <div class="gap-4 mb-5">
-                        <h5 class="text-secondary fw-bold m-0">Attach Required Documents<span class="s-required">*</span></h5>
-                        <div class="alert alert-warning mt-3 mb-3" role="alert">
-                            <ul style="margin-bottom: 0px;">
-                                <li>When uploading multiple files, drag all files at once on the field.</li>
-                                <li>Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed for filenames. Spaces are not allowed. Please rename before uploading.</li>
-                            </ul>
-                        </div>
 
-                        @* <label for="input-25">Sale Listing</label> *@
-                        <div class="file-loading">
-                            <input asp-for="FileUploadList.Files"
-                                   type="file"
-                                   class="file"
-                                   multiple
-                                   data-show-upload="false"
-                                   data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                   accept="application/all"
-                                   data-show-caption="true"
-                                   data-msg-placeholder="Select {files} for upload...">
-                            @* onchange="fileChange(this)" *@
-                            
-                        </div>
-                    </div>
-
-                </div>
-            </div>
             <hr />
             <div class="row d-flex justify-content-center m-0">
                 <div class="col-md-12">
@@ -78,14 +47,14 @@
                                            asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
                                            value="@item.Id" />
                                     <td>
-                                        <select class="form-select fileListDropDown"
+                          @*               <select class="form-select fileListDropDown"
                                                 id="fileListDropDown_@i"
                                                 data-prevVal=""
                                                 data-curVal=""
                                                 onchange="fileSelected(this)"
-                                                asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
+                                                asp-for="FileUploadList[i]"
                                                 multiple required>
-                                        </select>
+                                        </select> *@
                                     </td>
                                     @{
                                         i++;

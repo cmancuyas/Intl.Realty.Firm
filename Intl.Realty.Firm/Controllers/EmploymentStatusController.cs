@@ -1,4 +1,5 @@
 ﻿using DENR_FAPIS.Models.Utilities;
+using Intl.Realty.Firm.Helper;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.DataTable;
 using Intl.Realty.Firm.Models.Models.ViewModel.EmploymentStatusVM;
@@ -15,7 +16,6 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class EmploymentStatusController : Controller
     {
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IExportService<EmploymentStatusExport> _exportService;
 
@@ -39,10 +39,11 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEmploymentStatusViewModel viewModel)
         {
+            var userId = Session.UserId;
             if (ModelState.IsValid)
             {
                 viewModel.IsActive = true;
-                viewModel.CreatedBy = _userId;
+                viewModel.CreatedBy = userId;
                 viewModel.CreatedAt = DateTime.UtcNow;
                 var model = viewModel.ToEmploymentStatusModel();
 
@@ -56,6 +57,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            var userId = Session.UserId;
             var model = await _unitOfWork.EmploymentStatus.GetAsync(x => x.Id == id);
             if (model == null)
             {
@@ -64,7 +66,7 @@ namespace Intl.Realty.Firm.Controllers
 
             var viewModel = model.ToEditEmploymentStatusViewModel();
 
-            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -74,6 +76,7 @@ namespace Intl.Realty.Firm.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditEmploymentStatusViewModel viewModel)
         {
+            var userId = Session.UserId;
             if (id != viewModel.Id)
             {
                 return NotFound();
@@ -88,7 +91,7 @@ namespace Intl.Realty.Firm.Controllers
                 }
                 model = viewModel.ToEmploymentStatusModel();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
 
                 await _unitOfWork.EmploymentStatus.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });

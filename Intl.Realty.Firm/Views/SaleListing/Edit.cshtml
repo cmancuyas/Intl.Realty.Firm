@@ -17,7 +17,6 @@
     <form asp-action="Edit" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center">
-            <input type="text" asp-for="Dataxxx" multiple hidden />
 
             <div class="d-flex justify-content-between w-100">
                 <div class="form-submit-step d-flex flex-column  w-100">
@@ -231,502 +230,280 @@
                             </tr>
                         </thead>
                         <tbody id="fileTableBody">
+
                             @foreach (DocumentType item in Model.DocumentTypeList!)
                             {
                                 <tr class="border-bottom">
                                     <td class="p-2">
                                         <span class="mt-3 ms-2 mb-1">@item.Description</span>
                                     </td>
-
                                     @{
                                         var filesWithDocumentTypeId = Model.FileUploads!.Where(x => x.DocumentTypeId == item.Id);
 
-                                        @foreach (FileUpload fileUpload in filesWithDocumentTypeId)
+                                        if (filesWithDocumentTypeId != null)
                                         {
-                                            <td class="w-5 ps-2">
-                                                @fileUpload.OriginalFileName
-                                            </td>
+                                            @foreach (var fileUpload in filesWithDocumentTypeId)
+                                            {
+                                                <td class="w-5 ps-2">
+                                                    @fileUpload.OriginalFileName
+                                                </td>
 
-                                            <td class="w-5 ps-2">
-                                                <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
-                                                    Download
-                                                </a>
-                                            </td>
-                                            <td class="w-5 ps-2">
-                                                <a id="btnDeleteFile" onclick="GoToStep2()" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
-                                                    Delete
-                                                </a>
-                                            </td>
-                                            <td class="w-5 ps-2">
-
-                                                <div class="file-loading">
-                                                    <input id="input-iconic" name="input-iconic[]" type="file" multiple>
-                                                </div>
-                                            </td>
+                                                <td class="w-5 ps-2">
+                                                    <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                        Download
+                                                    </a>
+                                                    <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                        Delete
+                                                    </a>
+                                                    <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                        Preview
+                                                    </a>
+                                                </td>
+                                            }
                                         }
                                     }
-
                                 </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="form-submit-tab mt-4">
-                <div class="row m-0 mb-4">
-                    <div class="col-md-12">
-                        <div class="mb-4">
-                            <span class="c-preline" style="white-space: pre-line">@ViewBag.RequiredDocsList</span>
-                        </div>
-                        <div class="gap-4 mb-5">
-                            <h5 class="text-blue m-0">Attach Required Documents<span class="s-required">*</span></h5>
-                            <div class="alert alert-warning mt-3 mb-3" role="alert">
-                                <ul style="margin-bottom: 0px;">
-                                    <li>When uploading multiple files, drag all files at once on the field.</li>
-                                    <li>Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed for filenames. Spaces are not allowed. Please rename before uploading.</li>
-                                </ul>
-                            </div>
-
-                            @* <label for="input-25">Sale Listing</label> *@
-                            <div class="file-loading">
-                                <input asp-for="FileUploadList.Files"
-                                       type="file"
-                                       class="file"
-                                       multiple
-                                       data-show-upload="false"
-                                       data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                       accept="application/all"
-                                       data-show-caption="true"
-                                       data-msg-placeholder="Select {files} for upload...">
-                                @* onchange="fileChange(this)" *@
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <hr />
-                <div class="row d-flex justify-content-center m-0">
-                    <div class="col-md-12">
-                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
-                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
-                            <thead>
-                                <tr>
-                                    <th style="width: 30%">
-                                        Required Document
-                                    </th>
-                                    <th>
-                                        Uploaded Document
-                                    </th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    int i = 0;
                                 }
-                                @foreach (DocumentType item in Model.DocumentTypeList)
-                                {
-                                    <tr>
-                                        <td style="width: 30%">
-                                            @Html.DisplayFor(modelItem => item.Description)<span class="s-required">*</span>
-                                        </td>
-                                        <input type="hidden"
-                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
-                                               value="@item.Id" />
-                                        <td>
-                                            <select class="form-select fileListDropDown"
-                                                    id="fileListDropDown_@i"
-                                                    data-prevVal=""
-                                                    data-curVal=""
-                                                    onchange="fileSelected(this)"
-                                                    asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
-                                                    multiple required>
-                                            </select>
-                                        </td>
-                                        @{
-                                            i++;
-                                        }
-                                    </tr>
-                                }
+
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                <div class="form-submit-tab p-4">
+                    <hr />
+                    <div class="row d-flex justify-content-center m-0">
+                        <div class="col-md-12">
+                            <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
+                            <table class="table dataTable" id="tblApplicantFiles" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">Document Type</th>
+                                        <th>Is Required?</th>
+                                        <th>Uploaded Document</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                                    @{
+                                                        int i = 0;
+                                                    }
+                                                    @foreach (DocumentType item in Model.DocumentTypeList)
+                                                    {
+                                        <tr>
+                                            <td style="width: 30%">
+                                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <input type="hidden"
+                                                   asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
+                                                   value="@item.Id" />
+                                            <td id="isRequired">
+                                                                @if (item.IsRequired == true)
+                                                                {
+                                                    <label class="status-active">Required</label>
+                                                                }
+                                                                else if (item.IsRequired == false)
+                                                                {
+                                                    <label class="status-inactive pe-cursor">Not Required</label>
+                                                                }
+                                            </td>
+                                            <td>
+
+                                                <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
+                                                       id="fileListDropDown_@i"
+                                                       type="file"
+                                                       class="file"
+                                                       multiple
+                                                       data-show-upload="false"
+                                                       data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
+                                                       accept="application/all"
+                                                       data-show-caption="true"
+                                                       data-show-preview="false"
+                                                       onchange="fileSelected(this)"
+                                                       data-msg-placeholder="Select {files} for upload...">
+                                            </td>
+                                                            @{
+                                                                i++;
+                                                            }
+                                        </tr>
+                                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
+                    <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
+                    <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
+                </div>
+
             </div>
+        </form>
 
-            <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
-                <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
-                <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
-                <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
-            </div>
+    </div>
 
-        </div>
-    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
 
+            const saleListingForm = document.getElementById('SaleListingForm');
+            $("#btnSubmit").click(function () {
+                debugger;
+                //Check if required fields are filled up
+                if ($("#SaleListingForm")[0].checkValidity()) {
 
+                    var formFiles = document.forms['SaleListingForm']['filesUpload.Files'];
+                    debugger;
+                    $("#confirmSubmitModal").modal("show");
 
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
+                //If fields are not filled up
+                else {
+
+                    //Validate Form
+                    $("#SaleListingForm")[0].reportValidity();
+
+                }
+
+            });
+
+            $("#btnConfirmSubmit").click(function () {
+                $("#confirmSubmitModal").modal("hide");
+                saleListingForm.submit();
+                // CreateFileUpload();
+            });
+
+            $('#addNewSector').on('click', function () {
+                var newRow =
+                    `<div class="mt-3 d-flex gap-3 sector-row">
+                                                                                                                            <div class="form-group w-100">
+                                                                                                                                <select class="form-select">
+                                                                                                                                    <option selected>Select Sector...</option>
+                                                                                                                                </select>
+                                                                                                                            </div>
+                                                                                                                            <div class="d-flex align-items-center me-3">
+                                                                                                                                <span class="remove-sector" data-toggle="tooltip" data-bs-placement="right" title="Remove">
+                                                                                                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
+                                                                                                                                </span>
+                                                                                                                            </div>
+                                                                                                                        </div>`;
+
+                $('#sectorRows').append(newRow);
+                $('#sectorRows').find('.form-select:last').select2();
+                feather.replace();
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+
+            $(document).on('click', '.remove-sector', function () {
+                $(this).tooltip('hide');
+                $(this).closest('.sector-row').remove();
+            });
+
+            $('#addNewFile').on('click', function () {
+                var newRow =
+                    `<tr class="border-bottom">
+                                                                                                                            <td>
+                                                                                                                                <input type="text" class="form-control mt-1 ms-2 mb-1" placeholder="Enter Document Title...">
+                                                                                                                            </td>
+                                                                                                                            <td class="text-end">
+                                                                                                                                <button type="button" class="btn btn-secondary mt-2 mb-2 browse-files">
+                                                                                                                                    <i data-feather="upload-cloud" class="w-15px h-auto me-1"></i>
+                                                                                                                                    Browse Files
+                                                                                                                                </button>
+                                                                                                                                <input type="file" class="d-none file-input">
+                                                                                                                            </td>
+                                                                                                                            <td class="text-center">
+                                                                                                                                <span class="remove-file d-flex justify-content-center" data-toggle="tooltip" data-bs-placement="left" title="Remove">
+                                                                                                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
+                                                                                                                                </span>
+                                                                                                                            </td>
+                                                                                                                        </tr>`;
+
+                $('#fileTableBody').append(newRow);
+                feather.replace();
+
+                $('#fileTableBody').find('.remove-file').last().on('click', function () {
+                    $(this).closest('tr').remove();
+                });
+
+                $('#fileTableBody').find('.browse-files').last().on('click', function () {
+                    $(this).siblings('.file-input').trigger('click');
+                });
+
+                $('#fileTableBody').find('.file-input').last().on('change', function () {
+                    var fileName = $(this).val().split('\\').pop();
+                    $(this).siblings('input[type="text"]').val(fileName);
+                });
+            });
+
+            $('.remove-file').on('click', function () {
+                $(this).closest('tr').remove();
+            });
+
+            $('.browse-files').on('click', function () {
+                $(this).siblings('.file-input').trigger('click');
+            });
+
+            $('.file-input').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).siblings('input[type="text"]').val(fileName);
+            });
+        });
+        function fileSelected(that) {
+            var curval = that.dataset.curval;
+            var id = that.id;
+            document.getElementById(that.id).setAttribute("data-prevVal", curval);
+            document.getElementById(that.id).setAttribute("data-curVal", that.value);
         }
 
-        <script type="text/javascript">
+        var currentTab = 0;
+        showTab(currentTab);
 
-            $(document).ready(function () {
+        function showTab(n) {
+            $(".form-submit-tab").hide();
+            $(".form-submit-tab").eq(n).show();
 
-                $("#input-iconic").fileinput({
-                    uploadUrl: "/file-upload-batch/1",
-                    uploadAsync: false,
-                    minFileCount: 2,
-                    maxFileCount: 5,
-                    overwriteInitial: false,
-                    initialPreview: [
-                        // IMAGE DATA
-                        'https://picsum.photos/id/702/1920/1080',
-                        // IMAGE RAW MARKUP
-                        '<img src="https://picsum.photos/id/703/1920/1080" class="kv-preview-data file-preview-image">',
-                        // TEXT DATA
-                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/SampleTextFile_10kb.txt',
-                        // PDF DATA
-                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/pdf-sample.pdf',
-                        // VIDEO DATA
-                        "https://kartik-v.github.io/bootstrap-fileinput-samples/samples/small.mp4"
-                    ],
-                    initialPreviewAsData: true, // defaults markup
-                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                    initialPreviewConfig: [
-                        { caption: "Business 1", filename: "Business-1.jpg", description: "<h5>Number One</h5> This is a representative placeholder description # 1 for this image.", size: 762980, url: "/site/file-delete", key: 11 },
-                        { previewAsData: false, description: "<h5>Number Two</h5> This is a representative placeholder description # 2 for this image.", size: 823782, caption: "Business 2", filename: "Business-2.jpg", url: "/site/file-delete", key: 13 },
-                        { caption: "Lorem Ipsum", filename: "LoremIpsum.txt", type: "text", description: "<h5>Number Three</h5> This is a representative placeholder description # 3 for this text file.", size: 1430, url: "/site/file-delete", key: 12 },
-                        { type: "pdf", description: "<h5>Number Four</h5> This is a representative placeholder description # 4 for this PDF file.", size: 8000, caption: "PDF Sample", filename: "PDF-Sample.pdf", url: "/file-upload-batch/2", key: 14 },
-                        { type: "video", description: "<h5>Number Five</h5> This is a representative placeholder description # 5 for this video file.", size: 375000, filetype: "video/mp4", caption: "Krajee Sample", filename: "KrajeeSample.mp4", url: "/file-upload-batch/2", key: 15 }
-                    ],
-                    uploadExtraData: {
-                        img_key: "1000",
-                        img_keywords: "happy, nature",
-                    },
-                    preferIconicPreview: true, // this will force thumbnails to display icons for following file extensions
-                    previewFileIconSettings: { // configure your icon file extensions
-                        'doc': '<i class="fas fa-file-word text-primary"></i>',
-                        'xls': '<i class="fas fa-file-excel text-success"></i>',
-                        'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
-                        'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
-                        'zip': '<i class="fas fa-file-archive text-muted"></i>',
-                        'htm': '<i class="fas fa-file-code text-info"></i>',
-                        'txt': '<i class="fas fa-file-alt text-info"></i>',
-                        'mov': '<i class="fas fa-file-video text-warning"></i>',
-                        'mp3': '<i class="fas fa-file-audio text-warning"></i>',
-                        // note for these file types below no extension determination logic
-                        // has been configured (the keys itself will be used as extensions)
-                        'jpg': '<i class="fas fa-file-image text-danger"></i>',
-                        'gif': '<i class="fas fa-file-image text-muted"></i>',
-                        'png': '<i class="fas fa-file-image text-primary"></i>'
-                    },
-                    previewFileExtSettings: { // configure the logic for determining icon file extensions
-                        'doc': function (ext) {
-                            return ext.match(/(doc|docx)$/i);
-                        },
-                        'xls': function (ext) {
-                            return ext.match(/(xls|xlsx)$/i);
-                        },
-                        'ppt': function (ext) {
-                            return ext.match(/(ppt|pptx)$/i);
-                        },
-                        'zip': function (ext) {
-                            return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
-                        },
-                        'htm': function (ext) {
-                            return ext.match(/(htm|html)$/i);
-                        },
-                        'txt': function (ext) {
-                            return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
-                        },
-                        'mov': function (ext) {
-                            return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
-                        },
-                        'mp3': function (ext) {
-                            return ext.match(/(mp3|wav)$/i);
-                        }
-                    }
-                }).on('filesorted', function (e, params) {
-                    console.log('File sorted params', params);
-                }).on('fileuploaded', function (e, params) {
-                    console.log('File uploaded params', params);
-                });
+            $(".form-submit-step").removeClass("active");
 
-                $('#isActiveCheckbox').on('click', toggleStatusLabels);
-
-                toggleStatusLabels();
-
-                // debugger;
-                $('#btnDeleteFile').click(function (e) {
-                    // debugger;
-                    // e.preventDefault();
-                    // GoToStep2(1);
-                });
-                // GoToStep2();
-                const saleListingForm = document.getElementById('SaleListingForm');
-                $("#btnSubmit").click(function () {
-                    //Check if required fields are filled up
-                    if ($("#SaleListingForm")[0].checkValidity()) {
-                        // debugger;
-                        var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-
-                        var x = document.forms['SaleListingForm']['Dataxxx'];
-
-                        x.value = JSON.stringify(applications);
-
-                        if (formFiles.files.length == 0) {
-                            Swal.fire({
-                                title: "No File Selected",
-                                text: "Please upload the required documents to proceed with the application.",
-                                icon: "error",
-                                confirmButtonColor: '#14984a'
-                            });
-                        } else {
-                            // debugger;
-                            $("#confirmSubmitModal").modal("show");
-                            // saleListingForm.submit();
-                            // $("#confirmSubmitModal").modal("hide");
-                        }
-                    }
-                    //If fields are not filled up
-                    else {
-                        // debugger;
-                        //Validate Form
-                        $("#SaleListingForm")[0].reportValidity();
-
-                    }
-
-                });
-
-
-                let applications = [
-
-                ];
-
-                // Function to update application data inline
-                $(document).on('blur', '.editable', function () {
-                    let id = $(this).data('id');
-                    let field = $(this).data('field');
-                    let newValue = $(this).text();
-                    updateApplication(id, field, newValue);
-                });
-
-                function updateApplication(id, field, newValue) {
-                    let appIndex = applications.findIndex(app => app.ID === id);
-                    if (appIndex !== -1) {
-                        applications[appIndex][field] = newValue;
-                    }
-                }
-                $("#backBtn").click(function () {
-                    $("#confirmSubmitModal").modal("hide");
-                });
-
-                $("#btnConfirmSubmit").click(function () {
-                    // debugger;
-                    $("#confirmSubmitModal").modal("hide");
-                    saleListingForm.submit();
-                    // CreateFileUpload();
-                });
-
-                $("#finalOKBtn").click(function () {
-                    $("#confirmSuccessModal").modal("hide");
-                });
-                $("#btnDeleteFile").click(function () {
-
-                    GoToStep2();
-                    // window.location.reload();
-
-                });
-                //END FOR MODAL FORM SUBMISSION CONFIRMATION
-            });
-
-
-            //Multiple Select
-            $('.form-select.fileListDropDown').each(function () {
-                // debugger;
-                //Initialize Selectize on the select element with the specified class
-
-                var $select = $(this).selectize({
-                    create: true,
-                    placeholder: 'Please select your uploaded file',
-                    plugins: ['remove_button'], // Enable the remove button
-                })[0].selectize;
-
-
-                $('.file').on('change', function (event) {
-
-                    //validate
-
-
-                    var files = event.target.files;
-                    //var formFiles = document.forms['SaleListingForm']['CreateFileUploadList.Files'];
-
-                    $select.clear();
-                    // Clear existing options
-                    $select.clearOptions();
-                    $select.addOption({ value: "N/A", text: "N/A" });
-                    // Loop through each selected file
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-
-                        // Get the file name
-                        var fileName = file.name;
-                        //Check if filename contains special characters
-                        if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "File name not allowed!",
-                                text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                                confirmButtonColor: '#14984a'
-                            });
-                            const removeFileButton = document.querySelector('.fileinput-remove-button');
-                            removeFileButton.click();
-                            $select.clear();
-                            $select.clearOptions();
-                            break;
-                        }
-                        else {
-                            // Add options based on the file name
-                            $select.addOption({ value: fileName, text: fileName });
-                        }
-                    }
-
-                    // Refresh the Selectize control to update the UI
-                    //$select.refreshOptions();
-                });
-
-                //If files were placed using drag and drop feature
-                $(document).on('drop', '.file-drop-zone.clearfix', function () {
-                    console.log("dropped");
-                    $select.clear();
-                    $select.clearOptions();
-
-
-                    var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-                    var files = formFiles.files;
-
-                    $select.addOption({ value: "N/A", text: "N/A" });
-                    // Loop through each selected file
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-
-                        // Get the file name
-                        var fileName = file.name;
-                        //Check if filename contains special characters
-                        if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "File name not allowed!",
-                                text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                                confirmButtonColor: '#14984a'
-                            });
-                            const removeFileButton = document.querySelector('.fileinput-remove-button');
-                            removeFileButton.click();
-                            $select.clear();
-                            $select.clearOptions();
-                            break;
-                        }
-                        else {
-                            // Add options based on the file name
-                            $select.addOption({ value: fileName, text: fileName });
-                        }
-                    }
-
-                });
-
-                //If remove button of files will be clicked
-                $(document).on('click', '.fileinput-remove-button', function () {
-                    console.log("remove button clicked");
-                    $select.clear();
-                    $select.clearOptions();
-                });
-            });
-
-            //End of Multiple Select
-            //FOR CHECKLIST OF DOCUMENTS
-            function fileChange(that) {
-                // debugger;
-                var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-                PopulateFileDropDown(".fileListDropDown", formFiles.files);
+            switch (n) {
+                case 0:
+                    $(".form-submit-step").eq(0).addClass("active");
+                    $(".btn-next").show();
+                    $(".btn-submit").hide();
+                    break;
+                case 1:
+                    $(".form-submit-step").eq(1).addClass("active");
+                    $(".btn-next").show();
+                    $(".btn-submit").hide();
+                    break;
+                case 2:
+                    $(".form-submit-step").eq(1).addClass("active");
+                    $(".btn-next").hide();
+                    $(".btn-submit").show();
+                    break;
             }
 
-            function PopulateFileDropDown(fileDropDownClass, list) {
+            $("#prevBtn").toggle(n !== 0);
+        }
+        function nextPrev(n) {
+            var x = $(".form-submit-tab");
 
-                $(fileDropDownClass).empty();
-                $(fileDropDownClass).append("<option value=\"\" selected disabled>--Please select your uploaded file--</option>")
-                $(fileDropDownClass).append("<option value=\"N/A\" >N/A</option>")
-                $.each(list, function (index, row) {
-                    $(fileDropDownClass).append("<option value=\"" + row.name + "\"id=\"uploadedFile_" + index + "\">" + row.name + "</option>")
-                });
-            }
+            x.eq(currentTab).hide();
+            currentTab += n;
 
-            function fileSelected(that) {
-                // debugger;
-                var curval = that.dataset.curval;
-                document.getElementById(that.id).setAttribute("data-prevVal", curval);
-                document.getElementById(that.id).setAttribute("data-curVal", that.value);
-            }
-            //END FOR CHECKLIST OF DOCUMENTS
-
-            var currentTab = 0;
-            showTab(currentTab);
-
-            function showTab(n) {
-                $(".form-submit-tab").hide();
-                $(".form-submit-tab").eq(n).show();
-
+            if (currentTab >= x.length) {
                 $(".form-submit-step").removeClass("active");
-
-                switch (n) {
-                    case 0:
-                        $(".form-submit-step").eq(0).addClass("active");
-                        $(".btn-next").show();
-                        $(".btn-submit").hide();
-                        break;
-                    case 1:
-                        $(".form-submit-step").eq(1).addClass("active");
-                        $(".btn-next").show();
-                        $(".btn-submit").hide();
-                        break;
-                    case 2:
-                        $(".form-submit-step").eq(2).addClass("active");
-                        $(".btn-next").hide();
-                        $(".btn-submit").show();
-                        break;
-                }
-
-                $("#prevBtn").toggle(n !== 0);
-            }
-            function nextPrev(n) {
-                var x = $(".form-submit-tab");
-
-                x.eq(currentTab).hide();
-                currentTab += n;
-
-                if (currentTab >= x.length) {
-                    $(".form-submit-step").removeClass("active");
-                    $(".form-submit-step").eq(3).addClass("active");
-                    return false;
-                }
-
-                showTab(currentTab);
-            }
-            function GoToStep2() {
-                curentTab = 1;
-                nextPrev(1)
+                $(".form-submit-step").eq(3).addClass("active");
+                return false;
             }
 
-            function toggleStatusLabels() {
-                if ($('#isActiveCheckbox').is(':checked')) {
-                    $('#lblStatus').css('color', '#0d6efd').text("Active");
-                } else {
-                    $('#lblStatus').css('color', '#bfbfbf').text("Inactive");
-                }
-            }
-        </script>
-    }
+            showTab(currentTab);
+        }
+    </script>
+
+                                @section Scripts {
+                                @{
+                                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                                    }
+                                }

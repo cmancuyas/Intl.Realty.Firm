@@ -16,7 +16,6 @@
     </a>
     <form asp-action="Create" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
         <div class="row justify-content-center">
-            <input type="text" asp-for="Dataxxx" multiple hidden />
 
             <div class="d-flex justify-content-between w-100 p-0">
                 <div class="form-submit-step d-flex flex-column  w-100">
@@ -216,38 +215,6 @@
             </div>
 
             <div class="form-submit-tab p-4">
-                <div class="row m-0 mb-4">
-                    <div class="col-md-12">
-                        <div class="mb-4">
-                            <span class="c-preline" style="white-space: pre-line">@ViewBag.RequiredDocsList</span>
-                        </div>
-                        <div class="gap-4 mb-5">
-                            <h5 class="text-blue m-0">Attach Required Documents<span class="s-required">*</span></h5>
-                            <div class="alert alert-warning mt-3 mb-3" role="alert">
-                                <ul style="margin-bottom: 0px;">
-                                    <li>When uploading multiple files, drag all files at once on the field.</li>
-                                    <li>Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed for filenames. Spaces are not allowed. Please rename before uploading.</li>
-                                </ul>
-                            </div>
-
-                            @* <label for="input-25">Sale Listing</label> *@
-                            <div class="file-loading">
-                                <input asp-for="FileUploadList.Files"
-                                       type="file"
-                                       class="file"
-                                       multiple
-                                       data-show-upload="false"
-                                       data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                       accept="application/all"
-                                       data-show-caption="true"
-                                       data-msg-placeholder="Select {files} for upload...">
-                                @* onchange="fileChange(this)" *@
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
                 <hr />
                 <div class="row d-flex justify-content-center m-0">
                     <div class="col-md-12">
@@ -255,12 +222,9 @@
                         <table class="table dataTable" id="tblApplicantFiles" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="width: 30%">
-                                        Required Document
-                                    </th>
-                                    <th>
-                                        Uploaded Document
-                                    </th>
+                                    <th style="width: 30%">Document Type</th>
+                                    <th>Is Required?</th>
+                                    <th>Uploaded Document</th>
 
                                 </tr>
                             </thead>
@@ -272,20 +236,35 @@
                                 {
                                     <tr>
                                         <td style="width: 30%">
-                                            @Html.DisplayFor(modelItem => item.Description)<span class="s-required">*</span>
+                                            @Html.DisplayFor(modelItem => item.Description)
                                         </td>
                                         <input type="hidden"
                                                asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
                                                value="@item.Id" />
+                                        <td id="isRequired">
+                                            @if (item.IsRequired == true)
+                                            {
+                                                <label class="status-active">Required</label>
+                                            }
+                                            else if (item.IsRequired == false)
+                                            {
+                                                <label class="status-inactive pe-cursor">Not Required</label>
+                                            }
+                                        </td>
                                         <td>
-                                            <select class="form-select fileListDropDown"
-                                                    id="fileListDropDown_@i"
-                                                    data-prevVal=""
-                                                    data-curVal=""
-                                                    onchange="fileSelected(this)"
-                                                    asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
-                                                    multiple required>
-                                            </select>
+
+                                            <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
+                                                   id="fileListDropDown_@i"
+                                                   type="file"
+                                                   class="file"
+                                                   multiple
+                                                   data-show-upload="false"
+                                                   data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
+                                                   accept="application/all"
+                                                   data-show-caption="true"
+                                                   data-show-preview="false"
+                                                   onchange="fileSelected(this)"
+                                                   data-msg-placeholder="Select {files} for upload...">
                                         </td>
                                         @{
                                             i++;
@@ -298,50 +277,36 @@
                 </div>
             </div>
 
-            <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
+            <hr class="my-5" />
+
+            <div class="form-group d-flex justify-content-center gap-4">
                 <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
                 <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
                 <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
             </div>
-
         </div>
     </form>
 
-
 </div>
 
-<script type="text/javascript">
 
+<script type="text/javascript">
     $(document).ready(function () {
-        // debugger;
+
         const saleListingForm = document.getElementById('SaleListingForm');
         $("#btnSubmit").click(function () {
+            debugger;
             //Check if required fields are filled up
             if ($("#SaleListingForm")[0].checkValidity()) {
+
+                var formFiles = document.forms['SaleListingForm']['filesUpload.Files'];
                 debugger;
-                var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
+                $("#confirmSubmitModal").modal("show");
 
-                var x = document.forms['SaleListingForm']['Dataxxx'];
-
-                x.value = JSON.stringify(applications);
-
-                if (formFiles.files.length == 0) {
-                    Swal.fire({
-                        title: "No File Selected",
-                        text: "Please upload the required documents to proceed with the application.",
-                        icon: "error",
-                        confirmButtonColor: '#14984a'
-                    });
-                } else {
-                    debugger;
-                    $("#confirmSubmitModal").modal("show");
-                    // saleListingForm.submit();
-                    // $("#confirmSubmitModal").modal("hide");
-                }
             }
             //If fields are not filled up
             else {
-                // debugger;
+
                 //Validate Form
                 $("#SaleListingForm")[0].reportValidity();
 
@@ -349,200 +314,93 @@
 
         });
 
-
-        let applications = [
-
-        ];
-
-        // Function to update application data inline
-        $(document).on('blur', '.editable', function () {
-            let id = $(this).data('id');
-            let field = $(this).data('field');
-            let newValue = $(this).text();
-            updateApplication(id, field, newValue);
-        });
-
-        function updateApplication(id, field, newValue) {
-            let appIndex = applications.findIndex(app => app.ID === id);
-            if (appIndex !== -1) {
-                applications[appIndex][field] = newValue;
-            }
-        }
-        $("#backBtn").click(function () {
-            $("#confirmSubmitModal").modal("hide");
-        });
-
         $("#btnConfirmSubmit").click(function () {
-            debugger;
             $("#confirmSubmitModal").modal("hide");
             saleListingForm.submit();
             // CreateFileUpload();
         });
 
-        $("#finalOKBtn").click(function () {
-            $("#confirmSuccessModal").modal("hide");
-        });
-        //END FOR MODAL FORM SUBMISSION CONFIRMATION
-    });
+        $('#addNewSector').on('click', function () {
+            var newRow =
+                `<div class="mt-3 d-flex gap-3 sector-row">
+                                            <div class="form-group w-100">
+                                                <select class="form-select">
+                                                    <option selected>Select Sector...</option>
+                                                </select>
+                                            </div>
+                                            <div class="d-flex align-items-center me-3">
+                                                <span class="remove-sector" data-toggle="tooltip" data-bs-placement="right" title="Remove">
+                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
+                                                </span>
+                                            </div>
+                                        </div>`;
 
-
-    //Multiple Select
-    $('.form-select.fileListDropDown').each(function () {
-        // debugger;
-        //Initialize Selectize on the select element with the specified class
-
-        var $select = $(this).selectize({
-            create: true,
-            placeholder: 'Please select your uploaded file',
-            plugins: ['remove_button'], // Enable the remove button
-        })[0].selectize;
-
-
-        $('.file').on('change', function (event) {
-
-            //validate
-
-
-            var files = event.target.files;
-            //var formFiles = document.forms['SaleListingForm']['CreateFileUploadList.Files'];
-
-            $select.clear();
-            // Clear existing options
-            $select.clearOptions();
-            $select.addOption({ value: "N/A", text: "N/A" });
-            // Loop through each selected file
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-
-                // Get the file name
-                var fileName = file.name;
-                //Check if filename contains special characters
-                if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "File name not allowed!",
-                        text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                        confirmButtonColor: '#14984a'
-                    });
-                    const removeFileButton = document.querySelector('.fileinput-remove-button');
-                    removeFileButton.click();
-                    $select.clear();
-                    $select.clearOptions();
-                    break;
-                }
-                else {
-                    // Add options based on the file name
-                    $select.addOption({ value: fileName, text: fileName });
-                }
-            }
-
-            // Refresh the Selectize control to update the UI
-            //$select.refreshOptions();
+            $('#sectorRows').append(newRow);
+            $('#sectorRows').find('.form-select:last').select2();
+            feather.replace();
+            $('[data-toggle="tooltip"]').tooltip();
         });
 
-        //If files were placed using drag and drop feature
-        $(document).on('drop', '.file-drop-zone.clearfix', function () {
-            console.log("dropped");
-            $select.clear();
-            $select.clearOptions();
-
-
-            var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-            var files = formFiles.files;
-
-            $select.addOption({ value: "N/A", text: "N/A" });
-            // Loop through each selected file
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-
-                // Get the file name
-                var fileName = file.name;
-                //Check if filename contains special characters
-                if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "File name not allowed!",
-                        text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                        confirmButtonColor: '#14984a'
-                    });
-                    const removeFileButton = document.querySelector('.fileinput-remove-button');
-                    removeFileButton.click();
-                    $select.clear();
-                    $select.clearOptions();
-                    break;
-                }
-                else {
-                    // Add options based on the file name
-                    $select.addOption({ value: fileName, text: fileName });
-                }
-            }
-
+        $(document).on('click', '.remove-sector', function () {
+            $(this).tooltip('hide');
+            $(this).closest('.sector-row').remove();
         });
 
-        //If remove button of files will be clicked
-        $(document).on('click', '.fileinput-remove-button', function () {
-            console.log("remove button clicked");
-            $select.clear();
-            $select.clearOptions();
+        $('#addNewFile').on('click', function () {
+            var newRow =
+                `<tr class="border-bottom">
+                                            <td>
+                                                <input type="text" class="form-control mt-1 ms-2 mb-1" placeholder="Enter Document Title...">
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button" class="btn btn-secondary mt-2 mb-2 browse-files">
+                                                    <i data-feather="upload-cloud" class="w-15px h-auto me-1"></i>
+                                                    Browse Files
+                                                </button>
+                                                <input type="file" class="d-none file-input">
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="remove-file d-flex justify-content-center" data-toggle="tooltip" data-bs-placement="left" title="Remove">
+                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
+                                                </span>
+                                            </td>
+                                        </tr>`;
+
+            $('#fileTableBody').append(newRow);
+            feather.replace();
+
+            $('#fileTableBody').find('.remove-file').last().on('click', function () {
+                $(this).closest('tr').remove();
+            });
+
+            $('#fileTableBody').find('.browse-files').last().on('click', function () {
+                $(this).siblings('.file-input').trigger('click');
+            });
+
+            $('#fileTableBody').find('.file-input').last().on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).siblings('input[type="text"]').val(fileName);
+            });
+        });
+
+        $('.remove-file').on('click', function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('.browse-files').on('click', function () {
+            $(this).siblings('.file-input').trigger('click');
+        });
+
+        $('.file-input').on('change', function () {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).siblings('input[type="text"]').val(fileName);
         });
     });
-
-    //End of Multiple Select
-    //FOR CHECKLIST OF DOCUMENTS
-    function fileChange(that) {
-        // debugger;
-        var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-        PopulateFileDropDown(".fileListDropDown", formFiles.files);
-    }
-
-    function PopulateFileDropDown(fileDropDownClass, list) {
-
-        $(fileDropDownClass).empty();
-        $(fileDropDownClass).append("<option value=\"\" selected disabled>--Please select your uploaded file--</option>")
-        $(fileDropDownClass).append("<option value=\"N/A\" >N/A</option>")
-        $.each(list, function (index, row) {
-            $(fileDropDownClass).append("<option value=\"" + row.name + "\"id=\"uploadedFile_" + index + "\">" + row.name + "</option>")
-        });
-    }
-
     function fileSelected(that) {
-        debugger;
         var curval = that.dataset.curval;
         var id = that.id;
         document.getElementById(that.id).setAttribute("data-prevVal", curval);
         document.getElementById(that.id).setAttribute("data-curVal", that.value);
-    }
-    //END FOR CHECKLIST OF DOCUMENTS
-
-    function CreateFileUpload() {
-        debugger;
-        var viewModel = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))';
-        // viewModel = JSON.parse(viewModel);
-        let parameters = { viewModel: viewModel };
-        $.ajax({
-            url: '/SaleListing/Create/',
-            type: 'POST',
-            data: JSON.stringify(parameters),
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            success: function (data) {
-                // NOTE: TO DO better way of calling callback function from parent
-                CloseModal();
-                // Swal.fire({
-                //     title: "Success!",
-                //     icon: "success",
-                //     confirmButtonText: "Ok",
-                //     confirmButtonColor: '#14984a'
-                // });
-                window.location.reload()
-                // $('#ListPartialContainer').load('/SaleListing/ListPartialView');
-
-            },
-
-            error: function (e) {
-                debugger;
-                console.log("error in ajax call salelisting/create" + e);
-            }
-        });
     }
 
     var currentTab = 0;

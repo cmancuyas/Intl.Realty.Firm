@@ -1,4 +1,5 @@
-﻿using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Helper;
+using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.RoleVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.RoleVM;
 using Intl.Realty.Firm.Models.ViewModel;
@@ -11,7 +12,6 @@ namespace Intl.Realty.Firm.Controllers
 {
     public class RoleController : Controller
     {
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public RoleController(IUnitOfWork unitOfWork)
         {
@@ -34,8 +34,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = Session.UserId;
                 viewModel.IsActive = true;
-                viewModel.CreatedBy = _userId;
+                viewModel.CreatedBy = userId;
                 viewModel.CreatedAt = DateTime.UtcNow;
                 var model = viewModel.ToRoleModel();
 
@@ -54,10 +55,10 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-
+            var userId = Session.UserId;
             var viewModel = model.ToEditRoleViewModel();
 
-            viewModel.UpdatedBy = _userId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -79,9 +80,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
+                var userId = Session.UserId;
                 model = viewModel.ToRoleModel();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
 
                 await _unitOfWork.Role.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });

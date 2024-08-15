@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Intl.Realty.Firm.Models.Helpers;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM
         [Required]
         public DateTime CreatedAt { get; set; }
 
+        public List<IFormFile>? Files { get; set; }
         //used for selectize
         public List<string>? FileNames { get; set; }
     }

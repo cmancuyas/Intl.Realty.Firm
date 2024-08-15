@@ -28,6 +28,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     Code = x.Code,
                     Description = x.Description,
                     IsActive = x.IsActive,
+                    IsRequired = x.IsRequired,
                     CreatedAt = x.CreatedAt,
                     CreatedBy = x.CreatedBy,
                     UpdatedAt = x.UpdatedAt,
@@ -42,7 +43,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 Code = model.Code,
-                Description = model.Description ?? "",
+                Description = model.Description,
+                IsRequired = model.IsRequired,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -53,6 +55,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             var model = new DocumentType();
             model.Code = viewModel.Code;
             model.Description = viewModel.Description;
+            model.IsRequired = viewModel.IsRequired;
             model.IsActive = viewModel.IsActive;
             model.CreatedAt = viewModel.CreatedAt;
             model.CreatedBy = viewModel.CreatedBy;
@@ -65,6 +68,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = viewModel.Id,
                 Code = viewModel.Code,
                 Description = viewModel.Description ?? "",
+                IsRequired = viewModel.IsRequired,
                 IsActive = viewModel.IsActive,
                 UpdatedBy = viewModel.UpdatedBy,
                 UpdatedAt = viewModel.UpdatedAt

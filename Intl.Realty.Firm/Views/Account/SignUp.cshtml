@@ -60,7 +60,7 @@
         <div class="col-md-8 d-flex align-items-center justify-content-center right-part">
             <div class="d-flex flex-column w-75">
                 @* <div class="w-10 mb-2">
-                    <img src="~/files/img/logo-irf-default.jpg" alt="INTLRealtyLogo" class="img-fluid" />
+                <img src="~/files/img/logo-irf-default.jpg" alt="INTLRealtyLogo" class="img-fluid" />
                 </div> *@
                 @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "signUpForm" }))
                 {
@@ -147,43 +147,14 @@
                         <div class="tab">
                             <div class="mb-4">
                                 <span class="small text-blue fw-bolder breadcrumbs">STEP 2 of 3</span>
-                                <h5 class="fw-bolder mb-0">Employment Details</h5>
+                                <h5 class="fw-bolder mb-0">User Details</h5>
                             </div>
-                            <div class="row mb-3 mb-4">
-                                <div class="col-md-6">
-                                    <label class="fw-bolder">Date of Employment</label>
-                                    @Html.EditorFor(m => m.DateOfEmployment, "{0:yyyy-MM-dd}",
-                                             new
-                                             {
-                                                 htmlAttributes =
-                                             new
-                                             {
-                                                 @class = "form-control",
-                                                 @id = "employmentDate",
-                                                 @type = "Date"
-                                             }
-                                             })
-                                </div>
-                @*                 <div class="col-md-6">
-                                    <label class="fw-bolder">Employment Status</label>
-                                    @Html.DropDownList("EmploymentStatusDDL", Model.EmploymentStatusIEnum, "Select Employment Status...",
-                                             new
-                                             {
-                                                 @class = "form-select",
-                                                 @required = "required"
-                                             })
 
-                                    @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.EmploymentStatusId)]?.Errors.FirstOrDefault()?.ErrorMessage))
-                                    {
-                                        @Html.ValidationMessageFor(m => m.EmploymentStatusId, "", new { @class = "error" })
-                                    }
-                                </div> *@
-                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label class="fw-bolder">System Role</label>
                                     @Html.DropDownList("SystemRoleDDL", Model.RoleIEnum, "Select Role...",
-                                             
+
                                              new
                                              {
                                                  @class = "form-select",
@@ -355,14 +326,14 @@
                                             <span class="fw-bolder" id="summaryEmploymentDate"></span>
                                         </div>
                                     </div>
-        @*                             <div class="row mb-2">
-                                        <div class="col-md-12 d-flex flex-column">
-                                            <label class="text-secondary small">
-                                                Status of Employment
-                                            </label>
-                                            <span class="fw-bolder" id="summaryEmploymentStatus"></span>
-                                        </div>
-                                    </div> *@
+                                    @*                             <div class="row mb-2">
+                                <div class="col-md-12 d-flex flex-column">
+                                <label class="text-secondary small">
+                                Status of Employment
+                                </label>
+                                <span class="fw-bolder" id="summaryEmploymentStatus"></span>
+                                </div>
+                                </div> *@
                                     <div class="row mb-2">
                                         <div class="col-md-12 d-flex flex-column">
                                             <label class="text-secondary small">

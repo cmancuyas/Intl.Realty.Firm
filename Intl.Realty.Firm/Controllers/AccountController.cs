@@ -172,7 +172,7 @@ namespace Intl.Realty.Firm.Controllers
             var mailRequest = new MailRequest
             {
                 ToEmail = registerViewModel.EmailAddress,
-                Subject = "do not reply",
+                Subject = "Do not reply",
                 Body = template
             };
             await _emailService.SendEmailAsync(mailRequest);

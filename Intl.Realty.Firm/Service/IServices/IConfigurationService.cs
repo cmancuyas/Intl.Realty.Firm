@@ -2,7 +2,7 @@
 
 namespace Intl.Realty.Firm.Service.IServices
 {
-    public interface IConfigurationService : IConfigurationReCaptcha
+    public interface IConfigurationService : IConfigurationReCaptcha, IConfigurationEmail
     {
         string GetDefaultUploadPathFromConfig();
 

@@ -1,12 +1,8 @@
 ﻿using Intl.Realty.Firm.Helper;
-using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.RoleVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.RoleVM;
-using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {

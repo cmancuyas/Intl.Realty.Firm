@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="form-submit-tab mt-4">
+            <div class="form-submit-tab mt-4 p-0">
                 <div class="col-md-12 p-4">
                     <h3 class="text-blue mb-0">New Sale Listing</h3>
                     <hr class="my-4" />
@@ -255,7 +255,7 @@
                                                     <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
                                                         Delete
                                                     </a>
-                                                    <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                    <a id="btnDeleteFile" asp-action="PreviewFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
                                                         Preview
                                                     </a>
                                                 </td>
@@ -263,247 +263,223 @@
                                         }
                                     }
                                 </tr>
-                                }
+                            }
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-submit-tab p-4 p-0">
+                <hr />
+                <div class="row d-flex justify-content-center m-0">
+                    <div class="col-md-12">
+                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
+                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%">Document Type</th>
+                                    <th>Is Required?</th>
+                                    <th>Uploaded Document</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                }
+                                @foreach (DocumentType item in Model.DocumentTypeList)
+                                {
+                                    <tr>
+                                        <td style="width: 30%">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <input type="hidden"
+                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
+                                               value="@item.Id" />
+                                        <td id="isRequired">
+                                            @if (item.IsRequired == true)
+                                            {
+                                                <label class="status-active">Required</label>
+                                            }
+                                            else if (item.IsRequired == false)
+                                            {
+                                                <label class="status-inactive pe-cursor">Not Required</label>
+                                            }
+                                        </td>
+                                        <td>
+
+                                            <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
+                                                   id="fileListDropDown_@i"
+                                                   type="file"
+                                                   class="file"
+                                                   multiple
+                                                   data-show-upload="false"
+                                                   data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
+                                                   accept="application/all"
+                                                   data-show-caption="true"
+                                                   data-show-preview="false"
+                                                   onchange="fileSelected(this)"
+                                                   data-msg-placeholder="Select {files} for upload...">
+                                        </td>
+                                        @{
+                                            i++;
+                                        }
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-                <div class="form-submit-tab p-4">
-                    <hr />
-                    <div class="row d-flex justify-content-center m-0">
-                        <div class="col-md-12">
-                            <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
-                            <table class="table dataTable" id="tblApplicantFiles" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 30%">Document Type</th>
-                                        <th>Is Required?</th>
-                                        <th>Uploaded Document</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                                    @{
-                                                        int i = 0;
-                                                    }
-                                                    @foreach (DocumentType item in Model.DocumentTypeList)
-                                                    {
-                                        <tr>
-                                            <td style="width: 30%">
-                                                                @Html.DisplayFor(modelItem => item.Description)
-                                            </td>
-                                            <input type="hidden"
-                                                   asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
-                                                   value="@item.Id" />
-                                            <td id="isRequired">
-                                                                @if (item.IsRequired == true)
-                                                                {
-                                                    <label class="status-active">Required</label>
-                                                                }
-                                                                else if (item.IsRequired == false)
-                                                                {
-                                                    <label class="status-inactive pe-cursor">Not Required</label>
-                                                                }
-                                            </td>
-                                            <td>
-
-                                                <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
-                                                       id="fileListDropDown_@i"
-                                                       type="file"
-                                                       class="file"
-                                                       multiple
-                                                       data-show-upload="false"
-                                                       data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                                       accept="application/all"
-                                                       data-show-caption="true"
-                                                       data-show-preview="false"
-                                                       onchange="fileSelected(this)"
-                                                       data-msg-placeholder="Select {files} for upload...">
-                                            </td>
-                                                            @{
-                                                                i++;
-                                                            }
-                                        </tr>
-                                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
-                    <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
-                    <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
-                    <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
-                </div>
-
             </div>
-        </form>
 
-    </div>
+            <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
+                <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
+                <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
+                <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
+            </div>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
+        </div>
+    </form>
 
-            const saleListingForm = document.getElementById('SaleListingForm');
-            $("#btnSubmit").click(function () {
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        const saleListingForm = document.getElementById('SaleListingForm');
+        $("#btnSubmit").click(function () {
+            debugger;
+            //Check if required fields are filled up
+            if ($("#SaleListingForm")[0].checkValidity()) {
+
+                var formFiles = document.forms['SaleListingForm']['CreateFileUploadListViewModel.CreateFileUploadsViewModel[0].Files'];
                 debugger;
-                //Check if required fields are filled up
-                if ($("#SaleListingForm")[0].checkValidity()) {
+                $("#confirmSubmitModal").modal("show");
 
-                    var formFiles = document.forms['SaleListingForm']['filesUpload.Files'];
-                    debugger;
-                    $("#confirmSubmitModal").modal("show");
+            }
+            //If fields are not filled up
+            else {
+                //Validate Form
+                $("#SaleListingForm")[0].reportValidity();
+            }
+        });
 
-                }
-                //If fields are not filled up
-                else {
+        $("#btnConfirmSubmit").click(function () {
+            $("#confirmSubmitModal").modal("hide");
+            saleListingForm.submit();
+        });
 
-                    //Validate Form
-                    $("#SaleListingForm")[0].reportValidity();
 
-                }
+        $(document).on('click', '.remove-sector', function () {
+            $(this).tooltip('hide');
+            $(this).closest('.sector-row').remove();
+        });
 
-            });
+        $('#addNewFile').on('click', function () {
+            var newRow =
+                `<tr class="border-bottom">
+                    <td>
+                        <input type="text" class="form-control mt-1 ms-2 mb-1" placeholder="Enter Document Title...">
+                    </td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-secondary mt-2 mb-2 browse-files">
+                            <i data-feather="upload-cloud" class="w-15px h-auto me-1"></i>
+                            Browse Files
+                        </button>
+                        <input type="file" class="d-none file-input">
+                    </td>
+                    <td class="text-center">
+                        <span class="remove-file d-flex justify-content-center" data-toggle="tooltip" data-bs-placement="left" title="Remove">
+                            <i data-feather="x-circle" class="text-danger pe-cursor"></i>
+                        </span>
+                    </td>
+                </tr>`;
 
-            $("#btnConfirmSubmit").click(function () {
-                $("#confirmSubmitModal").modal("hide");
-                saleListingForm.submit();
-                // CreateFileUpload();
-            });
+            $('#fileTableBody').append(newRow);
+            feather.replace();
 
-            $('#addNewSector').on('click', function () {
-                var newRow =
-                    `<div class="mt-3 d-flex gap-3 sector-row">
-                                                                                                                            <div class="form-group w-100">
-                                                                                                                                <select class="form-select">
-                                                                                                                                    <option selected>Select Sector...</option>
-                                                                                                                                </select>
-                                                                                                                            </div>
-                                                                                                                            <div class="d-flex align-items-center me-3">
-                                                                                                                                <span class="remove-sector" data-toggle="tooltip" data-bs-placement="right" title="Remove">
-                                                                                                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
-                                                                                                                                </span>
-                                                                                                                            </div>
-                                                                                                                        </div>`;
-
-                $('#sectorRows').append(newRow);
-                $('#sectorRows').find('.form-select:last').select2();
-                feather.replace();
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-
-            $(document).on('click', '.remove-sector', function () {
-                $(this).tooltip('hide');
-                $(this).closest('.sector-row').remove();
-            });
-
-            $('#addNewFile').on('click', function () {
-                var newRow =
-                    `<tr class="border-bottom">
-                                                                                                                            <td>
-                                                                                                                                <input type="text" class="form-control mt-1 ms-2 mb-1" placeholder="Enter Document Title...">
-                                                                                                                            </td>
-                                                                                                                            <td class="text-end">
-                                                                                                                                <button type="button" class="btn btn-secondary mt-2 mb-2 browse-files">
-                                                                                                                                    <i data-feather="upload-cloud" class="w-15px h-auto me-1"></i>
-                                                                                                                                    Browse Files
-                                                                                                                                </button>
-                                                                                                                                <input type="file" class="d-none file-input">
-                                                                                                                            </td>
-                                                                                                                            <td class="text-center">
-                                                                                                                                <span class="remove-file d-flex justify-content-center" data-toggle="tooltip" data-bs-placement="left" title="Remove">
-                                                                                                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
-                                                                                                                                </span>
-                                                                                                                            </td>
-                                                                                                                        </tr>`;
-
-                $('#fileTableBody').append(newRow);
-                feather.replace();
-
-                $('#fileTableBody').find('.remove-file').last().on('click', function () {
-                    $(this).closest('tr').remove();
-                });
-
-                $('#fileTableBody').find('.browse-files').last().on('click', function () {
-                    $(this).siblings('.file-input').trigger('click');
-                });
-
-                $('#fileTableBody').find('.file-input').last().on('change', function () {
-                    var fileName = $(this).val().split('\\').pop();
-                    $(this).siblings('input[type="text"]').val(fileName);
-                });
-            });
-
-            $('.remove-file').on('click', function () {
+            $('#fileTableBody').find('.remove-file').last().on('click', function () {
                 $(this).closest('tr').remove();
             });
 
-            $('.browse-files').on('click', function () {
+            $('#fileTableBody').find('.browse-files').last().on('click', function () {
                 $(this).siblings('.file-input').trigger('click');
             });
 
-            $('.file-input').on('change', function () {
+            $('#fileTableBody').find('.file-input').last().on('change', function () {
                 var fileName = $(this).val().split('\\').pop();
                 $(this).siblings('input[type="text"]').val(fileName);
             });
         });
-        function fileSelected(that) {
-            var curval = that.dataset.curval;
-            var id = that.id;
-            document.getElementById(that.id).setAttribute("data-prevVal", curval);
-            document.getElementById(that.id).setAttribute("data-curVal", that.value);
+
+        $('.remove-file').on('click', function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('.browse-files').on('click', function () {
+            $(this).siblings('.file-input').trigger('click');
+        });
+
+        $('.file-input').on('change', function () {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).siblings('input[type="text"]').val(fileName);
+        });
+    });
+    function fileSelected(that) {
+        var curval = that.dataset.curval;
+        var id = that.id;
+        document.getElementById(that.id).setAttribute("data-prevVal", curval);
+        document.getElementById(that.id).setAttribute("data-curVal", that.value);
+    }
+
+    var currentTab = 0;
+    showTab(currentTab);
+
+    function showTab(n) {
+        $(".form-submit-tab").hide();
+        $(".form-submit-tab").eq(n).show();
+
+        $(".form-submit-step").removeClass("active");
+
+        switch (n) {
+            case 0:
+                $(".form-submit-step").eq(0).addClass("active");
+                $(".btn-next").show();
+                $(".btn-submit").hide();
+                break;
+            case 1:
+                $(".form-submit-step").eq(1).addClass("active");
+                $(".btn-next").show();
+                $(".btn-submit").hide();
+                break;
+            case 2:
+                $(".form-submit-step").eq(2).addClass("active");
+                $(".btn-next").hide();
+                $(".btn-submit").show();
+                break;
         }
 
-        var currentTab = 0;
-        showTab(currentTab);
+        $("#prevBtn").toggle(n !== 0);
+    }
+    function nextPrev(n) {
+        var x = $(".form-submit-tab");
 
-        function showTab(n) {
-            $(".form-submit-tab").hide();
-            $(".form-submit-tab").eq(n).show();
+        x.eq(currentTab).hide();
+        currentTab += n;
 
+        if (currentTab >= x.length) {
             $(".form-submit-step").removeClass("active");
-
-            switch (n) {
-                case 0:
-                    $(".form-submit-step").eq(0).addClass("active");
-                    $(".btn-next").show();
-                    $(".btn-submit").hide();
-                    break;
-                case 1:
-                    $(".form-submit-step").eq(1).addClass("active");
-                    $(".btn-next").show();
-                    $(".btn-submit").hide();
-                    break;
-                case 2:
-                    $(".form-submit-step").eq(1).addClass("active");
-                    $(".btn-next").hide();
-                    $(".btn-submit").show();
-                    break;
-            }
-
-            $("#prevBtn").toggle(n !== 0);
+            $(".form-submit-step").eq(3).addClass("active");
+            return false;
         }
-        function nextPrev(n) {
-            var x = $(".form-submit-tab");
 
-            x.eq(currentTab).hide();
-            currentTab += n;
+        showTab(currentTab);
+    }
+</script>
 
-            if (currentTab >= x.length) {
-                $(".form-submit-step").removeClass("active");
-                $(".form-submit-step").eq(3).addClass("active");
-                return false;
-            }
-
-            showTab(currentTab);
-        }
-    </script>
-
-                                @section Scripts {
-                                @{
-                                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-                                    }
-                                }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -10,7 +10,7 @@ namespace Intl.Realty.Firm.Helper
             string template =
                     @$"<html>
                     <body>
-                    <p>Good day, <strong>{registerViewModel.FirstName}</strong>
+                    <p>Good day <strong>{registerViewModel.FirstName},</strong>
                     <meta charset=""utf-8"">
                     </p>
                     <p>&nbsp;</p>

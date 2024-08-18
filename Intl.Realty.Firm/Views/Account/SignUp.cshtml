@@ -321,22 +321,6 @@
                                     <div class="row mb-2">
                                         <div class="col-md-12 d-flex flex-column">
                                             <label class="text-secondary small">
-                                                Start Date
-                                            </label>
-                                            <span class="fw-bolder" id="summaryEmploymentDate"></span>
-                                        </div>
-                                    </div>
-                                    @*                             <div class="row mb-2">
-                                <div class="col-md-12 d-flex flex-column">
-                                <label class="text-secondary small">
-                                Status of Employment
-                                </label>
-                                <span class="fw-bolder" id="summaryEmploymentStatus"></span>
-                                </div>
-                                </div> *@
-                                    <div class="row mb-2">
-                                        <div class="col-md-12 d-flex flex-column">
-                                            <label class="text-secondary small">
                                                 Department
                                             </label>
                                             <span class="fw-bolder" id="summaryDepartment"></span>
@@ -399,12 +383,93 @@
     $(document).ready(function () {
 
         feather.replace();
-        $('#togglePassword').click(function () {
-            var type = $(this).is(':checked') ? 'text' : 'password';
 
-            $('#createPassword, #confirmPassword').attr('type', type);
+        togglePassword();
+
+        uploadAvatar();
+
+        updateSummary();
+
+        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber,#DepartmentDDL, #employmentDate, #SystemRoleDDL").change(function () {
+            updateSummary();
         });
 
+        signUpForm();
+
+
+
+        $('#btnRedirectLogin, #cancelBtn').click(function () {
+            window.location.href = '@Url.Action("Login", "Account")';
+        });
+
+        $('#successModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        // $('#successModal').on('hidden.bs.modal', function () {
+        //     window.location.href = '@Url.Action("Login", "Account")';
+        // });
+
+
+    });
+
+    function signUpForm() {
+        $('#signUpForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("SignUp", "Account")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#successModal').modal('show');
+                },
+                error: function () {
+                    alert('An error occurred while processing your request.');
+                }
+            });
+        });
+    }
+
+    function updateSummary() {
+        // debugger;
+        $("#summaryFirstName").text($("#firstName").val() || "N/A");
+        $("#summaryMiddleName").text($("#middleName").val() || "N/A");
+        $("#summaryLastName").text($("#lastName").val() || "N/A");
+        $("#summarySuffix").text($("#suffix").val() || "N/A");
+        $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
+        $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
+        $("#summaryDepartment").text($("#DepartmentDDL").val() || "N/A");
+        $("#summarySystemRole").text($("#SystemRoleDDL").val() || "N/A");
+
+        function formatAndUpdateSummary(dateElementId, summaryElementId) {
+            var dateValue = $(dateElementId).val();
+
+            if (dateValue && dateValue.trim() !== "") {
+                var date = new Date(dateValue);
+
+                var formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                $(summaryElementId).text(formattedDate);
+            } else {
+                $(summaryElementId).text("N/A");
+            }
+        }
+
+        formatAndUpdateSummary("#birthDate", "#summaryBirthDate");
+        formatAndUpdateSummary("#employmentDate", "#summaryEmploymentDate");
+
+        function updateDropdownSummary(dropdownSelector, summarySelector) {
+            var dropdownValue = $(dropdownSelector).val();
+            var dropdownText = $(dropdownSelector + " option:selected").text();
+            $(summarySelector).text(dropdownValue && dropdownValue.trim() !== "" ? dropdownText : "N/A");
+        }
+
+        updateDropdownSummary("#SystemRoleDDL", "#summarySystemRole");
+        updateDropdownSummary("#DepartmentDDL", "#summaryDepartment");
+    }
+
+    function uploadAvatar() {
         $('#btnUploadAvatar').click(function (e) {
             e.preventDefault();
             $('#uploadAvatar').click();
@@ -431,83 +496,15 @@
                 });
             }
         });
+    }
 
+    function togglePassword() {
+        $('#togglePassword').click(function () {
+            var type = $(this).is(':checked') ? 'text' : 'password';
 
-
-        updateSummary();
-
-        $("#firstName, #middleName, #lastName, #suffix, #emailAddress, #birthDate, #contactNumber,#DepartmentDDL, #employmentDate, #SystemRoleDDL").change(function () {
-            updateSummary();
+            $('#createPassword, #confirmPassword').attr('type', type);
         });
-
-
-
-        $('#signUpForm').submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '@Url.Action("SignUp", "Account")',
-                type: 'POST',
-                data: $(this).serialize(),
-                success: function (response) {
-                    $('#successModal').modal('show');
-                },
-                error: function () {
-                    alert('An error occurred while processing your request.');
-                }
-            });
-        });
-
-        $('#btnRedirectLogin, #cancelBtn').click(function () {
-            window.location.href = '@Url.Action("Login", "Account")';
-        });
-
-        $('#successModal').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
-
-        // $('#successModal').on('hidden.bs.modal', function () {
-        //     window.location.href = '@Url.Action("Login", "Account")';
-        // });
-
-        function updateSummary() {
-            // debugger;
-            $("#summaryFirstName").text($("#firstName").val() || "N/A");
-            $("#summaryMiddleName").text($("#middleName").val() || "N/A");
-            $("#summaryLastName").text($("#lastName").val() || "N/A");
-            $("#summarySuffix").text($("#suffix").val() || "N/A");
-            $("#summaryEmailAddress").text($("#emailAddress").val() || "N/A");
-            $("#summaryContactNumber").text($("#contactNumber").val() || "N/A");
-            $("#summaryDepartment").text($("#DepartmentDDL").val() || "N/A");
-            $("#summarySystemRole").text($("#SystemRoleDDL").val() || "N/A");
-
-            function formatAndUpdateSummary(dateElementId, summaryElementId) {
-                var dateValue = $(dateElementId).val();
-
-                if (dateValue && dateValue.trim() !== "") {
-                    var date = new Date(dateValue);
-
-                    var formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-                    $(summaryElementId).text(formattedDate);
-                } else {
-                    $(summaryElementId).text("N/A");
-                }
-            }
-
-            formatAndUpdateSummary("#birthDate", "#summaryBirthDate");
-            formatAndUpdateSummary("#employmentDate", "#summaryEmploymentDate");
-
-            function updateDropdownSummary(dropdownSelector, summarySelector) {
-                var dropdownValue = $(dropdownSelector).val();
-                var dropdownText = $(dropdownSelector + " option:selected").text();
-                $(summarySelector).text(dropdownValue && dropdownValue.trim() !== "" ? dropdownText : "N/A");
-            }
-
-            updateDropdownSummary("#SystemRoleDDL", "#summarySystemRole");
-            updateDropdownSummary("#DepartmentDDL", "#summaryDepartment");
-        }
-    });
+    }
 
     var currentTab = 0;
     showTab(currentTab);

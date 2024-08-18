@@ -103,6 +103,7 @@ namespace Intl.Realty.Firm.Controllers
 
                     var user = viewModel.ToUserModel();
 
+                    await CreateEmailRequest(viewModel);
                     await _unitOfWork.User.AddAsync(user);
 
                     // Save Profile Picture to Server and get the model
@@ -117,7 +118,7 @@ namespace Intl.Realty.Firm.Controllers
                         user.ProfilePictureId = profilePictureModel.Id;
                     }
                     await _unitOfWork.User.UpdateAsync(user);
-                    await CreateEmailRequest(viewModel);
+                    
                     return Json(new { success = true });
                 }
             }
@@ -198,7 +199,7 @@ namespace Intl.Realty.Firm.Controllers
                     if (permissions.Any())
                     {
                         var permissionList = permissions.Select(x => x.Description).ToList();
-                        var token = JWTToken.GenerateJwtToken(validate.Item1, _jwt.Key, permissionList);
+                        var token = JWTToken.GenerateJwtToken(validate.Item1, _jwt.Key, permissionList!);
 
                         Response.Cookies.Append("JWT", token, new CookieOptions
                         {

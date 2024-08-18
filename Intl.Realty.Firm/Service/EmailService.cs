@@ -16,16 +16,20 @@ namespace Intl.Realty.Firm.Service
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            using (var smtp = CreateSmtpCredentials)
-            {
-                var mailMessage = new MailMessage(
-                            from: _mailSettings.Email,
-                            to: mailRequest.ToEmail,
-                            mailRequest.Subject,
-                            mailRequest.Body);
-                mailMessage.IsBodyHtml = true;
-                await smtp.SendMailAsync(mailMessage);
-            }
+
+            var smtp = CreateSmtpCredentials;
+
+            var mailMessage = 
+                new MailMessage(
+                        from: _mailSettings.Email,
+                        to: mailRequest.ToEmail,
+                        mailRequest.Subject,
+                        mailRequest.Body
+                        );
+
+            mailMessage.IsBodyHtml = true;
+
+            await smtp.SendMailAsync(mailMessage);
         }
 
         private SmtpClient CreateSmtpCredentials => new SmtpClient(_mailSettings.Host, _mailSettings.Port)

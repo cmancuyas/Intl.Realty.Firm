@@ -15,24 +15,17 @@ namespace Intl.Realty.Firm.Controllers
     public class SaleListingController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfigurationService _configurationService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly string _backupFileDirectory = "Uploads\\Documents\\";
         private readonly string _saleListingName = "Sale Listing";
-        private IEnumerable<Claim> _userClaims;
         public SaleListingController(IUnitOfWork unitOfWork,
-                                    IHttpContextAccessor httpContextAccessor,
                                     IConfigurationService configurationService,
                                     IFileHandlerService fileHandlerService)
         {
             _unitOfWork = unitOfWork;
-            _httpContextAccessor = httpContextAccessor;
             _configurationService = configurationService;
             _fileHandlerService = fileHandlerService;
-
-            _userClaims = httpContextAccessor.HttpContext.User.Claims;
-
         }
         public async Task<IActionResult> Index()
         {
@@ -112,7 +105,7 @@ namespace Intl.Realty.Firm.Controllers
                 await _unitOfWork.SaleListing.AddAsync(saleListingModel);
 
                 // Create FileUploadData
-                if (viewModel.CreateFileUploadListViewModel.CreateFileUploadsViewModel != null)
+                if (viewModel.CreateFileUploadListViewModel?.CreateFileUploadsViewModel != null)
                 {
                     var uploadPath = CreateFilePath(saleListingModel.Id);
 

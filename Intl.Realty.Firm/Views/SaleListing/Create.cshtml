@@ -252,7 +252,6 @@
                                             }
                                         </td>
                                         <td>
-
                                             <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
                                                    id="fileListDropDown_@i"
                                                    type="file"
@@ -289,113 +288,67 @@
 
 </div>
 
+<style>
+    .has-error {
+        border-style: solid;
+        border-color: #ff0000;
+    }
+</style>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
+        onBtnSubmit();
+
+        confirmSubmitModal();
+
+
+    }); // document.ready
+
+    function onBtnSubmit() {
         const saleListingForm = document.getElementById('SaleListingForm');
         $("#btnSubmit").click(function () {
-            debugger;
+
+            var documentTypeListSerialized = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DocumentTypeList))';
+            var documentTypeList = JSON.parse(documentTypeListSerialized);
+            var openModalFlag = true;
+            documentTypeList.forEach(function (item, index) {
+
+                var formFiles = document.forms['SaleListingForm']['CreateFileUploadListViewModel.CreateFileUploadsViewModel[' + index + '].Files'];
+                if (item.IsRequired == true && formFiles.value != "") {
+                    // Do nothing
+                } else if (item.IsRequired != true && formFiles.value == "") {
+                    // Do nothing
+                } else {
+                    var title = item.Description + " is required.";
+                    Swal.fire({
+                        title: title,
+                        text: "Please upload the required documents to proceed with the application.",
+                        icon: "error",
+                        confirmButtonColor: '#203D57'
+                    });
+
+                    openModalFlag = false;
+                }
+
+            })
             //Check if required fields are filled up
-            if ($("#SaleListingForm")[0].checkValidity()) {
-
-                var formFiles = document.forms['SaleListingForm']['filesUpload.Files'];
-                debugger;
+            if (openModalFlag == true) {
                 $("#confirmSubmitModal").modal("show");
-
-            }
-            //If fields are not filled up
-            else {
-
-                //Validate Form
-                $("#SaleListingForm")[0].reportValidity();
-
             }
 
         });
+    }
 
+    function confirmSubmitModal() {
+        const saleListingForm = document.getElementById('SaleListingForm');
         $("#btnConfirmSubmit").click(function () {
             $("#confirmSubmitModal").modal("hide");
             saleListingForm.submit();
             // CreateFileUpload();
         });
+    }
 
-        $('#addNewSector').on('click', function () {
-            var newRow =
-                `<div class="mt-3 d-flex gap-3 sector-row">
-                                            <div class="form-group w-100">
-                                                <select class="form-select">
-                                                    <option selected>Select Sector...</option>
-                                                </select>
-                                            </div>
-                                            <div class="d-flex align-items-center me-3">
-                                                <span class="remove-sector" data-toggle="tooltip" data-bs-placement="right" title="Remove">
-                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
-                                                </span>
-                                            </div>
-                                        </div>`;
-
-            $('#sectorRows').append(newRow);
-            $('#sectorRows').find('.form-select:last').select2();
-            feather.replace();
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
-        $(document).on('click', '.remove-sector', function () {
-            $(this).tooltip('hide');
-            $(this).closest('.sector-row').remove();
-        });
-
-        $('#addNewFile').on('click', function () {
-            var newRow =
-                `<tr class="border-bottom">
-                                            <td>
-                                                <input type="text" class="form-control mt-1 ms-2 mb-1" placeholder="Enter Document Title...">
-                                            </td>
-                                            <td class="text-end">
-                                                <button type="button" class="btn btn-secondary mt-2 mb-2 browse-files">
-                                                    <i data-feather="upload-cloud" class="w-15px h-auto me-1"></i>
-                                                    Browse Files
-                                                </button>
-                                                <input type="file" class="d-none file-input">
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="remove-file d-flex justify-content-center" data-toggle="tooltip" data-bs-placement="left" title="Remove">
-                                                    <i data-feather="x-circle" class="text-danger pe-cursor"></i>
-                                                </span>
-                                            </td>
-                                        </tr>`;
-
-            $('#fileTableBody').append(newRow);
-            feather.replace();
-
-            $('#fileTableBody').find('.remove-file').last().on('click', function () {
-                $(this).closest('tr').remove();
-            });
-
-            $('#fileTableBody').find('.browse-files').last().on('click', function () {
-                $(this).siblings('.file-input').trigger('click');
-            });
-
-            $('#fileTableBody').find('.file-input').last().on('change', function () {
-                var fileName = $(this).val().split('\\').pop();
-                $(this).siblings('input[type="text"]').val(fileName);
-            });
-        });
-
-        $('.remove-file').on('click', function () {
-            $(this).closest('tr').remove();
-        });
-
-        $('.browse-files').on('click', function () {
-            $(this).siblings('.file-input').trigger('click');
-        });
-
-        $('.file-input').on('change', function () {
-            var fileName = $(this).val().split('\\').pop();
-            $(this).siblings('input[type="text"]').val(fileName);
-        });
-    });
     function fileSelected(that) {
         var curval = that.dataset.curval;
         var id = that.id;
@@ -441,6 +394,7 @@
 
         showTab(currentTab);
     }
+
 </script>
 
 @section Scripts {

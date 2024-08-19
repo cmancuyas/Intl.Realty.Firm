@@ -103,7 +103,7 @@ namespace Intl.Realty.Firm.Controllers
 
                     var user = viewModel.ToUserModel();
 
-                    await CreateEmailRequest(viewModel);
+                    await CreateRegisterEmailRequest(viewModel);
                     await _unitOfWork.User.AddAsync(user);
 
                     // Save Profile Picture to Server and get the model
@@ -166,13 +166,13 @@ namespace Intl.Realty.Firm.Controllers
             }
         }
 
-        private async Task CreateEmailRequest(RegisterViewModel registerViewModel)
+        private async Task CreateRegisterEmailRequest(RegisterViewModel registerViewModel)
         {
             var template = EmailTemplate.UserRegistrationTemplate(registerViewModel);
             var mailRequest = new MailRequest
             {
                 ToEmail = registerViewModel.EmailAddress,
-                Subject = "Do not reply",
+                Subject = "INTL Realty Firm: Do not reply",
                 Body = template
             };
             await _emailService.SendEmailAsync(mailRequest);

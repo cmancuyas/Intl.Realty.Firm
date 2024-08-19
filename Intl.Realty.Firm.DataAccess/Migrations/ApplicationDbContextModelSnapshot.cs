@@ -337,7 +337,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int?>("SaleCoopId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SaleListingId")
+                    b.Property<int?>("SaleListingId")
                         .HasColumnType("int");
 
                     b.Property<int>("TransactionTypeId")
@@ -996,23 +996,21 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseCoop", null)
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseCoop", "LeaseCoop")
                         .WithMany("FileUploads")
                         .HasForeignKey("LeaseCoopId");
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseListing", null)
+                    b.HasOne("Intl.Realty.Firm.Models.Models.LeaseListing", "LeaseListing")
                         .WithMany("FileUploads")
                         .HasForeignKey("LeaseListingId");
 
-                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleCoop", null)
+                    b.HasOne("Intl.Realty.Firm.Models.Models.SaleCoop", "SaleCoop")
                         .WithMany("FileUploads")
                         .HasForeignKey("SaleCoopId");
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.SaleListing", "SaleListing")
                         .WithMany("FileUploads")
-                        .HasForeignKey("SaleListingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SaleListingId");
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
@@ -1021,6 +1019,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+
+                    b.Navigation("LeaseCoop");
+
+                    b.Navigation("LeaseListing");
+
+                    b.Navigation("SaleCoop");
 
                     b.Navigation("SaleListing");
 
@@ -1032,13 +1036,13 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("IRFDeal");
@@ -1051,13 +1055,13 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("IRFDeal");
@@ -1100,13 +1104,13 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Intl.Realty.Firm.Models.Models.TransactionType", "TransactionType")
                         .WithMany()
                         .HasForeignKey("TransactionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("IRFDeal");

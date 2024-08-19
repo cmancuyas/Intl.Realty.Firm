@@ -8,6 +8,7 @@ using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
@@ -391,30 +392,33 @@ namespace Intl.Realty.Firm.Controllers
 
             var IRFDealIds = saleListingListToBeDeleted.Select(x => x.IRFDealId).ToList();
             var IRFDealListToBeDeleted = await _unitOfWork.IRFDeal.GetAllAsync(x => IRFDealIds.Contains(x.Id));
-
-            var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.SaleListingId));
-
-            if (saleListingListToBeDeleted != null)
+            if(saleListingIds.Any() && saleListingListToBeDeleted.Any())
             {
-                try
+                var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.SaleListingId??0));
+
+                if (saleListingListToBeDeleted != null)
                 {
-                    foreach (var file in fileUploadList)
+                    try
                     {
-                        await _fileHandlerService.DeleteFile(file.FullPath);
+                        foreach (var file in fileUploadList)
+                        {
+                            await _fileHandlerService.DeleteFile(file.FullPath);
+                        }
+
+                        await _unitOfWork.FileUpload.RemoveRangeAsync(fileUploadList);
+                        await _unitOfWork.SaleListing.RemoveRangeAsync(saleListingListToBeDeleted);
+                        await _unitOfWork.IRFDeal.RemoveRangeAsync(IRFDealListToBeDeleted);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
                     }
 
-                    await _unitOfWork.FileUpload.RemoveRangeAsync(fileUploadList);
-                    await _unitOfWork.SaleListing.RemoveRangeAsync(saleListingListToBeDeleted);
-                    await _unitOfWork.IRFDeal.RemoveRangeAsync(IRFDealListToBeDeleted);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
                 }
 
+                return StatusCode(StatusCodes.Status200OK, ModelState);
             }
-
-            return StatusCode(StatusCodes.Status200OK, ModelState);
+            return BadRequest(ModelState);
         }
 
         [HttpGet]

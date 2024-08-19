@@ -288,13 +288,6 @@
 
 </div>
 
-<style>
-    .has-error {
-        border-style: solid;
-        border-color: #ff0000;
-    }
-</style>
-
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -399,6 +392,6 @@
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("~/Shared/_ValidationScriptsPartial.cshtml");
     }
 }

@@ -12,13 +12,13 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM
     {
         public int DocumentTypeId { get; set; }
         public int TransactionTypeId { get; set; }
-        public IEnumerable<SelectListItem>? DocumentTypeIEnum { get; set; }
-        public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]
         public int CreatedBy { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
+        public IEnumerable<SelectListItem>? DocumentTypeIEnum { get; set; }
+        public IEnumerable<SelectListItem>? TransactionTypeIEnum { get; set; }
     }
 }

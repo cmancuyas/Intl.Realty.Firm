@@ -1,0 +1,213 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.UserVM
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAfterLogin.cshtml";
+}
+
+<div class="mb-5">
+    <a href="@Url.Action("Index","User")" class="text-decoration-none text-blue d-flex mb-4">
+        <i data-feather="chevron-left"></i><span>Back</span>
+    </a>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12 p-4">
+            <h1 class="text-blue mb-0">Edit User</h1>
+            <hr class="my-4" />
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label fw-bolder"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="MiddleName" class="control-label fw-bolder"></label>
+                            <input asp-for="MiddleName" class="form-control" />
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label fw-bolder"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="Suffix" class="control-label fw-bolder"></label>
+                            <input asp-for="Suffix" class="form-control" />
+                            <span asp-validation-for="Suffix" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="BirthDate" class="control-label fw-bolder"></label>
+                            <input asp-for="BirthDate" type="date" class="form-control" />
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="ContactNo" class="control-label fw-bolder"></label>
+                            <input asp-for="ContactNo" class="form-control" />
+                            <span asp-validation-for="ContactNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label fw-bolder"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label fw-bolder">Department</label>
+                        <select id="DepartmentDDL" name="DepartmentDDL" class="form-select">
+                            @{
+                                @if (Model.DepartmentList != null)
+                                {
+                                    @foreach (var department in Model.DepartmentList)
+                                    {
+                                        if (department.Id == Model.DepartmentId)
+                                        {
+                                            <option value="@department.Id" selected>@department.Description</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@department.Id">@department.Description</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DepartmentId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                        {
+                            @Html.ValidationMessageFor(m => m.DepartmentId, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label fw-bolder">Role</label>
+                        <select id="RoleDDL" name="RoleDDL" class="form-select">
+                            @{
+                                @if (Model.RoleList != null)
+                                {
+                                    @foreach (var role in Model.RoleList)
+                                    {
+                                        if (role.Id == Model.RoleId)
+                                        {
+                                            <option value="@role.Id" selected>@role.Description</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@role.Id">@role.Description</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.RoleId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                        {
+                            @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label fw-bolder">Employment Status</label>
+                        <select id="EmploymentStatusDDL" name="EmploymentStatusDDL" class="form-select">
+                            @{
+                                @if (Model.EmploymentStatusList != null)
+                                {
+                                    @foreach (var employmentStatus in Model.EmploymentStatusList)
+                                    {
+                                        if (employmentStatus.Id == Model.EmploymentStatusId)
+                                        {
+                                            <option value="@employmentStatus.Id" selected>@employmentStatus.Description</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@employmentStatus.Id">@employmentStatus.Description</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.EmploymentStatusId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                        {
+                            @Html.ValidationMessageFor(m => m.EmploymentStatusId, "", new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="form-check form-switch d-flex align-items-center gap-2">
+                            <input id="isActiveCheckbox" class="form-check-input" type="checkbox" asp-for="IsActive">
+                            <label id="lblStatus" class="fw-bolder">Active</label>
+                        </div>
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="my-5" />
+                <div class="form-group d-flex justify-content-center gap-4">
+                    <input type="button" value="Cancel" class="btn btn-secondary w-15" onclick="window.location.href='@Url.Action("Index", "User")'" />
+                    <input type="submit" value="Save" class="btn btn-primary w-15" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#isActiveCheckbox').on('click', toggleStatusLabels);
+
+            toggleStatusLabels();
+        });
+
+        function toggleStatusLabels() {
+            if ($('#isActiveCheckbox').is(':checked')) {
+                $('#lblStatus').css('color', '#0d6efd').text("Active");
+            } else {
+                $('#lblStatus').css('color', '#bfbfbf').text("Inactive");
+            }
+        }
+    </script>
+
+}

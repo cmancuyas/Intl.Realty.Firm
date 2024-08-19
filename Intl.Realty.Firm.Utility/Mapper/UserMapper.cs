@@ -116,7 +116,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = viewModel.Id,
                 FirstName = viewModel.FirstName,
                 MiddleName = viewModel.MiddleName ?? "",
-                LastName = viewModel.LastName ?? "",
+                LastName = viewModel.LastName,
                 Suffix = viewModel.Suffix ?? "",
                 BirthDate = viewModel.BirthDate,
                 ContactNo = viewModel.ContactNo,

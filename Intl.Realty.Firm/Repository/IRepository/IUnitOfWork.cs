@@ -19,9 +19,10 @@
         ILeaseListingRepository LeaseListing { get; }
         ILeaseCoopRepository LeaseCoop { get; }
         IFileUploadRepository FileUpload { get; }
+        IDealStatusRepository DealStatus { get; }
         IProfilePictureRepository ProfilePicture { get; }
         IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; }
         IActivityLogRepository ActivityLog { get; }
-        void Save();
+        void SaveAsync();
     }
 }

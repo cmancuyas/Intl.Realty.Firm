@@ -21,6 +21,8 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int IRFDealId { get; set; }
         public EditIRFDealViewModel? EditIRFDealViewModel { get; set; }
         public CreateFileUploadListViewModel? CreateFileUploadListViewModel { get; set; }
+        public int DealStatusId { get; set; }
+        public DealStatus? DealStatus { get; set; }
         public List<FileUpload>? FileUploads { get; set; }
         [Required]
         public bool IsActive { get; set; }

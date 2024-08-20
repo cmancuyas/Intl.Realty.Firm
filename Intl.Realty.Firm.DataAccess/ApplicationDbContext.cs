@@ -31,6 +31,7 @@ namespace Intl.Realty.Firm.DataAccess
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
+        public DbSet<DealStatus> DealStatuses { get; set; }
         public DbSet<IRFDeal> IRFDeals { get; set; }
         public DbSet<SaleListing> SaleListings { get; set; }
         public DbSet<SaleCoop> SaleCoops { get; set; }
@@ -52,6 +53,11 @@ namespace Intl.Realty.Firm.DataAccess
             .HasOne(f => f.IRFDeal)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SaleListing>()
+            .HasOne(f => f.DealStatus)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
 
             modelBuilder.Entity<SaleCoop>()
             .HasOne(f => f.TransactionType)
@@ -59,6 +65,10 @@ namespace Intl.Realty.Firm.DataAccess
             .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<SaleCoop>()
             .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SaleCoop>()
+            .HasOne(f => f.DealStatus)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
@@ -70,6 +80,10 @@ namespace Intl.Realty.Firm.DataAccess
             .HasOne(f => f.IRFDeal)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseListing>()
+            .HasOne(f => f.DealStatus)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<LeaseCoop>()
             .HasOne(f => f.TransactionType)
@@ -77,6 +91,10 @@ namespace Intl.Realty.Firm.DataAccess
             .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<LeaseCoop>()
             .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseCoop>()
+            .HasOne(f => f.DealStatus)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
         }

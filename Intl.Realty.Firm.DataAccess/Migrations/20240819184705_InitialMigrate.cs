@@ -33,6 +33,25 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DealStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DealStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
@@ -383,6 +402,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IRFDealId = table.Column<int>(type: "int", nullable: false),
+                    DealStatusId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -392,6 +412,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaseCoops", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaseCoops_DealStatuses_DealStatusId",
+                        column: x => x.DealStatusId,
+                        principalTable: "DealStatuses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_LeaseCoops_IRFDeals_IRFDealId",
                         column: x => x.IRFDealId,
@@ -412,6 +437,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IRFDealId = table.Column<int>(type: "int", nullable: false),
+                    DealStatusId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -421,6 +447,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaseListings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaseListings_DealStatuses_DealStatusId",
+                        column: x => x.DealStatusId,
+                        principalTable: "DealStatuses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_LeaseListings_IRFDeals_IRFDealId",
                         column: x => x.IRFDealId,
@@ -441,6 +472,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IRFDealId = table.Column<int>(type: "int", nullable: false),
+                    DealStatusId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -450,6 +482,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SaleCoops", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SaleCoops_DealStatuses_DealStatusId",
+                        column: x => x.DealStatusId,
+                        principalTable: "DealStatuses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SaleCoops_IRFDeals_IRFDealId",
                         column: x => x.IRFDealId,
@@ -470,6 +507,7 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     IRFDealId = table.Column<int>(type: "int", nullable: false),
+                    DealStatusId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -479,6 +517,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SaleListings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SaleListings_DealStatuses_DealStatusId",
+                        column: x => x.DealStatusId,
+                        principalTable: "DealStatuses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SaleListings_IRFDeals_IRFDealId",
                         column: x => x.IRFDealId,
@@ -625,6 +668,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "TransactionTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LeaseCoops_DealStatusId",
+                table: "LeaseCoops",
+                column: "DealStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LeaseCoops_IRFDealId",
                 table: "LeaseCoops",
                 column: "IRFDealId");
@@ -633,6 +681,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "IX_LeaseCoops_TransactionTypeId",
                 table: "LeaseCoops",
                 column: "TransactionTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaseListings_DealStatusId",
+                table: "LeaseListings",
+                column: "DealStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeaseListings_IRFDealId",
@@ -660,6 +713,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SaleCoops_DealStatusId",
+                table: "SaleCoops",
+                column: "DealStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SaleCoops_IRFDealId",
                 table: "SaleCoops",
                 column: "IRFDealId");
@@ -668,6 +726,11 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                 name: "IX_SaleCoops_TransactionTypeId",
                 table: "SaleCoops",
                 column: "TransactionTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleListings_DealStatusId",
+                table: "SaleListings",
+                column: "DealStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SaleListings_IRFDealId",
@@ -751,6 +814,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "DealStatuses");
 
             migrationBuilder.DropTable(
                 name: "IRFDeals");

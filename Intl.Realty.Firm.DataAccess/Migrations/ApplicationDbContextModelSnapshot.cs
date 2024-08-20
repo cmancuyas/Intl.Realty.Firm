@@ -110,6 +110,42 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Intl.Realty.Firm.Models.Models.DealStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DealStatuses");
+                });
+
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -486,6 +522,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DealStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IRFDealId")
                         .HasColumnType("int");
 
@@ -502,6 +541,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DealStatusId");
 
                     b.HasIndex("IRFDealId");
 
@@ -524,6 +565,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DealStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IRFDealId")
                         .HasColumnType("int");
 
@@ -540,6 +584,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DealStatusId");
 
                     b.HasIndex("IRFDealId");
 
@@ -782,6 +828,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DealStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IRFDealId")
                         .HasColumnType("int");
 
@@ -798,6 +847,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DealStatusId");
 
                     b.HasIndex("IRFDealId");
 
@@ -820,6 +871,9 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DealStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IRFDealId")
                         .HasColumnType("int");
 
@@ -836,6 +890,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DealStatusId");
 
                     b.HasIndex("IRFDealId");
 
@@ -1033,6 +1089,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseCoop", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.DealStatus", "DealStatus")
+                        .WithMany()
+                        .HasForeignKey("DealStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
@@ -1044,6 +1106,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("DealStatus");
 
                     b.Navigation("IRFDeal");
 
@@ -1052,6 +1116,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.LeaseListing", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.DealStatus", "DealStatus")
+                        .WithMany()
+                        .HasForeignKey("DealStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
@@ -1063,6 +1133,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("DealStatus");
 
                     b.Navigation("IRFDeal");
 
@@ -1101,6 +1173,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleCoop", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.DealStatus", "DealStatus")
+                        .WithMany()
+                        .HasForeignKey("DealStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
@@ -1112,6 +1190,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("DealStatus");
 
                     b.Navigation("IRFDeal");
 
@@ -1120,6 +1200,12 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
 
             modelBuilder.Entity("Intl.Realty.Firm.Models.Models.SaleListing", b =>
                 {
+                    b.HasOne("Intl.Realty.Firm.Models.Models.DealStatus", "DealStatus")
+                        .WithMany()
+                        .HasForeignKey("DealStatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Intl.Realty.Firm.Models.Models.IRFDeal", "IRFDeal")
                         .WithMany()
                         .HasForeignKey("IRFDealId")
@@ -1131,6 +1217,8 @@ namespace Intl.Realty.Firm.DataAccess.Migrations
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("DealStatus");
 
                     b.Navigation("IRFDeal");
 

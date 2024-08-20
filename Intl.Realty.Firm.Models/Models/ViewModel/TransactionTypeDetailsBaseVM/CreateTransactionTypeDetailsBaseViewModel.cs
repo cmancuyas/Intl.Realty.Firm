@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,17 +13,17 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeDetailsBaseVM
     {
         public string PropertyAddress { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
-        public Decimal FinalSalePrice { get; set; }
-        public DateTime FinalClosingDate { get; set; }
+        public decimal FinalSalePrice { get; set; }
+        public DateTime FinalClosingDate { get; set; } = DateTime.UtcNow;
         [Column(TypeName = "decimal(18,4)")]
-        public Decimal DepositAmount { get; set; }
-        public DateTime DepositDate { get; set; }
+        public decimal DepositAmount { get; set; }
+        public DateTime DepositDate { get; set; } = DateTime.UtcNow;
         public string BuyerName { get; set; } = string.Empty;
         public string LandLordName { get; set; } = string.Empty;
         [Column(TypeName = "decimal(18,4)")]
-        public Decimal ListingCommissionPercentage { get; set; }
+        public decimal ListingCommissionPercentage { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public Decimal BuyingCommissionPercentage { get; set; }
+        public decimal BuyingCommissionPercentage { get; set; }
         public string ListingAgentName { get; set; } = string.Empty;
         public string ListingBrokerage { get; set; } = string.Empty;
         public string ListingBrokerageFax { get; set; } = string.Empty;

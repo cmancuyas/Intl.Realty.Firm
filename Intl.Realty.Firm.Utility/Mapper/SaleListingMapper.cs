@@ -12,6 +12,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
                 IRFDealId = model.IRFDealId,
+                DealStatusId = model.DealStatusId,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -25,6 +26,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 TransactionTypeId = viewModel.TransactionTypeId,
                 IRFDealId = viewModel.IRFDealId,
+                DealStatusId= viewModel.DealStatusId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -36,6 +38,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 TransactionTypeId = model.TransactionTypeId,
                 IRFDealId = model.IRFDealId,
+                DealStatusId= model.DealStatusId,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -49,6 +52,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 TransactionTypeId = model.TransactionTypeId,
                 TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
+                DealStatusId = model.DealStatusId,
                 EditIRFDealViewModel = model.IRFDeal?.ToEditIRFDealModel(),
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy??1, //1 is admin
@@ -65,6 +69,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     Id = x.Id,
                     TransactionTypeId = x.TransactionTypeId,
                     IRFDealId = x.IRFDealId,
+                    DealStatusId= x.DealStatusId,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -86,6 +91,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     TransactionType = x.TransactionType,
                     IRFDealId = x.IRFDealId,
                     IRFDeal = x.IRFDeal,
+                    DealStatusId = x.DealStatusId,
+                    DealStatus = x.DealStatus,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -106,6 +113,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     Id = x.Id,
                     TransactionTypeId = x.TransactionTypeId,
                     IRFDealId = x.IRFDealId,
+                    DealStatusId = x.DealStatusId,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,

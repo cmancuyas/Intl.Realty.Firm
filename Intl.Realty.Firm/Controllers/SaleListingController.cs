@@ -40,7 +40,11 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType,IRFDeal,DealStatus");
+            var userId = Session.UserId;
+
+            var modelList = await _unitOfWork.SaleListing
+                            .GetAllAsync(includeProperties: "TransactionType,IRFDeal,DealStatus");
+
 
             var userIdList = modelList.Select(x => x.CreatedBy).ToList();
 

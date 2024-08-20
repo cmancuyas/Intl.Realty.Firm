@@ -104,10 +104,17 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
+                string selectedDepartmentId = Request.Form["DepartmentDDL"].ToString();
+                string selectedRoleId = Request.Form["RoleDDL"].ToString();
+                string selectedEmploymentStatusId = Request.Form["EmploymentStatusDDL"].ToString();
+
                 model = viewModel.ToUserModel();
+                model.DepartmentId = Convert.ToInt32(selectedDepartmentId);
+                model.RoleId = Convert.ToInt32(selectedRoleId);
+                model.EmploymentStatusId = Convert.ToInt32(selectedEmploymentStatusId);
                 model.UpdatedAt = DateTime.Now;
                 model.UpdatedBy = userId;
-
+                model.IsActive = viewModel.IsActive;
                 await _unitOfWork.User.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });
             }

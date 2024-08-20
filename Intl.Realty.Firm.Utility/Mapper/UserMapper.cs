@@ -125,7 +125,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 RoleId = viewModel.RoleId,
                 Role = viewModel.Role,
                 Email = viewModel.Email,
-                Password = viewModel.Password,
+                Password = viewModel.Password!,
                 EmploymentStatus = viewModel.EmploymentStatus,
                 EmploymentDate = viewModel.EmploymentDate,
                 ProfilePictureId = viewModel.ProfilePictureId,

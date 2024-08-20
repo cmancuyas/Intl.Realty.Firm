@@ -15,16 +15,6 @@ namespace Intl.Realty.Firm.Controllers
         }
         public IActionResult Dashboard()
         {
-            List<BreadcrumbViewModel> breadcrumbs = new List<BreadcrumbViewModel>();
-            breadcrumbs.Add(new BreadcrumbViewModel { DisplayName = "Dashboard", Url = Url.Action("Dashboard", "Home") ?? "#" });
-
-            ViewBag.Breadcrumbs = breadcrumbs!;
-
-            if (ViewBag != null)
-            {
-                ViewBag.Breadcrumbs = breadcrumbs;
-            }
-
             return View();
         }
 

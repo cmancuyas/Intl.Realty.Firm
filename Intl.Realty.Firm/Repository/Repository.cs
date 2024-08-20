@@ -14,7 +14,6 @@ namespace Intl.Realty.Firm.Repository
 
             this.dbSet = context.Set<T>();
             //_db.Categories == dbSet
-            //_context.DocumentTypeAssignments.Include(u => u.DocumentType).Include(u => u.TransactionType);
             _context = context;
         }
         public async Task AddAsync(T entity)

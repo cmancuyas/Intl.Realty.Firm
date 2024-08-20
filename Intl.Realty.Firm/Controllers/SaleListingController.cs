@@ -8,8 +8,6 @@ using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -42,20 +40,31 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> ListPartialView()
         {
-            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType,IRFDeal");
+            var modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType,IRFDeal,DealStatus");
 
-            var viewModel = modelList.ToSaleListingListViewModel();
+            var userIdList = modelList.Select(x => x.CreatedBy).ToList();
 
-            return PartialView("~/Views/SaleListing/Partial/ListPartial.cshtml", viewModel);
+            var users = await _unitOfWork.User.GetAllAsync(x => userIdList.Contains(x.Id));
+
+            SaleListingListViewModel listViewModel = new SaleListingListViewModel();
+
+            listViewModel.SaleListingsViewModel = modelList.ToSaleListingListViewModel();
+            listViewModel.Users = users.ToList();
+
+            return PartialView("~/Views/SaleListing/Partial/ListPartial.cshtml", listViewModel);
         }
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+ 
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
+
             string transactionTypeName = _saleListingName; // 1 = Sale Listing
             viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionTypeName);
             viewModel.TransactionTypeId = viewModel.TransactionType.Id;
             viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionTypeName);
+
+
             return View(viewModel);
         }
 
@@ -76,7 +85,7 @@ namespace Intl.Realty.Firm.Controllers
             if (ModelState.IsValid)
             {
                 var createIRFDealModel = viewModel.CreateIRFDealViewModel?.ToIRFDealModel();
-                createIRFDealModel!.CreatedAt = DateTime.Now;
+                createIRFDealModel!.CreatedAt = DateTime.UtcNow;
                 createIRFDealModel.CreatedBy = userId;
                 createIRFDealModel.IsActive = true;
                 await _unitOfWork.IRFDeal.AddAsync(createIRFDealModel);
@@ -97,10 +106,14 @@ namespace Intl.Realty.Firm.Controllers
                 // Create SaleListing Data
                 viewModel.TransactionTypeId = transactionType.Id;
                 viewModel.IRFDealId = NewIRFDeal!.Id;
+                if(viewModel.DealStatusId == 0)
+                {
+                    viewModel.DealStatusId = 1;
 
-                viewModel.IsActive = viewModel.IsActive;
-                viewModel.CreatedBy = viewModel.CreatedBy;
-                viewModel.CreatedAt = viewModel.CreatedAt;
+                }
+                viewModel.IsActive = true;
+                viewModel.CreatedBy = userId;
+                viewModel.CreatedAt = DateTime.UtcNow;
 
                 var saleListingModel = viewModel.ToSaleListingModel();
                 await _unitOfWork.SaleListing.AddAsync(saleListingModel);
@@ -145,29 +158,29 @@ namespace Intl.Realty.Firm.Controllers
 
                 var files = createFileUploadViewModel.Files;
 
-                    if (files != null)
+                if (files != null)
+                {
+                    foreach (var file in files)
                     {
-                        foreach (var file in files)
+                        var (fileNameWithoutExtension, fileExtension, originalFileName) = await _fileHandlerService.UploadFile(file, updatedUploadPath);
+                        createFileUpload = new FileUpload()
                         {
-                            var (fileNameWithoutExtension, fileExtension, originalFileName) = await _fileHandlerService.UploadFile(file, updatedUploadPath);
-                            createFileUpload = new FileUpload()
-                            {
-                                FileName = fileNameWithoutExtension,
-                                FileExtension = fileExtension,
-                                OriginalFileName = originalFileName,
-                                Directory = updatedUploadPath,
-                                FullPath = updatedUploadPath + fileNameWithoutExtension + fileExtension,
-                                FileSize = file.Length.ToString(),
-                                IsActive = true,
-                                CreatedAt = DateTime.Now,
-                                CreatedBy = userId,
-                                SaleListingId = saleListingModelId,
-                                TransactionTypeId = transactionTypeId,
-                                DocumentTypeId = createFileUploadDocumentType!.Id
+                            FileName = fileNameWithoutExtension,
+                            FileExtension = fileExtension,
+                            OriginalFileName = originalFileName,
+                            Directory = updatedUploadPath,
+                            FullPath = updatedUploadPath + fileNameWithoutExtension + fileExtension,
+                            FileSize = file.Length.ToString(),
+                            IsActive = true,
+                            CreatedAt = DateTime.Now,
+                            CreatedBy = userId,
+                            SaleListingId = saleListingModelId,
+                            TransactionTypeId = transactionTypeId,
+                            DocumentTypeId = createFileUploadDocumentType!.Id
 
-                            };
-                            await _unitOfWork.FileUpload.AddAsync(createFileUpload);
-                        }              
+                        };
+                        await _unitOfWork.FileUpload.AddAsync(createFileUpload);
+                    }
                 }
                 index++;
             }
@@ -258,7 +271,7 @@ namespace Intl.Realty.Firm.Controllers
                 var fileUploadsWithFiles = FilterFileUploadsWithFilesOnly(saleListingModel.FileUploads);
                 saleListingModel.FileUploads = fileUploadsWithFiles;
                 saleListingModel.IRFDeal = viewModel.EditIRFDealViewModel?.ToIRFDealModel();
-
+                saleListingModel.DealStatusId = viewModel.DealStatusId;
                 // Update IRD Deal
                 if (saleListingModel.IRFDeal != null)
                 {
@@ -392,9 +405,9 @@ namespace Intl.Realty.Firm.Controllers
 
             var IRFDealIds = saleListingListToBeDeleted.Select(x => x.IRFDealId).ToList();
             var IRFDealListToBeDeleted = await _unitOfWork.IRFDeal.GetAllAsync(x => IRFDealIds.Contains(x.Id));
-            if(saleListingIds.Any() && saleListingListToBeDeleted.Any())
+            if (saleListingIds.Any() && saleListingListToBeDeleted.Any())
             {
-                var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.SaleListingId??0));
+                var fileUploadList = await _unitOfWork.FileUpload.GetAllAsync(x => saleListingIds.Contains(x.SaleListingId ?? 0));
 
                 if (saleListingListToBeDeleted != null)
                 {
@@ -465,6 +478,14 @@ namespace Intl.Realty.Firm.Controllers
         {
             var record = JsonConvert.SerializeObject(await _unitOfWork.FileUpload.GetAsync(x => x.Id == id));
             return Json(record);
+        }
+
+        public async Task<JsonResult> GetDocumentTypesThatHasFileUploads(int saleListingId)
+        {
+            var fileUploads = await _unitOfWork.FileUpload.GetAllAsync(x=>x.SaleListingId == saleListingId);
+            var documentTypeIds = fileUploads.Select(x => x.DocumentTypeId).ToArray();  
+
+            return Json(documentTypeIds);
         }
 
     }

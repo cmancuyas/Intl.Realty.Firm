@@ -13,7 +13,7 @@
             @* Customers *@
             <li id="dashboardNavItem" class="nav-item mx-2 mt-2 mb-1 rounded">
                 <a class="nav-link text-decoration-none d-flex align-items-center gap-3 ms-2 me-2 fw-bolder" asp-controller="Customer" asp-action="Index">
-                    <i data-feather="grid" data-toggle="tooltip" data-bs-placement="right" title="Customer"></i>
+                    <i data-feather="user" data-toggle="tooltip" data-bs-placement="right" title="Customer"></i>
                     <span>My Customers</span>
                 </a>
             </li>
@@ -39,6 +39,15 @@
                     <li>
                         <a class="sub-nav-link" asp-controller="Role" asp-action="Index">
                             <span>Roles</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="administratorSubNavItem sub-nav-item">
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="sub-nav-link" asp-controller="EmploymentStatus" asp-action="Index">
+                            <span>Employment Status</span>
                         </a>
                     </li>
                 </ul>
@@ -85,6 +94,15 @@
                     <li>
                         <a class="sub-nav-link" asp-controller="DocumentTypeAssignment" asp-action="Index">
                             <span>Document Type Assignments</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="administratorSubNavItem sub-nav-item">
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="sub-nav-link" asp-controller="DealStatus" asp-action="Index">
+                            <span>Deal Status</span>
                         </a>
                     </li>
                 </ul>

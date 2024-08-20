@@ -1,7 +1,5 @@
 ﻿using Intl.Realty.Firm.Helper;
-using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.ViewModel.DocumentTypeAssignmentVM;
-using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Utility.Utilities;
@@ -60,7 +58,7 @@ namespace Intl.Realty.Firm.Controllers
             if (ModelState.IsValid)
             {
                 await _unitOfWork.DocumentTypeAssignment.AddAsync(model);
-                _unitOfWork.Save();
+                _unitOfWork.SaveAsync();
                 TempData["success"] = "DocumentType Assignment created successfully";
                 return RedirectToAction(nameof(Index), new { addSuccess = true });
             }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Intl.Realty.Firm.Models.Helpers
 {
-    public class FileUploadList : Response
+    public class DocumentTypeWithFileUpload
     {
-        public List<IFormFile>? Files { get; set; }
+        public int DocumentTypeId { get;set; }
+        public bool hasFile { get; set; }
+
     }
 }

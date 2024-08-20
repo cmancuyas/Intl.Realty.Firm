@@ -31,5 +31,6 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.UserVM
         public EmploymentStatus? EmploymentStatus { get; set; }
         public DateTime? EmploymentDate { get; set; }
         public int? ProfilePictureId { get; set; }
+        public List<User>? Users { get; set; }
     }
 }

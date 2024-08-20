@@ -1,5 +1,5 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
-@model List<SaleListingViewModel>
+@model SaleListingListViewModel
 
 <div>
 
@@ -37,6 +37,9 @@
                         Property Address
                     </th>
                     <th class="text-lg-start">
+                        Deal Status
+                    </th>
+                    <th class="text-lg-start">
                         Created At
                     </th>
                     <th class="text-lg-start">
@@ -48,7 +51,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.SaleListingsViewModel!)
                 {
                     <tr data-SaleListing-id="@item.Id">
                         <input type="hidden" name="id" id="id" />
@@ -65,10 +68,17 @@
                             }
                         </td>
                         <td class="text-lg-start">
+                            @Html.DisplayFor(modelItem => @item.DealStatus!.Description)
+                        </td>
+                        <td class="text-lg-start">
                             @Html.DisplayFor(modelItem => @item.CreatedAt)
                         </td>
                         <td class="text-lg-start">
-                            @Html.DisplayFor(modelItem => @item.CreatedBy)
+                            @{
+                                var user = Model.Users.Where(x => x.Id == item.CreatedBy).FirstOrDefault();
+                                var fullName = user.FirstName + " " + user.LastName;
+                            }
+                            @fullName
                         </td>
                         <td class="text-lg-start">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">

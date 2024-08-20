@@ -23,6 +23,7 @@ namespace Intl.Realty.Firm.Repository
         public ILeaseListingRepository LeaseListing { get; private set; }
         public ILeaseCoopRepository LeaseCoop { get; private set; }
         public IFileUploadRepository FileUpload { get; private set; }
+        public IDealStatusRepository DealStatus { get; private set; }
         public IProfilePictureRepository ProfilePicture { get; private set; }
         public IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; private set; }
         public IActivityLogRepository ActivityLog { get; private set; }
@@ -48,13 +49,14 @@ namespace Intl.Realty.Firm.Repository
             LeaseCoop = new LeaseCoopRepository(_db);
             ProfilePicture = new ProfilePictureRepository(_db);
             FileUpload = new FileUploadRepository(_db);
+            DealStatus = new DealStatusRepository(_db);
             FileDocumentTypeBridge = new FileDocumentTypeBridgeRepository(_db);
             ActivityLog = new ActivityLogRepository(_db);
         }
 
-        public void Save()
+        public void SaveAsync()
         {
-            _db.SaveChanges();
+            _db.SaveChangesAsync();
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Intl.Realty.Firm.Models.Models
+{
+    public class DealStatus : BaseModel
+    {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+}

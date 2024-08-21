@@ -11,10 +11,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DENR_FAPIS.Helper;
-using Intl.Realty.Firm.Models.Models.Auxiliary;
 using Intl.Realty.Firm.Models.Models.DataTable;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Intl.Realty.Firm.Models.Auxiliary;
 
 var builder = WebApplication.CreateBuilder(args);
 

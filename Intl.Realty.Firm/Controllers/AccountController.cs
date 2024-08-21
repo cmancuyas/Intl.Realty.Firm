@@ -8,8 +8,8 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Helper;
-using Intl.Realty.Firm.Helper.Auxiliary;
 using Intl.Realty.Firm.Models.Models.ViewModel.AccountVM;
+using Intl.Realty.Firm.Models.Auxiliary;
 
 namespace Intl.Realty.Firm.Controllers
 {

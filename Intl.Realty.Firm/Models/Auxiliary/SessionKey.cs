@@ -1,4 +1,4 @@
-﻿namespace Intl.Realty.Firm.Helper.Auxiliary;
+﻿namespace Intl.Realty.Firm.Models.Auxiliary;
 
 public class SessionKey
 {

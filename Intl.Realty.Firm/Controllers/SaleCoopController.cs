@@ -21,7 +21,7 @@ namespace Intl.Realty.Firm.Controllers
         private readonly IExportService<SaleCoopExport> _exportService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly string _backupFileDirectory = "Uploads\\Documents\\";
-        private readonly string _saleCoopName = "Sale Coop";
+        private readonly string _transactionTypeName = "Sale Coop";
         public SaleCoopController(IUnitOfWork unitOfWork,
                                     IConfigurationService configurationService,
                                     IExportService<SaleCoopExport> exportService,
@@ -69,7 +69,7 @@ namespace Intl.Realty.Firm.Controllers
 
             CreateSaleCoopViewModel viewModel = new CreateSaleCoopViewModel();
 
-            string transactionTypeName = _saleCoopName; // 1 = Sale Listing
+            string transactionTypeName = _transactionTypeName; // 1 = Sale Listing
             viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionTypeName);
             viewModel.TransactionTypeId = viewModel.TransactionType.Id;
             viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionTypeName);
@@ -84,8 +84,8 @@ namespace Intl.Realty.Firm.Controllers
         {
             var userId = Session.UserId;
 
-            string transactionTypeName = _saleCoopName; // 1 = Sale Listing
-            var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleCoopName); //Sale Listing
+            string transactionTypeName = _transactionTypeName; // 1 = Sale Listing
+            var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _transactionTypeName); //Sale Listing
             viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
             viewModel.TransactionTypeId = viewModel.TransactionType.Id;
             viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionType.Description);
@@ -163,7 +163,7 @@ namespace Intl.Realty.Firm.Controllers
                 var createFileUploadDocumentType = documentTypeList.Where(x => x.Id == createFileUploadViewModel.DocumentTypeId).FirstOrDefault();
                 if (createFileUploadDocumentType != null)
                 {
-                    updatedUploadPath = Path.Combine(uploadPath, createFileUploadDocumentType.Description + "\\");
+                    updatedUploadPath = Path.Combine(uploadPath, _transactionTypeName, createFileUploadDocumentType.Description + "\\");
                 }
 
                 var files = createFileUploadViewModel.Files;
@@ -235,7 +235,7 @@ namespace Intl.Realty.Firm.Controllers
 
             int saleCoopId = saleCoopModel.Id;
 
-            var fileUploads = await _unitOfWork.FileUpload.GetFileUploadsBySaleCoopIdAsync(saleCoopId);
+            var fileUploads = await _unitOfWork.FileUpload.GetAllAsync(x => x.SaleCoopId == saleCoopId, includeProperties: "SaleCoop,TransactionType,DocumentType");
 
             if (saleCoopModel == null)
             {
@@ -243,13 +243,13 @@ namespace Intl.Realty.Firm.Controllers
             }
             var viewModel = saleCoopModel.ToEditSaleCoopViewModel();
 
-            viewModel.FileUploads = fileUploads;
+            viewModel.FileUploads = fileUploads.ToList();
 
             var fileUploadsWithFiles = FilterFileUploadsWithFilesOnly(viewModel.FileUploads);
 
             viewModel.FileUploads = fileUploadsWithFiles;
 
-            viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(saleCoopModel?.TransactionType?.Description ?? _saleCoopName);
+            viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(saleCoopModel?.TransactionType?.Description ?? _transactionTypeName);
             
             var dealStatusIEnum = await _unitOfWork.DealStatus.GetAllAsync();
             viewModel.DealStatusList = dealStatusIEnum.ToList();
@@ -270,8 +270,8 @@ namespace Intl.Realty.Firm.Controllers
             {
                 var userId = Session.UserId;
 
-                string transactionTypeName = _saleCoopName; // 1 = Sale Listing
-                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleCoopName); //Sale Listing
+                string transactionTypeName = _transactionTypeName; // 1 = Sale Listing
+                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _transactionTypeName); //Sale Listing
                 viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
                 viewModel.TransactionTypeId = viewModel.TransactionType.Id;
                 viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionType.Description);

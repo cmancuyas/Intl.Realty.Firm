@@ -6,5 +6,6 @@ namespace Intl.Realty.Firm.Repository.IRepository
     {
         Task UpdateAsync(FileUpload model);
         Task<List<FileUpload>> GetFileUploadsBySaleListingIdAsync(int saleListingId);
+        Task<List<FileUpload>> GetFileUploadsBySaleCoopIdAsync(int saleListingId);
     }
 }

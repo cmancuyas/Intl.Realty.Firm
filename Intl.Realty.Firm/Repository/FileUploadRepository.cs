@@ -23,7 +23,17 @@ namespace Intl.Realty.Firm.Repository
 
             return records;
         }
+        public Task<List<FileUpload>> GetFileUploadsBySaleCoopIdAsync(int saleCoopId)
+        {
+            var records = _db.FileUploads
+                            .Include(x => x.TransactionType)
+                            .Include(x => x.SaleCoop)
+                            .Include(x => x.DocumentType)
+                            .Where(x => x.SaleCoopId == saleCoopId)
+                            .ToListAsync();
 
+            return records;
+        }
         public Task UpdateAsync(FileUpload model)
         {
             _db.FileUploads.Update(model);

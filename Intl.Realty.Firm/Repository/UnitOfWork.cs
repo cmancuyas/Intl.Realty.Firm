@@ -58,5 +58,9 @@ namespace Intl.Realty.Firm.Repository
         {
             _db.SaveChangesAsync();
         }
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
     }
 }

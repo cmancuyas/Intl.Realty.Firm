@@ -24,5 +24,6 @@
         IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; }
         IActivityLogRepository ActivityLog { get; }
         void SaveAsync();
+        void Save();
     }
 }

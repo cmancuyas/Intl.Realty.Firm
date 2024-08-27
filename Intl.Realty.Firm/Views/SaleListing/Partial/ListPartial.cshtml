@@ -2,7 +2,6 @@
 @model SaleListingListViewModel
 
 <div>
-
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
             <h1 class="text-blue mb-0">Sales Listing</h1>
@@ -84,9 +83,9 @@
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
                                 Edit
                             </a>
-                            <button id="btnChangeStatus" type="button" onclick="openChangeStatusModal(@item.Id)"class="btn btn-secondary" data-position-id="@item.Id">
+        @*                     <button id="btnChangeStatus" type="button" onclick="openChangeStatusModal(@item.Id)"class="btn btn-secondary" data-position-id="@item.Id">
                                 Change Status
-                            </button>
+                            </button> *@
                         </td>
                     </tr>
                 }

@@ -23,11 +23,6 @@
         $(document).ready(function () {
             $('#ListPartialContainer').load('/User/ListPartialView');
         });
-        function OpenDeleteModal(id) {
-            $('#DeleteModalContainer').load('/User/DeleteModal/' + id, function () {
-                $("#deleteConfirmModal").modal("show");
-            });
-        }
         function ShowDetails(id) {
             $('#item-' + id).addClass('c-show-hidden');
         }

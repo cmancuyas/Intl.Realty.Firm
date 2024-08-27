@@ -1,13 +1,16 @@
-﻿using Intl.Realty.Firm.Helper;
-using Intl.Realty.Firm.Models.Helpers;
+﻿using DENR_FAPIS.Models.Utilities;
+using Intl.Realty.Firm.Helper;
 using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
+using Intl.Realty.Firm.Models.Models.DataTable;
 using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
+using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Service.IServices;
+using Intl.Realty.Firm.Utilities;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Intl.Realty.Firm.Controllers
 {
@@ -15,15 +18,18 @@ namespace Intl.Realty.Firm.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfigurationService _configurationService;
+        private readonly IExportService<SaleListingExport> _exportService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly string _backupFileDirectory = "Uploads\\Documents\\";
         private readonly string _saleListingName = "Sale Listing";
         public SaleListingController(IUnitOfWork unitOfWork,
                                     IConfigurationService configurationService,
+                                    IExportService<SaleListingExport> exportService,
                                     IFileHandlerService fileHandlerService)
         {
             _unitOfWork = unitOfWork;
             _configurationService = configurationService;
+            _exportService = exportService;
             _fileHandlerService = fileHandlerService;
         }
         public async Task<IActionResult> Index()
@@ -31,7 +37,7 @@ namespace Intl.Realty.Firm.Controllers
 
             //Get values from the current user
 
-            List<SaleListing> modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "TransactionType") as List<SaleListing> ?? throw new ArgumentException();
+            List<SaleListing> modelList = await _unitOfWork.SaleListing.GetAllAsync(includeProperties: "IRFDeal,TransactionType,DealStatus") as List<SaleListing> ?? throw new ArgumentException();
 
             List<SaleListingViewModel> viewModelList = modelList.ToSaleListingListViewModel();
 
@@ -43,7 +49,7 @@ namespace Intl.Realty.Firm.Controllers
             var userId = Session.UserId;
 
             var modelList = await _unitOfWork.SaleListing
-                            .GetAllAsync(includeProperties: "TransactionType,IRFDeal,DealStatus");
+                            .GetAllAsync(includeProperties: "IRFDeal,TransactionType,DealStatus");
 
 
             var userIdList = modelList.Select(x => x.CreatedBy).ToList();
@@ -60,7 +66,7 @@ namespace Intl.Realty.Firm.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
- 
+
             CreateSaleListingViewModel viewModel = new CreateSaleListingViewModel();
 
             string transactionTypeName = _saleListingName; // 1 = Sale Listing
@@ -110,7 +116,7 @@ namespace Intl.Realty.Firm.Controllers
                 // Create SaleListing Data
                 viewModel.TransactionTypeId = transactionType.Id;
                 viewModel.IRFDealId = NewIRFDeal!.Id;
-                if(viewModel.DealStatusId == 0)
+                if (viewModel.DealStatusId == 0)
                 {
                     viewModel.DealStatusId = 1;
 
@@ -196,7 +202,7 @@ namespace Intl.Realty.Firm.Controllers
 
             var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == transactionTypeName);
 
-            var documentTypeAssignmentListViewModel = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties: "DocumentType,TransactionType") as List<DocumentTypeAssignment>;
+            var documentTypeAssignmentListViewModel = await _unitOfWork.DocumentTypeAssignment.GetAllAsync(x => x.TransactionTypeId == transactionType.Id, includeProperties: "TransactionType,DocumentType") as List<DocumentTypeAssignment>;
 
             var documentTypeIds = documentTypeAssignmentListViewModel?
                                     .GroupBy(x => x.DocumentType)
@@ -225,7 +231,7 @@ namespace Intl.Realty.Firm.Controllers
             {
                 return NotFound();
             }
-            var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: "IRFDeal,TransactionType");
+            var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: "IRFDeal,TransactionType,DealStatus");
 
             int saleListingId = saleListingModel.Id;
 
@@ -244,6 +250,9 @@ namespace Intl.Realty.Firm.Controllers
             viewModel.FileUploads = fileUploadsWithFiles;
 
             viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(saleListingModel?.TransactionType?.Description ?? _saleListingName);
+            
+            var dealStatusIEnum = await _unitOfWork.DealStatus.GetAllAsync();
+            viewModel.DealStatusList = dealStatusIEnum.ToList();
 
             return View(viewModel);
         }
@@ -262,12 +271,12 @@ namespace Intl.Realty.Firm.Controllers
                 var userId = Session.UserId;
 
                 string transactionTypeName = _saleListingName; // 1 = Sale Listing
-                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName, tracked: true); //Sale Listing
+                var transactionType = await _unitOfWork.TransactionType.GetAsync(x => x.Description == _saleListingName); //Sale Listing
                 viewModel.TransactionType = await _unitOfWork.TransactionType.GetByNameAsync(transactionType.Description);
                 viewModel.TransactionTypeId = viewModel.TransactionType.Id;
                 viewModel.DocumentTypeList = await GetDocumentTypesFromDocumentTypeAssignment(transactionType.Description);
 
-                var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: ("IRFDeal,FileUploads,TransactionType"), tracked: true);
+                var saleListingModel = await _unitOfWork.SaleListing.GetAsync(x => x.Id == id, includeProperties: "IRFDeal");
                 if (saleListingModel == null)
                 {
                     return NotFound();
@@ -275,7 +284,9 @@ namespace Intl.Realty.Firm.Controllers
                 var fileUploadsWithFiles = FilterFileUploadsWithFilesOnly(saleListingModel.FileUploads);
                 saleListingModel.FileUploads = fileUploadsWithFiles;
                 saleListingModel.IRFDeal = viewModel.EditIRFDealViewModel?.ToIRFDealModel();
-                saleListingModel.DealStatusId = viewModel.DealStatusId;
+
+                string selectedDealStatusId = Request.Form["DealStatusDDL"].ToString();
+                saleListingModel.DealStatusId = Convert.ToInt32(selectedDealStatusId);
                 // Update IRD Deal
                 if (saleListingModel.IRFDeal != null)
                 {
@@ -486,11 +497,289 @@ namespace Intl.Realty.Firm.Controllers
 
         public async Task<JsonResult> GetDocumentTypesThatHasFileUploads(int saleListingId)
         {
-            var fileUploads = await _unitOfWork.FileUpload.GetAllAsync(x=>x.SaleListingId == saleListingId);
-            var documentTypeIds = fileUploads.Select(x => x.DocumentTypeId).ToArray();  
+            var fileUploads = await _unitOfWork.FileUpload.GetAllAsync(x => x.SaleListingId == saleListingId);
+            var documentTypeIds = fileUploads.Select(x => x.DocumentTypeId).ToArray();
 
             return Json(documentTypeIds);
         }
+        [HttpPost]
+        public async Task<IActionResult> GetSaleListingList([FromBody] DtParameters dtParameters)
+        {
+            var searchBy = dtParameters.Search?.Value;
 
+            // Default order criteria
+            var orderCriteria = "Id";
+            var orderAscendingDirection = true;
+
+            // Initialize order criteria
+            (orderCriteria, orderAscendingDirection) = InitializeOrderCriteria(dtParameters, orderCriteria, orderAscendingDirection);
+
+            // Query initialization
+            var result = await _unitOfWork.SaleListing.AsQueryableAsync(includeProperties: "IRFDeal,TransactionType,DealStatus");
+
+            if (!string.IsNullOrEmpty(searchBy))
+            {
+                if (searchBy.Contains(":") || searchBy.Contains("+"))
+                {
+                    result = FilterSearchWithParameters(result, searchBy);
+                }
+                else
+                {
+                    result = DefaultFilterSearch(result, searchBy);
+                }
+            }
+
+            // Apply ordering
+            result = orderAscendingDirection ? result.OrderByDynamic(orderCriteria!, DtOrderDir.Asc) : result.OrderByDynamic(orderCriteria!, DtOrderDir.Desc);
+
+            // Get the count of filtered and total results
+            var filteredResultsCount = result.Count();
+            var totalResultsCount = await _unitOfWork.SaleListing.CountAsync();
+
+            // Prepare the result for DataTables
+            var jsonResult = new DtResult<SaleListing>
+            {
+                Draw = dtParameters.Draw,
+                RecordsTotal = totalResultsCount,
+                RecordsFiltered = filteredResultsCount,
+                Data = await result
+                    .Skip(dtParameters.Start)
+                    .Take(dtParameters.Length)
+                    .ToListAsync()
+            };
+
+            return Json(jsonResult);
+        }
+
+        private IQueryable<SaleListing> DefaultFilterSearch(IQueryable<SaleListing> result, string searchBy)
+        {
+            result = result.Where(r => r.TransactionType!.Description != null && r.TransactionType.Description.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.DealStatus!.Description != null && r.DealStatus.Description.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.PropertyAddress != null && r.IRFDeal!.PropertyAddress.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyerAgentName != null && r.IRFDeal!.BuyerAgentName.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyerBrokerage != null && r.IRFDeal!.BuyerBrokerage.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyerBrokerageFax != null && r.IRFDeal!.BuyerBrokerageFax.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyerName != null && r.IRFDeal!.BuyerName.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyerBrokerageFax != null && r.IRFDeal!.BuyerBrokerageFax.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyersLawyer != null && r.IRFDeal!.BuyersLawyer.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyersLawyerAddress != null && r.IRFDeal!.BuyersLawyerAddress.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyersPhoneNumber != null && r.IRFDeal!.BuyersPhoneNumber.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.BuyingCommissionPercentage.ToString() != null && r.IRFDeal!.BuyingCommissionPercentage.ToString().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.SellersLawyer != null && r.IRFDeal!.SellersLawyer.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.SellersLawyerAddress != null && r.IRFDeal!.SellersLawyerAddress.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.SellersPhoneNumber != null && r.IRFDeal!.SellersPhoneNumber.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.ListingAgentName != null && r.IRFDeal!.ListingAgentName.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.ListingBrokerage != null && r.IRFDeal!.ListingBrokerage.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.ListingBrokerageFax != null && r.IRFDeal!.ListingBrokerageFax.ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.ListingCommissionPercentage.ToString() != null && r.IRFDeal!.ListingCommissionPercentage.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.FinalSalePrice.ToString() != null && r.IRFDeal!.FinalSalePrice.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.FinalClosingDate.ToString() != null && r.IRFDeal!.FinalClosingDate.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.DepositAmount.ToString() != null && r.IRFDeal!.DepositAmount.ToString().ToUpper().Contains(searchBy.ToUpper()) ||
+                   r.IRFDeal!.DepositDate.ToString() != null && r.IRFDeal!.DepositDate.ToString().ToUpper().Contains(searchBy.ToUpper())
+                   );
+            return result;
+        }
+        private IQueryable<SaleListing> FilterSearchWithParameters(IQueryable<SaleListing> query, string searchBy)
+        {
+            var filters = searchBy.Split('+'); // Split the input by '+'
+
+            foreach (var filter in filters)
+            {
+                var keyValue = filter.Split(':'); // Split each filter by ':'
+                if (keyValue.Length != 2) continue;
+
+                var key = keyValue[0].Trim().ToLower();
+                var value = keyValue[1].Trim().ToUpper();
+
+                switch (key)
+                {
+                    case "municipality":
+                        query = query.Where(r => r.TransactionType != null && r.TransactionType.Description.ToUpper().Contains(value));
+                        break;
+                    case "buyeragentname":
+                        query = query.Where(r => r.IRFDeal!.BuyerAgentName != null && r.IRFDeal.BuyerAgentName.ToUpper().Contains(value));
+                        break;
+                    case "BuyerBrokerage":
+                        query = query.Where(r => r.IRFDeal!.BuyerBrokerage != null && r.IRFDeal.BuyerBrokerage.ToUpper().Contains(value));
+                        break;
+                    case "BuyerBrokerageFax":
+                        query = query.Where(r => r.IRFDeal!.BuyerBrokerageFax != null && r.IRFDeal.BuyerBrokerageFax.ToUpper().Contains(value));
+                        break;
+                    case "BuyerName":
+                        query = query.Where(r => r.IRFDeal!.BuyerName != null && r.IRFDeal.BuyerName.ToUpper().Contains(value));
+                        break;
+                    case "buyerslawyer":
+                        query = query.Where(r => r.IRFDeal!.BuyersLawyer != null && r.IRFDeal.BuyersLawyer.ToUpper().Contains(value));
+                        break;
+                    case "BuyersLawyerAddress":
+                        query = query.Where(r => r.IRFDeal!.BuyersLawyerAddress != null && r.IRFDeal.BuyersLawyerAddress.ToUpper().Contains(value));
+                        break;
+                    case "BuyersPhoneNumber":
+                        query = query.Where(r => r.IRFDeal!.BuyersPhoneNumber != null && r.IRFDeal.BuyersPhoneNumber.ToUpper().Contains(value));
+                        break;
+                    case "BuyingCommissionPercentage":
+                        query = query.Where(r => r.IRFDeal!.BuyingCommissionPercentage.ToString().ToUpper().Contains(value));
+                        break;
+                    case "SellersLawyer":
+                        query = query.Where(r => r.IRFDeal!.SellersLawyer != null && r.IRFDeal.SellersLawyer.ToUpper().Contains(value));
+                        break;
+                    case "SellersLawyerAddress":
+                        query = query.Where(r => r.IRFDeal!.SellersLawyerAddress != null && r.IRFDeal.SellersLawyerAddress.ToUpper().Contains(value));
+                        break;
+                    case "SellersPhoneNumber":
+                        query = query.Where(r => r.IRFDeal!.SellersPhoneNumber != null && r.IRFDeal.SellersPhoneNumber.ToUpper().Contains(value));
+                        break;
+                    case "ListingAgentName":
+                        query = query.Where(r => r.IRFDeal!.ListingAgentName != null && r.IRFDeal.ListingAgentName.ToUpper().Contains(value));
+                        break;
+                    case "ListingBrokerage":
+                        query = query.Where(r => r.IRFDeal!.ListingBrokerage != null && r.IRFDeal.ListingBrokerage.ToUpper().Contains(value));
+                        break;
+                    case "ListingBrokerageFax":
+                        query = query.Where(r => r.IRFDeal!.ListingBrokerageFax != null && r.IRFDeal.ListingBrokerageFax.ToUpper().Contains(value));
+                        break;
+                    case "ListingCommissionPercentage":
+                        query = query.Where(r => r.IRFDeal!.ListingCommissionPercentage.ToString().ToUpper().Contains(value));
+                        break;
+                    case "FinalSalePrice":
+                        query = query.Where(r => r.IRFDeal!.FinalSalePrice.ToString() != null && r.IRFDeal.FinalSalePrice.ToString().ToUpper().Contains(value));
+                        break;
+                    case "FinalClosingDate":
+                        query = query.Where(r => r.IRFDeal!.FinalClosingDate.ToString() != null && r.IRFDeal.FinalClosingDate.ToString().ToUpper().Contains(value));
+                        break;
+                    case "DepositAmount":
+                        query = query.Where(r => r.IRFDeal!.DepositAmount.ToString() != null && r.IRFDeal.DepositAmount.ToString().Contains(value));
+                        break;
+                    case "DepositDate":
+                        query = query.Where(r => r.IRFDeal!.DepositDate.ToString() != null && r.IRFDeal.DepositDate.ToString().Contains(value));
+                        break;
+                    case "DealStatus":
+                        query = query.Where(r => r.DealStatus!.Description! != null && r.DealStatus!.Description!.ToUpper().Contains(value));
+                        break;
+                    default:
+                        // If there's an unrecognized filter key, you can choose to ignore it or handle it as needed
+                        break;
+                }
+            }
+
+            return query;
+        }
+
+        private (string, bool) InitializeOrderCriteria(DtParameters dtParameters, string orderCriteria, bool orderAscendingDirection)
+        {
+            var orderCriteriaTemp = "Id";
+            var orderAscendingDirectionTemp = true;
+
+            if (dtParameters.Order != null)
+            {
+                // in this example we just default sort on the 1st column
+                try
+                {
+                    orderCriteriaTemp = dtParameters.Columns[dtParameters.Order[0].Column].Data;
+                    orderAscendingDirectionTemp = dtParameters.Order[0].Dir.ToString().ToLower() == "asc";
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        orderCriteriaTemp = dtParameters.Columns[dtParameters.Order[1].Column].Data;
+                        orderAscendingDirectionTemp = dtParameters.Order[1].Dir.ToString().ToLower() == "asc";
+                    }
+                    catch (Exception ex1)
+                    {
+                        orderCriteriaTemp = "Id";
+                        orderAscendingDirectionTemp = true;
+                    }
+                }
+            }
+
+            if (orderCriteriaTemp == null)
+            {
+                orderCriteriaTemp = "Id";
+                orderAscendingDirectionTemp = true;
+            }
+
+            if (orderCriteriaTemp != null)
+            {
+                orderCriteria = orderCriteriaTemp;
+                orderAscendingDirection = orderAscendingDirectionTemp;
+            }
+
+            return (orderCriteria, orderAscendingDirection);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExportTable([FromQuery] string format, [FromForm] string dtParametersJson)
+        {
+            var dtParameters = new DtParameters();
+            if (!string.IsNullOrEmpty(dtParametersJson))
+            {
+                dtParameters = JsonConvert.DeserializeObject<DtParameters>(dtParametersJson);
+            }
+            if (dtParameters != default)
+            {
+                var searchBy = dtParameters.Search?.Value;
+
+                var orderCriteria = "Id";
+                var orderAscendingDirection = true;
+
+                (orderCriteria, orderAscendingDirection) = InitializeOrderCriteria(dtParameters, orderCriteria, orderAscendingDirection);
+
+                var result = _unitOfWork.SaleListing.AsQueryable(includeProperties: "IRFDeal,TransactionType,DealStatus");
+
+                if (!string.IsNullOrEmpty(searchBy))
+                {
+                    if (searchBy.Contains(":") || searchBy.Contains("+"))
+                    {
+                        result = FilterSearchWithParameters(result, searchBy);
+                    }
+                    else
+                    {
+                        result = DefaultFilterSearch(result, searchBy);
+                    };
+
+                }
+
+                result = orderAscendingDirection ? result.OrderByDynamic(orderCriteria, DtOrderDir.Asc) : result.OrderByDynamic(orderCriteria, DtOrderDir.Desc);
+
+                var resultList = await result.ToListAsync();
+
+                var resultListForExport = resultList.ToSaleListingListExport();
+
+                switch (format)
+                {
+                    case ExportFormat.Excel:
+                        return File(
+                            await _exportService.ExportToExcel(resultListForExport),
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            "data.xlsx");
+
+                    case ExportFormat.Csv:
+                        return File(_exportService.ExportToCsv(resultListForExport),
+                            "application/csv",
+                            "data.csv");
+
+                    case ExportFormat.Html:
+                        return File(_exportService.ExportToHtml(resultListForExport),
+                            "application/csv",
+                            "data.html");
+
+                    case ExportFormat.Json:
+                        return File(_exportService.ExportToJson(resultListForExport),
+                            "application/json",
+                            "data.json");
+
+                    case ExportFormat.Xml:
+                        return File(_exportService.ExportToXml(resultListForExport),
+                            "application/xml",
+                            "data.xml");
+
+                    case ExportFormat.Yaml:
+                        return File(_exportService.ExportToYaml(resultListForExport),
+                            "application/yaml",
+                            "data.yaml");
+                }
+            }
+            return null;
+        }
     }
 }

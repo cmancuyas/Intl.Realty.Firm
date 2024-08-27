@@ -1,4 +1,4 @@
-﻿using Intl.Realty.Firm.Helper.Auxiliary;
+﻿using Intl.Realty.Firm.Models.Auxiliary;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.Auxiliary;
 using Intl.Realty.Firm.Repository.IRepository;

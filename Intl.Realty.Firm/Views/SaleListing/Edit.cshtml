@@ -37,8 +37,41 @@
             </div>
 
             <div class="form-submit-tab mt-4 p-0">
+
                 <div class="col-md-12 p-4">
-                    <h3 class="text-blue mb-0">New Sale Listing</h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="text-blue mb-0">Edit SaleListing</h1>
+                        <div class="w-25">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label fw-bolder">Deal Status</label>
+                                    <select id="DealStatusDDL" name="DealStatusDDL" class="form-select">
+                                        @{
+                                            @if (Model.DealStatusList != null)
+                                            {
+                                                @foreach (var dealStatus in Model.DealStatusList)
+                                                {
+                                                    if (dealStatus.Id == Model.DealStatusId)
+                                                    {
+                                                        <option value="@dealStatus.Id" selected>@dealStatus.Description</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@dealStatus.Id">@dealStatus.Description</option>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DealStatusId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                                    {
+                                        @Html.ValidationMessageFor(m => m.DealStatusId, "", new { @class = "text-danger" })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <hr class="my-4" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row mb-4">
@@ -389,7 +422,7 @@
 
         $("#btnConfirmSave").click(function () {
             $("#confirmSaveModal").modal("hide");
-            $('input[name=DealStatusId]').val('2');
+            $('input[name=DealStatusId]').val('2'); // Saved
             saleListingForm.submit();
         });
     }
@@ -397,7 +430,7 @@
         const saleListingForm = document.getElementById('SaleListingForm');
         $("#btnConfirmSubmit").click(function () {
             $("#confirmSubmitModal").modal("hide");
-            $('input[name=DealStatusId]').val('1');
+            $('input[name=DealStatusId]').val('1'); // Submitted
             saleListingForm.submit();
         });
     }
@@ -434,13 +467,13 @@
             var documentType = documentTypesWithFileUploads.find(x => x == item.Id);
      
             if (item.IsRequired == true && formFiles.value != "") {
-                // Do nothing
+                // Do nothing - means valid
             } else if (item.IsRequired != true && formFiles.value == "") {
-                // Do nothing
+                // Do nothing - means valid
             } else if (item.IsRequired != true && formFiles.value != "") {
-                // Do nothing
+                // Do nothing - means valid
             } else if(documentType && item.IsRequired == true){
-                // Do nothing
+                // Do nothing - means valid
             }
             else {
                 openModalFlag = false;

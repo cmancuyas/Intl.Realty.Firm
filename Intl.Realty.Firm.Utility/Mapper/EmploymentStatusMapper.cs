@@ -24,7 +24,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = model.Id,
                 Code = model.Code,
-                Description = model.Description ?? "",
+                Description = model.Description,
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy,
                 UpdatedAt = model.UpdatedAt
@@ -65,7 +65,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = viewModel.Id,
                 Code = viewModel.Code,
-                Description = viewModel.Description ?? "",
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 UpdatedBy = viewModel.UpdatedBy,
                 UpdatedAt = viewModel.UpdatedAt
@@ -81,7 +81,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 {
                     Id = x.Id,
                     Code = x.Code,
-                    Description = x.Description ?? "",
+                    Description = x.Description,
                     IsActive = x.IsActive,
                     CreatedAt = x.CreatedAt,
                     CreatedBy = x.CreatedBy,

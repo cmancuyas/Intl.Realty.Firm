@@ -23,11 +23,6 @@
         $(document).ready(function () {
             $('#ListPartialContainer').load('/TransactionType/ListPartialView');
         });
-        function OpenDeleteModal(id) {
-            $('#DeleteModalContainer').load('/TransactionType/DeleteModal/' + id, function () {
-                $("#deleteConfirmModal").modal("show");
-            });
-        }
         function ShowDetails(id) {
             $('#item-' + id).addClass('c-show-hidden');
         }

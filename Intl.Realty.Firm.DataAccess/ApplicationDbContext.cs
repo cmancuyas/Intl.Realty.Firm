@@ -45,18 +45,7 @@ namespace Intl.Realty.Firm.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SaleListing>()
-            .HasOne(f => f.TransactionType)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SaleListing>()
-            .HasOne(f => f.IRFDeal)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SaleListing>()
-            .HasOne(f => f.DealStatus)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+
 
 
             modelBuilder.Entity<SaleCoop>()

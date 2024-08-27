@@ -1,6 +1,4 @@
-﻿
-
-using Intl.Realty.Firm.Models.Models.Auxiliary;
+﻿using Intl.Realty.Firm.Models.Auxiliary;
 using Intl.Realty.Firm.Service.IServices;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;

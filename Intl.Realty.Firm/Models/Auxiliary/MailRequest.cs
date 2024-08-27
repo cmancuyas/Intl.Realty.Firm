@@ -1,4 +1,4 @@
-﻿namespace Intl.Realty.Firm.Models.Models.Auxiliary
+﻿namespace Intl.Realty.Firm.Models.Auxiliary
 {
     public class MailRequest
     {

@@ -31,6 +31,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         [Required]
         public DateTime UpdatedAt { get; set; }
         public IEnumerable<DocumentType>? DocumentTypeList { get; set; }
+        public IEnumerable<DealStatus>? DealStatusList { get; set; }
         //used for selectize
         public List<string>? FileNames { get; set; }
     }

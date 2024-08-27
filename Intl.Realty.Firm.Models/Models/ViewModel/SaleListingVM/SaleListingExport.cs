@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Intl.Realty.Firm.Models.Models
-{
-    public class TransactionTypeDetailsBase : BaseModel
+﻿namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM 
+{ 
+    public class SaleListingExport
     {
+        public string TransactionType { get; set; } = string.Empty;
         public string PropertyAddress { get; set; } = string.Empty;
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal FinalSalePrice { get; set; }
-        public DateTime FinalClosingDate { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal DepositAmount { get; set; }
-        public DateTime DepositDate { get; set; }
+        public string FinalSalePrice { get; set; } = string.Empty;
+        public DateTime FinalClosingDate { get; set; } = DateTime.UtcNow;
+        public string DepositAmount = string.Empty;
+        public DateTime DepositDate { get; set; } = DateTime.UtcNow;
         public string BuyerName { get; set; } = string.Empty;
         public string LandLordName { get; set; } = string.Empty;
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal ListingCommissionPercentage { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal BuyingCommissionPercentage { get; set; }
+        public string ListingCommissionPercentage { get; set; } = string.Empty;
+        public string BuyingCommissionPercentage { get; set; } = string.Empty;
         public string ListingAgentName { get; set; } = string.Empty;
         public string ListingBrokerage { get; set; } = string.Empty;
         public string ListingBrokerageFax { get; set; } = string.Empty;
@@ -34,5 +24,10 @@ namespace Intl.Realty.Firm.Models.Models
         public string BuyersLawyer { get; set; } = string.Empty;
         public string BuyersLawyerAddress { get; set; } = string.Empty;
         public string BuyersPhoneNumber { get; set; } = string.Empty;
+        public string DealStatus { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+   
     }
 }

@@ -1,4 +1,4 @@
-﻿using Intl.Realty.Firm.Helper.Auxiliary;
+﻿using Intl.Realty.Firm.Models.Auxiliary;
 
 namespace Intl.Realty.Firm.Helper
 {

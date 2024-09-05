@@ -14,6 +14,7 @@ namespace Intl.Realty.Firm.Models.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public int? DocumentTypeId { get; set; }
         public List<IFormFile>? Files { get; set; }
 

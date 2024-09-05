@@ -11,13 +11,10 @@ namespace Intl.Realty.Firm.Controllers
     public class CustomerController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public CustomerController(IUnitOfWork unitOfWork,
-                                    IHttpContextAccessor httpContextAccessor
+        public CustomerController(IUnitOfWork unitOfWork
                                     )
         {
             _unitOfWork = unitOfWork;
-            _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {

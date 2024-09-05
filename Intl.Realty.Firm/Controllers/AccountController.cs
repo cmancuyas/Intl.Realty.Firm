@@ -103,8 +103,10 @@ namespace Intl.Realty.Firm.Controllers
 
                     var user = viewModel.ToUserModel();
 
-                    await CreateRegisterEmailRequest(viewModel);
+                    
                     await _unitOfWork.User.AddAsync(user);
+
+                    await CreateRegisterEmailRequest(viewModel);
 
                     // Save Profile Picture to Server and get the model
                     if (viewModel.ProfilePhoto != null)

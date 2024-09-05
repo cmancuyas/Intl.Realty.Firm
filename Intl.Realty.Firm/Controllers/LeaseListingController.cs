@@ -1,5 +1,4 @@
-﻿using DENR_FAPIS.Models.Utilities;
-using Intl.Realty.Firm.Helper;
+﻿using Intl.Realty.Firm.Helper;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.DataTable;
 using Intl.Realty.Firm.Models.Models.ViewModel.LeaseListingVM;
@@ -11,6 +10,7 @@ using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using Intl.Realty.Firm.Models;
 
 namespace Intl.Realty.Firm.Controllers
 {

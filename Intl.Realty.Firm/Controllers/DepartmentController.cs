@@ -11,13 +11,10 @@ namespace Intl.Realty.Firm.Controllers
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public DepartmentController(IUnitOfWork unitOfWork,
-                                    IHttpContextAccessor httpContextAccessor
+        public DepartmentController(IUnitOfWork unitOfWork
                                     )
         {
             _unitOfWork = unitOfWork;
-            _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {

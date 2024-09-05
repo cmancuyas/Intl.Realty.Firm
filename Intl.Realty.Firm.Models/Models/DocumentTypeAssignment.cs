@@ -14,7 +14,9 @@ namespace Intl.Realty.Firm.Models.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]  
         public int DocumentTypeId { get; set; }
+        [Required]
         public int TransactionTypeId { get; set; }
 
         public DocumentType? DocumentType { get; set; }

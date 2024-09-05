@@ -3,16 +3,13 @@ using Intl.Realty.Firm.Models.Models.ViewModel.DealStatusVM;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using System.Security.Claims;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class DealStatusController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DealStatusController(IUnitOfWork unitOfWork,
-                                    IHttpContextAccessor httpContextAccessor
+        public DealStatusController(IUnitOfWork unitOfWork
                                     )
         {
             _unitOfWork = unitOfWork;

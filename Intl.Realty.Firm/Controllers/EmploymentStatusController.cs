@@ -1,5 +1,5 @@
-﻿using DENR_FAPIS.Models.Utilities;
-using Intl.Realty.Firm.Helper;
+﻿using Intl.Realty.Firm.Helper;
+using Intl.Realty.Firm.Models;
 using Intl.Realty.Firm.Models.Models;
 using Intl.Realty.Firm.Models.Models.DataTable;
 using Intl.Realty.Firm.Models.Models.ViewModel.EmploymentStatusVM;

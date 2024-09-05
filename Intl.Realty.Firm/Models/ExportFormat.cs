@@ -1,4 +1,4 @@
-﻿namespace DENR_FAPIS.Models.Utilities
+﻿namespace Intl.Realty.Firm.Models
 {
     public class ExportFormat
     {

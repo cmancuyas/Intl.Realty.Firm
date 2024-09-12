@@ -19,261 +19,271 @@
         <input hidden asp-for="DealStatusId" type="type" name="DealStatusId" id="DealStatusId" value="1" />
         <div class="row justify-content-center">
 
-            <div class="d-flex justify-content-between w-100 p-0">
-                <div class="form-submit-step d-flex flex-column  w-100">
-                    <span class="small">STEP 1</span>
-                    <span class="fw-bolder">Transaction Information</span>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <span class="small me-2">STEP 1</span>
+                            <span class="fw-bolder">Transaction Information</span>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body p-0">
+                            <div class="form-submit-tab p-4">
+                                <div class="col-md-12 p-4">
+                                    <h3 class="text-blue mb-0">New Lease Coop</h3>
+                                    <hr class="my-4" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Property Address</label>
+                                                <input asp-for="CreateIRFDealViewModel.PropertyAddress" class="form-control" value="PropertyAddress" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.PropertyAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Created By</label>
+                                                <input asp-for="CreatedBy" class="form-control" value="1" />
+                                                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Sale Price</label>
+                                                <input asp-for="CreateIRFDealViewModel.FinalSalePrice" class="form-control" value="1" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.FinalSalePrice" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Final Closing Date</label>
+                                                <input asp-for="CreateIRFDealViewModel.FinalClosingDate" type="date" class="form-control" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.FinalClosingDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Deposit Amount</label>
+                                                <input asp-for="CreateIRFDealViewModel.DepositAmount" class="form-control" value="1" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.DepositAmount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Deposit Date</label>
+                                                <input asp-for="CreateIRFDealViewModel.DepositDate" type="date" class="form-control" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.DepositDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer's Name</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyerName" class="form-control" value="BuyerName" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyerName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">LandLord Name</label>
+                                                <input asp-for="CreateIRFDealViewModel.LandLordName" class="form-control" value="LandLordName" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.LandLordName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Listing Commission Percentage</label>
+                                                <input asp-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="form-control" value="1" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buying Commission Percentage</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="form-control" value="1" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Listing AgentName</label>
+                                                <input asp-for="CreateIRFDealViewModel.ListingAgentName" class="form-control" value="ListingAgentName" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.ListingAgentName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Listing Brokerage</label>
+                                                <input asp-for="CreateIRFDealViewModel.ListingBrokerage" class="form-control" value="ListingBrokerage" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Listing Brokerage Fax</label>
+                                                <input asp-for="CreateIRFDealViewModel.ListingBrokerageFax" class="form-control" value="ListingBrokerageFax" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerageFax" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer's Agent Name</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyerAgentName" class="form-control" value="BuyerAgentName" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyerAgentName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer Brokerage</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyerBrokerage" class="form-control" value="BuyerBrokerage" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer Brokerage Fax</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="form-control" value="Buyer Brokerage Fax" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Seller's Lawyer</label>
+                                                <input asp-for="CreateIRFDealViewModel.SellersLawyer" class="form-control" value="SellersLawyer" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.SellersLawyer" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Seller's Lawyer Address</label>
+                                                <input asp-for="CreateIRFDealViewModel.SellersLawyerAddress" class="form-control" value="SellersLawyerAddress" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.SellersLawyerAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Seller's PhoneNumber</label>
+                                                <input asp-for="CreateIRFDealViewModel.SellersPhoneNumber" class="form-control" value="SellersPhoneNumber" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.SellersPhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer's Lawyer</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyersLawyer" class="form-control" value="BuyersLawyer" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyer" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer's Lawyer Address</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="form-control" value="BuyersLawyerAddress" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Buyer's PhoneNumber</label>
+                                                <input asp-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="form-control" value="BuyersPhoneNumber" />
+                                                <span asp-validation-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-submit-step d-flex flex-column w-100">
-                    <span class="small">STEP 2</span>
-                    <span class="fw-bolder">Upload Documents</span>
-                </div>
-            </div>
-
-            <div class="form-submit-tab p-4">
-                <div class="col-md-12 p-4">
-                    <h3 class="text-blue mb-0">New Lease Coop</h3>
-                    <hr class="my-4" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Property Address</label>
-                                <input asp-for="CreateIRFDealViewModel.PropertyAddress" class="form-control" value="PropertyAddress" />
-                                <span asp-validation-for="CreateIRFDealViewModel.PropertyAddress" class="text-danger"></span>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="small me-2">STEP 2</span>
+                            <span class="fw-bolder">Upload Documents</span>
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body p-0">
+                            <div class="form-submit-tab p-4">
+                                <div class="row d-flex justify-content-center m-0">
+                                    <div class="col-md-12">
+                                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
+                                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Document Type</th>
+                                                    <th>Is Required?</th>
+                                                    <th>Uploaded Document</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int i = 0;
+                                                }
+                                                @foreach (DocumentType item in Model.DocumentTypeList)
+                                                {
+                                                    <tr>
+                                                        <td style="width: 30%">
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>
+                                                        <input type="hidden"
+                                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
+                                                               value="@item.Id" />
+                                                        <td id="isRequired">
+                                                            @if (item.IsRequired == true)
+                                                            {
+                                                                <label class="status-active">Required</label>
+                                                            }
+                                                            else if (item.IsRequired == false)
+                                                            {
+                                                                <label class="status-inactive pe-cursor">Not Required</label>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
+                                                                   id="fileListDropDown_@i"
+                                                                   type="file"
+                                                                   class="file"
+                                                                   multiple
+                                                                   data-show-upload="false"
+                                                                   data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
+                                                                   accept="application/all"
+                                                                   data-show-caption="true"
+                                                                   data-show-preview="false"
+                                                                   onchange="fileSelected(this)"
+                                                                   data-msg-placeholder="Select {files} for upload...">
+                                                        </td>
+                                                        @{
+                                                            i++;
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Created By</label>
-                                <input asp-for="CreatedBy" class="form-control" value="1" />
-                                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Final Sale Price</label>
-                                <input asp-for="CreateIRFDealViewModel.FinalSalePrice" class="form-control" value="1" />
-                                <span asp-validation-for="CreateIRFDealViewModel.FinalSalePrice" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Final Closing Date</label>
-                                <input asp-for="CreateIRFDealViewModel.FinalClosingDate" type="date" class="form-control" />
-                                <span asp-validation-for="CreateIRFDealViewModel.FinalClosingDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Deposit Amount</label>
-                                <input asp-for="CreateIRFDealViewModel.DepositAmount" class="form-control" value="1" />
-                                <span asp-validation-for="CreateIRFDealViewModel.DepositAmount" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Deposit Date</label>
-                                <input asp-for="CreateIRFDealViewModel.DepositDate" type="date" class="form-control" />
-                                <span asp-validation-for="CreateIRFDealViewModel.DepositDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer's Name</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyerName" class="form-control" value="BuyerName" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyerName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">LandLord Name</label>
-                                <input asp-for="CreateIRFDealViewModel.LandLordName" class="form-control" value="LandLordName" />
-                                <span asp-validation-for="CreateIRFDealViewModel.LandLordName" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Listing Commission Percentage</label>
-                                <input asp-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="form-control" value="1" />
-                                <span asp-validation-for="CreateIRFDealViewModel.ListingCommissionPercentage" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buying Commission Percentage</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="form-control" value="1" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyingCommissionPercentage" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Listing AgentName</label>
-                                <input asp-for="CreateIRFDealViewModel.ListingAgentName" class="form-control" value="ListingAgentName" />
-                                <span asp-validation-for="CreateIRFDealViewModel.ListingAgentName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Listing Brokerage</label>
-                                <input asp-for="CreateIRFDealViewModel.ListingBrokerage" class="form-control" value="ListingBrokerage" />
-                                <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerage" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Listing Brokerage Fax</label>
-                                <input asp-for="CreateIRFDealViewModel.ListingBrokerageFax" class="form-control" value="ListingBrokerageFax" />
-                                <span asp-validation-for="CreateIRFDealViewModel.ListingBrokerageFax" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer's Agent Name</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyerAgentName" class="form-control" value="BuyerAgentName" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyerAgentName" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer Brokerage</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyerBrokerage" class="form-control" value="BuyerBrokerage" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerage" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer Brokerage Fax</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="form-control" value="Buyer Brokerage Fax" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyerBrokerageFax" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Seller's Lawyer</label>
-                                <input asp-for="CreateIRFDealViewModel.SellersLawyer" class="form-control" value="SellersLawyer" />
-                                <span asp-validation-for="CreateIRFDealViewModel.SellersLawyer" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Seller's Lawyer Address</label>
-                                <input asp-for="CreateIRFDealViewModel.SellersLawyerAddress" class="form-control" value="SellersLawyerAddress" />
-                                <span asp-validation-for="CreateIRFDealViewModel.SellersLawyerAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Seller's PhoneNumber</label>
-                                <input asp-for="CreateIRFDealViewModel.SellersPhoneNumber" class="form-control" value="SellersPhoneNumber" />
-                                <span asp-validation-for="CreateIRFDealViewModel.SellersPhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer's Lawyer</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyersLawyer" class="form-control" value="BuyersLawyer" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyer" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer's Lawyer Address</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="form-control" value="BuyersLawyerAddress" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyersLawyerAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Buyer's PhoneNumber</label>
-                                <input asp-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="form-control" value="BuyersPhoneNumber" />
-                                <span asp-validation-for="CreateIRFDealViewModel.BuyersPhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="form-submit-tab p-4">
-                <hr />
-                <div class="row d-flex justify-content-center m-0">
-                    <div class="col-md-12">
-                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
-                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
-                            <thead>
-                                <tr>
-                                    <th style="width: 30%">Document Type</th>
-                                    <th>Is Required?</th>
-                                    <th>Uploaded Document</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    int i = 0;
-                                }
-                                @foreach (DocumentType item in Model.DocumentTypeList)
-                                {
-                                    <tr>
-                                        <td style="width: 30%">
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-                                        <input type="hidden"
-                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
-                                               value="@item.Id" />
-                                        <td id="isRequired">
-                                            @if (item.IsRequired == true)
-                                            {
-                                                <label class="status-active">Required</label>
-                                            }
-                                            else if (item.IsRequired == false)
-                                            {
-                                                <label class="status-inactive pe-cursor">Not Required</label>
-                                            }
-                                        </td>
-                                        <td>
-                                            <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
-                                                   id="fileListDropDown_@i"
-                                                   type="file"
-                                                   class="file"
-                                                   multiple
-                                                   data-show-upload="false"
-                                                   data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                                   accept="application/all"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   onchange="fileSelected(this)"
-                                                   data-msg-placeholder="Select {files} for upload...">
-                                        </td>
-                                        @{
-                                            i++;
-                                        }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

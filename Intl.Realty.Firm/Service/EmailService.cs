@@ -1,38 +1,56 @@
-﻿using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using System.Net;
+﻿using Intl.Realty.Firm.Models.Auxiliary;
 using Intl.Realty.Firm.Service.IServices;
-using Intl.Realty.Firm.Models.Models.Auxiliary;
+using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
+using MimeKit;
 
 namespace Intl.Realty.Firm.Service
 {
     public class EmailService : IEmailService
     {
         private readonly EmailSettings _mailSettings;
-        public EmailService(IOptions<EmailSettings> mailSettings)
+        private readonly IConfigurationService _configurationService;
+
+        public EmailService(IOptions<EmailSettings> mailSettings, IConfigurationService configurationService)
         {
             _mailSettings = mailSettings.Value;
+            _configurationService = configurationService;
         }
 
-        public async Task SendEmailAsync(MailRequest mailRequest)
+        public Task SendEmailAsync(MailRequest mailRequest)
         {
-            using (var smtp = CreateSmtpCredentials)
+            var emailAddress = _configurationService.GetEmail();
+            var password = _configurationService.GetPassword();
+            var host = _configurationService.GetHost();
+            var displayName = _configurationService.GetDisplayName();
+            var port = _configurationService.GetPort();
+
+            var emailToSend = new MimeMessage();
+            emailToSend.From.Add(MailboxAddress.Parse(emailAddress));
+            emailToSend.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+            emailToSend.Subject = mailRequest.Subject;
+            emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                var mailMessage = new MailMessage(
-                            from: _mailSettings.Email,
-                            to: mailRequest.ToEmail,
-                            mailRequest.Subject,
-                            mailRequest.Body);
-                mailMessage.IsBodyHtml = true;
-                await smtp.SendMailAsync(mailMessage);
+                Text = mailRequest.Body
+            };
+
+            using (var emailClient = new SmtpClient())
+            {
+                emailClient.Connect(host, Convert.ToInt32(port), MailKit.Security.SecureSocketOptions.StartTls);
+                emailClient.Authenticate(emailAddress, password);
+                emailClient.Send(emailToSend);
+                emailClient.Disconnect(true);
             }
+
+            return Task.CompletedTask;
+
         }
 
-        private SmtpClient CreateSmtpCredentials => new SmtpClient(_mailSettings.Host, _mailSettings.Port)
-        {
-            EnableSsl = true,
-            DeliveryMethod = SmtpDeliveryMethod.Network,
-            Credentials = new NetworkCredential(_mailSettings.Email, _mailSettings.Password)
-        };
+        //private SmtpClient CreateSmtpCredentials => new SmtpClient(_mailSettings.Host, _mailSettings.Port)
+        //{
+        //    EnableSsl = true,
+        //    DeliveryMethod = SmtpDeliveryMethod.Network,
+        //    Credentials = new NetworkCredential(_mailSettings.Email, _mailSettings.Password)
+        //};
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 using Intl.Realty.Firm.Models.Models;
+using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM;
 
 namespace Intl.Realty.Firm.Utility.Mapper
 {
@@ -12,6 +13,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 Id = model.Id,
                 TransactionTypeId = model.TransactionTypeId,
                 IRFDealId = model.IRFDealId,
+                DealStatusId = model.DealStatusId,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt,
@@ -25,6 +27,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 TransactionTypeId = viewModel.TransactionTypeId,
                 IRFDealId = viewModel.IRFDealId,
+                DealStatusId= viewModel.DealStatusId,
                 IsActive = viewModel.IsActive,
                 CreatedBy = viewModel.CreatedBy,
                 CreatedAt = viewModel.CreatedAt,
@@ -36,6 +39,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 TransactionTypeId = model.TransactionTypeId,
                 IRFDealId = model.IRFDealId,
+                DealStatusId= model.DealStatusId,
                 IsActive = model.IsActive,
                 CreatedBy = model.CreatedBy,
                 CreatedAt = model.CreatedAt
@@ -49,6 +53,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                 TransactionTypeId = model.TransactionTypeId,
                 TransactionType = model.TransactionType,
                 IRFDealId = model.IRFDealId,
+                DealStatusId = model.DealStatusId,
                 EditIRFDealViewModel = model.IRFDeal?.ToEditIRFDealModel(),
                 IsActive = model.IsActive,
                 UpdatedBy = model.UpdatedBy??1, //1 is admin
@@ -65,6 +70,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     Id = x.Id,
                     TransactionTypeId = x.TransactionTypeId,
                     IRFDealId = x.IRFDealId,
+                    DealStatusId= x.DealStatusId,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -86,6 +92,8 @@ namespace Intl.Realty.Firm.Utility.Mapper
                     TransactionType = x.TransactionType,
                     IRFDealId = x.IRFDealId,
                     IRFDeal = x.IRFDeal,
+                    DealStatusId = x.DealStatusId,
+                    DealStatus = x.DealStatus,
                     IsActive = x.IsActive,
                     CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
@@ -95,25 +103,45 @@ namespace Intl.Realty.Firm.Utility.Mapper
             }
             return viewModelList;
         }
-        public static List<SaleListing> FromIEnumToSaleListingList(this IEnumerable<SaleListing> modelIEnum)
+        public static List<SaleListingExport> ToSaleListingListExport(this List<SaleListing> modelList)
         {
-            var modelList = new List<SaleListing>();
+            List<SaleListingExport> exportList = new List<SaleListingExport>();
 
-            if (modelIEnum != null)
+            if (modelList != null)
             {
-                modelList = modelIEnum.Select(x => new SaleListing()
+                exportList = modelList.Select(x => new SaleListingExport
                 {
-                    Id = x.Id,
-                    TransactionTypeId = x.TransactionTypeId,
-                    IRFDealId = x.IRFDealId,
+                    TransactionType = x.TransactionType!.Description,
+                    PropertyAddress = x.IRFDeal!.PropertyAddress,
+                    FinalSalePrice = x.IRFDeal!.PropertyAddress,
+                    FinalClosingDate = x.IRFDeal!.FinalClosingDate,
+                    DepositAmount = x.IRFDeal!.DepositAmount.ToString(),
+                    DepositDate = x.IRFDeal!.DepositDate,
+                    BuyerName = x.IRFDeal!.BuyerName,
+                    LandLordName = x.IRFDeal!.LandLordName,
+                    ListingCommissionPercentage = x.IRFDeal!.ListingCommissionPercentage.ToString(),
+                    BuyingCommissionPercentage = x.IRFDeal!.BuyingCommissionPercentage.ToString(),
+                    ListingAgentName = x.IRFDeal!.ListingAgentName,
+                    ListingBrokerage = x.IRFDeal!.ListingBrokerage,
+                    ListingBrokerageFax = x.IRFDeal!.ListingBrokerageFax,
+                    BuyerAgentName = x.IRFDeal!.BuyerAgentName,
+                    BuyerBrokerage = x.IRFDeal!.BuyerBrokerage,
+                    BuyerBrokerageFax = x.IRFDeal!.BuyerBrokerageFax,
+                    SellersLawyer = x.IRFDeal!.SellersLawyer,
+                    SellersLawyerAddress = x.IRFDeal!.SellersLawyerAddress,
+                    SellersPhoneNumber = x.IRFDeal!.SellersPhoneNumber,
+                    BuyersLawyer = x.IRFDeal!.BuyersLawyer,
+                    BuyersLawyerAddress = x.IRFDeal!.BuyersLawyerAddress,
+                    BuyersPhoneNumber = x.IRFDeal!.BuyersPhoneNumber,
+                    DealStatus = x.DealStatus!.Description,
+
                     IsActive = x.IsActive,
-                    CreatedBy = x.CreatedBy,
                     CreatedAt = x.CreatedAt,
-                    UpdatedBy = x.UpdatedBy,
-                    UpdatedAt = x.UpdatedAt,
+                    CreatedBy = x.CreatedBy,
+
                 }).ToList();
             }
-            return modelList;
+            return exportList;
         }
     }
 }

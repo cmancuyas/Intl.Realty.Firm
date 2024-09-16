@@ -87,12 +87,14 @@ function setActiveMenuItem($) {
             id: 'administratorNavItem',
             links: ["Administrator",
                 "User",
-                "UserType",
+                "Role",
+                "EmploymentStatus",
                 "Department",
                 "Province",
                 "TransactionType",
                 "DocumentType",
-                "DocumentTypeAssignment"
+                "DocumentTypeAssignment",
+                "DealStatus"
             ],
             subNavClass: 'administratorSubNavItem',
             caretId: 'administratorNavLink'

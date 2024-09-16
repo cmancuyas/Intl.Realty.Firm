@@ -8,15 +8,15 @@ using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Service.IServices;
 using Intl.Realty.Firm.Utility.Mapper;
 using Intl.Realty.Firm.Helper;
-using Intl.Realty.Firm.Helper.Auxiliary;
 using Intl.Realty.Firm.Models.Models.ViewModel.AccountVM;
+using Intl.Realty.Firm.Models.Auxiliary;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
-        private readonly IOptions<Jwt> _jWT;
+        private readonly Jwt _jwt;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
         private readonly IReCaptchaService _reCaptchaService;
@@ -35,7 +35,7 @@ namespace Intl.Realty.Firm.Controllers
                                 IMemoryCache memoryCache)
         {
             _logger = logger;
-            _jWT = jWT;
+            _jwt = jWT.Value;
             _unitOfWork = unitOfWork;
             _emailService = emailService;
             _reCaptchaService = reCaptchaService;
@@ -48,7 +48,7 @@ namespace Intl.Realty.Firm.Controllers
         {
             RegisterViewModel viewModel = new RegisterViewModel();
 
-            var employmentStatusIEnum= await _unitOfWork.EmploymentStatus.GetAllAsync();
+            var employmentStatusIEnum = await _unitOfWork.EmploymentStatus.GetAllAsync();
             viewModel.EmploymentStatusIEnum = SelectListConverter.CreateSelectList(employmentStatusIEnum.ToList(), x => x.Id, x => x.Description);
 
             var roleIEnum = await _unitOfWork.Role.GetAllAsync();
@@ -82,7 +82,7 @@ namespace Intl.Realty.Firm.Controllers
                 //end of reCaptcha verification
 
                 var email = await _unitOfWork.User.GetAsync(x => x.Email == viewModel.EmailAddress);
-                if(email != null)
+                if (email != null)
                 {
                     ModelState.AddModelError(string.Empty, "Email already exists");
                     return Json(new { success = false, elementId = "Email Error", message = "Email already exists" });
@@ -104,8 +104,9 @@ namespace Intl.Realty.Firm.Controllers
                     var user = viewModel.ToUserModel();
 
                     
-
                     await _unitOfWork.User.AddAsync(user);
+
+                    await CreateRegisterEmailRequest(viewModel);
 
                     // Save Profile Picture to Server and get the model
                     if (viewModel.ProfilePhoto != null)
@@ -119,7 +120,7 @@ namespace Intl.Realty.Firm.Controllers
                         user.ProfilePictureId = profilePictureModel.Id;
                     }
                     await _unitOfWork.User.UpdateAsync(user);
-                    await CreateEmailRequest(viewModel);
+                    
                     return Json(new { success = true });
                 }
             }
@@ -167,13 +168,13 @@ namespace Intl.Realty.Firm.Controllers
             }
         }
 
-        private async Task CreateEmailRequest(RegisterViewModel registerViewModel)
+        private async Task CreateRegisterEmailRequest(RegisterViewModel registerViewModel)
         {
             var template = EmailTemplate.UserRegistrationTemplate(registerViewModel);
             var mailRequest = new MailRequest
             {
                 ToEmail = registerViewModel.EmailAddress,
-                Subject = "do not reply",
+                Subject = "INTL Realty Firm: Do not reply",
                 Body = template
             };
             await _emailService.SendEmailAsync(mailRequest);
@@ -187,38 +188,42 @@ namespace Intl.Realty.Firm.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(AccountViewModel viewModel)
+        [HttpPost]
+        public async Task<IActionResult> Login(AccountViewModel model)
         {
             try
             {
-                viewModel.AccountMode = MODE.SIGNIN;
-                var validate = await ValidateLogin(viewModel);
+                model.AccountMode = MODE.SIGNIN;
+                var validate = await ValidateLogin(model);
                 if (validate.Item2)
                 {
                     var permissions = await _unitOfWork.RolePermission.GetRolePermissionsByRoleId(3);
-                    var permissionStringList = permissions.Select(x => x.Description).ToList();
-                    var token = JWTToken.GenerateJwtToken(validate.Item1, _jWT.ToString()!, permissionStringList!);
-
-                    Response.Cookies.Append("JWT", token, new CookieOptions
+                    if (permissions.Any())
                     {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddHours(1)
-                    });
+                        var permissionList = permissions.Select(x => x.Description).ToList();
+                        var token = JWTToken.GenerateJwtToken(validate.Item1, _jwt.Key, permissionList!);
 
+                        Response.Cookies.Append("JWT", token, new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Secure = true,
+                            SameSite = SameSiteMode.Strict,
+                            Expires = DateTime.UtcNow.AddHours(1)
+                        });
+                    }
+                    bool isSysAd = ValidateIfSysAd(validate.Item1);
                     Session.Configure(HttpContext.Session);
                     Session.SetInt(SessionKey.UserId, validate.Item1.Id);
-                    //Activity.Log(ActivityType.LOGIN, typeof(AccountController), viewModel);
+                    //Activity.Log(ActivityType.LOGIN, typeof(LoginController), model);
 
-                    return RedirectToAction("Dashboard", "Home");
+                    return RedirectToAction("Dashboard", "Home", new { isSysAd = isSysAd });
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
             }
-            return View(viewModel);
+            return View(model);
         }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -333,6 +338,18 @@ namespace Intl.Realty.Firm.Controllers
                     }, protocol: Request.Scheme)!;
             }
             return callBack;
+        }
+        private bool ValidateIfSysAd(User user)
+        {
+            if (user == null)
+                return false;
+            if (user.Role == null)
+                return false;
+
+            if (user.Role.Code.Contains("SysAd", StringComparison.OrdinalIgnoreCase))
+                return true;
+            else
+                return false;
         }
     }
 }

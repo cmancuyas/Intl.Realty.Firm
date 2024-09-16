@@ -39,6 +39,9 @@
                         <th class="text-start">
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
+                        <th class="text-start">
+                            @Html.DisplayNameFor(model => model.IsRequired)
+                        </th>
                         <th class="text-center">
                             Action
                         </th>
@@ -58,16 +61,16 @@
                             <td id="name" class="text-start">
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
-                            @*                           <td id="isActive">
-                        @if (item.IsActive == true)
-                        {
-                        <label class="status-active">Active</label>
-                        }
-                        else if (item.IsActive == false)
-                        {
-                        <label class="status-inactive pe-cursor">Inactive</label>
-                        }
-                        </td> *@
+                            <td id="isRequired">
+                                @if (item.IsRequired == true)
+                                {
+                                    <label class="status-active">Required</label>
+                                }
+                                else if (item.IsRequired == false)
+                                {
+                                    <label class="status-inactive pe-cursor">Not Required</label>
+                                }
+                            </td>
                             <td class="text-center">
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
                                     Edit

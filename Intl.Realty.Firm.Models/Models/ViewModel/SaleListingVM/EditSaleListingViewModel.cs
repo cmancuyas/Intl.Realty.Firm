@@ -1,6 +1,7 @@
 ﻿using Intl.Realty.Firm.Models.Helpers;
 using Intl.Realty.Firm.Models.Models.ViewModel.FileUploadVM;
 using Intl.Realty.Firm.Models.Models.ViewModel.IRFDealVM;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,9 +21,9 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         public int IRFDealId { get; set; }
         public EditIRFDealViewModel? EditIRFDealViewModel { get; set; }
         public CreateFileUploadListViewModel? CreateFileUploadListViewModel { get; set; }
+        public int DealStatusId { get; set; }
+        public DealStatus? DealStatus { get; set; }
         public List<FileUpload>? FileUploads { get; set; }
-        public FileUploadList? FileUploadList { get; set; }
-        public string? Dataxxx { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]
@@ -30,6 +31,7 @@ namespace Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
         [Required]
         public DateTime UpdatedAt { get; set; }
         public IEnumerable<DocumentType>? DocumentTypeList { get; set; }
+        public IEnumerable<DealStatus>? DealStatusList { get; set; }
         //used for selectize
         public List<string>? FileNames { get; set; }
     }

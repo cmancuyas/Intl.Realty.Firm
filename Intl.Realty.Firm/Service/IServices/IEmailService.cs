@@ -1,5 +1,4 @@
-﻿
-using Intl.Realty.Firm.Models.Models.Auxiliary;
+﻿using Intl.Realty.Firm.Models.Auxiliary;
 
 namespace Intl.Realty.Firm.Service.IServices
 {

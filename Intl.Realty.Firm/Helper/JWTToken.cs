@@ -1,5 +1,4 @@
 ﻿using Intl.Realty.Firm.Models.Models;
-using Intl.Realty.Firm.Service.IServices;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

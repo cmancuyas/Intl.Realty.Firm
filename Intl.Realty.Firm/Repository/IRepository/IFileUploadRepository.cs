@@ -5,6 +5,5 @@ namespace Intl.Realty.Firm.Repository.IRepository
     public interface IFileUploadRepository : IRepository<FileUpload>
     {
         Task UpdateAsync(FileUpload model);
-        Task<List<FileUpload>> GetFileUploadsBySaleListingIdAsync(int saleListingId);
     }
 }

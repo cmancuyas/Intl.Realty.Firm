@@ -11,8 +11,8 @@ namespace Intl.Realty.Firm.Repository
         public ITransactionTypeRepository TransactionType { get; private set; }
         public IDocumentTypeRepository DocumentType { get; private set; }
         public IDocumentTypeAssignmentRepository DocumentTypeAssignment { get; private set; }
-        public IUserTypeRepository UserType { get; private set; }
         public IEmploymentStatusRepository EmploymentStatus { get; private set; }
+        public ICustomerRepository Customer { get; private set; }
         public IRoleRepository Role { get; private set; }
         public IRolePermissionRepository RolePermission { get; private set; }
         public IPermissionRepository Permission { get; private set; }
@@ -23,6 +23,7 @@ namespace Intl.Realty.Firm.Repository
         public ILeaseListingRepository LeaseListing { get; private set; }
         public ILeaseCoopRepository LeaseCoop { get; private set; }
         public IFileUploadRepository FileUpload { get; private set; }
+        public IDealStatusRepository DealStatus { get; private set; }
         public IProfilePictureRepository ProfilePicture { get; private set; }
         public IFileDocumentTypeBridgeRepository FileDocumentTypeBridge { get; private set; }
         public IActivityLogRepository ActivityLog { get; private set; }
@@ -31,11 +32,11 @@ namespace Intl.Realty.Firm.Repository
         {
             _db = db;
             User = new UserRepository(_db);
+            Customer = new CustomerRepository(_db);
             IRFDeal = new IRFDealRepository(_db);
             TransactionType = new TransactionTypeRepository(_db);
             DocumentType = new DocumentTypeRepository(_db);
             DocumentTypeAssignment = new DocumentTypeAssignmentRepository(_db);
-            UserType = new UserTypeRepository(_db);
             EmploymentStatus = new EmploymentStatusRepository(_db);
             Role = new RoleRepository(_db);
             RolePermission = new RolePermissionRepository(_db);
@@ -48,10 +49,15 @@ namespace Intl.Realty.Firm.Repository
             LeaseCoop = new LeaseCoopRepository(_db);
             ProfilePicture = new ProfilePictureRepository(_db);
             FileUpload = new FileUploadRepository(_db);
+            DealStatus = new DealStatusRepository(_db);
             FileDocumentTypeBridge = new FileDocumentTypeBridgeRepository(_db);
             ActivityLog = new ActivityLogRepository(_db);
         }
 
+        public void SaveAsync()
+        {
+            _db.SaveChangesAsync();
+        }
         public void Save()
         {
             _db.SaveChanges();

@@ -9,724 +9,647 @@
 
 <partial name="~/Views/Shared/Modal/_ConfirmSubmitModal.cshtml" />
 <partial name="~/Views/Shared/Modal/_ConfirmSuccessModal.cshtml" />
+<partial name="~/Views/Shared/Modal/_ConfirmSaveModal.cshtml" />
 
 <div class="pb-5">
-    <a href="@Url.Action("Index","SaleListing")" class="text-decoration-none text-blue d-flex mb-4">
-        <i data-feather="chevron-left"></i><span>Back</span>
-    </a>
+    <div class="transaction-controller">
+        <a href="@Url.Action("Index","SaleListing")" class="text-decoration-none text-blue d-flex mb-4">
+            <i data-feather="chevron-left"></i><span>Back</span>
+        </a>
+        <div class="note-controller">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addNote" style="min-width: auto; margin-right: 5px"><i data-feather="plus" data-toggle="tooltip" title="Add Note"></i></button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewNote">View Note</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqNote" style="min-width: auto"><i data-feather="help-circle" data-toggle="tooltip" title="FAQ"></i></button>
+        </div>
+        
+    </div>
+
+    <!-- Add Note -->
+    <div class="modal fade" id="addNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Note</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <textarea class="form-control textarea-note" rows="10" placeholder="Add your note here."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Note -->
+    <div class="modal fade" id="viewNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Notes as of <i>09/23/2024</i></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Exit Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="modal fade" id="faqNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Frequenty Asked Quesitons</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <form asp-action="Edit" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
+        <input hidden asp-for="DealStatusId" type="type" name="DealStatusId" id="DealStatusId" value="1" />
+        <input hidden asp-for="FileUploads" type="file" name="FileUploadsFromModel" id="FileUploadsFromModel" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center">
-            <input type="text" asp-for="Dataxxx" multiple hidden />
 
-            <div class="d-flex justify-content-between w-100">
-                <div class="form-submit-step d-flex flex-column  w-100">
-                    <span class="small">STEP 1</span>
-                    <span class="fw-bolder">Transaction Information</span>
+             <div class="d-flex justify-content-between p-0 w-100">
+                <div class="nav nav-tabs horizontal-tabs" id="myTab" role="tablist">
+                    <div class="nav-link active form-submit-step d-flex flex-column w-100" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                         <span class="small">STEP 1</span>
+                         <span class="fw-bolder">Transaction Information</span>
+                     </div>
+                    <div class="nav-item form-submit-step d-flex flex-column w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                         <span class="small">STEP 2</span>
+                         <span class="fw-bolder">View Uploaded Documents</span>
+                     </div>
+                    <div class="nav-item form-submit-step d-flex flex-column w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
+                         <span class="small">STEP 3</span>
+                         <span class="fw-bolder">Update Uploaded Documents</span>
+                     </div>
                 </div>
-                <div class="form-submit-step d-flex flex-column w-100">
-                    <span class="small">STEP 2</span>
-                    <span class="fw-bolder">View Uploaded Documents</span>
+             </div>
+
+            <div class="tab-content p-0" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <!-- STEP 1 -->
+                    <div class="form-submit-tab p-0 bg-white">
+
+                        <div class="col-md-12 p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h1 class="text-blue mb-0">Edit SaleListing</h1>
+                                <div class="status w-50">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label fw-bolder">Deal Status</label>
+                                            <select id="DealStatusDDL" name="DealStatusDDL" class="form-select">
+                                                @{
+                                                    @if (Model.DealStatusList != null)
+                                                    {
+                                                        @foreach (var dealStatus in Model.DealStatusList)
+                                                        {
+                                                            if (dealStatus.Id == Model.DealStatusId)
+                                                            {
+                                                                <option value="@dealStatus.Id" selected>@dealStatus.Description</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@dealStatus.Id">@dealStatus.Description</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                            @if (!string.IsNullOrEmpty(ViewData.ModelState[nameof(Model.DealStatusId)]?.Errors.FirstOrDefault()?.ErrorMessage))
+                                            {
+                                                @Html.ValidationMessageFor(m => m.DealStatusId, "", new { @class = "text-danger" })
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4" />
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Property Address</label>
+                                        <input asp-for="EditIRFDealViewModel.PropertyAddress" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.PropertyAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Updated By</label>
+                                        <input asp-for="UpdatedBy" class="form-control" />
+                                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Final Sale Price</label>
+                                        <input asp-for="EditIRFDealViewModel.FinalSalePrice" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.FinalSalePrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Final Closing Date</label>
+                                        <input asp-for="EditIRFDealViewModel.FinalClosingDate" type="date" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.FinalClosingDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Deposit Amount</label>
+                                        <input asp-for="EditIRFDealViewModel.DepositAmount" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.DepositAmount" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Deposit Date</label>
+                                        <input asp-for="EditIRFDealViewModel.DepositDate" type="date" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.DepositDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer's Name</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyerName" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyerName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">LandLord's Name</label>
+                                        <input asp-for="EditIRFDealViewModel.LandLordName" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.LandLordName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Listing Commission Percentage</label>
+                                        <input asp-for="EditIRFDealViewModel.ListingCommissionPercentage" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.ListingCommissionPercentage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buying Commission Percentage</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyingCommissionPercentage" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyingCommissionPercentage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Listing Agent's Name</label>
+                                        <input asp-for="EditIRFDealViewModel.ListingAgentName" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.ListingAgentName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Listing Brokerage</label>
+                                        <input asp-for="EditIRFDealViewModel.ListingBrokerage" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.ListingBrokerage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Listing Brokerage Fax</label>
+                                        <input asp-for="EditIRFDealViewModel.ListingBrokerageFax" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.ListingBrokerageFax" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer's Agent Name</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyerAgentName" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyerAgentName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer Brokerage</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyerBrokerage" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyerBrokerage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer Brokerage Fax</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyerBrokerageFax" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyerBrokerageFax" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Seller's Lawyer</label>
+                                        <input asp-for="EditIRFDealViewModel.SellersLawyer" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.SellersLawyer" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Seller's Lawyer Address</label>
+                                        <input asp-for="EditIRFDealViewModel.SellersLawyerAddress" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.SellersLawyerAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Seller's Phone Number</label>
+                                        <input asp-for="EditIRFDealViewModel.SellersPhoneNumber" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.SellersPhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer's Lawyer</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyersLawyer" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyersLawyer" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer's Lawyer Address</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyersLawyerAddress" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyersLawyerAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Buyer's Phone Number</label>
+                                        <input asp-for="EditIRFDealViewModel.BuyersPhoneNumber" class="form-control" />
+                                        <span asp-validation-for="EditIRFDealViewModel.BuyersPhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
                 </div>
-                <div class="form-submit-step d-flex flex-column w-100">
-                    <span class="small">STEP 3</span>
-                    <span class="fw-bolder">Update Uploaded Documents</span>
-                </div>
-            </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <!-- STEP 2 -->
+                    <div class="form-submit-tab mt-3 bg-white" style="display: block !important">
+                        <div class="table-responsive">
+                            <table>
+                                <thead class="bg-blue">
+                                    <tr>
+                                        <th class="w-5 text-white ps-3 p-2">Document Type</th>
+                                        <th class="w-5 text-white ps-3 p-2">Filename</th>
+                                        <th class="w-5 text-white ps-3 p-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fileTableBody">
 
-            <div class="form-submit-tab mt-4">
-                <div class="col-md-12 p-4">
-                    <h3 class="text-blue mb-0">New Sale Listing</h3>
-                    <hr class="my-4" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.PropertyAddress" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.PropertyAddress" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.PropertyAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="UpdatedBy" class="control-label"></label>
-                                <input asp-for="UpdatedBy" class="form-control" />
-                                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.FinalSalePrice" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.FinalSalePrice" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.FinalSalePrice" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.FinalClosingDate" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.FinalClosingDate" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.FinalClosingDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.DepositAmount" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.DepositAmount" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.DepositAmount" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.DepositDate" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.DepositDate" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.DepositDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyerName" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyerName" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyerName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.LandLordName" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.LandLordName" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.LandLordName" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.ListingCommissionPercentage" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.ListingCommissionPercentage" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.ListingCommissionPercentage" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyingCommissionPercentage" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyingCommissionPercentage" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyingCommissionPercentage" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.ListingAgentName" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.ListingAgentName" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.ListingAgentName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.ListingBrokerage" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.ListingBrokerage" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.ListingBrokerage" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.ListingBrokerageFax" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.ListingBrokerageFax" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.ListingBrokerageFax" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyerAgentName" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyerAgentName" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyerAgentName" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyerBrokerage" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyerBrokerage" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyerBrokerage" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyerBrokerageFax" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyerBrokerageFax" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyerBrokerageFax" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.SellersLawyer" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.SellersLawyer" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.SellersLawyer" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.SellersLawyerAddress" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.SellersLawyerAddress" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.SellersLawyerAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.SellersPhoneNumber" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.SellersPhoneNumber" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.SellersPhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyersLawyer" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyersLawyer" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyersLawyer" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyersLawyerAddress" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyersLawyerAddress" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyersLawyerAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="EditIRFDealViewModel.BuyersPhoneNumber" class="control-label"></label>
-                                <input asp-for="EditIRFDealViewModel.BuyersPhoneNumber" class="form-control" />
-                                <span asp-validation-for="EditIRFDealViewModel.BuyersPhoneNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="form-submit-tab mt-4 p-0">
-                <div class="table-responsive">
-                    <table>
-                        <thead class="bg-blue">
-                            <tr>
-                                <th class="w-5 text-white ps-3 p-2">Document Type</th>
-                                <th class="w-5 text-white ps-3 p-2">Filename</th>
-                                <th class="w-5 text-white ps-3 p-2">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fileTableBody">
-                            @foreach (DocumentType item in Model.DocumentTypeList!)
-                            {
-                                <tr class="border-bottom">
-                                    <td class="p-2">
-                                        <span class="mt-3 ms-2 mb-1">@item.Description</span>
-                                    </td>
-
-                                    @{
-                                        var filesWithDocumentTypeId = Model.FileUploads!.Where(x => x.DocumentTypeId == item.Id);
-
-                                        @foreach (FileUpload fileUpload in filesWithDocumentTypeId)
-                                        {
-                                            <td class="w-5 ps-2">
-                                                @fileUpload.OriginalFileName
+                                    @foreach (DocumentType item in Model.DocumentTypeList!)
+                                    {
+                                        <tr class="border-bottom">
+                                            <td class="p-2">
+                                                <span class="mt-3 ms-2 mb-1">@item.Description</span>
                                             </td>
+                                            @{
+                                                var filesWithDocumentTypeId = Model.FileUploads!.Where(x => x.DocumentTypeId == item.Id);
 
-                                            <td class="w-5 ps-2">
-                                                <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
-                                                    Download
-                                                </a>
-                                            </td>
-                                            <td class="w-5 ps-2">
-                                                <a id="btnDeleteFile" onclick="GoToStep2()" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
-                                                    Delete
-                                                </a>
-                                            </td>
-                                            <td class="w-5 ps-2">
+                                                if (filesWithDocumentTypeId != null)
+                                                {
+                                                    @foreach (var fileUpload in filesWithDocumentTypeId)
+                                                    {
+                                                        <td class="w-5 ps-2">
+                                                            @fileUpload.OriginalFileName
+                                                        </td>
 
-                                                <div class="file-loading">
-                                                    <input id="input-iconic" name="input-iconic[]" type="file" multiple>
-                                                </div>
-                                            </td>
-                                        }
+                                                        <td class="w-5 ps-2">
+                                                            <a asp-action="Download" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                                Download
+                                                            </a>
+                                                            <a id="btnDeleteFile" asp-action="DeleteFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                                Delete
+                                                            </a>
+                                                            <a id="btnDeleteFile" asp-action="PreviewFile" asp-controller="SaleListing" asp-route-id="@fileUpload.Id" class="btn btn-secondary" data-position-id="@fileUpload.Id">
+                                                                Preview
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                        </tr>
                                     }
 
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="form-submit-tab mt-4">
-                <div class="row m-0 mb-4">
-                    <div class="col-md-12">
-                        <div class="mb-4">
-                            <span class="c-preline" style="white-space: pre-line">@ViewBag.RequiredDocsList</span>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="gap-4 mb-5">
-                            <h5 class="text-blue m-0">Attach Required Documents<span class="s-required">*</span></h5>
-                            <div class="alert alert-warning mt-3 mb-3" role="alert">
-                                <ul style="margin-bottom: 0px;">
-                                    <li>When uploading multiple files, drag all files at once on the field.</li>
-                                    <li>Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed for filenames. Spaces are not allowed. Please rename before uploading.</li>
-                                </ul>
-                            </div>
-
-                            @* <label for="input-25">Sale Listing</label> *@
-                            <div class="file-loading">
-                                <input asp-for="FileUploadList.Files"
-                                       type="file"
-                                       class="file"
-                                       multiple
-                                       data-show-upload="false"
-                                       data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
-                                       accept="application/all"
-                                       data-show-caption="true"
-                                       data-msg-placeholder="Select {files} for upload...">
-                                @* onchange="fileChange(this)" *@
-
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-                <hr />
-                <div class="row d-flex justify-content-center m-0">
-                    <div class="col-md-12">
-                        <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
-                        <table class="table dataTable" id="tblApplicantFiles" width="100%">
-                            <thead>
-                                <tr>
-                                    <th style="width: 30%">
-                                        Required Document
-                                    </th>
-                                    <th>
-                                        Uploaded Document
-                                    </th>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <!-- STEP 3 -->
+                    <div class="form-submit-tab p-4 p-0 bg-white">
+                        <div class="row d-flex justify-content-center mt-2">
+                            <div class="col-md-12">
+                                <h5 class="text-blue mb-4">Please match your uploaded file based on the Document Type for Sale Listing.<span class="s-required">*</span></h5>
+                                <table class="table dataTable" id="tblApplicantFiles" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30%">Document Type</th>
+                                            <th>Is Required?</th>
+                                            <th>Uploaded Document</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    int i = 0;
-                                }
-                                @foreach (DocumentType item in Model.DocumentTypeList)
-                                {
-                                    <tr>
-                                        <td style="width: 30%">
-                                            @Html.DisplayFor(modelItem => item.Description)<span class="s-required">*</span>
-                                        </td>
-                                        <input type="hidden"
-                                               asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
-                                               value="@item.Id" />
-                                        <td>
-                                            <select class="form-select fileListDropDown"
-                                                    id="fileListDropDown_@i"
-                                                    data-prevVal=""
-                                                    data-curVal=""
-                                                    onchange="fileSelected(this)"
-                                                    asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].FileNames"
-                                                    multiple required>
-                                            </select>
-                                        </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         @{
-                                            i++;
+                                            int i = 0;
                                         }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                        @foreach (DocumentType item in Model.DocumentTypeList)
+                                        {
+                                            <tr>
+                                                <td style="width: 30%">
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <input type="hidden"
+                                                       asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].DocumentTypeId"
+                                                       value="@item.Id" />
+                                                <td id="isRequired">
+                                                    @if (item.IsRequired == true)
+                                                    {
+                                                        <label class="status-active">Required</label>
+                                                    }
+                                                    else if (item.IsRequired == false)
+                                                    {
+                                                        <label class="status-inactive pe-cursor">Not Required</label>
+                                                    }
+                                                </td>
+                                                <td>
+
+                                                    <input asp-for="CreateFileUploadListViewModel.CreateFileUploadsViewModel[i].Files"
+                                                           id="fileListDropDown_@i"
+                                                           type="file"
+                                                           class="file"
+                                                           multiple
+                                                           data-show-upload="false"
+                                                           data-allowed-file-extensions='["pdf","doc","docx","xls","xlsx"]'
+                                                           accept="application/all"
+                                                           data-show-caption="true"
+                                                           data-show-preview="false"
+                                                           onchange="fileSelected(this)"
+                                                           data-msg-placeholder="Select {files} for upload...">
+                                                </td>
+                                                @{
+                                                    i++;
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group d-flex justify-content-end pb-5 gap-4 form-bg-gray">
+            <div class="form-group d-flex justify-content-center mt-5 gap-4">
                 <button type="button" id="prevBtn" class="btn btn-secondary scroll-top w-25" onclick="nextPrev(-1)">Back</button>
                 <button type="button" id="nextBtn" class="btn btn-primary w-25 btn-next scroll-top" onclick="nextPrev(1)">Next</button>
+                <button type="button" id="btnSave" class="btn btn-success w-25 btn-submit scroll-top">Save</button>
                 <button type="button" id="btnSubmit" class="btn btn-primary w-25 btn-submit scroll-top">Submit</button>
             </div>
 
         </div>
     </form>
 
+</div>
 
+<script type="text/javascript">
+    $(document).ready(function () {
 
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        initializeSubmitButton();
+
+        onBtnSubmit();
+        onBtnSave();
+        confirmSubmitModal();
+        confirmSaveModal();
+
+    }); // document.ready
+    function initializeSubmitButton(){
+        var dealStatusId = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DealStatusId))';
+        if (dealStatusId == "1") {
+            document.getElementById("btnSubmit").disabled = true;
+        }
+    }
+    function onBtnSubmit() {
+        $("#btnSubmit").click(function () {
+
+            var openModalDialog = filesValidation();
+
+            if (openModalDialog == true) {
+                $("#confirmSubmitModal").modal("show");
+                sendEmail();
+            }
+        });
+    }
+    function onBtnSave() {
+        $("#btnSave").click(function () {
+
+            $("#confirmSaveModal").modal("show");
+        });
+    }
+
+    function confirmSaveModal() {
+
+        const saleListingForm = document.getElementById('SaleListingForm');
+
+        $("#btnConfirmSave").click(function () {
+            $("#confirmSaveModal").modal("hide");
+            $('input[name=DealStatusId]').val('2'); // Saved
+            saleListingForm.submit();
+        });
+    }
+    function confirmSubmitModal() {
+        const saleListingForm = document.getElementById('SaleListingForm');
+        $("#btnConfirmSubmit").click(function () {
+            $("#confirmSubmitModal").modal("hide");
+            $('input[name=DealStatusId]').val('1'); // Submitted
+            saleListingForm.submit();
+        });
+    }
+    function getFileUploads(saleListingId) {
+
+        let parameters = { saleListingId: saleListingId };
+        var documentTypes = [];
+        $.ajax({
+            url: '/SaleListing/GetDocumentTypesThatHasFileUploads/',
+            type: 'GET',
+            data: parameters,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            async: false,
+            success: function (data) {
+                documentTypes = data;
+            }
+        });
+        return documentTypes;
+    }
+
+    function filesValidation() {
+        
+        var saleListingId = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Id))';
+        var documentTypeListSerialized = '@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DocumentTypeList))';
+        var documentTypesWithFileUploads = getFileUploads(saleListingId);
+        var documentTypeList = JSON.parse(documentTypeListSerialized);
+        var openModalFlag = true;
+
+        var error = [];
+        documentTypeList.forEach(function (item, index) {
+
+            var formFiles = document.forms['SaleListingForm']['CreateFileUploadListViewModel.CreateFileUploadsViewModel[' + index + '].Files'];
+
+            var documentType = documentTypesWithFileUploads.find(x => x == item.Id);
+     
+            if (item.IsRequired == true && formFiles.value != "") {
+                // Do nothing - means valid
+            } else if (item.IsRequired != true && formFiles.value == "") {
+                // Do nothing - means valid
+            } else if (item.IsRequired != true && formFiles.value != "") {
+                // Do nothing - means valid
+            } else if(documentType && item.IsRequired == true){
+                // Do nothing - means valid
+            }
+            else {
+                openModalFlag = false;
+
+                var title = item.Description + " is required.";
+                error.push(title);
+            }
+        })
+        if (error.length > 0) {
+
+            Swal.fire({
+                title: error[0],
+                text: "Please upload the required documents to proceed with the application.",
+                icon: "error",
+                confirmButtonColor: '#203D57'
+            });
         }
 
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-
-                $("#input-iconic").fileinput({
-                    uploadUrl: "/file-upload-batch/1",
-                    uploadAsync: false,
-                    minFileCount: 2,
-                    maxFileCount: 5,
-                    overwriteInitial: false,
-                    initialPreview: [
-                        // IMAGE DATA
-                        'https://picsum.photos/id/702/1920/1080',
-                        // IMAGE RAW MARKUP
-                        '<img src="https://picsum.photos/id/703/1920/1080" class="kv-preview-data file-preview-image">',
-                        // TEXT DATA
-                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/SampleTextFile_10kb.txt',
-                        // PDF DATA
-                        'https://kartik-v.github.io/bootstrap-fileinput-samples/samples/pdf-sample.pdf',
-                        // VIDEO DATA
-                        "https://kartik-v.github.io/bootstrap-fileinput-samples/samples/small.mp4"
-                    ],
-                    initialPreviewAsData: true, // defaults markup
-                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                    initialPreviewConfig: [
-                        { caption: "Business 1", filename: "Business-1.jpg", description: "<h5>Number One</h5> This is a representative placeholder description # 1 for this image.", size: 762980, url: "/site/file-delete", key: 11 },
-                        { previewAsData: false, description: "<h5>Number Two</h5> This is a representative placeholder description # 2 for this image.", size: 823782, caption: "Business 2", filename: "Business-2.jpg", url: "/site/file-delete", key: 13 },
-                        { caption: "Lorem Ipsum", filename: "LoremIpsum.txt", type: "text", description: "<h5>Number Three</h5> This is a representative placeholder description # 3 for this text file.", size: 1430, url: "/site/file-delete", key: 12 },
-                        { type: "pdf", description: "<h5>Number Four</h5> This is a representative placeholder description # 4 for this PDF file.", size: 8000, caption: "PDF Sample", filename: "PDF-Sample.pdf", url: "/file-upload-batch/2", key: 14 },
-                        { type: "video", description: "<h5>Number Five</h5> This is a representative placeholder description # 5 for this video file.", size: 375000, filetype: "video/mp4", caption: "Krajee Sample", filename: "KrajeeSample.mp4", url: "/file-upload-batch/2", key: 15 }
-                    ],
-                    uploadExtraData: {
-                        img_key: "1000",
-                        img_keywords: "happy, nature",
-                    },
-                    preferIconicPreview: true, // this will force thumbnails to display icons for following file extensions
-                    previewFileIconSettings: { // configure your icon file extensions
-                        'doc': '<i class="fas fa-file-word text-primary"></i>',
-                        'xls': '<i class="fas fa-file-excel text-success"></i>',
-                        'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
-                        'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
-                        'zip': '<i class="fas fa-file-archive text-muted"></i>',
-                        'htm': '<i class="fas fa-file-code text-info"></i>',
-                        'txt': '<i class="fas fa-file-alt text-info"></i>',
-                        'mov': '<i class="fas fa-file-video text-warning"></i>',
-                        'mp3': '<i class="fas fa-file-audio text-warning"></i>',
-                        // note for these file types below no extension determination logic
-                        // has been configured (the keys itself will be used as extensions)
-                        'jpg': '<i class="fas fa-file-image text-danger"></i>',
-                        'gif': '<i class="fas fa-file-image text-muted"></i>',
-                        'png': '<i class="fas fa-file-image text-primary"></i>'
-                    },
-                    previewFileExtSettings: { // configure the logic for determining icon file extensions
-                        'doc': function (ext) {
-                            return ext.match(/(doc|docx)$/i);
-                        },
-                        'xls': function (ext) {
-                            return ext.match(/(xls|xlsx)$/i);
-                        },
-                        'ppt': function (ext) {
-                            return ext.match(/(ppt|pptx)$/i);
-                        },
-                        'zip': function (ext) {
-                            return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
-                        },
-                        'htm': function (ext) {
-                            return ext.match(/(htm|html)$/i);
-                        },
-                        'txt': function (ext) {
-                            return ext.match(/(txt|ini|csv|java|php|js|css)$/i);
-                        },
-                        'mov': function (ext) {
-                            return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
-                        },
-                        'mp3': function (ext) {
-                            return ext.match(/(mp3|wav)$/i);
-                        }
-                    }
-                }).on('filesorted', function (e, params) {
-                    console.log('File sorted params', params);
-                }).on('fileuploaded', function (e, params) {
-                    console.log('File uploaded params', params);
-                });
-
-                $('#isActiveCheckbox').on('click', toggleStatusLabels);
-
-                toggleStatusLabels();
-
-                // debugger;
-                $('#btnDeleteFile').click(function (e) {
-                    // debugger;
-                    // e.preventDefault();
-                    // GoToStep2(1);
-                });
-                // GoToStep2();
-                const saleListingForm = document.getElementById('SaleListingForm');
-                $("#btnSubmit").click(function () {
-                    //Check if required fields are filled up
-                    if ($("#SaleListingForm")[0].checkValidity()) {
-                        // debugger;
-                        var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-
-                        var x = document.forms['SaleListingForm']['Dataxxx'];
-
-                        x.value = JSON.stringify(applications);
-
-                        if (formFiles.files.length == 0) {
-                            Swal.fire({
-                                title: "No File Selected",
-                                text: "Please upload the required documents to proceed with the application.",
-                                icon: "error",
-                                confirmButtonColor: '#14984a'
-                            });
-                        } else {
-                            // debugger;
-                            $("#confirmSubmitModal").modal("show");
-                            // saleListingForm.submit();
-                            // $("#confirmSubmitModal").modal("hide");
-                        }
-                    }
-                    //If fields are not filled up
-                    else {
-                        // debugger;
-                        //Validate Form
-                        $("#SaleListingForm")[0].reportValidity();
-
-                    }
-
-                });
-
-
-                let applications = [
-
-                ];
-
-                // Function to update application data inline
-                $(document).on('blur', '.editable', function () {
-                    let id = $(this).data('id');
-                    let field = $(this).data('field');
-                    let newValue = $(this).text();
-                    updateApplication(id, field, newValue);
-                });
-
-                function updateApplication(id, field, newValue) {
-                    let appIndex = applications.findIndex(app => app.ID === id);
-                    if (appIndex !== -1) {
-                        applications[appIndex][field] = newValue;
-                    }
-                }
-                $("#backBtn").click(function () {
-                    $("#confirmSubmitModal").modal("hide");
-                });
-
-                $("#btnConfirmSubmit").click(function () {
-                    // debugger;
-                    $("#confirmSubmitModal").modal("hide");
-                    saleListingForm.submit();
-                    // CreateFileUpload();
-                });
-
-                $("#finalOKBtn").click(function () {
-                    $("#confirmSuccessModal").modal("hide");
-                });
-                $("#btnDeleteFile").click(function () {
-
-                    GoToStep2();
-                    // window.location.reload();
-
-                });
-                //END FOR MODAL FORM SUBMISSION CONFIRMATION
-            });
-
-
-            //Multiple Select
-            $('.form-select.fileListDropDown').each(function () {
-                // debugger;
-                //Initialize Selectize on the select element with the specified class
-
-                var $select = $(this).selectize({
-                    create: true,
-                    placeholder: 'Please select your uploaded file',
-                    plugins: ['remove_button'], // Enable the remove button
-                })[0].selectize;
-
-
-                $('.file').on('change', function (event) {
-
-                    //validate
-
-
-                    var files = event.target.files;
-                    //var formFiles = document.forms['SaleListingForm']['CreateFileUploadList.Files'];
-
-                    $select.clear();
-                    // Clear existing options
-                    $select.clearOptions();
-                    $select.addOption({ value: "N/A", text: "N/A" });
-                    // Loop through each selected file
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-
-                        // Get the file name
-                        var fileName = file.name;
-                        //Check if filename contains special characters
-                        if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "File name not allowed!",
-                                text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                                confirmButtonColor: '#14984a'
-                            });
-                            const removeFileButton = document.querySelector('.fileinput-remove-button');
-                            removeFileButton.click();
-                            $select.clear();
-                            $select.clearOptions();
-                            break;
-                        }
-                        else {
-                            // Add options based on the file name
-                            $select.addOption({ value: fileName, text: fileName });
-                        }
-                    }
-
-                    // Refresh the Selectize control to update the UI
-                    //$select.refreshOptions();
-                });
-
-                //If files were placed using drag and drop feature
-                $(document).on('drop', '.file-drop-zone.clearfix', function () {
-                    console.log("dropped");
-                    $select.clear();
-                    $select.clearOptions();
-
-
-                    var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-                    var files = formFiles.files;
-
-                    $select.addOption({ value: "N/A", text: "N/A" });
-                    // Loop through each selected file
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-
-                        // Get the file name
-                        var fileName = file.name;
-                        //Check if filename contains special characters
-                        if (fileName.search(/(?:\.(?![^.]+$)|[^\w.-])+/g) >= 0) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "File name not allowed!",
-                                text: "Only upload filenames without special characters and spaces. Only alphanumeric characters (A-Z), (a-z), (0-9), underscores (_), and hyphen (-) are allowed ",
-                                confirmButtonColor: '#14984a'
-                            });
-                            const removeFileButton = document.querySelector('.fileinput-remove-button');
-                            removeFileButton.click();
-                            $select.clear();
-                            $select.clearOptions();
-                            break;
-                        }
-                        else {
-                            // Add options based on the file name
-                            $select.addOption({ value: fileName, text: fileName });
-                        }
-                    }
-
-                });
-
-                //If remove button of files will be clicked
-                $(document).on('click', '.fileinput-remove-button', function () {
-                    console.log("remove button clicked");
-                    $select.clear();
-                    $select.clearOptions();
-                });
-            });
-
-            //End of Multiple Select
-            //FOR CHECKLIST OF DOCUMENTS
-            function fileChange(that) {
-                // debugger;
-                var formFiles = document.forms['SaleListingForm']['FileUploadList.Files'];
-                PopulateFileDropDown(".fileListDropDown", formFiles.files);
-            }
-
-            function PopulateFileDropDown(fileDropDownClass, list) {
-
-                $(fileDropDownClass).empty();
-                $(fileDropDownClass).append("<option value=\"\" selected disabled>--Please select your uploaded file--</option>")
-                $(fileDropDownClass).append("<option value=\"N/A\" >N/A</option>")
-                $.each(list, function (index, row) {
-                    $(fileDropDownClass).append("<option value=\"" + row.name + "\"id=\"uploadedFile_" + index + "\">" + row.name + "</option>")
-                });
-            }
-
-            function fileSelected(that) {
-                // debugger;
-                var curval = that.dataset.curval;
-                document.getElementById(that.id).setAttribute("data-prevVal", curval);
-                document.getElementById(that.id).setAttribute("data-curVal", that.value);
-            }
-            //END FOR CHECKLIST OF DOCUMENTS
-
-            var currentTab = 0;
-            showTab(currentTab);
-
-            function showTab(n) {
-                $(".form-submit-tab").hide();
-                $(".form-submit-tab").eq(n).show();
-
-                $(".form-submit-step").removeClass("active");
-
-                switch (n) {
-                    case 0:
-                        $(".form-submit-step").eq(0).addClass("active");
-                        $(".btn-next").show();
-                        $(".btn-submit").hide();
-                        break;
-                    case 1:
-                        $(".form-submit-step").eq(1).addClass("active");
-                        $(".btn-next").show();
-                        $(".btn-submit").hide();
-                        break;
-                    case 2:
-                        $(".form-submit-step").eq(2).addClass("active");
-                        $(".btn-next").hide();
-                        $(".btn-submit").show();
-                        break;
-                }
-
-                $("#prevBtn").toggle(n !== 0);
-            }
-            function nextPrev(n) {
-                var x = $(".form-submit-tab");
-
-                x.eq(currentTab).hide();
-                currentTab += n;
-
-                if (currentTab >= x.length) {
-                    $(".form-submit-step").removeClass("active");
-                    $(".form-submit-step").eq(3).addClass("active");
-                    return false;
-                }
-
-                showTab(currentTab);
-            }
-            function GoToStep2() {
-                curentTab = 1;
-                nextPrev(1)
-            }
-
-            function toggleStatusLabels() {
-                if ($('#isActiveCheckbox').is(':checked')) {
-                    $('#lblStatus').css('color', '#0d6efd').text("Active");
-                } else {
-                    $('#lblStatus').css('color', '#bfbfbf').text("Inactive");
-                }
-            }
-        </script>
+        return openModalFlag;
     }
+
+    function sendEmail() {
+
+    }
+    function fileSelected(that) {
+        var curval = that.dataset.curval;
+        var id = that.id;
+        document.getElementById(that.id).setAttribute("data-prevVal", curval);
+        document.getElementById(that.id).setAttribute("data-curVal", that.value);
+    }
+
+    var currentTab = 0;
+    showTab(currentTab);
+
+    function showTab(n) {
+        $(".form-submit-tab").hide();
+        $(".form-submit-tab").eq(n).show();
+
+        $(".form-submit-step").removeClass("active");
+
+        switch (n) {
+            case 0:
+                $(".form-submit-step").eq(0).addClass("active");
+                $(".btn-next").show();
+                $(".btn-save").hide();
+                $(".btn-submit").hide();
+                break;
+            case 1:
+                $(".form-submit-step").eq(1).addClass("active");
+                $(".btn-next").show();
+                $(".btn-save").show();
+                $(".btn-submit").show();
+                break;
+            case 2:
+                $(".form-submit-step").eq(2).addClass("active");
+                $(".btn-next").hide();
+                $(".btn-submit").show();
+                break;
+        }
+
+        $("#prevBtn").toggle(n !== 0);
+    }
+    function nextPrev(n) {
+        var x = $(".form-submit-tab");
+
+        x.eq(currentTab).hide();
+        currentTab += n;
+
+        if (currentTab >= x.length) {
+            $(".form-submit-step").removeClass("active");
+            $(".form-submit-step").eq(3).addClass("active");
+            return false;
+        }
+
+        showTab(currentTab);
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

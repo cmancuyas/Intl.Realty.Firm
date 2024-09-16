@@ -1,0 +1,203 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.CustomerVM
+@model IEnumerable<CustomerViewModel>
+
+<div>
+    <form id="ListFormId" method="post">
+
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-md-between align-items-center">
+                <h1 class="text-blue mb-0">Customers</h1>
+                <div class="d-flex gap-4">
+                    <button type="button" id="btnMultipleDelete"
+                            class="btn btn-danger d-none align-items-center"
+                            data-toggle="tooltip"
+                            data-bs-placement="left"
+                            title="Delete"
+                            onclick="OpenMultipleDeleteModal()">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                    <a asp-action="Create"
+                       class="btn btn-primary d-flex align-items-center">
+                        <i data-feather="plus" class="w-15px h-auto me-1"></i>Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="table-responsive">
+            <table id="modelTable" class="data-table table w-100">
+                <thead>
+                    <tr>
+                        <th class="text-center w-5">
+                            <input id="select_all" type="checkbox" class="column-checkbox" data-toggle="tooltip" data-bs-placement="left" title="Select all">
+                        </th>
+                        <th class="text-start">
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th class="text-start">
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th class="text-start">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th class="text-start">
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th class="text-center">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-position-id="@item.Id">
+                            <input type="hidden" name="id" id="id" />
+                            <td class="text-center">
+                                <input type="checkbox" class="row-checkbox" name="selectedRows" id="selectedRows" value="@item.Id" />
+                            </td>
+                            <td id="name" class="text-start">
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td id="name" class="text-start">
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td id="name" class="text-start">
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td id="name" class="text-start">
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            @*                           <td id="isActive">
+                        @if (item.IsActive == true)
+                        {
+                        <label class="status-active">Active</label>
+                        }
+                        else if (item.IsActive == false)
+                        {
+                        <label class="status-inactive pe-cursor">Inactive</label>
+                        }
+                        </td> *@
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        feather.replace();
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('.data-table').DataTable({
+            columnDefs: [
+                { targets: [0, 3], orderable: false }
+            ],
+            order: [[1, 'asc']]
+        });
+
+        $('[id^=dt-search]').attr('placeholder', 'Search').addClass('fst-italic');
+
+
+        $('.column-checkbox').change(function () {
+            var isChecked = $(this).prop('checked');
+            $('.row-checkbox').prop('checked', isChecked);
+        });
+
+        $('#modelTable').on('change', '.column-checkbox', function () {
+            var isChecked = $(this).prop('checked');
+            $('.row-checkbox').prop('checked', isChecked);
+
+        });
+
+        $('#modelTable').on('change', '.row-checkbox', function () {
+            var isChecked = $(this).prop('checked');
+
+            var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+            $('.column-checkbox').prop('checked', allChecked);
+
+        });
+
+        $('#modelTable').on('change', '.row-checkbox, .column-checkbox', function () {
+            var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
+            $('#btnMultipleDelete').toggleClass('d-none', !atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-flex', atLeastOneChecked);
+
+            if ($(this).hasClass('column-checkbox')) {
+                var isChecked = $(this).prop('checked');
+                $('.row-checkbox').prop('checked', isChecked);
+            }
+        });
+
+        $('.row-checkbox').change(function () {
+            var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+            $('.column-checkbox').prop('checked', allChecked);
+        });
+
+        $('#btnConfirmDelete').click(function () {
+            $('#deleteConfirmModal').modal('hide');
+            window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
+        });
+
+        $("#cancelBtn").click(function () {
+            closeModal();
+        });
+
+        handleToastrNotification('addSuccess', 'New Customer added successfully!');
+        handleToastrNotification('editSuccess', 'Customer updated successfully!');
+        handleToastrNotification('deleteSuccess', 'Selection deleted successfully!');
+    });
+
+    function closeModal() {
+        $("#deleteConfirmModal").modal("hide");
+        let elem = document.querySelector('#deleteConfirmModal');
+        elem.parentNode.removeChild(elem);
+    }
+
+    function OpenMultipleDeleteModal() {
+        var selectedRows = getSelectedRows();
+        var selectedIdsArray = getIdsFromSelectedRows(selectedRows);
+
+        var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
+        $('.column-checkbox').prop('checked', allChecked);
+
+        $('#DeleteMultipleModalContainer').load('/Customer/DeleteMultipleModal/', { ids: selectedIdsArray }, function () {
+            $("#deleteConfirmModal").modal("show");
+        });
+    }
+
+    function getIdsFromSelectedRows(selectedRows) {
+        var ids = [];
+        for (var i = 0; i < selectedRows.length; ++i)
+            ids.push(selectedRows[i].value);
+        return ids;
+    }
+
+    function OpenDeleteModal(id) {
+
+        $('#DeleteModalContainer').load('/Customer/DeleteModal/' + id, function () {
+
+            $("#deleteConfirmModal").modal("show");
+        });
+    }
+    function ClearSearch() {
+        $("#dt-search-0").val("").keyup();
+    }
+
+    function getSelectedRows() {
+        var table = $('#modelTable').dataTable();
+        selectedRows = table.find('input[name="selectedRows"]:checked').serializeArray();
+
+        return selectedRows;
+    }
+</script>

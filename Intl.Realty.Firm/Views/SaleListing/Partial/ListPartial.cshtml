@@ -1,8 +1,7 @@
 ﻿@using Intl.Realty.Firm.Models.Models.ViewModel.SaleListingVM
-@model List<SaleListingViewModel>
+@model SaleListingListViewModel
 
 <div>
-
     <div class="row">
         <div class="col-md-12 d-flex justify-content-md-between align-items-center">
             <h1 class="text-blue mb-0">Sales Listing</h1>
@@ -37,6 +36,9 @@
                         Property Address
                     </th>
                     <th class="text-lg-start">
+                        Deal Status
+                    </th>
+                    <th class="text-lg-start">
                         Created At
                     </th>
                     <th class="text-lg-start">
@@ -48,7 +50,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.SaleListingsViewModel!)
                 {
                     <tr data-SaleListing-id="@item.Id">
                         <input type="hidden" name="id" id="id" />
@@ -65,27 +67,30 @@
                             }
                         </td>
                         <td class="text-lg-start">
+                            @Html.DisplayFor(modelItem => @item.DealStatus!.Description)
+                        </td>
+                        <td class="text-lg-start">
                             @Html.DisplayFor(modelItem => @item.CreatedAt)
                         </td>
                         <td class="text-lg-start">
-                            @Html.DisplayFor(modelItem => @item.CreatedBy)
+                            @{
+                                var user = Model.Users.Where(x => x.Id == item.CreatedBy).FirstOrDefault();
+                                var fullName = user.FirstName + " " + user.LastName;
+                            }
+                            @fullName
                         </td>
                         <td class="text-lg-start">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" data-position-id="@item.Id">
                                 Edit
                             </a>
+        @*                     <button id="btnChangeStatus" type="button" onclick="openChangeStatusModal(@item.Id)"class="btn btn-secondary" data-position-id="@item.Id">
+                                Change Status
+                            </button> *@
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-        @*         <nav class="table-pagination mt-5" id="paginationNav" style="display: none;">
-        <ul class="pagination justify-content-center" id="pagination">
-        <li class="page-item"><a class="page-link" href="#" id="prevPage">&laquo;</a></li>
-        <li class="page-item"><a class="page-link" href="#" id="nextPage">&raquo;</a></li>
-        </ul>
-        </nav> *@
     </form>
 </div>
 
@@ -94,6 +99,30 @@
         feather.replace();
         $('[data-toggle="tooltip"]').tooltip();
 
+        DataTableSettings();
+
+        SearchBoxSettings();
+
+        CheckboxSelect();
+
+        MultipleDelete();
+
+        OpenDealStatusModal();
+
+        $("#cancelBtn").click(function () {
+            CloseModal();
+        });
+
+        handleToastrNotification('addSuccess', 'New SaleListing added successfully!');
+        handleToastrNotification('editSuccess', 'SaleListing updated successfully!');
+        handleToastrNotification('deleteSuccess', 'SaleListing deleted successfully!');
+    }); // document.ready();
+
+    function openChangeStatusModal() {
+
+    }
+
+    function DataTableSettings(){
         $('.data-table').DataTable({
             columnDefs: [
                 { targets: [0], orderable: false },
@@ -101,10 +130,31 @@
             ],
             order: [[1, 'asc']]
         });
+    }
 
+    function SearchBoxSettings(){
         $('[id^=dt-search]').attr('placeholder', 'Search...').addClass('fst-italic');
+    }
 
+    function MultipleDelete() {
+        $('#modelTable').on('change', '.row-checkbox, .column-checkbox', function () {
+            var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
+            $('#btnMultipleDelete').toggleClass('d-none', !atLeastOneChecked);
+            $('#btnMultipleDelete').toggleClass('d-flex', atLeastOneChecked);
 
+            if ($(this).hasClass('column-checkbox')) {
+                var isChecked = $(this).prop('checked');
+                $('.row-checkbox').prop('checked', isChecked);
+            }
+        });
+
+        $('#btnConfirmDelete').click(function () {
+            $('#deleteConfirmModal').modal('hide');
+            window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
+        });
+    }
+
+    function CheckboxSelect(){
         $('.column-checkbox').change(function () {
             var isChecked = $(this).prop('checked');
             $('.row-checkbox').prop('checked', isChecked);
@@ -124,35 +174,11 @@
 
         });
 
-        $('#modelTable').on('change', '.row-checkbox, .column-checkbox', function () {
-            var atLeastOneChecked = $('.row-checkbox:checked').length > 0;
-            $('#btnMultipleDelete').toggleClass('d-none', !atLeastOneChecked);
-            $('#btnMultipleDelete').toggleClass('d-flex', atLeastOneChecked);
-
-            if ($(this).hasClass('column-checkbox')) {
-                var isChecked = $(this).prop('checked');
-                $('.row-checkbox').prop('checked', isChecked);
-            }
-        });
-
         $('.row-checkbox').change(function () {
             var allChecked = $('.row-checkbox').length === $('.row-checkbox:checked').length;
             $('.column-checkbox').prop('checked', allChecked);
         });
-
-        $('#btnConfirmDelete').click(function () {
-            $('#deleteConfirmModal').modal('hide');
-            window.location.href = window.location.href.split('?')[0] + '?deleteSuccess=true';
-        });
-
-        $("#cancelBtn").click(function () {
-            CloseModal();
-        });
-
-        handleToastrNotification('addSuccess', 'New SaleListing added successfully!');
-        handleToastrNotification('editSuccess', 'SaleListing updated successfully!');
-        handleToastrNotification('deleteSuccess', 'SaleListing deleted successfully!');
-    });
+    }
 
     function CloseModal() {
         $("#deleteConfirmModal").modal("hide");
@@ -161,7 +187,6 @@
     }
 
     function OpenMultipleDeleteModal() {
-        debugger;
         var selectedRows = getSelectedRows();
         var selectedIdsArray = getIdsFromSelectedRows(selectedRows);
 

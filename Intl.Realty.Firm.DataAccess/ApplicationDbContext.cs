@@ -20,17 +20,18 @@ namespace Intl.Realty.Firm.DataAccess
 
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
         public DbSet<EmploymentStatus> EmploymentStatuses { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
         public DbSet<DocumentTypeAssignment> DocumentTypeAssignments { get; set; }
         public DbSet<FileUpload> FileUploads { get; set; }
+        public DbSet<DealStatus> DealStatuses { get; set; }
         public DbSet<IRFDeal> IRFDeals { get; set; }
         public DbSet<SaleListing> SaleListings { get; set; }
         public DbSet<SaleCoop> SaleCoops { get; set; }
@@ -44,17 +45,45 @@ namespace Intl.Realty.Firm.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            ////modelBuilder.Entity<SaleListing>()
-            ////.HasMany(f => f.FileUploads)
-            ////.WithMany(f=>f.)
-            //.HasForeignKey(f=>f.SaleListingId)
-            //.OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SaleListing>()
+
+
+
+            modelBuilder.Entity<SaleCoop>()
             .HasOne(f => f.TransactionType)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SaleListing>()
+            modelBuilder.Entity<SaleCoop>()
             .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SaleCoop>()
+            .HasOne(f => f.DealStatus)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<LeaseListing>()
+            .HasOne(f => f.TransactionType)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseListing>()
+            .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseListing>()
+            .HasOne(f => f.DealStatus)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<LeaseCoop>()
+            .HasOne(f => f.TransactionType)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseCoop>()
+            .HasOne(f => f.IRFDeal)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<LeaseCoop>()
+            .HasOne(f => f.DealStatus)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
         }

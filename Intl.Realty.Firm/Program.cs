@@ -11,9 +11,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DENR_FAPIS.Helper;
-using Intl.Realty.Firm.Models.Models.Auxiliary;
 using Intl.Realty.Firm.Models.Models.DataTable;
 using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using Intl.Realty.Firm.Models.Auxiliary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient(typeof(IExportService<>), typeof(ExportService<>));
+builder.Services.AddScoped<IExcelService, ExcelService>();
+builder.Services.AddScoped<ICsvService, CsvService>();
+builder.Services.AddScoped<IHtmlService, HtmlService>();
+builder.Services.AddScoped<IJsonService, JsonService>();
+builder.Services.AddScoped<IXmlService, XmlService>();
+builder.Services.AddScoped<IYamlService, YamlService>();
 
 builder.Services.AddTransient<IConfigurationService, ConfigurationService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
@@ -67,6 +76,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddMvc().AddNewtonsoftJson(options =>
 {
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;

@@ -64,7 +64,7 @@ namespace Intl.Realty.Firm.Utility.Mapper
             {
                 Id = viewModel.Id,
                 Code = viewModel.Code,
-                Description = viewModel.Description ?? "",
+                Description = viewModel.Description,
                 IsActive = viewModel.IsActive,
                 UpdatedBy = viewModel.UpdatedBy,
                 UpdatedAt = viewModel.UpdatedAt

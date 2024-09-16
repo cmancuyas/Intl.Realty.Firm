@@ -1,0 +1,43 @@
+﻿@using Intl.Realty.Firm.Models.Models.ViewModel.LeaseCoopVM
+@model LeaseCoopViewModel
+
+<partial name="~/Views/Shared/Modal/_DeleteModal.cshtml" for="Id">
+
+<script type="text/javascript">
+    $("#cancelBtn").click(function () {
+        CloseModal();
+    });
+
+    $("#btnConfirmDelete").click(function () {
+        let parameters = {
+            id: @Model.Id };
+        $.ajax({
+            url: '/LeaseCoop/Delete/' + @Model.Id,
+            type: 'post',
+            data: parameters,
+            success: function (data) {
+                // NOTE: TO DO better way of calling callback function from parent
+                CloseModal();
+                // Swal.fire({
+                //     title: "Success!",
+                //     icon: "success",
+                //     confirmButtonText: "Ok",
+                //     confirmButtonColor: '#14984a'
+                // });
+                window.location.reload()
+
+                    // $('#ListPartialContainer').load('/LeaseCoop/ListPartialView');
+
+            }, 
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+
+    function CloseModal() {
+        $("#deleteConfirmModal").modal("hide");
+        let elem = document.querySelector('#deleteConfirmModal');
+        elem.parentNode.removeChild(elem);
+    }
+</script>

@@ -1,18 +1,13 @@
-﻿using Intl.Realty.Firm.Models.Models;
+﻿using Intl.Realty.Firm.Helper;
 using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
-using Intl.Realty.Firm.Models.Models.ViewModel.TransactionTypeVM;
-using Intl.Realty.Firm.Models.ViewModel;
 using Intl.Realty.Firm.Repository.IRepository;
 using Intl.Realty.Firm.Utility.Mapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Intl.Realty.Firm.Controllers
 {
     public class TransactionTypeController : Controller
     {
-
-        private int _userId = 1;
         private readonly IUnitOfWork _unitOfWork;
         public TransactionTypeController(IUnitOfWork unitOfWork)
         {
@@ -35,8 +30,9 @@ namespace Intl.Realty.Firm.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = Session.UserId;
                 viewModel.IsActive = true;
-                viewModel.CreatedBy = _userId;
+                viewModel.CreatedBy = userId;
                 viewModel.CreatedAt = DateTime.UtcNow;
                 var model = viewModel.ToTransactionTypeModel();
 
@@ -58,7 +54,8 @@ namespace Intl.Realty.Firm.Controllers
 
             var viewModel = model.ToEditTransactionTypeViewModel();
 
-            viewModel.UpdatedBy = _userId;
+            var userId = Session.UserId;
+            viewModel.UpdatedBy = userId;
             viewModel.UpdatedAt = DateTime.Now;
 
             return View(viewModel);
@@ -80,9 +77,10 @@ namespace Intl.Realty.Firm.Controllers
                 {
                     return NotFound();
                 }
+                var userId = Session.UserId;
                 model = viewModel.ToTransactionTypeModel();
                 model.UpdatedAt = DateTime.Now;
-                model.UpdatedBy = _userId;
+                model.UpdatedBy = userId;
 
                 await _unitOfWork.TransactionType.UpdateAsync(model);
                 return RedirectToAction(nameof(Index), new { editSuccess = true });

@@ -12,16 +12,100 @@
 <partial name="~/Views/Shared/Modal/_ConfirmSaveModal.cshtml" />
 
 <div class="pb-5">
-    <a href="@Url.Action("Index","SaleListing")" class="text-decoration-none text-blue d-flex mb-4">
-        <i data-feather="chevron-left"></i><span>Back</span>
-    </a>
+    <div class="transaction-controller">
+        <a href="@Url.Action("Index","SaleListing")" class="text-decoration-none text-blue d-flex mb-4">
+            <i data-feather="chevron-left"></i><span>Back</span>
+        </a>
+        <div class="note-controller">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addNote" style="min-width: auto; margin-right: 5px"><i data-feather="plus" data-toggle="tooltip" title="Add Note"></i></button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewNote">View Note</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqNote" style="min-width: auto"><i data-feather="help-circle" data-toggle="tooltip" title="FAQ"></i></button>
+        </div>
+        
+    </div>
+
+    <!-- Add Note -->
+    <div class="modal fade" id="addNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Add Note</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <textarea class="form-control textarea-note" rows="10" placeholder="Add your note here."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Note -->
+    <div class="modal fade" id="viewNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Notes as of <i>09/23/2024</i></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return. In the sidebar, enter a name for the new list, then press Return.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Exit Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="modal fade" id="faqNote" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Frequenty Asked Quesitons</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                        <li class="list-group-item">In the sidebar, enter a name for the new list, then press Return.</li>
+                        <li class="list-group-item">In the Reminders app  on your Mac, choose File > View Templates.</li>
+                        <li class="list-group-item">In the Templates window, select the template you want to use, then click Create List.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <form asp-action="Edit" asp-controller="SaleListing" method="post" enctype="multipart/form-data" id="SaleListingForm">
         <input hidden asp-for="DealStatusId" type="type" name="DealStatusId" id="DealStatusId" value="1" />
         <input hidden asp-for="FileUploads" type="file" name="FileUploadsFromModel" id="FileUploadsFromModel" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row justify-content-center">
-
-            
 
              <div class="d-flex justify-content-between p-0 w-100">
                 <div class="nav nav-tabs horizontal-tabs" id="myTab" role="tablist">
